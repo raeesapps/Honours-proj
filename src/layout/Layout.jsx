@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 
+import NavigationBar from '../components/Navbar/Navbar';
 import routes from '../routes/routes';
 
 class Layout extends React.Component {
@@ -19,7 +20,14 @@ class Layout extends React.Component {
   render() {
     return (
       <Switch>
-        {routes.map((route) => Layout.createRouteTag(route))}
+        {routes.map((route) => (
+          <>
+            <NavigationBar />
+            {
+              Layout.createRouteTag(route)
+            }
+          </>
+        ))}
       </Switch>
     );
   }
