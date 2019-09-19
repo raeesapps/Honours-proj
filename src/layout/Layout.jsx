@@ -23,6 +23,7 @@ class Layout extends React.Component {
         {routes.map((route) => (
           <>
             <NavigationBar />
+            <br />
             {
               Layout.createRouteTag(route)
             }
