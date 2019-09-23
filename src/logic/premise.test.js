@@ -1,8 +1,5 @@
 import {
   ALL_A_IS_B,
-  SOME_A_IS_B,
-  SOME_A_IS_NOT_B,
-  NO_A_IS_B,
 } from './forms';
 
 import Premise from './premise';
