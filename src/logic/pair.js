@@ -5,7 +5,7 @@ import {
   P_M_M_S,
 } from './figure';
 
-class PremisePair {
+class Pair {
   constructor(premises, relationship) {
     this.premises = premises;
     this.relationship = relationship;
@@ -59,4 +59,4 @@ class PremisePair {
   }
 }
 
-export default PremisePair;
+export default Pair;
