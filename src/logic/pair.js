@@ -12,6 +12,7 @@ class Pair {
 
     this.getRelationship = this.getRelationship.bind(this);
     this.getPremises = this.getPremises.bind(this);
+    this.toSetTheoreticRepresentation = this.toSetTheoreticRepresentation.bind(this);
   }
 
   getRelationship() {
