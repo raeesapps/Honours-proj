@@ -30,7 +30,7 @@ class Premise {
     switch (this.form) {
       case ALL_A_IS_B:
         a.add(0);
-        b.add(1);
+        b.add(0);
         b.add(1);
         break;
       case SOME_A_IS_NOT_B:
