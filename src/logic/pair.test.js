@@ -1,14 +1,8 @@
 import {
   M_P_S_M,
-  P_M_S_M,
-  M_P_M_S,
-  P_M_M_S,
 } from './figure';
 import {
   ALL_A_IS_B,
-  SOME_A_IS_B,
-  SOME_A_IS_NOT_B,
-  NO_A_IS_B,
 } from './forms';
 import Pair from './pair';
 import Premise from './premise';
@@ -34,9 +28,4 @@ test('Pair has correct relationship', () => {
   const expectedRelationship = M_P_S_M;
   const actualRelationship = pair.relationship;
   expect(expectedRelationship).toBe(actualRelationship);
-});
-
-test('Pair has correct set representation', () => {
-  const expectedMSet = [0];
-  const expectedPSet = []
 });
