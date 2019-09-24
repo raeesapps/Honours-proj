@@ -12,7 +12,6 @@ class Premise {
 
     this.getForm = this.getForm.bind(this);
     this.getTerms = this.getTerms.bind(this);
-    this.copyToSet = this.copyToSet.bind(this);
   }
 
   getForm() {
