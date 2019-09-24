@@ -26,29 +26,6 @@ class Premise {
   toString() {
     return JSON.stringify(this);
   }
-
-  copyToSet(a = new Set(), b = new Set()) {
-    switch (this.form) {
-      case ALL_A_IS_B:
-        a.add(0);
-        b.add(0);
-        b.add(1);
-        break;
-      case SOME_A_IS_NOT_B:
-      case SOME_A_IS_B:
-        a.add(2);
-        a.add(3);
-        b.add(3);
-        b.add(4);
-        break;
-      case NO_A_IS_B:
-        a.add(5);
-        b.add(6);
-        break;
-      default:
-        break;
-    }
-  }
 }
 
 export default Premise;
