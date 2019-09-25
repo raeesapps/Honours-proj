@@ -52,7 +52,6 @@ class Premise {
           [A_AND_X]: Logic.true(),
         };
         break;
-      case SOME_A_IS_NOT_B:
       case SOME_A_IS_B:
         this.sets = {
           [A_AND_B]: Logic.indeterminate(),
@@ -61,6 +60,16 @@ class Premise {
           [B_AND_X]: Logic.true(),
           [A]: Logic.true(),
           [A_AND_X]: Logic.true(),
+        };
+        break;
+      case SOME_A_IS_NOT_B:
+        this.sets = {
+          [A_AND_B]: Logic.true(),
+          [A_AND_B_AND_X]: Logic.true(),
+          [A]: Logic.indeterminate(),
+          [A_AND_X]: Logic.indeterminate(),
+          [B]: Logic.true(),
+          [B_AND_X]: Logic.true(),
         };
         break;
       default:
