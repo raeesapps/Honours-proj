@@ -10,11 +10,23 @@ import {
 const {
   ALL_A_IS_B,
   NO_A_IS_B,
+  SOME_A_IS_NOT_B,
 } = forms;
 
 const {
-  M_P_S_M
+  M_P_S_M,
+  P_M_S_M,
 } = figure;
+
+const {
+  M,
+  S,
+  P,
+  M_AND_S,
+  M_AND_P,
+  S_AND_P,
+  M_AND_S_AND_P,
+} = threeSetRegions;
 
 describe('BARBARA setup', () => {
   const allMenAreMortalPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Men', secondTerm: 'Mortal' });
@@ -25,15 +37,6 @@ describe('BARBARA setup', () => {
   }, M_P_S_M);
 
   test('Pair is equivalent to BARBARA', () => {
-    const {
-      M,
-      S,
-      P,
-      M_AND_S,
-      M_AND_P,
-      S_AND_P,
-      M_AND_S_AND_P,
-    } = threeSetRegions;
     const expectedRegions = JSON.stringify({
       [M]: Logic.false(),
       [S]: Logic.false(),
@@ -57,15 +60,6 @@ describe('CELARENT SETUP', () => {
   }, M_P_S_M);
 
   test('Pair is equivalent to CELARENT', () => {
-    const {
-      M,
-      S,
-      P,
-      M_AND_S,
-      M_AND_P,
-      S_AND_P,
-      M_AND_S_AND_P,
-    } = threeSetRegions;
     const expectedRegions = JSON.stringify({
       [M]: Logic.true(),
       [S]: Logic.false(),
@@ -77,5 +71,34 @@ describe('CELARENT SETUP', () => {
     });
     const actualRegions = JSON.stringify(pair.mergeSets());
     expect(actualRegions).toBe(expectedRegions);
+  });
+});
+
+describe('BAROCO setup', () => {
+  const allInformativeThingsAreUsefulPremise = new Premise(ALL_A_IS_B, {
+    firstTerm: 'informative things',
+    secondTerm: 'useful',
+  });
+  const someWebsitesAreNotUsefulPremise = new Premise(SOME_A_IS_NOT_B, {
+    firstTerm: 'websites',
+    secondTerm: 'useful',
+  });
+  const pair = new Pair({
+    firstPremise: allInformativeThingsAreUsefulPremise,
+    secondPremise: someWebsitesAreNotUsefulPremise,
+  }, P_M_S_M);
+
+  test('Pair is equivalent to BAROCO', () => {
+    const expectedRegions = JSON.stringify({
+      [M]: Logic.true(),
+      [S]: Logic.indeterminate(),
+      [P]: Logic.false(),
+      [M_AND_S]: Logic.true(),
+      [M_AND_P]: Logic.true(),
+      [S_AND_P]: Logic.false(),
+      [M_AND_S_AND_P]: Logic.true(),
+    });
+    const actualRegion = JSON.stringify(pair.mergeSets());
+    expect(actualRegion).toBe(expectedRegions);
   });
 });
