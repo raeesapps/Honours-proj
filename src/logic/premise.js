@@ -1,12 +1,5 @@
-import {
-  ALL_A_IS_B,
-  SOME_A_IS_B,
-  SOME_A_IS_NOT_B,
-  NO_A_IS_B,
-} from './forms';
-
+import forms from './forms';
 import Logic from './logic';
-
 import {
   twoSetRegions,
 } from './regions';
@@ -32,6 +25,12 @@ class Premise {
       B_AND_X,
       A_AND_B_AND_X,
     } = twoSetRegions;
+    const {
+      ALL_A_IS_B,
+      NO_A_IS_B,
+      SOME_A_IS_B,
+      SOME_A_IS_NOT_B,
+    } = forms;
     switch (this.form) {
       case ALL_A_IS_B:
         this.sets = {

@@ -1,9 +1,4 @@
-import {
-  M_P_S_M,
-  P_M_S_M,
-  M_P_M_S,
-  P_M_M_S,
-} from './figure';
+import figure from './figure';
 import Logic from './logic'
 import {
   threeSetRegions,
@@ -36,6 +31,12 @@ class Pair {
     const { firstPremise, secondPremise } = this.premises;
     const setsOfFirstPremise = firstPremise.sets;
     const setsOfSecondPremise = secondPremise.sets;
+    const {
+      M_P_S_M,
+      P_M_S_M,
+      M_P_M_S,
+      P_M_M_S,
+    } = figure;
     const {
       M,
       S,
