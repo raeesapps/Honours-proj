@@ -19,18 +19,3 @@ test('First term of premise is `a` and second term of premise is `b`', () => {
   expect(firstTerm).toBe(expectedFirstTerm);
   expect(secondTerm).toBe(expectedSecondTerm);
 });
-
-test('Set representation of premise is correct', () => {
-  const expectedA = [0];
-  const expectedB = [0, 1];
-
-  let actualA = new Set();
-  let actualB = new Set();
-
-  premise.copyToSet(actualA, actualB);
-  actualA = [...actualA];
-  actualB = [...actualB];
-
-  expect(actualA).toEqual(expectedA);
-  expect(actualB).toEqual(expectedB);
-});

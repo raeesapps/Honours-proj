@@ -1,9 +1,8 @@
+import forms from './forms';
+import Logic from './logic';
 import {
-  ALL_A_IS_B,
-  SOME_A_IS_B,
-  SOME_A_IS_NOT_B,
-  NO_A_IS_B,
-} from './forms';
+  twoSetRegions,
+} from './regions';
 
 class Premise {
   constructor(form, terms) {
@@ -12,7 +11,70 @@ class Premise {
 
     this.getForm = this.getForm.bind(this);
     this.getTerms = this.getTerms.bind(this);
-    this.copyToSet = this.copyToSet.bind(this);
+    this.createSets = this.createSets.bind(this);
+
+    this.createSets();
+  }
+
+  createSets() {
+    const {
+      A,
+      B,
+      A_AND_B,
+      A_AND_X,
+      B_AND_X,
+      A_AND_B_AND_X,
+    } = twoSetRegions;
+    const {
+      ALL_A_IS_B,
+      NO_A_IS_B,
+      SOME_A_IS_B,
+      SOME_A_IS_NOT_B,
+    } = forms;
+    switch (this.form) {
+      case ALL_A_IS_B:
+        this.sets = {
+          [A_AND_B]: Logic.true(),
+          [A_AND_B_AND_X]: Logic.true(),
+          [A]: Logic.false(),
+          [A_AND_X]: Logic.false(),
+          [B]: Logic.true(),
+          [B_AND_X]: Logic.true(),
+        };
+        break;
+      case NO_A_IS_B:
+        this.sets = {
+          [A_AND_B]: Logic.false(),
+          [A_AND_B_AND_X]: Logic.false(),
+          [B]: Logic.true(),
+          [B_AND_X]: Logic.true(),
+          [A]: Logic.true(),
+          [A_AND_X]: Logic.true(),
+        };
+        break;
+      case SOME_A_IS_B:
+        this.sets = {
+          [A_AND_B]: Logic.indeterminate(),
+          [A_AND_B_AND_X]: Logic.indeterminate(),
+          [B]: Logic.true(),
+          [B_AND_X]: Logic.true(),
+          [A]: Logic.true(),
+          [A_AND_X]: Logic.true(),
+        };
+        break;
+      case SOME_A_IS_NOT_B:
+        this.sets = {
+          [A_AND_B]: Logic.true(),
+          [A_AND_B_AND_X]: Logic.true(),
+          [A]: Logic.indeterminate(),
+          [A_AND_X]: Logic.indeterminate(),
+          [B]: Logic.true(),
+          [B_AND_X]: Logic.true(),
+        };
+        break;
+      default:
+        break;
+    }
   }
 
   getForm() {
@@ -25,29 +87,6 @@ class Premise {
 
   toString() {
     return JSON.stringify(this);
-  }
-
-  copyToSet(a = new Set(), b = new Set()) {
-    switch (this.form) {
-      case ALL_A_IS_B:
-        a.add(0);
-        b.add(0);
-        b.add(1);
-        break;
-      case SOME_A_IS_NOT_B:
-      case SOME_A_IS_B:
-        a.add(2);
-        a.add(3);
-        b.add(3);
-        b.add(4);
-        break;
-      case NO_A_IS_B:
-        a.add(5);
-        b.add(6);
-        break;
-      default:
-        break;
-    }
   }
 }
 
