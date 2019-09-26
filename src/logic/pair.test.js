@@ -16,6 +16,8 @@ const {
 const {
   M_P_S_M,
   P_M_S_M,
+  M_P_M_S,
+  P_M_M_S,
 } = figure;
 
 const {
@@ -100,5 +102,61 @@ describe('BAROCO setup', () => {
     });
     const actualRegion = JSON.stringify(pair.mergeSets());
     expect(actualRegion).toBe(expectedRegions);
+  });
+});
+
+describe('BOCARDO setup', () => {
+  const someCatsHaveNoTailsPremise = new Premise(SOME_A_IS_NOT_B, {
+    firstTerm: 'cats',
+    secondTerm: 'tails',
+  });
+  const allCatsAreMammals = new Premise(ALL_A_IS_B, {
+    firstTerm: 'cats',
+    secondTerm: 'mammals',
+  });
+  const pair = new Pair({
+    firstPremise: someCatsHaveNoTailsPremise,
+    secondPremise: allCatsAreMammals,
+  }, M_P_M_S);
+  test('Pair is equivalent to BOCARDO', () => {
+    const expectedRegions = JSON.stringify({
+      [M]: Logic.false(),
+      [S]: Logic.true(),
+      [P]: Logic.true(),
+      [M_AND_P]: Logic.false(),
+      [M_AND_S]: Logic.indeterminate(),
+      [S_AND_P]: Logic.true(),
+      [M_AND_S_AND_P]: Logic.true(),
+    });
+    const actualRegions = JSON.stringify(pair.mergeSets());
+    expect(actualRegions).toBe(expectedRegions);
+  });
+});
+
+describe('CALEMES setup', () => {
+  const allInformativeThingsAreUsefulPremise = new Premise(ALL_A_IS_B, {
+    firstTerm: 'informative things',
+    secondTerm: 'useful',
+  });
+  const noUsefulThingIsUselessPremise = new Premise(NO_A_IS_B, {
+    firstTerm: 'useful',
+    secondTerm: 'useless',
+  });
+  const pair = new Pair({
+    firstPremise: allInformativeThingsAreUsefulPremise,
+    secondPremise: noUsefulThingIsUselessPremise,
+  }, P_M_M_S);
+  test('Pair is equivalent to CALEMES', () => {
+    const expectedRegions = JSON.stringify({
+      [M]: Logic.true(),
+      [S]: Logic.true(),
+      [P]: Logic.false(),
+      [M_AND_S]: Logic.false(),
+      [M_AND_P]: Logic.true(),
+      [S_AND_P]: Logic.false(),
+      [M_AND_S_AND_P]: Logic.false(),
+    });
+    const actualRegions = JSON.stringify(pair.mergeSets());
+    expect(actualRegions).toBe(expectedRegions);
   });
 });
