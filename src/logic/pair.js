@@ -59,12 +59,6 @@ class Pair {
     }
 
     if (this.relationship === M_P_S_M) {
-      // p1 A: M
-      // p1 B: P
-      // p1 X: S
-      // p2 A: S
-      // p2 B: M
-      // p2 X: P
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[B])),
         [S]: setsOfSecondPremise[A],
@@ -77,12 +71,6 @@ class Pair {
       return sets;
     }
     if (this.relationship === M_P_M_S) {
-      // p1 A: M
-      // p1 B: P
-      // p1 X: S
-      // p2 A: M
-      // p2 B: S
-      // p2 X: P
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[A])),
         [S]: setsOfSecondPremise[B],
@@ -96,12 +84,6 @@ class Pair {
       return sets;
     }
     if (this.relationship === P_M_M_S) {
-      // p1 A: P
-      // p1 B: M
-      // p1 X: S
-      // p2 A: M
-      // p2 B: S
-      // p2 X: P
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[A])),
         [S]: setsOfSecondPremise[B],
@@ -115,12 +97,6 @@ class Pair {
       return sets;
     }
     if (this.relationship === P_M_S_M) {
-      // p1 A: P
-      // p1 B: M
-      // p1 X: S
-      // p2 A: S
-      // p2 B: M
-      // p2 X: P
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[B])),
         [S]: setsOfSecondPremise[A],
