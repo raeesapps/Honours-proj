@@ -1,8 +1,5 @@
-import Logic from './logic'
-import {
-  threeSetRegions,
-  twoSetRegions,
-} from './regions';
+import Compartment from './compartment';
+import forms from './forms';
 
 const relationship = Object.freeze({
   M_P_S_M: 1,
@@ -11,12 +8,133 @@ const relationship = Object.freeze({
   P_M_M_S: 4,
 });
 
-class Pair {
+const tableEntryFunctions = Object.freeze({
+  e: function entryForE() {
+    return 'e';
+  },
+  x: function entryForX(seqIdx) {
+    return `x_${seqIdx.toString()}`;
+  },
+});
+
+class Premises {
   constructor(premises) {
     this.premises = premises;
 
     this.getPremises = this.getPremises.bind(this);
-    this.mergeSets = this.mergeSets.bind(this);
+    //this.mergeSets = this.mergeSets.bind(this);
+    this.formTable = this.formTable.bind(this);
+    this.fillInTable = this.fillInTable.bind(this);
+  }
+
+  formTable() {
+    function copyTerms(terms) {
+      return Object.freeze(JSON.parse(JSON.stringify(terms)));
+    }
+    function getTermNames(premises) {
+      const allTerms = premises.map((premise) => {
+        const { firstTerm, secondTerm } = premise.terms;
+        return [firstTerm, secondTerm];
+      }).flat();
+      const uniqueTerms = new Set([...allTerms]);
+      return [...uniqueTerms];
+    }
+    const compartments = [];
+    const terms = {};
+    const termNames = getTermNames(this.premises);
+    termNames.forEach((term) => {
+      terms[term] = false;
+    });
+    function permuteCompartments(index, size) {
+      if (index === size) {
+        compartments.push(new Compartment(copyTerms(terms)));
+        return;
+      }
+      const term = termNames[index];
+      terms[term] = false;
+      permuteCompartments(index + 1, size);
+      terms[term] = true;
+      permuteCompartments(index + 1, size);
+    }
+    permuteCompartments(0, termNames.length);
+    const table = {};
+    const premiseHashToObjMappings = {};
+    this.premises.forEach((premise) => {
+      const compartmentMap = {};
+      const compartmentHashToObjMappings = {};
+      compartments.forEach((compartment) => {
+        compartmentMap[compartment.hashCode()] = null;
+        compartmentHashToObjMappings[compartment.hashCode()] = compartment;
+      });
+      table[premise.hashCode()] = { compartmentMap, compartmentHashToObjMappings };
+      premiseHashToObjMappings[premise.hashCode()] = premise;
+    });
+    return { table, premiseHashToObjMappings };
+  }
+
+  fillInTable(result) {
+    const {
+      ALL_A_IS_B,
+      NO_A_IS_B,
+      SOME_A_IS_NOT_B,
+      SOME_A_IS_B,
+    } = forms;
+
+    const {
+      e,
+      x,
+    } = tableEntryFunctions;
+
+    const { table, premiseHashToObjMappings } = result;
+
+    this.premises.forEach((premise, idx) => {
+      const { firstTerm, secondTerm } = premise.terms;
+      const { compartmentMap, compartmentHashToObjMappings } = table[premise.hashCode()];
+      switch (premise.form) {
+        case ALL_A_IS_B:
+          Object.keys(compartmentHashToObjMappings).forEach((k) => {
+            const compartment = compartmentHashToObjMappings[k];
+            const truths = compartment.getTruths();
+            const criteriaHolds = Object.keys(truths).filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
+            if (criteriaHolds) {
+              compartmentMap[compartment.hashCode()] = e();
+            }
+          });
+          break;
+        case NO_A_IS_B:
+          Object.keys(compartmentHashToObjMappings).forEach((k) => {
+            const compartment = compartmentHashToObjMappings[k];
+            const truths = compartment.getTruths();
+            const criteriaHolds = Object.keys(truths).filter(() => truths[firstTerm] && truths[secondTerm]).length > 0;
+            if (criteriaHolds) {
+              compartmentMap[compartment.hashCode()] = e();
+            }
+          });
+          break;
+        case SOME_A_IS_NOT_B:
+          Object.keys(compartmentHashToObjMappings).forEach((k) => {
+            const compartment = compartmentHashToObjMappings[k];
+            const truths = compartment.getTruths();
+            const criteriaHolds = Object.keys(truths).filter(() => truths[firstTerm] && truths[secondTerm]).length > 0;
+            if (criteriaHolds) {
+              compartmentMap[compartment.hashCode()] = x(idx + 1);
+            }
+          });
+          break;
+        case SOME_A_IS_B:
+          Object.keys(compartmentHashToObjMappings).forEach((k) => {
+            const compartment = compartmentHashToObjMappings[k];
+            const truths = compartment.getTruths();
+            const criteriaHolds = Object.keys(truths).filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
+            if (criteriaHolds) {
+              compartmentMap[compartment.hashCode()] = x(idx + 1);
+            }
+          });
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   getPremises() {
@@ -27,6 +145,7 @@ class Pair {
     return JSON.stringify(this.premises);
   }
 
+  /*
   mergeSets() {
     const { firstPremise, secondPremise } = this.premises;
     const setsOfFirstPremise = firstPremise.sets;
@@ -130,7 +249,7 @@ class Pair {
     }
 
     return undefined;
-  }
+  }*/
 }
 
-export default Pair;
+export default Premises;

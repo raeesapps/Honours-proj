@@ -1,7 +1,6 @@
 import forms from './forms';
-import Logic from './logic';
-import Pair from './pair';
 import Premise from './premise';
+import Premises from './premises';
 import {
   threeSetRegions
 } from './regions';
@@ -22,7 +21,16 @@ const {
   M_AND_S_AND_P,
 } = threeSetRegions;
 
-describe('BARBARA setup', () => {
+test('test', () => {
+  const allMenAreMortalPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Men', secondTerm: 'Mortal' });
+  const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Greeks', secondTerm: 'Men' });
+  const pair = new Premises([allMenAreMortalPremise, allGreeksAreMenPremise]);
+  const table = pair.formTable();
+  pair.fillInTable(table);
+  console.log(JSON.stringify(table, null, 2));
+});
+
+/*describe('BARBARA setup', () => {
   const allMenAreMortalPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Men', secondTerm: 'Mortal' });
   const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Greeks', secondTerm: 'Men' });
   const pair = new Pair({
@@ -151,4 +159,4 @@ describe('CALEMES setup', () => {
     const actualRegions = JSON.stringify(pair.mergeSets());
     expect(actualRegions).toBe(expectedRegions);
   });
-});
+});*/
