@@ -1,9 +1,15 @@
-import figure from './figure';
 import Logic from './logic'
 import {
   threeSetRegions,
   twoSetRegions,
 } from './regions';
+
+const figure = Object.freeze({
+  M_P_S_M: 1,
+  P_M_S_M: 2,
+  M_P_M_S: 3,
+  P_M_M_S: 4,
+});
 
 class Pair {
   constructor(premises) {
@@ -71,7 +77,6 @@ class Pair {
       return undefined;
     }
     const relationship = inferRelationship();
-    console.log(relationship);
     if (relationship === M_P_S_M) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[B])),
