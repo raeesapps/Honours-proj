@@ -1,4 +1,3 @@
-import figure from './figure';
 import forms from './forms';
 import Logic from './logic';
 import Pair from './pair';
@@ -14,13 +13,6 @@ const {
 } = forms;
 
 const {
-  M_P_S_M,
-  P_M_S_M,
-  M_P_M_S,
-  P_M_M_S,
-} = figure;
-
-const {
   M,
   S,
   P,
@@ -32,11 +24,11 @@ const {
 
 describe('BARBARA setup', () => {
   const allMenAreMortalPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Men', secondTerm: 'Mortal' });
-  const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Greeks', secondTerm: 'Mortal' });
+  const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Greeks', secondTerm: 'Men' });
   const pair = new Pair({
     firstPremise: allMenAreMortalPremise,
     secondPremise: allGreeksAreMenPremise,
-  }, M_P_S_M);
+  });
 
   test('Pair is equivalent to BARBARA', () => {
     const expectedRegions = JSON.stringify({
@@ -59,7 +51,7 @@ describe('CELARENT SETUP', () => {
   const pair = new Pair({
     firstPremise: noReptilesHaveFurPremise,
     secondPremise: allSnakesAreReptilesPremise,
-  }, M_P_S_M);
+  });
 
   test('Pair is equivalent to CELARENT', () => {
     const expectedRegions = JSON.stringify({
@@ -88,7 +80,7 @@ describe('BAROCO setup', () => {
   const pair = new Pair({
     firstPremise: allInformativeThingsAreUsefulPremise,
     secondPremise: someWebsitesAreNotUsefulPremise,
-  }, P_M_S_M);
+  });
 
   test('Pair is equivalent to BAROCO', () => {
     const expectedRegions = JSON.stringify({
@@ -117,7 +109,7 @@ describe('BOCARDO setup', () => {
   const pair = new Pair({
     firstPremise: someCatsHaveNoTailsPremise,
     secondPremise: allCatsAreMammals,
-  }, M_P_M_S);
+  });
   test('Pair is equivalent to BOCARDO', () => {
     const expectedRegions = JSON.stringify({
       [M]: Logic.false(),
@@ -145,7 +137,7 @@ describe('CALEMES setup', () => {
   const pair = new Pair({
     firstPremise: allInformativeThingsAreUsefulPremise,
     secondPremise: noUsefulThingIsUselessPremise,
-  }, P_M_M_S);
+  });
   test('Pair is equivalent to CALEMES', () => {
     const expectedRegions = JSON.stringify({
       [M]: Logic.true(),

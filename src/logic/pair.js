@@ -6,17 +6,11 @@ import {
 } from './regions';
 
 class Pair {
-  constructor(premises, relationship) {
+  constructor(premises) {
     this.premises = premises;
-    this.relationship = relationship;
 
-    this.getRelationship = this.getRelationship.bind(this);
     this.getPremises = this.getPremises.bind(this);
     this.mergeSets = this.mergeSets.bind(this);
-  }
-
-  getRelationship() {
-    return this.relationship;
   }
 
   getPremises() {
@@ -24,19 +18,13 @@ class Pair {
   }
 
   toString() {
-    return JSON.stringify(this.premises, this.relationship);
+    return JSON.stringify(this.premises);
   }
 
   mergeSets() {
     const { firstPremise, secondPremise } = this.premises;
     const setsOfFirstPremise = firstPremise.sets;
     const setsOfSecondPremise = secondPremise.sets;
-    const {
-      M_P_S_M,
-      P_M_S_M,
-      M_P_M_S,
-      P_M_M_S,
-    } = figure;
     const {
       M,
       S,
@@ -54,11 +42,37 @@ class Pair {
       B_AND_X,
       A_AND_B_AND_X,
     } = twoSetRegions;
+    const {
+      M_P_S_M,
+      P_M_S_M,
+      M_P_M_S,
+      P_M_M_S,
+    } = figure;
     function minimumOf(firstSet, secondSet) {
       return Math.min(firstSet.getValue(), secondSet.getValue());
     }
+    function inferRelationship() {
+      const firstPremiseTerms = firstPremise.terms;
+      const secondPremiseTerms = secondPremise.terms;
 
-    if (this.relationship === M_P_S_M) {
+      if (firstPremiseTerms.firstTerm === secondPremiseTerms.secondTerm) {
+        return M_P_S_M;
+      }
+      if (firstPremiseTerms.secondTerm === secondPremiseTerms.secondTerm) {
+        return P_M_S_M;
+      }
+      if (firstPremiseTerms.firstTerm === secondPremiseTerms.firstTerm) {
+        return M_P_M_S;
+      }
+      if (firstPremiseTerms.secondTerm === secondPremiseTerms.firstTerm) {
+        return P_M_M_S;
+      }
+
+      return undefined;
+    }
+    const relationship = inferRelationship();
+    console.log(relationship);
+    if (relationship === M_P_S_M) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[B])),
         [S]: setsOfSecondPremise[A],
@@ -70,7 +84,7 @@ class Pair {
       };
       return sets;
     }
-    if (this.relationship === M_P_M_S) {
+    if (relationship === M_P_M_S) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[A])),
         [S]: setsOfSecondPremise[B],
@@ -83,7 +97,7 @@ class Pair {
 
       return sets;
     }
-    if (this.relationship === P_M_M_S) {
+    if (relationship === P_M_M_S) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[A])),
         [S]: setsOfSecondPremise[B],
@@ -96,7 +110,7 @@ class Pair {
 
       return sets;
     }
-    if (this.relationship === P_M_S_M) {
+    if (relationship === P_M_S_M) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[B])),
         [S]: setsOfSecondPremise[A],
