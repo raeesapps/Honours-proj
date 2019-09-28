@@ -4,7 +4,7 @@ import {
   twoSetRegions,
 } from './regions';
 
-const figure = Object.freeze({
+const relationship = Object.freeze({
   M_P_S_M: 1,
   P_M_S_M: 2,
   M_P_M_S: 3,
@@ -53,7 +53,7 @@ class Pair {
       P_M_S_M,
       M_P_M_S,
       P_M_M_S,
-    } = figure;
+    } = relationship;
     function minimumOf(firstSet, secondSet) {
       return Math.min(firstSet.getValue(), secondSet.getValue());
     }
@@ -76,8 +76,8 @@ class Pair {
 
       return undefined;
     }
-    const relationship = inferRelationship();
-    if (relationship === M_P_S_M) {
+    const inferredRelationship = inferRelationship();
+    if (inferredRelationship === M_P_S_M) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[B])),
         [S]: setsOfSecondPremise[A],
@@ -89,7 +89,7 @@ class Pair {
       };
       return sets;
     }
-    if (relationship === M_P_M_S) {
+    if (inferredRelationship === M_P_M_S) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[A])),
         [S]: setsOfSecondPremise[B],
@@ -102,7 +102,7 @@ class Pair {
 
       return sets;
     }
-    if (relationship === P_M_M_S) {
+    if (inferredRelationship === P_M_M_S) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[A])),
         [S]: setsOfSecondPremise[B],
@@ -115,7 +115,7 @@ class Pair {
 
       return sets;
     }
-    if (relationship === P_M_S_M) {
+    if (inferredRelationship === P_M_S_M) {
       const sets = {
         [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[B])),
         [S]: setsOfSecondPremise[A],
