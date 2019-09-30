@@ -12,10 +12,7 @@ test('test', () => {
   const allMenAreMortalPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Men', secondTerm: 'Mortal' });
   const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Greeks', secondTerm: 'Men' });
   const pair = new Premises([allMenAreMortalPremise, allGreeksAreMenPremise]);
-  const table = pair.formTable();
-  pair.fillInTable(table);
-  //console.log(JSON.stringify(table, null, 2));
-  const resolvedColumn = pair.unifyAndResolve(table);
+  const resolvedColumn = pair.unifyAndResolve();
   console.log(JSON.stringify(resolvedColumn, null, 2));
 });
 
