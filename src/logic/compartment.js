@@ -4,7 +4,7 @@ class Compartment {
   constructor(truths) {
     this.truths = truths;
 
-    this.getTruths = this.getTruths.bind(this);
+    this.hashCode = this.hashCode.bind(this);
   }
 
   getTruths() {
