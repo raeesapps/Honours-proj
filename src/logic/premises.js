@@ -1,13 +1,6 @@
 import Compartment from './compartment';
 import forms from './forms';
 
-const relationship = Object.freeze({
-  M_P_S_M: 1,
-  P_M_S_M: 2,
-  M_P_M_S: 3,
-  P_M_M_S: 4,
-});
-
 const tableEntryFunctions = Object.freeze({
   e: function entryForE() {
     return 'e';
@@ -22,7 +15,6 @@ class Premises {
     this.premises = premises;
 
     this.getPremises = this.getPremises.bind(this);
-    //this.mergeSets = this.mergeSets.bind(this);
     this.formTable = this.formTable.bind(this);
     this.fillInTable = this.fillInTable.bind(this);
   }
@@ -137,6 +129,46 @@ class Premises {
     });
   }
 
+  unifyAndResolve(result) {
+    function unify(premises) {
+      const { table } = result;
+      const unifiedCompartments = {};
+      premises.forEach((premise) => {
+        const { compartmentMap } = table[premise.hashCode()];
+
+        Object.keys(compartmentMap).forEach((key) => {
+          if (unifiedCompartments[key] === undefined) {
+            unifiedCompartments[key] = [];
+          }
+          const instances = unifiedCompartments[key];
+          const instance = compartmentMap[key];
+
+          if (instance !== null) {
+            instances.push(instance);
+          }
+        });
+      });
+      return unifiedCompartments;
+    }
+    function resolve(unifiedCompartments) {
+      const resolvedCompartments = {};
+      Object.keys(unifiedCompartments).forEach((key) => {
+        const instances = unifiedCompartments[key];
+        const items = new Set([...instances]);
+
+        if (items.has('e') && items.size > 1) {
+          resolvedCompartments[key] = [...items].filter((item) => item !== 'e');
+        } else {
+          resolvedCompartments[key] = [...items];
+        }
+      });
+      return resolvedCompartments;
+    }
+    const unifiedCompartments = unify(this.premises);
+    const resolvedCompartments = resolve(unifiedCompartments);
+    return resolvedCompartments;
+  }
+
   getPremises() {
     return this.premises;
   }
@@ -144,112 +176,6 @@ class Premises {
   toString() {
     return JSON.stringify(this.premises);
   }
-
-  /*
-  mergeSets() {
-    const { firstPremise, secondPremise } = this.premises;
-    const setsOfFirstPremise = firstPremise.sets;
-    const setsOfSecondPremise = secondPremise.sets;
-    const {
-      M,
-      S,
-      P,
-      M_AND_S,
-      M_AND_P,
-      S_AND_P,
-      M_AND_S_AND_P,
-    } = threeSetRegions;
-    const {
-      A,
-      B,
-      A_AND_B,
-      A_AND_X,
-      B_AND_X,
-      A_AND_B_AND_X,
-    } = twoSetRegions;
-    const {
-      M_P_S_M,
-      P_M_S_M,
-      M_P_M_S,
-      P_M_M_S,
-    } = relationship;
-    function minimumOf(firstSet, secondSet) {
-      return Math.min(firstSet.getValue(), secondSet.getValue());
-    }
-    function inferRelationship() {
-      const firstPremiseTerms = firstPremise.terms;
-      const secondPremiseTerms = secondPremise.terms;
-
-      if (firstPremiseTerms.firstTerm === secondPremiseTerms.secondTerm) {
-        return M_P_S_M;
-      }
-      if (firstPremiseTerms.secondTerm === secondPremiseTerms.secondTerm) {
-        return P_M_S_M;
-      }
-      if (firstPremiseTerms.firstTerm === secondPremiseTerms.firstTerm) {
-        return M_P_M_S;
-      }
-      if (firstPremiseTerms.secondTerm === secondPremiseTerms.firstTerm) {
-        return P_M_M_S;
-      }
-
-      return undefined;
-    }
-    const inferredRelationship = inferRelationship();
-    if (inferredRelationship === M_P_S_M) {
-      const sets = {
-        [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[B])),
-        [S]: setsOfSecondPremise[A],
-        [P]: setsOfFirstPremise[B],
-        [M_AND_S]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_X], setsOfSecondPremise[A_AND_B])),
-        [M_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B], setsOfSecondPremise[B_AND_X])),
-        [S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B_AND_X], setsOfSecondPremise[A_AND_X])),
-        [M_AND_S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B_AND_X], setsOfSecondPremise[A_AND_B_AND_X])),
-      };
-      return sets;
-    }
-    if (inferredRelationship === M_P_M_S) {
-      const sets = {
-        [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A], setsOfSecondPremise[A])),
-        [S]: setsOfSecondPremise[B],
-        [P]: setsOfFirstPremise[B],
-        [M_AND_S]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_X], setsOfSecondPremise[A_AND_B])),
-        [M_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B], setsOfSecondPremise[A_AND_X])),
-        [S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B_AND_X], setsOfSecondPremise[B_AND_X])),
-        [M_AND_S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B_AND_X], setsOfSecondPremise[A_AND_B_AND_X])),
-      };
-
-      return sets;
-    }
-    if (inferredRelationship === P_M_M_S) {
-      const sets = {
-        [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[A])),
-        [S]: setsOfSecondPremise[B],
-        [P]: setsOfFirstPremise[A],
-        [M_AND_S]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B_AND_X], setsOfSecondPremise[A_AND_B])),
-        [M_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B], setsOfSecondPremise[A_AND_X])),
-        [S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_X], setsOfSecondPremise[B_AND_X])),
-        [M_AND_S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B_AND_X], setsOfSecondPremise[A_AND_B_AND_X])),
-      };
-
-      return sets;
-    }
-    if (inferredRelationship === P_M_S_M) {
-      const sets = {
-        [M]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B], setsOfSecondPremise[B])),
-        [S]: setsOfSecondPremise[A],
-        [P]: setsOfFirstPremise[A],
-        [M_AND_S]: Logic.fromNumber(minimumOf(setsOfFirstPremise[B_AND_X], setsOfSecondPremise[A_AND_B])),
-        [M_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B], setsOfSecondPremise[B_AND_X])),
-        [S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_X], setsOfSecondPremise[A_AND_X])),
-        [M_AND_S_AND_P]: Logic.fromNumber(minimumOf(setsOfFirstPremise[A_AND_B_AND_X], setsOfSecondPremise[A_AND_B_AND_X])),
-      };
-
-      return sets;
-    }
-
-    return undefined;
-  }*/
 }
 
 export default Premises;

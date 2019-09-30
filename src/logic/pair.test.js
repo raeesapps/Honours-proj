@@ -1,9 +1,6 @@
 import forms from './forms';
 import Premise from './premise';
 import Premises from './premises';
-import {
-  threeSetRegions
-} from './regions';
 
 const {
   ALL_A_IS_B,
@@ -11,23 +8,15 @@ const {
   SOME_A_IS_NOT_B,
 } = forms;
 
-const {
-  M,
-  S,
-  P,
-  M_AND_S,
-  M_AND_P,
-  S_AND_P,
-  M_AND_S_AND_P,
-} = threeSetRegions;
-
 test('test', () => {
   const allMenAreMortalPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Men', secondTerm: 'Mortal' });
   const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, { firstTerm: 'Greeks', secondTerm: 'Men' });
   const pair = new Premises([allMenAreMortalPremise, allGreeksAreMenPremise]);
   const table = pair.formTable();
   pair.fillInTable(table);
-  console.log(JSON.stringify(table, null, 2));
+  //console.log(JSON.stringify(table, null, 2));
+  const resolvedColumn = pair.unifyAndResolve(table);
+  console.log(JSON.stringify(resolvedColumn, null, 2));
 });
 
 /*describe('BARBARA setup', () => {
