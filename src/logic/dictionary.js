@@ -36,7 +36,7 @@ class HashDictionary {
   }
 
   toString() {
-    return JSON.stringify(this.dictionary, this.keyHashToKeyMappings, null, 2);
+    return JSON.stringify(this.dictionary, this.keyHashToKeyMappings);
   }
 }
 
