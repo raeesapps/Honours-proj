@@ -1,80 +1,27 @@
-import forms from './forms';
-import Logic from './logic';
-import {
-  twoSetRegions,
-} from './regions';
+import hash from 'object-hash';
+
+const tableEntryFunctions = Object.freeze({
+  e: function entryForE() {
+    return 'e';
+  },
+  x: function entryForX(seqIdx) {
+    return `x_${seqIdx.toString()}`;
+  },
+});
+
+const forms = Object.freeze({
+  ALL_A_IS_B: 0,
+  NO_A_IS_B: 1,
+  SOME_A_IS_B: 2,
+  SOME_A_IS_NOT_B: 3,
+});
 
 class Premise {
   constructor(form, terms) {
     this.form = form;
     this.terms = terms;
 
-    this.getForm = this.getForm.bind(this);
-    this.getTerms = this.getTerms.bind(this);
-    this.createSets = this.createSets.bind(this);
-
-    this.createSets();
-  }
-
-  createSets() {
-    const {
-      A,
-      B,
-      A_AND_B,
-      A_AND_X,
-      B_AND_X,
-      A_AND_B_AND_X,
-    } = twoSetRegions;
-    const {
-      ALL_A_IS_B,
-      NO_A_IS_B,
-      SOME_A_IS_B,
-      SOME_A_IS_NOT_B,
-    } = forms;
-    switch (this.form) {
-      case ALL_A_IS_B:
-        this.sets = {
-          [A_AND_B]: Logic.true(),
-          [A_AND_B_AND_X]: Logic.true(),
-          [A]: Logic.false(),
-          [A_AND_X]: Logic.false(),
-          [B]: Logic.true(),
-          [B_AND_X]: Logic.true(),
-        };
-        break;
-      case NO_A_IS_B:
-        this.sets = {
-          [A_AND_B]: Logic.false(),
-          [A_AND_B_AND_X]: Logic.false(),
-          [B]: Logic.true(),
-          [B_AND_X]: Logic.true(),
-          [A]: Logic.true(),
-          [A_AND_X]: Logic.true(),
-        };
-        break;
-      case SOME_A_IS_B:
-        this.sets = {
-          [A_AND_B]: Logic.indeterminate(),
-          [A_AND_B_AND_X]: Logic.indeterminate(),
-          [B]: Logic.true(),
-          [B_AND_X]: Logic.true(),
-          [A]: Logic.true(),
-          [A_AND_X]: Logic.true(),
-        };
-        break;
-      case SOME_A_IS_NOT_B:
-        this.sets = {
-          [A_AND_B]: Logic.true(),
-          [A_AND_B_AND_X]: Logic.true(),
-          [A]: Logic.indeterminate(),
-          [A_AND_X]: Logic.indeterminate(),
-          [B]: Logic.true(),
-          [B_AND_X]: Logic.true(),
-        };
-        break;
-      default:
-        break;
-    }
+    this.hashCode = this.hashCode.bind(this);
   }
 
   getForm() {
@@ -85,9 +32,67 @@ class Premise {
     return this.terms;
   }
 
+  populateTable(table) {
+    if (!table.has(this)) {
+      console.log('no entry!');
+      return;
+    }
+
+    const {
+      ALL_A_IS_B,
+      NO_A_IS_B,
+      SOME_A_IS_NOT_B,
+      SOME_A_IS_B,
+    } = forms;
+    const { e, x } = tableEntryFunctions;
+    const { firstTerm, secondTerm } = this.terms;
+    const compartmentDictionary = table.get(this);
+    const i = table.size();
+
+    compartmentDictionary.forEach((keyHash) => {
+      const compartment = compartmentDictionary.keyObj(keyHash);
+      const truths = compartment.getTruths();
+      const truthKeys = Object.keys(truths);
+      let criteria = false;
+
+      switch (this.form) {
+        case ALL_A_IS_B:
+          criteria = truthKeys.filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
+          if (criteria) {
+            compartmentDictionary.add(compartment, e());
+          }
+          break;
+        case NO_A_IS_B:
+          criteria = truthKeys.filter(() => truths[firstTerm] && truths[secondTerm]).length > 0;
+          if (criteria) {
+            compartmentDictionary.add(compartment, e());
+          }
+          break;
+        case SOME_A_IS_NOT_B:
+          criteria = truthKeys.filter(() => truths[firstTerm] && truths[secondTerm]).length > 0;
+          if (criteria) {
+            compartmentDictionary.add(compartment, x(i));
+          }
+          break;
+        case SOME_A_IS_B:
+          criteria = truthKeys.filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
+          if (criteria) {
+            compartmentDictionary.add(compartment, x(i));
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  hashCode() {
+    return hash(this);
+  }
+
   toString() {
-    return JSON.stringify(this);
+    return JSON.stringify(this.form, this.terms);
   }
 }
 
-export default Premise;
+export { Premise, forms };
