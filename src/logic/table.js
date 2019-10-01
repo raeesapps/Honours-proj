@@ -87,6 +87,14 @@ class Table {
     return this.table.has(premise);
   }
 
+  getTable() {
+    return this.table;
+  }
+
+  getCompartments() {
+    return this.compartments;
+  }
+
   toString() {
     return JSON.stringify(this.table, this.compartments);
   }
