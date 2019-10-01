@@ -11,7 +11,7 @@ beforeEach(() => {
 });
 
 test('Table instantiated correctly', () => {
-  const tableDictionary = table.getTable();
+  const tableDictionary = table.getTableDictionary();
   const tableCompartments = table.getCompartments();
   const emptyDictionary = new HashDictionary();
   const expectedCompartments = [new Compartment({ a: false, b: false }), new Compartment({ a: false, b: true }), new Compartment({ a: true, b: false }), new Compartment({ a: true, b: true })];

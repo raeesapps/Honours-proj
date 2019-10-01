@@ -39,7 +39,7 @@ describe('Fill table tests', () => {
     table.addPremise(premise);
 
     const compartments = table.getCompartments();
-    const compartmentDictionary = table.getTable().get(premise);
+    const compartmentDictionary = table.getTableDictionary().get(premise);
 
     compartments.forEach((compartment) => {
       const truths = compartment.getTruths();
@@ -62,7 +62,7 @@ describe('Fill table tests', () => {
     table.addPremise(premise);
 
     const compartments = table.getCompartments();
-    const compartmentDictionary = table.getTable().get(premise);
+    const compartmentDictionary = table.getTableDictionary().get(premise);
 
     compartments.forEach((compartment) => {
       const truths = compartment.getTruths();
@@ -85,7 +85,7 @@ describe('Fill table tests', () => {
     table.addPremise(premise);
 
     const compartments = table.getCompartments();
-    const compartmentDictionary = table.getTable().get(premise);
+    const compartmentDictionary = table.getTableDictionary().get(premise);
 
     compartments.forEach((compartment) => {
       const truths = compartment.getTruths();
@@ -108,7 +108,7 @@ describe('Fill table tests', () => {
     table.addPremise(premise);
 
     const compartments = table.getCompartments();
-    const compartmentDictionary = table.getTable().get(premise);
+    const compartmentDictionary = table.getTableDictionary().get(premise);
 
     compartments.forEach((compartment) => {
       const truths = compartment.getTruths();

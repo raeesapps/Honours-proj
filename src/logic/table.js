@@ -18,7 +18,7 @@ class Table {
       termsRef[term] = true;
       permute(compartments, terms, index + 1, size);
     }
-    this.table = new HashDictionary();
+    this.tableDictionary = new HashDictionary();
     this.compartments = [];
     const termsMappings = {};
     termNames.forEach((term) => {
@@ -33,15 +33,15 @@ class Table {
       compartmentDictionary.add(compartment, null);
     });
 
-    this.table.add(premise, compartmentDictionary);
-    premise.populateTable(this.table);
+    this.tableDictionary.add(premise, compartmentDictionary);
+    premise.populateTable(this.tableDictionary);
   }
 
   unify() {
     const unifiedCompartments = {};
-    const premises = this.table.map((keyHash) => this.table.keyObj(keyHash));
+    const premises = this.tableDictionary.map((keyHash) => this.tableDictionary.keyObj(keyHash));
     premises.forEach((premise) => {
-      const compartmentDictionary = this.table.get(premise);
+      const compartmentDictionary = this.tableDictionary.get(premise);
 
       compartmentDictionary.forEach((key) => {
         if (unifiedCompartments[key] === undefined) {
@@ -80,15 +80,15 @@ class Table {
   }
 
   size() {
-    return this.table.size();
+    return this.tableDictionary.size();
   }
 
   has(premise) {
-    return this.table.has(premise);
+    return this.tableDictionary.has(premise);
   }
 
-  getTable() {
-    return this.table;
+  getTableDictionary() {
+    return this.tableDictionary;
   }
 
   getCompartments() {
@@ -96,7 +96,7 @@ class Table {
   }
 
   toString() {
-    return JSON.stringify(this.table, this.compartments);
+    return JSON.stringify(this.tableDictionary, this.compartments);
   }
 }
 
