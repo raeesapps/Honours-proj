@@ -1,4 +1,3 @@
-import forms from './forms';
 import hash from 'object-hash';
 
 const tableEntryFunctions = Object.freeze({
@@ -8,6 +7,13 @@ const tableEntryFunctions = Object.freeze({
   x: function entryForX(seqIdx) {
     return `x_${seqIdx.toString()}`;
   },
+});
+
+const forms = Object.freeze({
+  ALL_A_IS_B: 0,
+  NO_A_IS_B: 1,
+  SOME_A_IS_B: 2,
+  SOME_A_IS_NOT_B: 3,
 });
 
 class Premise {
@@ -89,4 +95,4 @@ class Premise {
   }
 }
 
-export default Premise;
+export { Premise, forms };
