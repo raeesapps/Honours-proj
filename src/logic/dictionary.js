@@ -35,6 +35,10 @@ class HashDictionary {
     return Object.keys(this.dictionary).map(callback);
   }
 
+  filter(callback) {
+    return Object.keys(this.dictionary).filter(callback);
+  }
+
   toString() {
     return JSON.stringify(this.dictionary, this.keyHashToKeyMappings);
   }
