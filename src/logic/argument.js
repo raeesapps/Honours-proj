@@ -23,6 +23,10 @@ class Premises {
     return this.table.resolve();
   }
 
+  argue(conclusion) {
+    return this.table.validate(conclusion);
+  }
+
   toString() {
     return JSON.stringify(this.table, this.premises);
   }
