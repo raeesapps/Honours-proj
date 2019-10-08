@@ -121,4 +121,27 @@ describe('Fill table tests', () => {
       }
     });
   });
+
+  test('Adding a `SOME_A_EXIST` results in table column being filled in correctly', () => {
+    const {
+      SOME_A_EXIST,
+    } = forms;
+    const premise = new Premise(SOME_A_EXIST, { firstTerm: 'a' });
+
+    table.addPremise(premise);
+
+    const compartments = table.getCompartments();
+    const compartmentDictionary = table.getTableDictionary().get(premise);
+
+    compartments.forEach((compartment) => {
+      const truths = compartment.getTruths();
+      const entry = compartmentDictionary.get(compartment);
+
+      if (truths.a) {
+        expect(entry).toBe('x_1');
+      } else {
+        expect(entry).toBe(null);
+      }
+    });
+  });
 });
