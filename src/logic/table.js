@@ -73,13 +73,6 @@ class Table {
   }
 
   validate(conclusion) {
-    // when there exists an 'e' in the conclusion but there doesn't exist an 'e'
-    // in the resolved column, conclusion is invalid
-
-    // when there is an x_i in the resolved column that is not in the corresponding row
-    // in the conclusion column, the premise is invalid if this situation persists after
-    // trying to remove any number of x sequences from the resolved column 1822
-
     function getXEntries(resolvedCompartments) {
       const entries = new Set();
       Object.keys(resolvedCompartments).forEach((compartment) => {
