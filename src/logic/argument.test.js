@@ -10,9 +10,9 @@ const {
 } = forms;
 
 describe('BARBARA tests', () => {
-  const a = 'Mena';
-  const b = 'Mortala';
-  const c = 'Greeksa';
+  const a = 'Men';
+  const b = 'Mortal';
+  const c = 'Greeks';
   let argument;
 
   beforeEach(() => {
@@ -94,7 +94,7 @@ describe('BARBARA tests', () => {
   });
 });
 
-describe('BAROCO premises represented correctly', () => {
+describe('BAROCO tests', () => {
   const a = 'Informative things';
   const b = 'Useful';
   const c = 'Websites';
@@ -185,6 +185,5 @@ describe('BAROCO premises represented correctly', () => {
 
     const valid = argument.argue(noWebsitesAreUsefulPremise);
     expect(valid).toBe(false);
-
   });
 });
