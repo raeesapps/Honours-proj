@@ -107,7 +107,9 @@ class Table {
         const compartment = this.compartments[i];
         if (resolvedCompartments[compartment.hashCode()].includes(x)) {
           const xIndexCut = x.substring(1, 0);
-          if (!conclusionCompartments.get(compartment).includes(xIndexCut)) {
+          const entry = conclusionCompartments.get(compartment);
+          const condition = entry === null || (entry !== null && entry !== xIndexCut);
+          if (condition) {
             xNotCompletelyContainedCount += 1;
             break;
           }
