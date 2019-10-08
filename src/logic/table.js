@@ -64,7 +64,7 @@ class Table {
       const items = new Set([...instances]);
 
       if (items.has('e') && items.size > 1) {
-        resolvedCompartments[key] = [...items].filter((item) => item !== 'e');
+        resolvedCompartments[key] = [...items].filter((item) => item === 'e');
       } else {
         resolvedCompartments[key] = [...items];
       }
