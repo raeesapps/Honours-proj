@@ -7,6 +7,7 @@ const {
   NO_A_IS_B,
   SOME_A_IS_NOT_B,
   SOME_A_IS_B,
+  SOME_A_EXIST,
 } = forms;
 
 describe('BARBARA tests', () => {
@@ -126,25 +127,21 @@ describe('BAROCO tests', () => {
 
     const premiseResolutionColumn = argument.unifyAndResolve();
 
-    const seventhCompartmentHash = compartmentHashes[7];
-    const seventhCompartmentEntries = JSON.stringify(premiseResolutionColumn[seventhCompartmentHash]);
-    const seventhCompartmentExpectedEntries = JSON.stringify(['x_2']);
-    expect(seventhCompartmentEntries).toContain(seventhCompartmentExpectedEntries);
+    const secondCompartmentHash = compartmentHashes[1];
+    const secondCompartmentEntries = JSON.stringify(premiseResolutionColumn[secondCompartmentHash]);
+    const secondCompartmentExpectedEntries = JSON.stringify(['x_2']);
+    expect(secondCompartmentEntries).toContain(secondCompartmentExpectedEntries);
 
-    const thirdCompartmentHash = compartmentHashes[3];
-    const thirdCompartmentEntries = JSON.stringify(premiseResolutionColumn[thirdCompartmentHash]);
-    const thirdCompartmentExpectedEntries = JSON.stringify(['x_2']);
-    expect(thirdCompartmentEntries).toBe(thirdCompartmentExpectedEntries);
-
-    const fourthCompartmentHash = compartmentHashes[4];
-    const fourthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fourthCompartmentHash]);
-    const fourthCompartmentExpectedEntries = JSON.stringify(['e']);
-    expect(fourthCompartmentEntries).toBe(fourthCompartmentExpectedEntries);
-
-    const fifthCompartmentHash = compartmentHashes[5];
+    const fifthCompartmentHash = compartmentHashes[4];
     const fifthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fifthCompartmentHash]);
     const fifthCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(fifthCompartmentEntries).toBe(fifthCompartmentExpectedEntries);
+
+    const sixthCompartmentHash = compartmentHashes[5];
+    const sixthCompartmentEntries = JSON.stringify(premiseResolutionColumn[sixthCompartmentHash]);
+    const sixthCompartmentExpectedEntries = JSON.stringify(['e']);
+    expect(sixthCompartmentEntries).toBe(sixthCompartmentExpectedEntries);
+
   });
 
   test('Some websites are not informative conclusion true', () => {
