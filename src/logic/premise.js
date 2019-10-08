@@ -37,7 +37,6 @@ class Premise {
 
   populateTable(table, isConclusion) {
     if (!table.has(this)) {
-      console.log('no entry!');
       return;
     }
 
