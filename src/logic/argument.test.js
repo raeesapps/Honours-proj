@@ -94,50 +94,66 @@ describe('BARBARA tests', () => {
   });
 });
 
-test('BAROCO resolution column is correct', () => {
+describe('BAROCO premises represented correctly', () => {
   const a = 'Informative things';
   const b = 'Useful';
   const c = 'Websites';
+  let argument;
 
-  const allInformativeThingsAreUsefulPremise = new Premise(ALL_A_IS_B, {
-    firstTerm: `${a}`,
-    secondTerm: `${b}`,
+  beforeEach(() => {
+    const allInformativeThingsAreUsefulPremise = new Premise(ALL_A_IS_B, {
+      firstTerm: `${a}`,
+      secondTerm: `${b}`,
+    });
+    const someWebsitesAreNotUsefulPremise = new Premise(SOME_A_IS_NOT_B, {
+      firstTerm: `${c}`,
+      secondTerm: `${b}`,
+    });
+    argument = new Argument([allInformativeThingsAreUsefulPremise, someWebsitesAreNotUsefulPremise]);
   });
-  const someWebsitesAreNotUsefulPremise = new Premise(SOME_A_IS_NOT_B, {
-    firstTerm: `${c}`,
-    secondTerm: `${b}`,
+
+  test('BAROCO premises represented correctly', () => {
+    const compartmentHashes = [
+      new Compartment({ [a]: false, [b]: false, [c]: false }),
+      new Compartment({ [a]: false, [b]: false, [c]: true }),
+      new Compartment({ [a]: false, [b]: true, [c]: false }),
+      new Compartment({ [a]: false, [b]: true, [c]: true }),
+      new Compartment({ [a]: true, [b]: false, [c]: false }),
+      new Compartment({ [a]: true, [b]: false, [c]: true }),
+      new Compartment({ [a]: true, [b]: true, [c]: false }),
+      new Compartment({ [a]: true, [b]: true, [c]: true }),
+    ].map((compartment) => compartment.hashCode());
+
+    const premiseResolutionColumn = argument.unifyAndResolve();
+
+    const seventhCompartmentHash = compartmentHashes[7];
+    const seventhCompartmentEntries = JSON.stringify(premiseResolutionColumn[seventhCompartmentHash]);
+    const seventhCompartmentExpectedEntries = JSON.stringify(['x_2']);
+    expect(seventhCompartmentEntries).toContain(seventhCompartmentExpectedEntries);
+
+    const thirdCompartmentHash = compartmentHashes[3];
+    const thirdCompartmentEntries = JSON.stringify(premiseResolutionColumn[thirdCompartmentHash]);
+    const thirdCompartmentExpectedEntries = JSON.stringify(['x_2']);
+    expect(thirdCompartmentEntries).toBe(thirdCompartmentExpectedEntries);
+
+    const fourthCompartmentHash = compartmentHashes[4];
+    const fourthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fourthCompartmentHash]);
+    const fourthCompartmentExpectedEntries = JSON.stringify(['e']);
+    expect(fourthCompartmentEntries).toBe(fourthCompartmentExpectedEntries);
+
+    const fifthCompartmentHash = compartmentHashes[5];
+    const fifthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fifthCompartmentHash]);
+    const fifthCompartmentExpectedEntries = JSON.stringify(['e']);
+    expect(fifthCompartmentEntries).toBe(fifthCompartmentExpectedEntries);
   });
-  const argument = new Argument([allInformativeThingsAreUsefulPremise, someWebsitesAreNotUsefulPremise]);
-  const compartmentHashes = [
-    new Compartment({ [a]: false, [b]: false, [c]: false }),
-    new Compartment({ [a]: false, [b]: false, [c]: true }),
-    new Compartment({ [a]: false, [b]: true, [c]: false }),
-    new Compartment({ [a]: false, [b]: true, [c]: true }),
-    new Compartment({ [a]: true, [b]: false, [c]: false }),
-    new Compartment({ [a]: true, [b]: false, [c]: true }),
-    new Compartment({ [a]: true, [b]: true, [c]: false }),
-    new Compartment({ [a]: true, [b]: true, [c]: true }),
-  ].map((compartment) => compartment.hashCode());
 
-  const premiseResolutionColumn = argument.unifyAndResolve();
+  test('Some websites are not informative conclusion true', () => {
+    const someWebsitesAreNotUseful = new Premise(SOME_A_IS_NOT_B, {
+      firstTerm: `${c}`,
+      secondTerm: `${b}`,
+    });
 
-  const seventhCompartmentHash = compartmentHashes[7];
-  const seventhCompartmentEntries = JSON.stringify(premiseResolutionColumn[seventhCompartmentHash]);
-  const seventhCompartmentExpectedEntries = JSON.stringify(['x_2']);
-  expect(seventhCompartmentEntries).toContain(seventhCompartmentExpectedEntries);
-
-  const thirdCompartmentHash = compartmentHashes[3];
-  const thirdCompartmentEntries = JSON.stringify(premiseResolutionColumn[thirdCompartmentHash]);
-  const thirdCompartmentExpectedEntries = JSON.stringify(['x_2']);
-  expect(thirdCompartmentEntries).toBe(thirdCompartmentExpectedEntries);
-
-  const fourthCompartmentHash = compartmentHashes[4];
-  const fourthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fourthCompartmentHash]);
-  const fourthCompartmentExpectedEntries = JSON.stringify(['e']);
-  expect(fourthCompartmentEntries).toBe(fourthCompartmentExpectedEntries);
-
-  const fifthCompartmentHash = compartmentHashes[5];
-  const fifthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fifthCompartmentHash]);
-  const fifthCompartmentExpectedEntries = JSON.stringify(['e']);
-  expect(fifthCompartmentEntries).toBe(fifthCompartmentExpectedEntries);
+    const valid = argument.argue(someWebsitesAreNotUseful);
+    expect(valid).toBe(true);
+  });
 });
