@@ -91,7 +91,7 @@ describe('Fill table tests', () => {
       const truths = compartment.getTruths();
       const entry = compartmentDictionary.get(compartment);
 
-      if (truths.a && !truths.b) {
+      if (truths.a && truths.b) {
         expect(entry).toBe('x_1');
       } else {
         expect(entry).toBe(null);
@@ -114,7 +114,7 @@ describe('Fill table tests', () => {
       const truths = compartment.getTruths();
       const entry = compartmentDictionary.get(compartment);
 
-      if (truths.a && truths.b) {
+      if (truths.a && !truths.b) {
         expect(entry).toBe('x_1');
       } else {
         expect(entry).toBe(null);

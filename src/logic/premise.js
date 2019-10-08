@@ -73,13 +73,13 @@ class Premise {
           }
           break;
         case SOME_A_IS_NOT_B:
-          criteria = truthKeys.filter(() => truths[firstTerm] && truths[secondTerm]).length > 0;
+          criteria = truthKeys.filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
           if (criteria) {
             compartmentDictionary.add(compartment, isConclusion ? x_i() : x(i));
           }
           break;
         case SOME_A_IS_B:
-          criteria = truthKeys.filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
+          criteria = truthKeys.filter(() => truths[firstTerm] && truths[secondTerm]).length > 0;
           if (criteria) {
             compartmentDictionary.add(compartment, isConclusion ? x_i() : x(i));
           }
