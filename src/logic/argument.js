@@ -5,7 +5,7 @@ class Premises {
     function getTermNames() {
       const allTerms = premises.map((premise) => {
         const { firstTerm, secondTerm } = premise.terms;
-        return [firstTerm, secondTerm];
+        return secondTerm ? [firstTerm, secondTerm] : [firstTerm];
       }).flat();
       const uniqueTerms = new Set([...allTerms]);
       return [...uniqueTerms];
