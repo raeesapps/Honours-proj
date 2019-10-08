@@ -1,6 +1,6 @@
 import Table from './table';
 
-class Premises {
+class Argument {
   constructor(premises) {
     function getTermNames() {
       const allTerms = premises.map((premise) => {
@@ -32,4 +32,4 @@ class Premises {
   }
 }
 
-export default Premises;
+export default Argument;
