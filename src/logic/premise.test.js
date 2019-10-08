@@ -30,7 +30,7 @@ describe('Fill table tests', () => {
     table = new Table(terms);
   });
 
-  test('Adding an `ALL_A_IS_B` premise to table results in table being filled in correctly', () => {
+  test('Adding an `ALL_A_IS_B` results in table column being filled in correctly', () => {
     const {
       ALL_A_IS_B,
     } = forms;
@@ -53,7 +53,7 @@ describe('Fill table tests', () => {
     });
   });
 
-  test('Adding a `NO_A_IS_B` premise to table results in table being filled in correctly', () => {
+  test('Adding a `NO_A_IS_B` results in table column being filled in correctly', () => {
     const {
       NO_A_IS_B,
     } = forms;
@@ -76,7 +76,7 @@ describe('Fill table tests', () => {
     });
   });
 
-  test('Adding an `SOME_A_IS_B` premise to table results in table being filled in correctly', () => {
+  test('Adding an `SOME_A_IS_B` results in table column being filled in correctly', () => {
     const {
       SOME_A_IS_B,
     } = forms;
@@ -99,7 +99,7 @@ describe('Fill table tests', () => {
     });
   });
 
-  test('Adding a `SOME_A_IS_NOT_B` premise to table results in table being filled in correctly', () => {
+  test('Adding a `SOME_A_IS_NOT_B` results in table column being filled in correctly', () => {
     const {
       SOME_A_IS_NOT_B,
     } = forms;
