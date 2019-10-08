@@ -15,7 +15,7 @@ class Premises {
     this.premises = premises;
     this.table = new Table(termNames);
     this.premises.forEach((premise) => {
-      this.table.addPremise(premise);
+      this.table.addPremise(premise, false);
     });
   }
 

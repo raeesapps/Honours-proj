@@ -25,13 +25,13 @@ class Table {
     permute(this.compartments, termsMappings, 0, termNames.length);
   }
 
-  addPremise(premise) {
+  addPremise(premise, isConclusion) {
     const compartmentDictionary = new HashDictionary();
     this.compartments.forEach((compartment) => {
       compartmentDictionary.add(compartment, null);
     });
     this.tableDictionary.add(premise, compartmentDictionary);
-    premise.populateTable(this.tableDictionary);
+    premise.populateTable(this.tableDictionary, isConclusion);
   }
 
   unify() {
@@ -93,7 +93,7 @@ class Table {
       return [...entries];
     }
     const resolvedCompartments = this.resolve();
-    this.addPremise(conclusion);
+    this.addPremise(conclusion, true);
     const conclusionCompartments = this.tableDictionary.get(conclusion);
 
     let i = this.compartments.length - 1;
@@ -113,8 +113,8 @@ class Table {
       while (i) {
         const compartment = this.compartments[i];
         if (resolvedCompartments[compartment.hashCode()].includes(x)) {
-          if (!conclusionCompartments.get(compartment).includes(x)) {
-            // should check if the conclusion starts with x' instead of includes the exact x entry
+          const xIndexCut = x.substring(1, 0);
+          if (!conclusionCompartments.get(compartment).includes(xIndexCut)) {
             xNotCompletelyContainedCount += 1;
             break;
           }
@@ -125,7 +125,7 @@ class Table {
     const conclusionHasX = conclusionCompartments.filter((keyHash) => {
       const keyObj = conclusionCompartments.keyObj(keyHash);
       const instance = conclusionCompartments.get(keyObj);
-      return instance !== null && instance.startsWith('x');
+      return instance !== null && instance === 'x';
     }).length > 0;
     if (xNotCompletelyContainedCount === xEntries.length && (conclusionHasX || xEntries > 0)) {
       return false;

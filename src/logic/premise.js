@@ -7,6 +7,9 @@ const tableEntryFunctions = Object.freeze({
   x: function entryForX(seqIdx) {
     return `x_${seqIdx.toString()}`;
   },
+  x_i: function entryForAnyX() {
+    return 'x';
+  },
 });
 
 const forms = Object.freeze({
@@ -32,7 +35,7 @@ class Premise {
     return this.terms;
   }
 
-  populateTable(table) {
+  populateTable(table, isConclusion) {
     if (!table.has(this)) {
       console.log('no entry!');
       return;
@@ -44,7 +47,7 @@ class Premise {
       SOME_A_IS_NOT_B,
       SOME_A_IS_B,
     } = forms;
-    const { e, x } = tableEntryFunctions;
+    const { e, x, x_i } = tableEntryFunctions;
     const { firstTerm, secondTerm } = this.terms;
     const compartmentDictionary = table.get(this);
     const i = table.size();
@@ -71,13 +74,13 @@ class Premise {
         case SOME_A_IS_NOT_B:
           criteria = truthKeys.filter(() => truths[firstTerm] && truths[secondTerm]).length > 0;
           if (criteria) {
-            compartmentDictionary.add(compartment, x(i));
+            compartmentDictionary.add(compartment, isConclusion ? x_i() : x(i));
           }
           break;
         case SOME_A_IS_B:
           criteria = truthKeys.filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
           if (criteria) {
-            compartmentDictionary.add(compartment, x(i));
+            compartmentDictionary.add(compartment, isConclusion ? x_i() : x(i));
           }
           break;
         default:

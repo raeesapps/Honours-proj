@@ -35,7 +35,7 @@ test('Table size is 1 when premise is added to table', () => {
   } = forms;
   const premise = new Premise(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
-  table.addPremise(premise);
+  table.addPremise(premise, false);
   expect(table.size()).toBe(1);
 });
 
@@ -45,6 +45,6 @@ test('Table has premise when premise is in table', () => {
   } = forms;
   const premise = new Premise(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
-  table.addPremise(premise);
+  table.addPremise(premise, false);
   expect(table.has(premise)).toBe(true);
 });
