@@ -156,4 +156,35 @@ describe('BAROCO premises represented correctly', () => {
     const valid = argument.argue(someWebsitesAreNotUseful);
     expect(valid).toBe(true);
   });
+
+  test('Some websites are useful conclusion false', () => {
+    const someWebsitesAreUsefulPremise = new Premise(SOME_A_IS_B, {
+      firstTerm: `${c}`,
+      secondTerm: `${b}`,
+    });
+
+    const valid = argument.argue(someWebsitesAreUsefulPremise);
+    expect(valid).toBe(false);
+  });
+
+  test('No informative things are useful conclusion false', () => {
+    const noInformativeThingsAreUsefulPremise = new Premise(NO_A_IS_B, {
+      firstTerm: `${a}`,
+      secondTerm: `${b}`,
+    });
+
+    const valid = argument.argue(noInformativeThingsAreUsefulPremise);
+    expect(valid).toBe(false);
+  });
+
+  test('No websites are useful conclusion false', () => {
+    const noWebsitesAreUsefulPremise = new Premise(NO_A_IS_B, {
+      firstTerm: `${c}`,
+      secondTerm: `${b}`,
+    });
+
+    const valid = argument.argue(noWebsitesAreUsefulPremise);
+    expect(valid).toBe(false);
+
+  });
 });
