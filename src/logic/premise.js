@@ -17,6 +17,7 @@ const forms = Object.freeze({
   NO_A_IS_B: 1,
   SOME_A_IS_B: 2,
   SOME_A_IS_NOT_B: 3,
+  SOME_A_EXIST: 4,
 });
 
 class Premise {
@@ -45,6 +46,7 @@ class Premise {
       NO_A_IS_B,
       SOME_A_IS_NOT_B,
       SOME_A_IS_B,
+      SOME_A_EXIST,
     } = forms;
     const { e, x, x_i } = tableEntryFunctions;
     const { firstTerm, secondTerm } = this.terms;
@@ -78,6 +80,12 @@ class Premise {
           break;
         case SOME_A_IS_B:
           criteria = truthKeys.filter(() => truths[firstTerm] && !truths[secondTerm]).length > 0;
+          if (criteria) {
+            compartmentDictionary.add(compartment, isConclusion ? x_i() : x(i));
+          }
+          break;
+        case SOME_A_EXIST:
+          criteria = truthKeys.filter(() => truths[firstTerm]).length > 0;
           if (criteria) {
             compartmentDictionary.add(compartment, isConclusion ? x_i() : x(i));
           }
