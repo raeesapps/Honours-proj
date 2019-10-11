@@ -9,8 +9,6 @@ import {
   ListGroupItem,
 } from 'reactstrap';
 
-import VennDiagram from '../../components/VennDiagram/VennDiagram';
-
 function Home() {
   return (
     <>
@@ -26,9 +24,6 @@ function Home() {
                 <Button color="primary">Learn More</Button>
               </p>
             </Jumbotron>
-          </Col>
-          <Col>
-            <VennDiagram />
           </Col>
         </Row>
         <Row>
