@@ -5,7 +5,6 @@ import NavigationBar from '../components/Navbar/Navbar';
 import routes from '../routes/routes';
 
 class Layout extends React.Component {
-
   static createRouteTag(route) {
     return (
       <Route
@@ -19,17 +18,13 @@ class Layout extends React.Component {
 
   render() {
     return (
-      <Switch>
-        {routes.map((route) => (
-          <>
-            <NavigationBar />
-            <br />
-            {
-              Layout.createRouteTag(route)
-            }
-          </>
-        ))}
-      </Switch>
+      <>
+        <NavigationBar />
+        <br />
+        <Switch>
+          {routes.map(Layout.createRouteTag)}
+        </Switch>
+      </>
     );
   }
 }
