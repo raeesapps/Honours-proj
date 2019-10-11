@@ -9,6 +9,10 @@ import {
   NavLink,
 } from 'reactstrap';
 
+import { Link } from 'react-router-dom';
+
+import routes from '../../routes/routes';
+
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
@@ -38,12 +42,15 @@ class NavigationBar extends React.Component {
           <NavbarToggler onClick={(this.toggle)} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/lol">Item 1</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/lool">Item 2 </NavLink>
-              </NavItem>
+              {
+                routes.map((route) => (
+                  <NavItem>
+                    <NavLink tag={Link} to={route.path}>
+                      {route.name}
+                    </NavLink>
+                  </NavItem>
+                ))
+              }
             </Nav>
           </Collapse>
         </Navbar>
