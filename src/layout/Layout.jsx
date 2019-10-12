@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 
 import NavigationBar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
 import routes from '../routes/routes';
 
 class Layout extends React.Component {
@@ -24,6 +25,12 @@ class Layout extends React.Component {
         <Switch>
           {routes.map(Layout.createRouteTag)}
         </Switch>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Footer />
+
       </>
     );
   }
