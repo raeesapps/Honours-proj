@@ -7,28 +7,8 @@ import * as venn from 'venn.js';
 import '../../assets/css/venn.css';
 
 class VennDiagram extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      sets: [
-        { sets: ['A'], size: 8 },
-        { sets: ['B'], size: 8 },
-        { sets: ['C'], size: 8 },
-        { sets: ['A', 'B'], size: 2 },
-        { sets: ['B', 'C'], size: 2 },
-        { sets: ['A', 'C'], size: 2 },
-        { sets: ['A', 'B', 'C'], size: 2 },
-      ],
-    };
-
-    this.appendVennAreaParts = this.appendVennAreaParts.bind(this);
-    this.appendLabels = this.appendLabels.bind(this);
-    this.appendVennAreaPart = this.appendVennAreaPart.bind(this);
-    this.appendPatterns = this.appendPatterns.bind(this);
-    this.getPartId = this.getPartId.bind(this);
-    this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
-    this.removeOriginalVennAreas = this.removeOriginalVennAreas.bind(this);
+  static removeOriginalVennAreas() {
+    d3.selectAll('g.venn-area').remove();
   }
 
   static getIntersectionAreasMapping() {
@@ -63,6 +43,29 @@ class VennDiagram extends React.Component {
       };
     });
     return intersectionAreasMapping;
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      sets: [
+        { sets: ['A'], size: 8 },
+        { sets: ['B'], size: 8 },
+        { sets: ['C'], size: 8 },
+        { sets: ['A', 'B'], size: 2 },
+        { sets: ['B', 'C'], size: 2 },
+        { sets: ['A', 'C'], size: 2 },
+        { sets: ['A', 'B', 'C'], size: 2 },
+      ],
+    };
+
+    this.appendVennAreaParts = this.appendVennAreaParts.bind(this);
+    this.appendLabels = this.appendLabels.bind(this);
+    this.appendVennAreaPart = this.appendVennAreaPart.bind(this);
+    this.appendPatterns = this.appendPatterns.bind(this);
+    this.getPartId = this.getPartId.bind(this);
+    this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
   }
 
   appendVennAreaParts(svg, intersectionAreasMapping) {
@@ -149,10 +152,6 @@ class VennDiagram extends React.Component {
       });
   }
 
-  removeOriginalVennAreas() {
-    d3.selectAll("g.venn-area").remove();
-  }
-
   componentDidMount() {
     var chart = venn.VennDiagram();
     let div = d3.select("#venn").datum(this.state.sets).call(chart);
@@ -165,7 +164,7 @@ class VennDiagram extends React.Component {
     this.appendVennAreaParts(svg, intersectionAreasMapping);
     this.appendLabels(svg, labels);
     this.bindVennAreaPartListeners(div);
-    this.removeOriginalVennAreas();
+    VennDiagram.removeOriginalVennAreas();
   }
 
   render() {
