@@ -22,7 +22,6 @@ class VennDiagram extends React.Component {
       ],
     };
 
-    this.getIntersectionAreasMapping = this.getIntersectionAreasMapping.bind(this);
     this.appendVennAreaParts = this.appendVennAreaParts.bind(this);
     this.appendLabels = this.appendLabels.bind(this);
     this.appendVennAreaPart = this.appendVennAreaPart.bind(this);
@@ -32,42 +31,38 @@ class VennDiagram extends React.Component {
     this.removeOriginalVennAreas = this.removeOriginalVennAreas.bind(this);
   }
 
-  getIntersectionAreasMapping() {
-    let intersectionAreasMapping = {};
-    let vennAreas = d3.selectAll(".venn-area");
+  static getIntersectionAreasMapping() {
+    const intersectionAreasMapping = {};
+    const vennAreas = d3.selectAll('.venn-area');
     vennAreas.each((areaData, areaIdx, areas) => {
-      let area = areas[areaIdx];
-      let areaSets = areaData.sets;
-      let areaSelection = d3.select(area);
-      let areaD = areaSelection.select("path").attr("d");
-      let areaSetsId = area.dataset.vennSets;
-      let intersectedAreas = d3.selectAll(".venn-area")
+      const area = areas[areaIdx];
+      const areaSets = areaData.sets;
+      const areaSelection = d3.select(area);
+      const areaD = areaSelection.select('path').attr('d');
+      const areaSetsId = area.dataset.vennSets;
+      const intersectedAreas = d3.selectAll('.venn-area')
         .filter((cAreaData, cAreaIdx, cAreas) => {
-          let cAreaSetsId = cAreas[cAreaIdx].dataset.vennSets;
-          let cAreaSets = cAreaData.sets;
-          let isContained = areaSets.every(setId => cAreaSets.indexOf(setId) > -1);
+          const cAreaSetsId = cAreas[cAreaIdx].dataset.vennSets;
+          const cAreaSets = cAreaData.sets;
+          const isContained = areaSets.every((setId) => cAreaSets.indexOf(setId) > -1);
           return (isContained && cAreaSetsId !== areaSetsId);
-        })
-        .nodes()
-
-        .map(intersectedArea => {
-          let intersectedAreaSelection = d3.select(intersectedArea);
+        }).nodes().map((intersectedArea) => {
+          const intersectedAreaSelection = d3.select(intersectedArea);
           return {
             sets: intersectedAreaSelection.data()[0].sets,
-            d: intersectedAreaSelection.select("path").attr("d")
-          }
+            d: intersectedAreaSelection.select('path').attr('d'),
+          };
         });
 
       intersectionAreasMapping[areaSetsId] = {
         vennArea: {
           sets: areaSets,
-          d: areaD
+          d: areaD,
         },
-        intersectedAreas: intersectedAreas
+        intersectedAreas,
       };
     });
     return intersectionAreasMapping;
-
   }
 
   appendVennAreaParts(svg, intersectionAreasMapping) {
@@ -164,7 +159,7 @@ class VennDiagram extends React.Component {
     let svg = div.select("svg");
     let defs = svg.append("defs");
     let labels = div.selectAll("text").remove();
-    let intersectionAreasMapping = this.getIntersectionAreasMapping();
+    let intersectionAreasMapping = VennDiagram.getIntersectionAreasMapping();
 
     this.appendPatterns(defs);
     this.appendVennAreaParts(svg, intersectionAreasMapping);
