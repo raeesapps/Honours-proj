@@ -71,6 +71,16 @@ class VennDiagram extends React.Component {
       .attr('fill-rule', 'evenodd');
   }
 
+  static appendVennAreaParts(svg, intersectionAreasMapping) {
+    Object.keys(intersectionAreasMapping).forEach((areaSetsId) => {
+      const intersectionAreasItem = intersectionAreasMapping[areaSetsId];
+      const { vennArea, intersectedAreas } = intersectionAreasItem;
+      const partId = VennDiagram.getPartId(vennArea, intersectedAreas);
+      const d = [vennArea.d].concat(intersectedAreas.map((intersectedArea) => intersectedArea.d));
+      VennDiagram.appendVennAreaPart(svg, d.join(''), partId);
+    });
+  }
+
   constructor(props) {
     super(props);
 
@@ -86,20 +96,8 @@ class VennDiagram extends React.Component {
       ],
     };
 
-    this.appendVennAreaParts = this.appendVennAreaParts.bind(this);
     this.appendPatterns = this.appendPatterns.bind(this);
     this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
-  }
-
-  appendVennAreaParts(svg, intersectionAreasMapping) {
-    for (let areaSetsId in intersectionAreasMapping) {
-      let intersectionAreasItem = intersectionAreasMapping[areaSetsId];
-      let vennArea = intersectionAreasItem.vennArea;
-      let intersectedAreas = intersectionAreasItem.intersectedAreas;
-      let partId = VennDiagram.getPartId(vennArea, intersectedAreas);
-      let d = [vennArea.d].concat(intersectedAreas.map(intersectedArea => intersectedArea.d));
-      VennDiagram.appendVennAreaPart(svg, d.join(""), partId);
-    }
   }
 
   appendPatterns(defs) {
@@ -158,7 +156,7 @@ class VennDiagram extends React.Component {
     let intersectionAreasMapping = VennDiagram.getIntersectionAreasMapping();
 
     this.appendPatterns(defs);
-    this.appendVennAreaParts(svg, intersectionAreasMapping);
+    VennDiagram.appendVennAreaParts(svg, intersectionAreasMapping);
     VennDiagram.appendLabels(svg, labels);
     this.bindVennAreaPartListeners(div);
     VennDiagram.removeOriginalVennAreas();
