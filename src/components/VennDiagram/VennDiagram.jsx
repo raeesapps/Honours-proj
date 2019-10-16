@@ -62,6 +62,15 @@ class VennDiagram extends React.Component {
     });
   }
 
+  static appendVennAreaPart(svg, d, partId) {
+    svg.append('g')
+      .attr('class', 'venn-area-part')
+      .attr('venn-area-part-id', partId)
+      .append('path')
+      .attr('d', d)
+      .attr('fill-rule', 'evenodd');
+  }
+
   constructor(props) {
     super(props);
 
@@ -78,7 +87,6 @@ class VennDiagram extends React.Component {
     };
 
     this.appendVennAreaParts = this.appendVennAreaParts.bind(this);
-    this.appendVennAreaPart = this.appendVennAreaPart.bind(this);
     this.appendPatterns = this.appendPatterns.bind(this);
     this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
   }
@@ -90,17 +98,8 @@ class VennDiagram extends React.Component {
       let intersectedAreas = intersectionAreasItem.intersectedAreas;
       let partId = VennDiagram.getPartId(vennArea, intersectedAreas);
       let d = [vennArea.d].concat(intersectedAreas.map(intersectedArea => intersectedArea.d));
-      this.appendVennAreaPart(svg, d.join(""), partId);
+      VennDiagram.appendVennAreaPart(svg, d.join(""), partId);
     }
-  }
-
-  appendVennAreaPart(svg, d, partId) {
-    svg.append("g")
-      .attr("class", "venn-area-part")
-      .attr("venn-area-part-id", partId)
-      .append("path")
-      .attr("d", d)
-      .attr("fill-rule", "evenodd");
   }
 
   appendPatterns(defs) {
