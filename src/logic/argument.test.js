@@ -276,3 +276,45 @@ describe('BARBARI tests', () => {
     expect(valid).toBe(false);
   });
 });
+
+describe('Sorites test', () => {
+  const a = 'lions';
+  const b = 'big cats';
+  const c = 'predators';
+  const d = 'carnivores';
+  let argument;
+
+  beforeEach(() => {
+    const allLionsAreBigCatsPremise = new Premise(ALL_A_IS_B, {
+      firstTerm: `${a}`,
+      secondTerm: `${b}`,
+    });
+    const allBigCatsArePredators = new Premise(ALL_A_IS_B, {
+      firstTerm: `${b}`,
+      secondTerm: `${c}`,
+    });
+    const allPredatorsAreCarnivores = new Premise(ALL_A_IS_B, {
+      firstTerm: `${c}`,
+      secondTerm: `${d}`,
+    });
+    argument = new Argument([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
+  });
+
+  test('All lions are carnivores is valid', () => {
+    const allLionsAreCarnivoresPremise = new Premise(ALL_A_IS_B, {
+      firstTerm: `${a}`,
+      secondTerm: `${d}`,
+    });
+    const valid = argument.argue(allLionsAreCarnivoresPremise);
+    expect(valid).toBe(true);
+  });
+
+  test('All big cats are lions is invalid', () => {
+    const allBigCatsAreLionsPremise = new Premise(ALL_A_IS_B, {
+      firstTerm: `${b}`,
+      secodnTerm: `${a}`,
+    });
+    const valid = argument.argue(allBigCatsAreLionsPremise);
+    expect(valid).toBe(false);
+  });
+});
