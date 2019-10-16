@@ -104,6 +104,30 @@ class VennDiagram extends React.Component {
     });
   }
 
+  static bindVennAreaPartListeners(div) {
+    div.selectAll('g')
+      .on('mouseover', function onMouseover() {
+        const node = d3.select(this);
+        const nodePath = node.select('path');
+        const nodeAlreadySelected = node.classed('selected');
+        nodePath.attr('style', nodeAlreadySelected ? 'fill: url(#diagonal1)' : 'fill: #009fdf; fill-opacity: 0.15');
+      })
+      .on('mouseout', function onMouseout() {
+        const node = d3.select(this);
+        const nodePath = node.select('path');
+        const nodeAlreadySelected = node.classed('selected');
+        nodePath.attr('style', nodeAlreadySelected ? 'fill: url(#diagonal0)' : 'fill: #ffffff');
+      })
+      .on('click', function onClick() {
+        const node = d3.select(this);
+        const nodePath = node.select('path');
+        const nodeAlreadySelected = node.classed('selected');
+        const nodePathStyle = (!nodeAlreadySelected ? 'fill: url(#diagonal1)' : 'fill: #ffffff');
+        nodePath.attr('style', nodePathStyle);
+        node.classed('selected', !nodeAlreadySelected);
+      });
+  }
+
   constructor(props) {
     super(props);
 
@@ -118,32 +142,6 @@ class VennDiagram extends React.Component {
         { sets: ['A', 'B', 'C'], size: 2 },
       ],
     };
-
-    this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
-  }
-
-  bindVennAreaPartListeners(div) {
-    div.selectAll("g")
-      .on("mouseover", function (d, i) {
-        let node = d3.select(this);
-        let nodePath = node.select("path");
-        let nodeAlreadySelected = node.classed("selected");
-        nodePath.attr("style", nodeAlreadySelected ? "fill: url(#diagonal1)" : "fill: #009fdf; fill-opacity: 0.15");
-      })
-      .on("mouseout", function (d, i) {
-        let node = d3.select(this);
-        let nodePath = node.select("path");
-        let nodeAlreadySelected = node.classed("selected");
-        nodePath.attr("style", nodeAlreadySelected ? "fill: url(#diagonal0)" : "fill: #ffffff");
-      })
-      .on("click", function (d, i) {
-        let node = d3.select(this);
-        let nodePath = node.select("path");
-        let nodeAlreadySelected = node.classed("selected");
-        let nodePathStyle = (!nodeAlreadySelected ? "fill: url(#diagonal1)" : "fill: #ffffff");
-        nodePath.attr("style", nodePathStyle);
-        node.classed("selected", !nodeAlreadySelected);
-      });
   }
 
   componentDidMount() {
@@ -157,7 +155,7 @@ class VennDiagram extends React.Component {
     VennDiagram.appendPatterns(defs);
     VennDiagram.appendVennAreaParts(svg, intersectionAreasMapping);
     VennDiagram.appendLabels(svg, labels);
-    this.bindVennAreaPartListeners(div);
+    VennDiagram.bindVennAreaPartListeners(div);
     VennDiagram.removeOriginalVennAreas();
   }
 
