@@ -45,6 +45,17 @@ class VennDiagram extends React.Component {
     return intersectionAreasMapping;
   }
 
+  static getPartId(vennArea, intersectedAreas) {
+    let partId = `(${vennArea.sets.join('n')})`;
+    partId += intersectedAreas.length > 1 ? '\\(' : '';
+    partId += intersectedAreas.length === 1 ? '\\' : '';
+    partId += intersectedAreas
+      .map((intersectedArea) => intersectedArea.sets)
+      .map((set) => `${(set.join('n'))}`).join('u');
+    partId += intersectedAreas.length > 1 ? ')' : '';
+    return partId;
+  }
+
   constructor(props) {
     super(props);
 
@@ -64,7 +75,6 @@ class VennDiagram extends React.Component {
     this.appendLabels = this.appendLabels.bind(this);
     this.appendVennAreaPart = this.appendVennAreaPart.bind(this);
     this.appendPatterns = this.appendPatterns.bind(this);
-    this.getPartId = this.getPartId.bind(this);
     this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
   }
 
@@ -73,7 +83,7 @@ class VennDiagram extends React.Component {
       let intersectionAreasItem = intersectionAreasMapping[areaSetsId];
       let vennArea = intersectionAreasItem.vennArea;
       let intersectedAreas = intersectionAreasItem.intersectedAreas;
-      let partId = this.getPartId(vennArea, intersectedAreas);
+      let partId = VennDiagram.getPartId(vennArea, intersectedAreas);
       let d = [vennArea.d].concat(intersectedAreas.map(intersectedArea => intersectedArea.d));
       this.appendVennAreaPart(svg, d.join(""), partId);
     }
@@ -117,15 +127,6 @@ class VennDiagram extends React.Component {
         .attr("opacity", "1")
         .attr("stroke-width", "1");
     })
-  }
-
-  getPartId(vennArea, intersectedAreas) {
-    let partId = "(" + vennArea.sets.join("∩") + ")";
-    partId += intersectedAreas.length > 1 ? "\\(" : "";
-    partId += intersectedAreas.length == 1 ? "\\" : "";
-    partId += intersectedAreas.map(intersectedArea => intersectedArea.sets).map(set => "(" + set.join("∩") + ")").join("∪");
-    partId += intersectedAreas.length > 1 ? ")" : "";
-    return partId;
   }
 
   bindVennAreaPartListeners(div) {
