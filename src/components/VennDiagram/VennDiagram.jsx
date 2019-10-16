@@ -81,6 +81,29 @@ class VennDiagram extends React.Component {
     });
   }
 
+  static appendPatterns(defs) {
+    const colors = ['none', '#009fdf'];
+    colors.forEach((color, idx) => {
+      const diagonal = defs.append('pattern')
+        .attr('id', 'diagonal'.toString() + idx.toString())
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr('width', '10')
+        .attr('height', '10');
+      diagonal.append('rect')
+        .attr('width', '10')
+        .attr('height', '10')
+        .attr('x', '0')
+        .attr('y', '0')
+        .attr('fill', color)
+        .attr('fill-opacity', '0.15');
+      diagonal.append('path')
+        .attr('d', 'M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2')
+        .attr('stroke', '#000000')
+        .attr('opacity', '1')
+        .attr('stroke-width', '1');
+    });
+  }
+
   constructor(props) {
     super(props);
 
@@ -96,31 +119,7 @@ class VennDiagram extends React.Component {
       ],
     };
 
-    this.appendPatterns = this.appendPatterns.bind(this);
     this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
-  }
-
-  appendPatterns(defs) {
-    let colors = ["none", "#009fdf"];
-    colors.forEach((color, idx) => {
-      let diagonal = defs.append("pattern")
-        .attr("id", "diagonal" + idx)
-        .attr("patternUnits", "userSpaceOnUse")
-        .attr("width", "10")
-        .attr("height", "10");
-      diagonal.append('rect')
-        .attr("width", "10")
-        .attr("height", "10")
-        .attr("x", "0")
-        .attr("y", "0")
-        .attr("fill", color)
-        .attr("fill-opacity", "0.15");
-      diagonal.append("path")
-        .attr("d", "M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2")
-        .attr("stroke", "#000000")
-        .attr("opacity", "1")
-        .attr("stroke-width", "1");
-    })
   }
 
   bindVennAreaPartListeners(div) {
@@ -155,7 +154,7 @@ class VennDiagram extends React.Component {
     let labels = div.selectAll("text").remove();
     let intersectionAreasMapping = VennDiagram.getIntersectionAreasMapping();
 
-    this.appendPatterns(defs);
+    VennDiagram.appendPatterns(defs);
     VennDiagram.appendVennAreaParts(svg, intersectionAreasMapping);
     VennDiagram.appendLabels(svg, labels);
     this.bindVennAreaPartListeners(div);
