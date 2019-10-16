@@ -145,12 +145,13 @@ class VennDiagram extends React.Component {
   }
 
   componentDidMount() {
-    var chart = venn.VennDiagram();
-    let div = d3.select("#venn").datum(this.state.sets).call(chart);
-    let svg = div.select("svg");
-    let defs = svg.append("defs");
-    let labels = div.selectAll("text").remove();
-    let intersectionAreasMapping = VennDiagram.getIntersectionAreasMapping();
+    const { sets } = this.state;
+    const chart = venn.VennDiagram();
+    const div = d3.select('#venn').datum(sets).call(chart);
+    const svg = div.select('svg');
+    const defs = svg.append('defs');
+    const labels = div.selectAll('text').remove();
+    const intersectionAreasMapping = VennDiagram.getIntersectionAreasMapping();
 
     VennDiagram.appendPatterns(defs);
     VennDiagram.appendVennAreaParts(svg, intersectionAreasMapping);
