@@ -56,6 +56,12 @@ class VennDiagram extends React.Component {
     return partId;
   }
 
+  static appendLabels(svg, labels) {
+    labels.nodes().forEach((label) => {
+      svg.append(() => label);
+    });
+  }
+
   constructor(props) {
     super(props);
 
@@ -72,7 +78,6 @@ class VennDiagram extends React.Component {
     };
 
     this.appendVennAreaParts = this.appendVennAreaParts.bind(this);
-    this.appendLabels = this.appendLabels.bind(this);
     this.appendVennAreaPart = this.appendVennAreaPart.bind(this);
     this.appendPatterns = this.appendPatterns.bind(this);
     this.bindVennAreaPartListeners = this.bindVennAreaPartListeners.bind(this);
@@ -87,14 +92,6 @@ class VennDiagram extends React.Component {
       let d = [vennArea.d].concat(intersectedAreas.map(intersectedArea => intersectedArea.d));
       this.appendVennAreaPart(svg, d.join(""), partId);
     }
-  }
-
-  appendLabels(svg, labels) {
-    labels.nodes().forEach(label => {
-      svg.append(function () {
-        return label;
-      });
-    });
   }
 
   appendVennAreaPart(svg, d, partId) {
@@ -163,7 +160,7 @@ class VennDiagram extends React.Component {
 
     this.appendPatterns(defs);
     this.appendVennAreaParts(svg, intersectionAreasMapping);
-    this.appendLabels(svg, labels);
+    VennDiagram.appendLabels(svg, labels);
     this.bindVennAreaPartListeners(div);
     VennDiagram.removeOriginalVennAreas();
   }
