@@ -26,10 +26,6 @@ class Layout extends React.Component {
           {routes.map(Layout.createRouteTag)}
         </Switch>
         <br />
-        <br />
-        <br />
-        <br />
-        <Footer />
 
       </>
     );
