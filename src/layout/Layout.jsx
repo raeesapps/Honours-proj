@@ -17,10 +17,31 @@ class Layout extends React.Component {
     );
   }
 
+  constructor(props) {
+    super(props);
+    this.state = { width: 0 };
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth });
+  }
+
   render() {
+    const { width } = this.state;
+    const limitedWidth = (width * 0.0105) > 9 ? 9 : width * 0.0105;
     return (
       <div style={{ position: 'relative', minHeight: '100vh' }}>
-        <div style={{ paddingBottom: '8rem' }}>
+        <div style={{ paddingBottom: `${limitedWidth}rem` }}>
           <NavigationBar />
           <br />
           <Switch>
