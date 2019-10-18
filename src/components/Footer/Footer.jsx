@@ -14,12 +14,19 @@ function Footer() {
       <Container>
         <Row>
           <Col>
-            Soak Up Syllogisms was engineered by Raees Aamir and created as part of the Honours Project at The University of Edinburgh,
+            Soak Up Syllogisms was engineered by
+            <a href="http://raeesaamir.net"> Raees Aamir </a>
+            and created as part of the
+            <a href="https://www.inf.ed.ac.uk/teaching/courses/proj/"> Honours Project </a>
+            at
+            <a href="https://ed.ac.uk"> The University of Edinburgh </a>
           </Col>
         </Row>
         <Row>
           <Col>
-            and is licensed under a GNU General Public License (GNU GPL).
+            and is licensed under a GNU General Public License (
+            <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPL</a>
+            ).
           </Col>
         </Row>
         <Row>
