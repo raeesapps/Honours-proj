@@ -4,9 +4,6 @@ import {
   Row,
   Col,
   Jumbotron,
-  Button,
-  ListGroup,
-  ListGroupItem,
 } from 'reactstrap';
 
 function Home() {
@@ -16,25 +13,30 @@ function Home() {
         <Row>
           <Col>
             <Jumbotron>
-              <h1 className="display-3">Hello, world!</h1>
-              <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
-              <hr className="my-2" />
-              <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-              <p className="lead">
-                <Button color="primary">Learn More</Button>
-              </p>
+              <h1 className="lead">Welcome to Soak Up Syllogisms</h1>
+              <p className="lead">Learn how to become an undefeated grandmaster of logical reasoning here. Enjoy!</p>
             </Jumbotron>
           </Col>
         </Row>
         <Row>
           <Col>
-            <ListGroup>
-              <ListGroupItem>Cras justo odio</ListGroupItem>
-              <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
-              <ListGroupItem>Morbi leo risus</ListGroupItem>
-              <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-              <ListGroupItem>Vestibulum at eros</ListGroupItem>
-            </ListGroup>
+            <div style={{ marginBottom: '10px' }}>
+              Syllogisms are logical arguments that arrive at a conclusion based on two or more propositions. Soak Up Syllogisms is a tool to help you get familiar with logical reasoning with syllogisms. A number of exercises are available to help you understand the concepts more clearly, you can see the exercises on the practice section. If you are feeling confident, you can go to the quiz section to test yourself.
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <div style={{ marginBottom: '10px' }}>
+              If syllogisms are completely new to you then you should read the tutorial before proceeding onto the exercises. In the tutorial you will find explanations on the anatomy of a syllogism and how to represent and manipulate them diagrammatically.
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <div style={{ marginBotom: '10px' }}>
+              The web app also provides the instant solver where you can check if a syllogistic argument is valid.
+            </div>
           </Col>
         </Row>
       </Container>
