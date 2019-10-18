@@ -19,15 +19,16 @@ class Layout extends React.Component {
 
   render() {
     return (
-      <>
-        <NavigationBar />
-        <br />
-        <Switch>
-          {routes.map(Layout.createRouteTag)}
-        </Switch>
-        <br />
-
-      </>
+      <div style={{ position: 'relative', minHeight: '100vh' }}>
+        <div style={{ paddingBottom: '8rem' }}>
+          <NavigationBar />
+          <br />
+          <Switch>
+            {routes.map(Layout.createRouteTag)}
+          </Switch>
+        </div>
+        <Footer />
+      </div>
     );
   }
 }
