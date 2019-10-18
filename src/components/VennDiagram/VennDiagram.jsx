@@ -140,12 +140,14 @@ class VennDiagram extends React.Component {
         { sets: ['A', 'C'], size: 2 },
         { sets: ['A', 'B', 'C'], size: 2 },
       ],
+      width: 200,
+      height: 200,
     };
   }
 
   componentDidMount() {
-    const { sets } = this.state;
-    const chart = venn.VennDiagram();
+    const { sets, width, height } = this.state;
+    const chart = venn.VennDiagram().width(width).height(height);
     const div = d3.select('#venn').datum(sets).call(chart);
     const svg = div.select('svg');
     const defs = svg.append('defs');
@@ -160,7 +162,8 @@ class VennDiagram extends React.Component {
   }
 
   render() {
-    return <div id="venn" />;
+    const { width, height } = this.state;
+    return <div id="venn" style={{ padding: 0, width: `${width}px`, height: `${height}px` }} />;
   }
 }
 
