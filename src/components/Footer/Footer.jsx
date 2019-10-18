@@ -3,7 +3,6 @@ import {
   Container,
   Row,
   Col,
-  Jumbotron,
 } from 'reactstrap';
 import '../../assets/css/footer.css';
 
