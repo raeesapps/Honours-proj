@@ -9,7 +9,6 @@ import '../../assets/css/footer.css';
 function Footer() {
   return (
     <footer className="footer">
-
       <Container>
         <Row>
           <Col>
