@@ -5,6 +5,10 @@ import * as venn from 'venn.js';
 
 import '../../assets/css/venn.css';
 
+const NOT_SHADED = '0';
+const MAYBE_SHADED = '1';
+const SHADED = '2';
+
 class VennDiagram extends React.Component {
   static removeOriginalVennAreas() {
     d3.selectAll('g.venn-area').remove();
@@ -81,8 +85,26 @@ class VennDiagram extends React.Component {
   }
 
   static appendPatterns(defs) {
-    const colors = ['none', '#009fdf'];
-    colors.forEach((color, idx) => {
+    const colours = [
+      {
+        rectColour: 'none',
+        pathColour: '#000000',
+      },
+      {
+        rectColour: 'none',
+        pathColour: '#ff0000',
+      },
+      {
+        rectColour: '#009fdf',
+        pathColour: '#000000',
+      },
+      {
+        rectColour: '#009fdf',
+        pathColour: '#ff0000',
+      },
+    ];
+    colours.forEach((colour, idx) => {
+      const { rectColour, pathColour } = colour;
       const diagonal = defs.append('pattern')
         .attr('id', 'diagonal'.toString() + idx.toString())
         .attr('patternUnits', 'userSpaceOnUse')
@@ -93,11 +115,11 @@ class VennDiagram extends React.Component {
         .attr('height', '10')
         .attr('x', '0')
         .attr('y', '0')
-        .attr('fill', color)
+        .attr('fill', rectColour)
         .attr('fill-opacity', '0.15');
       diagonal.append('path')
         .attr('d', 'M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2')
-        .attr('stroke', '#000000')
+        .attr('stroke', pathColour)
         .attr('opacity', '1')
         .attr('stroke-width', '1');
     });
@@ -108,22 +130,42 @@ class VennDiagram extends React.Component {
       .on('mouseover', function onMouseover() {
         const node = d3.select(this);
         const nodePath = node.select('path');
-        const nodeAlreadySelected = node.classed('selected');
-        nodePath.attr('style', nodeAlreadySelected ? 'fill: url(#diagonal1)' : 'fill: #009fdf; fill-opacity: 0.15');
+        const nodeShaded = node.attr('shaded') || NOT_SHADED;
+        if (nodeShaded === NOT_SHADED) {
+          nodePath.attr('style', 'fill: #009fdf; fill-opacity: 0.15');
+        } else if (nodeShaded === MAYBE_SHADED) {
+          nodePath.attr('style', 'fill: url(#diagonal2)');
+        } else if (nodeShaded === SHADED) {
+          nodePath.attr('style', 'fill: url(#diagonal3)');
+        }
       })
       .on('mouseout', function onMouseout() {
         const node = d3.select(this);
         const nodePath = node.select('path');
-        const nodeAlreadySelected = node.classed('selected');
-        nodePath.attr('style', nodeAlreadySelected ? 'fill: url(#diagonal0)' : 'fill: #ffffff');
+        const nodeShaded = node.attr('shaded') || NOT_SHADED;
+        if (nodeShaded === null) {
+          node.attr('shaded', NOT_SHADED);
+        }
+        if (nodeShaded === NOT_SHADED) {
+          nodePath.attr('style', 'fill: #ffffff');
+        } else if (nodeShaded === MAYBE_SHADED) {
+          nodePath.attr('style', 'fill: url(#diagonal0)');
+        } else if (nodeShaded === SHADED) {
+          nodePath.attr('style', 'fill: url(#diagonal1)');
+        }
       })
       .on('click', function onClick() {
         const node = d3.select(this);
         const nodePath = node.select('path');
-        const nodeAlreadySelected = node.classed('selected');
-        const nodePathStyle = (!nodeAlreadySelected ? 'fill: url(#diagonal1)' : 'fill: #ffffff');
-        nodePath.attr('style', nodePathStyle);
-        node.classed('selected', !nodeAlreadySelected);
+        const nodeShaded = node.attr('shaded') || NOT_SHADED;
+        if (nodeShaded === NOT_SHADED) {
+          nodePath.attr('style', 'fill: url(#diagonal2)');
+        } else if (nodeShaded === MAYBE_SHADED) {
+          nodePath.attr('style', 'fill: url(#diagonal3)');
+        } else if (nodeShaded === SHADED) {
+          nodePath.attr('style', 'fill: #ffffff');
+        }
+        node.attr('shaded', (parseInt(nodeShaded) + 1) % 3);
       });
   }
 
