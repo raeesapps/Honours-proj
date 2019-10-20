@@ -29,7 +29,7 @@ function Footer() {
         </Row>
         <Row>
           <Col>
-            <img alt="license" src="https://www.gnu.org/graphics/gplv3-with-text-84x42.png" />
+            <img style={{ marginBottom: '10px' }} alt="license" src="https://www.gnu.org/graphics/gplv3-with-text-84x42.png" />
           </Col>
         </Row>
       </Container>
