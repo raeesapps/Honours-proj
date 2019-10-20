@@ -1,13 +1,13 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import Argument from '../../components/Argument/Argument';
+import ArgumentForm from '../../components/Argument/ArgumentForm';
 
 function InstantSolver() {
   return (
     <Container>
       <Row>
         <Col>
-          <Argument />
+          <ArgumentForm />
         </Col>
       </Row>
     </Container>
