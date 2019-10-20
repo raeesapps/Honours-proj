@@ -14,7 +14,7 @@ function Home() {
           <Col>
             <Jumbotron>
               <h1 className="lead">Welcome to Soak Up Syllogisms</h1>
-              <p className="lead">Learn how to become an undefeated grandmaster of logical reasoning here. Enjoy!</p>
+              <p className="lead">Learn how to become an undefeated grandmaster of logical reasoning. Enjoy!</p>
             </Jumbotron>
           </Col>
         </Row>
