@@ -156,6 +156,7 @@ class VennDiagram extends React.Component {
       })
       .on('click', function onClick() {
         const node = d3.select(this);
+        console.log(node.attr('venn-area-part-id'));
         const nodePath = node.select('path');
         const nodeShaded = node.attr('shaded') || NOT_SHADED;
         if (nodeShaded === NOT_SHADED) {
