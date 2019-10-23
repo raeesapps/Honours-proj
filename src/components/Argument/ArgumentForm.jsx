@@ -20,11 +20,11 @@ class ArgumentForm extends React.Component {
       validationSuccessful: false,
       propositions: [
         {
-          name: 'Minor premise',
+          name: 'Premise',
           ref: React.createRef(),
         },
         {
-          name: 'Major premise',
+          name: 'Premise',
           ref: React.createRef(),
         },
         {
@@ -45,7 +45,7 @@ class ArgumentForm extends React.Component {
     const conclusion = propositions.pop();
 
     propositions.push({
-      name: 'ayy lmao',
+      name: 'Premise',
       ref: React.createRef(),
     });
 
