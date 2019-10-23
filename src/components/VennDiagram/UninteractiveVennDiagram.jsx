@@ -13,7 +13,33 @@ import {
 
 import '../../assets/css/venn.css';
 
+const shadings = Object.freeze({
+  BLACK: 0,
+  RED: 1,
+});
+
 class UninteractiveVennDiagram extends React.Component {
+  static shadeParts(div, part, shading) {
+    const { RED, BLACK } = shadings;
+    div.selectAll('g').each(function onEach() {
+      const node = d3.select(this);
+      const nodePath = node.select('path');
+      const nodePart = node.attr('venn-area-part-id');
+      if (nodePart === part) {
+        switch (shading) {
+          case RED:
+            nodePath.attr('style', 'fill: url(#diagonal3)');
+            break;
+          case BLACK:
+            nodePath.attr('style', 'fill: url(#diagonal2)');
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
+
   constructor(props) {
     super(props);
 
