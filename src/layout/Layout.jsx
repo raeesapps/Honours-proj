@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
+import { Container, Row, Col } from 'reactstrap';
 
 import NavigationBar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -40,16 +41,18 @@ class Layout extends React.Component {
     const { width } = this.state;
     const limitedWidth = (width * 0.0105) > 9 ? 9 : width * 0.0105;
     return (
-      <div style={{ position: 'relative', minHeight: '100vh' }}>
-        <div style={{ paddingBottom: `${limitedWidth}rem` }}>
-          <NavigationBar />
-          <br />
-          <Switch>
-            {routes.map(Layout.createRouteTag)}
-          </Switch>
+      <Container>
+        <div style={{ position: 'relative', minHeight: '100vh' }}>
+          <div style={{ paddingBottom: `${limitedWidth}rem` }}>
+            <NavigationBar />
+            <br />
+            <Switch>
+              {routes.map(Layout.createRouteTag)}
+            </Switch>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </Container>
     );
   }
 }
