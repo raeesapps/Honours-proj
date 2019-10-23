@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as d3 from "d3";
+import * as d3 from 'd3';
 import * as venn from 'venn.js';
 
 import {
