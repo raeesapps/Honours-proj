@@ -11,6 +11,7 @@ import {
   appendPatterns,
 } from './venn_utils';
 
+import Compartment from '../../logic/compartment';
 import '../../assets/css/venn.css';
 
 const shadings = Object.freeze({
@@ -40,9 +41,90 @@ class UninteractiveVennDiagram extends React.Component {
     });
   }
 
+  static mapToVennDiagramPartSimple(a, b, c) {
+    if (a && b && c) {
+      return '(AnBnC)';
+    }
+    if (a && b) {
+      return '(AnB)\\AnBnC';
+    }
+    if (b && c) {
+      return '(BnC)\\AnBnC';
+    }
+    if (a && c) {
+      return '(AnC)\\AnBnC';
+    }
+    if (a) {
+      return '(A)\\(AnBuAnCuAnBnC)';
+    }
+    if (b) {
+      return '(B)\\(AnBuBnCuAnBnC)';
+    }
+    if (c) {
+      return '(C)\\(BnCuAnCuAnBnC)';
+    }
+    return undefined;
+  }
+
+  static mapToVennDiagram() {
+    const atoms = ['A', 'B', 'C'];
+    const n = atoms.length;
+    const compartments = Compartment.getAllCompartments(atoms);
+    const vennDiagramParts = [];
+    compartments.forEach((compartment) => {
+      let vennDiagramPart = '(';
+      const truths = compartment.getTruths();
+      Object.keys(truths).forEach((atom, i) => {
+        const curAtomIsTrue = truths[atom];
+
+        if (curAtomIsTrue) {
+          vennDiagramPart += atom;
+
+          if (i !== n - 1) {
+            vennDiagramPart += 'n';
+          }
+        }
+      });
+      if (vennDiagramPart[vennDiagramPart.length - 1] === 'n') {
+        vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
+      }
+      const rightSideCompartments = compartments.filter((anotherCompartment) => {
+        const anotherTruths = anotherCompartment.getTruths();
+        const truths = compartment.getTruths();
+
+        const anotherTruthsLen = Object.keys(anotherTruths).filter((anotherAtom) => !!anotherTruths[anotherAtom]).length;
+        const truthsLen = Object.keys(truths).filter((atom) => !!truths[atom]).length;
+        return anotherTruthsLen > truthsLen;
+      });
+      rightSideCompartments.forEach((anotherCompartment, j) => {
+        if (j === 0) {
+          vennDiagramPart += ')\\(';
+        }
+        const anotherTruths = anotherCompartment.getTruths();
+        Object.keys(anotherTruths).forEach((anotherAtom, i) => {
+          if (anotherTruths[anotherAtom]) {
+            vennDiagramPart += anotherAtom;
+
+            if (i !== n - 1) {
+              vennDiagramPart += 'n';
+            }
+          }
+        });
+        vennDiagramPart += 'u';
+      });
+      if (vennDiagramPart[vennDiagramPart.length - 1] === 'u') {
+        vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
+      }
+      vennDiagramPart += ')';
+      vennDiagramParts.push(vennDiagramPart);
+    });
+    return vennDiagramParts;
+  }
+
   constructor(props) {
     super(props);
 
+    /*
     this.state = {
       sets: [
         { sets: ['A'], size: 8 },
@@ -52,6 +134,29 @@ class UninteractiveVennDiagram extends React.Component {
         { sets: ['B', 'C'], size: 2 },
         { sets: ['A', 'C'], size: 2 },
         { sets: ['A', 'B', 'C'], size: 2 },
+      ],
+      width: 200,
+      height: 200,
+    };*/
+
+    this.state = {
+      sets: [
+        { sets: ['A'], size: 8 },
+        { sets: ['B'], size: 8 },
+        { sets: ['C'], size: 8 },
+        { sets: ['D'], size: 8 },
+        { sets: ['A', 'B'], size: 2 },
+        { sets: ['B', 'C'], size: 2 },
+        { sets: ['A', 'C'], size: 2 },
+        { sets: ['A', 'D'], size: 2 },
+        { sets: ['B', 'D'], size: 2 },
+        { sets: ['C', 'D'], size: 2 },
+        { sets: ['A', 'B', 'C'], size: 2 },
+        { sets: ['A', 'B', 'D'], size: 2 },
+        { sets: ['B', 'C', 'D'], size: 2 },
+        { sets: ['A', 'D', 'C'], size: 2 },
+        { sets: ['A', 'B', 'C', 'D'], size: 2 },
+
       ],
       width: 200,
       height: 200,
@@ -67,11 +172,14 @@ class UninteractiveVennDiagram extends React.Component {
     const labels = div.selectAll('text').remove();
     const intersectionAreasMapping = getIntersectionAreasMapping();
 
-
     appendPatterns(defs);
     appendVennAreaParts(svg, intersectionAreasMapping, false);
     appendLabels(svg, labels);
     removeOriginalVennAreas();
+
+    console.log(UninteractiveVennDiagram.mapToVennDiagram());
+
+    //UninteractiveVennDiagram.shadeParts(div, '(AnBnC)', shadings.RED);
   }
 
   render() {
