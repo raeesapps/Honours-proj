@@ -33,6 +33,8 @@ class ArgumentForm extends React.Component {
       validationSuccessful: false,
       premises,
     };
+
+    this.addPremise = this.addPremise.bind(this);
   }
 
   addPremise() {
@@ -73,7 +75,7 @@ class ArgumentForm extends React.Component {
             })
           }
           <FormGroup style={{ display: 'inline-block' }}>
-            <Button onClick={this.addProposition}><img style={{ height: '200px', width: '200px' }} src={plus} alt="plus" /></Button>
+            <Button onClick={this.addPremise}><img style={{ height: '200px', width: '200px' }} src={plus} alt="plus" /></Button>
           </FormGroup>
           <FormGroup>
             <Button onClick={onSubmit}>Validate</Button>
