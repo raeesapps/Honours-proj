@@ -11,13 +11,22 @@ import {
   appendPatterns,
 } from './venn_utils';
 
-import Compartment from '../../logic/compartment';
 import '../../assets/css/venn.css';
 
 const shadings = Object.freeze({
   BLACK: 0,
   RED: 1,
 });
+
+const DEFAULT_SET = [
+  { sets: ['A'], size: 8 },
+  { sets: ['B'], size: 8 },
+  { sets: ['C'], size: 8 },
+  { sets: ['A', 'B'], size: 2 },
+  { sets: ['B', 'C'], size: 2 },
+  { sets: ['A', 'C'], size: 2 },
+  { sets: ['A', 'B', 'C'], size: 2 },
+];
 
 class UninteractiveVennDiagram extends React.Component {
   static shadeParts(div, part, shading) {
@@ -41,75 +50,22 @@ class UninteractiveVennDiagram extends React.Component {
     });
   }
 
-  static mapToVennDiagramPartSimple(a, b, c) {
-    if (a && b && c) {
-      return '(AnBnC)';
-    }
-    if (a && b) {
-      return '(AnB)\\AnBnC';
-    }
-    if (b && c) {
-      return '(BnC)\\AnBnC';
-    }
-    if (a && c) {
-      return '(AnC)\\AnBnC';
-    }
-    if (a) {
-      return '(A)\\(AnBuAnCuAnBnC)';
-    }
-    if (b) {
-      return '(B)\\(AnBuBnCuAnBnC)';
-    }
-    if (c) {
-      return '(C)\\(BnCuAnCuAnBnC)';
-    }
-    return undefined;
-  }
-
   constructor(props) {
     super(props);
 
-    /*
     this.state = {
-      sets: [
-        { sets: ['A'], size: 8 },
-        { sets: ['B'], size: 8 },
-        { sets: ['C'], size: 8 },
-        { sets: ['A', 'B'], size: 2 },
-        { sets: ['B', 'C'], size: 2 },
-        { sets: ['A', 'C'], size: 2 },
-        { sets: ['A', 'B', 'C'], size: 2 },
-      ],
       width: 200,
       height: 200,
-    };*/
-
-    this.state = {
-      sets: [
-        { sets: ['A'], size: 8 },
-        { sets: ['B'], size: 8 },
-        { sets: ['C'], size: 8 },
-        { sets: ['D'], size: 8 },
-        { sets: ['A', 'B'], size: 2 },
-        { sets: ['B', 'C'], size: 2 },
-        { sets: ['A', 'C'], size: 2 },
-        { sets: ['A', 'D'], size: 2 },
-        { sets: ['B', 'D'], size: 2 },
-        { sets: ['C', 'D'], size: 2 },
-        { sets: ['A', 'B', 'C'], size: 2 },
-        { sets: ['A', 'B', 'D'], size: 2 },
-        { sets: ['B', 'C', 'D'], size: 2 },
-        { sets: ['A', 'D', 'C'], size: 2 },
-        { sets: ['A', 'B', 'C', 'D'], size: 2 },
-
-      ],
-      width: 200,
-      height: 200,
+      argument: null,
     };
   }
 
   componentDidMount() {
-    const { sets, width, height } = this.state;
+    this.drawVennDiagram(DEFAULT_SET);
+  }
+
+  drawVennDiagram(sets) {
+    const { width, height } = this.state;
     const chart = venn.VennDiagram().width(width).height(height);
     const div = d3.select('#venn').datum(sets).call(chart);
     const svg = div.select('svg');
@@ -117,17 +73,86 @@ class UninteractiveVennDiagram extends React.Component {
     const labels = div.selectAll('text').remove();
     const intersectionAreasMapping = getIntersectionAreasMapping();
 
+    this.div = div;
+
     appendPatterns(defs);
     appendVennAreaParts(svg, intersectionAreasMapping, false);
     appendLabels(svg, labels);
     removeOriginalVennAreas();
+  }
 
-    //UninteractiveVennDiagram.shadeParts(div, '(AnBnC)', shadings.RED);
+  applyShading(argument) {
+    const argumentSets = argument.getSets();
+    this.setState({ argument });
+    this.div.select('svg').remove();
+    this.drawVennDiagram(argumentSets);
+  }
+
+  shade() {
+    const { argument } = this.state;
+    const { BLACK, RED } = shadings;
+
+    const mappings = {};
+    this.div.selectAll('g').each(function onEach() {
+      const node = d3.select(this);
+      const nodePart = node.attr('venn-area-part-id');
+
+      if (nodePart.indexOf('\\') > -1) {
+        const nodePartSplit = nodePart.split('\\');
+
+        const leftPart = nodePartSplit[0];
+        const rightPart = nodePartSplit[1];
+
+        mappings[leftPart] = rightPart;
+      } else {
+        mappings[nodePart] = '';
+      }
+    });
+    const resolvedColumn = argument.unifyAndResolve();
+    const partsToShade = [];
+    const argumentVennDiagramParts = argument.getVennDiagramParts();
+    argumentVennDiagramParts.forEach((argumentVennDiagramPart) => {
+      const { compartment, vennDiagramPart } = argumentVennDiagramPart;
+      const resolvedValueArray = resolvedColumn[compartment.hashCode()];
+
+      if (resolvedValueArray.length) {
+        const vennDiagramPartSplit = vennDiagramPart.split('\\');
+        const leftPart = vennDiagramPartSplit[0];
+
+        if (!(leftPart in mappings)) {
+          throw new Error(`Shading algorithm failed! ${leftPart} not found in ${JSON.stringify(mappings)}`);
+        }
+
+        const rightPart = mappings[leftPart];
+        const shading = resolvedValueArray[0] === 'e' ? BLACK : RED;
+        const partStr = rightPart ? `${leftPart}\\${rightPart}` : leftPart;
+        partsToShade.push({ part: partStr, shading });
+      }
+    });
+    partsToShade.forEach((partToShade) => {
+      const {
+        part,
+        shading,
+      } = partToShade;
+
+      UninteractiveVennDiagram.shadeParts(this.div, part, shading);
+    });
   }
 
   render() {
-    const { width, height } = this.state;
-    return <div id="venn" style={{ padding: 0, width: `${width}px`, height: `${height}px` }} />;
+    const { width, height, argument } = this.state;
+    const display = argument ? '' : 'none';
+    if (argument) {
+      this.shade();
+    }
+    return (
+      <div
+        id="venn"
+        style={{
+          display: `${display}`, padding: 0, width: `${width}px`, height: `${height}px`,
+        }}
+      />
+    );
   }
 }
 
