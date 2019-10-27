@@ -7,14 +7,14 @@ import {
   Label,
 } from 'reactstrap';
 
-import PropositionFormGroup from '../Proposition/PropositionFormGroup';
+import PremiseFormGroup from '../Premise/PremiseFormGroup';
 
 import plus from '../../assets/img/plus.png';
 
 class ArgumentForm extends React.Component {
   constructor(props) {
     super(props);
-    const propositions = [
+    const premises = [
       {
         name: 'Premise',
         ref: React.createRef(),
@@ -31,27 +31,26 @@ class ArgumentForm extends React.Component {
     this.state = {
       alertVisible: false,
       validationSuccessful: false,
-      propositions,
+      premises,
     };
-    this.addProposition = this.addProposition.bind(this);
   }
 
-  addProposition() {
+  addPremise() {
     const {
-      propositions,
+      premises,
     } = this.state;
 
-    const conclusion = propositions.pop();
+    const conclusion = premises.pop();
 
-    propositions.push({
+    premises.push({
       name: 'Premise',
       ref: React.createRef(),
     });
 
-    propositions.push(conclusion);
+    premises.push(conclusion);
 
     this.setState({
-      propositions: [...propositions],
+      premises: [...premises],
     });
   }
 
@@ -59,18 +58,18 @@ class ArgumentForm extends React.Component {
     const {
       validationSuccessful,
       alertVisible,
-      propositions,
+      premises,
     } = this.state;
     const {
-      onSubmit
+      onSubmit,
     } = this.props;
     return (
       <>
         <Form>
           {
-            propositions.map((proposition) => {
-              const { name, ref } = proposition;
-              return <PropositionFormGroup ref={ref} name={name} />;
+            premises.map((premise) => {
+              const { name, ref } = premise;
+              return <PremiseFormGroup ref={ref} name={name} />;
             })
           }
           <FormGroup style={{ display: 'inline-block' }}>

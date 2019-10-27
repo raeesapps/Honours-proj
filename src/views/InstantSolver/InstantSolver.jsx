@@ -17,14 +17,14 @@ class InstantSolver extends React.Component {
 
   onSubmitForm() {
     const argumentForm = this.argumentFormRef.current;
-    const { propositions } = argumentForm.state;
+    const { premises } = argumentForm.state;
     const vennDiagram = this.vennDiagramRef.current;
-    const argument = new Argument(propositions
-      .filter((proposition) => proposition.name !== 'Conclusion')
-      .map((proposition) => proposition.ref.current.getPropositionObj()));
-    const conclusion = propositions
-      .find((proposition) => proposition.name === 'Conclusion')
-      .ref.current.getPropositionObj();
+    const argument = new Argument(premises
+      .filter((premise) => premise.name !== 'Conclusion')
+      .map((premise) => premise.ref.current.getPremiseObj()));
+    const conclusion = premises
+      .find((premise) => premise.name === 'Conclusion')
+      .ref.current.getPremiseObj();
     vennDiagram.applyShading(argument);
     argumentForm.setState({ validationSuccessful: argument.argue(conclusion), alertVisible: true });
   }

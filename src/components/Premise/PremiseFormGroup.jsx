@@ -24,7 +24,7 @@ const relations = Object.freeze({
 
 const epsilion = '';
 
-class PropositionFormGroup extends React.Component {
+class PremiseFormGroup extends React.Component {
   constructor(props) {
     super(props);
     const {
@@ -41,10 +41,9 @@ class PropositionFormGroup extends React.Component {
       quantifierDropdownOpen: false,
       relationshipDropdownOpen: false,
     };
-    this.getPropositionObj = this.getPropositionObj.bind(this);
   }
 
-  getPropositionObj() {
+  getPremiseObj() {
     const { ALL, SOME, NO } = quantifiers;
     const { ARE, ARE_NOT } = relations;
 
@@ -128,4 +127,4 @@ class PropositionFormGroup extends React.Component {
   }
 }
 
-export default PropositionFormGroup;
+export default PremiseFormGroup;
