@@ -77,6 +77,26 @@ class Argument {
     });
     return vennDiagramParts;
   }
+
+  getSets() {
+    const compartments = this.table.getCompartments();
+    return compartments
+      .filter((compartment) => {
+        const values = Object.values(compartment.getTruths())
+          .filter((truthValue) => !!truthValue);
+
+        return !!values.length;
+      })
+      .map((compartment) => {
+        const truths = compartment.getTruths();
+        const truthKeys = Object.keys(truths).filter((key) => !!truths[key]);
+        return {
+          sets: truthKeys,
+          size: truthKeys.length > 1 ? 2 : 8,
+        };
+      });
+  }
+
   argue(conclusion) {
     return this.table.validate(conclusion);
   }
