@@ -7,7 +7,6 @@ import {
   Label,
 } from 'reactstrap';
 
-import Argument from '../../logic/argument';
 import PropositionFormGroup from '../Proposition/PropositionFormGroup';
 
 import plus from '../../assets/img/plus.png';
@@ -15,25 +14,25 @@ import plus from '../../assets/img/plus.png';
 class ArgumentForm extends React.Component {
   constructor(props) {
     super(props);
+    const propositions = [
+      {
+        name: 'Premise',
+        ref: React.createRef(),
+      },
+      {
+        name: 'Premise',
+        ref: React.createRef(),
+      },
+      {
+        name: 'Conclusion',
+        ref: React.createRef(),
+      },
+    ];
     this.state = {
       alertVisible: false,
       validationSuccessful: false,
-      propositions: [
-        {
-          name: 'Premise',
-          ref: React.createRef(),
-        },
-        {
-          name: 'Premise',
-          ref: React.createRef(),
-        },
-        {
-          name: 'Conclusion',
-          ref: React.createRef(),
-        },
-      ],
+      propositions,
     };
-    this.validate = this.validate.bind(this);
     this.addProposition = this.addProposition.bind(this);
   }
 
@@ -51,23 +50,9 @@ class ArgumentForm extends React.Component {
 
     propositions.push(conclusion);
 
-    this.setState({ propositions: [...propositions] });
-  }
-
-  validate() {
-    const {
-      propositions,
-    } = this.state;
-
-    const argument = new Argument(propositions
-      .filter((proposition) => proposition.name !== 'Conclusion')
-      .map((proposition) => proposition.ref.current.getPropositionObj()));
-
-    const conclusion = propositions
-      .find((proposition) => proposition.name === 'Conclusion')
-      .ref.current.getPropositionObj();
-
-    this.setState({ validationSuccessful: argument.argue(conclusion), alertVisible: true });
+    this.setState({
+      propositions: [...propositions],
+    });
   }
 
   render() {
@@ -76,6 +61,9 @@ class ArgumentForm extends React.Component {
       alertVisible,
       propositions,
     } = this.state;
+    const {
+      onSubmit
+    } = this.props;
     return (
       <>
         <Form>
@@ -89,7 +77,7 @@ class ArgumentForm extends React.Component {
             <Button onClick={this.addProposition}><img style={{ height: '200px', width: '200px' }} src={plus} alt="plus" /></Button>
           </FormGroup>
           <FormGroup>
-            <Button onClick={this.validate}>Validate</Button>
+            <Button onClick={onSubmit}>Validate</Button>
           </FormGroup>
         </Form>
         <Alert style={{ display: alertVisible ? '' : 'none' }} color={validationSuccessful ? 'success' : 'danger'}>
