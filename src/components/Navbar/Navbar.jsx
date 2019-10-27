@@ -13,8 +13,6 @@ import { Link } from 'react-router-dom';
 
 import routes from '../../routes/routes';
 
-import '../../assets/css/navbar.css';
-
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +37,7 @@ class NavigationBar extends React.Component {
 
     return (
       <>
-        <Navbar className="navbar-custom" light expand="md">
+        <Navbar color="light" light expand="md">
           <NavbarBrand href="/">Soak Up Syllogisms</NavbarBrand>
           <NavbarToggler onClick={(this.toggle)} />
           <Collapse isOpen={isOpen} navbar>

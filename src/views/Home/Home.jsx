@@ -12,7 +12,7 @@ function Home() {
       <Container>
         <Row>
           <Col>
-            <Jumbotron style={{ backgroundColor: '#e3fcea' }}>
+            <Jumbotron>
               <h1 className="lead">Welcome to Soak Up Syllogisms</h1>
               <p className="lead">Learn how to become an undefeated grandmaster of logical reasoning. Enjoy!</p>
             </Jumbotron>
