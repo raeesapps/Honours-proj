@@ -39,12 +39,12 @@ function getIntersectionAreasMapping() {
 }
 
 function getPartId(vennArea, intersectedAreas) {
-  let partId = `(${vennArea.sets.join('n')})`;
+  let partId = `(${vennArea.sets.join('&')})`;
   partId += intersectedAreas.length > 1 ? '\\(' : '';
   partId += intersectedAreas.length === 1 ? '\\' : '';
   partId += intersectedAreas
     .map((intersectedArea) => intersectedArea.sets)
-    .map((set) => `${(set.join('n'))}`).join('u');
+    .map((set) => `${(set.join('&'))}`).join('|');
   partId += intersectedAreas.length > 1 ? ')' : '';
   return partId;
 }
