@@ -23,6 +23,60 @@ class Argument {
     return this.table.resolve();
   }
 
+  getVennDiagramParts() {
+    const n = this.table.numberOfTerms;
+    const vennDiagramParts = [];
+    this.table.compartments.forEach((compartment) => {
+      let vennDiagramPart = '(';
+      const truths = compartment.getTruths();
+      Object.keys(truths).forEach((atom, i) => {
+        const curAtomIsTrue = truths[atom];
+
+        if (curAtomIsTrue) {
+          vennDiagramPart += atom;
+
+          if (i !== n - 1) {
+            vennDiagramPart += '&';
+          }
+        }
+      });
+      if (vennDiagramPart[vennDiagramPart.length - 1] === '&') {
+        vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
+      }
+      const rightSideCompartments = this.table.compartments.filter((anotherCompartment) => {
+        const anotherTruths = anotherCompartment.getTruths();
+
+        const anotherTruthsLen = Object.keys(anotherTruths).filter((anotherAtom) => !!anotherTruths[anotherAtom]).length;
+        const truthsLen = Object.keys(truths).filter((atom) => !!truths[atom]).length;
+        return anotherTruthsLen > truthsLen;
+      });
+      rightSideCompartments.forEach((anotherCompartment, j) => {
+        if (j === 0) {
+          vennDiagramPart += ')\\(';
+        }
+        const anotherTruths = anotherCompartment.getTruths();
+        Object.keys(anotherTruths).forEach((anotherAtom, i) => {
+          if (anotherTruths[anotherAtom]) {
+            vennDiagramPart += anotherAtom;
+
+            if (i !== n - 1) {
+              vennDiagramPart += '&';
+            }
+          }
+        });
+        vennDiagramPart += '|';
+      });
+      if (vennDiagramPart[vennDiagramPart.length - 1] === '|') {
+        vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
+      }
+      vennDiagramPart += ')';
+      vennDiagramParts.push({
+        compartment,
+        vennDiagramPart,
+      });
+    });
+    return vennDiagramParts;
+  }
   argue(conclusion) {
     return this.table.validate(conclusion);
   }
