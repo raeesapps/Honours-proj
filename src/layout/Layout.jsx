@@ -1,8 +1,10 @@
 import React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 
-import NavigationBar from '../components/Navbar/Navbar';
+import { withStyles } from '@material-ui/core';
+
 import Footer from '../components/Footer/Footer';
+import NavDrawer from '../components/NavDrawer/NavDrawer';
 import routes from '../routes/routes';
 
 class Layout extends React.Component {
@@ -38,20 +40,21 @@ class Layout extends React.Component {
 
   render() {
     const { width } = this.state;
+    const { classes } = this.props;
     const limitedWidth = (width * 0.0105) > 9 ? 9 : width * 0.0105;
     return (
-      <div style={{ position: 'relative', minHeight: '100vh' }}>
-        <div style={{ paddingBottom: `${limitedWidth}rem` }}>
-          <NavigationBar />
-          <br />
+      <div className={classes.appFrame}>
+        <NavDrawer routes={routes} />
+        <br />
+        <main className={classes.content}>
           <Switch>
             {routes.map(Layout.createRouteTag)}
           </Switch>
-        </div>
-        <Footer />
+          <Footer />
+        </main>
       </div>
     );
   }
 }
 
-export default withRouter(Layout);
+export default withRouter(withStyles({})(Layout));
