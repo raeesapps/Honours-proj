@@ -3,6 +3,7 @@ const DRAWER_WIDTH = 240;
 const styles = (theme) => ({
   root: {
     display: 'flex',
+    marginBottom: '3%',
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
