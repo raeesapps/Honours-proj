@@ -19,33 +19,11 @@ class Layout extends React.Component {
     );
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { width: 0 };
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-  }
-
-  componentDidMount() {
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-  }
-
-  updateWindowDimensions() {
-    this.setState({ width: window.innerWidth });
-  }
-
   render() {
-    const { width } = this.state;
     const { classes } = this.props;
-    const limitedWidth = (width * 0.0105) > 9 ? 9 : width * 0.0105;
     return (
       <div className={classes.appFrame}>
         <NavDrawer routes={routes} />
-        <br />
         <main className={classes.content}>
           <Switch>
             {routes.map(Layout.createRouteTag)}
