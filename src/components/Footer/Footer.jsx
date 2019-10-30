@@ -24,13 +24,7 @@ function Footer(props) {
             <a href="https://www.inf.ed.ac.uk/teaching/courses/proj/"> Honours Project </a>
             at
             <a href="https://ed.ac.uk"> The University of Edinburgh </a>
-            and is licensed under a GNU General Public License (
-            <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPL</a>
-            ).
           </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <img style={{ marginBottom: '10px' }} alt="license" src="https://www.gnu.org/graphics/gplv3-with-text-84x42.png" />
         </Grid>
       </Grid>
     </div>
