@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import styles from '../../assets/components/jss/Footer/footer'
+import styles from '../../assets/components/jss/Footer/footer_styles'
 
 function Footer(props) {
   const { classes } = props;
