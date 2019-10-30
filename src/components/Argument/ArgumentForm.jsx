@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+
 import PremiseFormInput from '../Premise/PremiseFormInput';
 
 import styles from '../../assets/components/jss/Argument/argument_form_styles';
@@ -26,8 +27,6 @@ class ArgumentForm extends React.Component {
       },
     ];
     this.state = {
-      alertVisible: false,
-      validationSuccessful: false,
       premises,
     };
 
@@ -87,8 +86,6 @@ class ArgumentForm extends React.Component {
 
   render() {
     const {
-      validationSuccessful,
-      alertVisible,
       premises,
     } = this.state;
     const {
