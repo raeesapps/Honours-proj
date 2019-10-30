@@ -11,7 +11,7 @@ import {
   appendPatterns,
 } from './venn_utils';
 
-import '../../assets/css/venn.css';
+import '../../assets/components/css/components/VennDiagram/venn_styles.css';
 
 const shadings = Object.freeze({
   BLACK: 0,
@@ -140,7 +140,7 @@ class UninteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { width, height, argument } = this.state;
+    const { width, height, argument, ...other } = this.state;
     const display = argument ? '' : 'none';
     if (argument) {
       this.shade();
@@ -151,6 +151,7 @@ class UninteractiveVennDiagram extends React.Component {
         style={{
           display: `${display}`, padding: 0, width: `${width}px`, height: `${height}px`,
         }}
+        {...other}
       />
     );
   }

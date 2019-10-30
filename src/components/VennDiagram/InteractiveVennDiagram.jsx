@@ -11,7 +11,7 @@ import {
   appendPatterns,
 } from './venn_utils';
 
-import '../../assets/css/venn.css';
+import '../../assets/components/css/components/VennDiagram/venn_styles.css';
 
 const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
@@ -97,8 +97,8 @@ class InteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { width, height } = this.state;
-    return <div id="venn" style={{ padding: 0, width: `${width}px`, height: `${height}px` }} />;
+    const { width, height, ...other } = this.state;
+    return <div id="venn" style={{ padding: 0, width: `${width}px`, height: `${height}px` }} {...other} />;
   }
 }
 
