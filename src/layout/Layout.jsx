@@ -1,11 +1,13 @@
 import React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 
-import { withStyles } from '@material-ui/core';
+import { withStyles, ThemeProvider } from '@material-ui/core/styles';
 
 import Footer from '../components/Footer/Footer';
 import NavDrawer from '../components/NavDrawer/NavDrawer';
 import routes from '../routes/routes';
+
+import theme from '../assets/theme';
 
 class Layout extends React.Component {
   static createRouteTag(route) {
@@ -43,19 +45,21 @@ class Layout extends React.Component {
     const { classes } = this.props;
     const limitedWidth = (width * 0.0105) > 9 ? 9 : width * 0.0105;
     return (
-      <div style={{ position: 'relative', minHeight: '100vh' }}>
-        <div style={{ paddingBottom: `${limitedWidth}rem` }}>
-          <div className={classes.appFrame}>
-            <NavDrawer routes={routes} />
-            <main className={classes.content}>
-              <Switch>
-                {routes.map(Layout.createRouteTag)}
-              </Switch>
-              <Footer />
-            </main>
+      <ThemeProvider theme={theme}>
+        <div style={{ position: 'relative', minHeight: '100vh' }}>
+          <div style={{ paddingBottom: `${limitedWidth}rem` }}>
+            <div className={classes.appFrame}>
+              <NavDrawer routes={routes} />
+              <main className={classes.content}>
+                <Switch>
+                  {routes.map(Layout.createRouteTag)}
+                </Switch>
+                <Footer />
+              </main>
+            </div>
           </div>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 }
