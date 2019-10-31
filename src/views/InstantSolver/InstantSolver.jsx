@@ -13,7 +13,7 @@ import ArgumentForm from '../../components/Argument/ArgumentForm';
 import UninteractiveVennDiagram from '../../components/VennDiagram/UninteractiveVennDiagram';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
 
-import Argument from '../../logic/argument';
+import PremiseCollection from '../../logic/premise_collection';
 import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
 
@@ -42,14 +42,14 @@ class InstantSolver extends React.Component {
     const { SUCCESS, ERROR } = snackbarTypes;
     const vennDiagram = this.vennDiagramRef.current;
 
-    const argument = new Argument(premises
+    const argument = new PremiseCollection(premises
       .filter((premise) => premise.name !== 'Conclusion')
       .map((premise) => premise.ref.current.getPremiseObj()));
     const conclusion = premises
       .find((premise) => premise.name === 'Conclusion')
       .ref.current.getPremiseObj();
 
-    vennDiagram.applyShading(new Argument(premises
+    vennDiagram.applyShading(new PremiseCollection(premises
       .filter((premise) => premise.name !== 'Conclusion')
       .map((premise) => premise.ref.current.getPremiseObj())));
 

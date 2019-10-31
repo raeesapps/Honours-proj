@@ -1,5 +1,5 @@
 import { Premise, forms } from './premise';
-import Argument from './argument';
+import PremiseCollection from './premise_collection';
 import Compartment from './compartment';
 
 const {
@@ -25,7 +25,7 @@ describe('BARBARA tests', () => {
       firstTerm: `${c}`,
       secondTerm: `${a}`,
     });
-    argument = new Argument([allMenAreMortalPremise, allGreeksAreMenPremise]);
+    argument = new PremiseCollection([allMenAreMortalPremise, allGreeksAreMenPremise]);
   });
 
   test('BARBARA premises represented correctly', () => {
@@ -110,7 +110,7 @@ describe('BAROCO tests', () => {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
-    argument = new Argument([allInformativeThingsAreUsefulPremise, someWebsitesAreNotUsefulPremise]);
+    argument = new PremiseCollection([allInformativeThingsAreUsefulPremise, someWebsitesAreNotUsefulPremise]);
   });
 
   test('BAROCO premises represented correctly', () => {
@@ -203,7 +203,7 @@ describe('BARBARI tests', () => {
     const someGreeksExist = new Premise(SOME_A_EXIST, {
       firstTerm: `${c}`,
     });
-    argument = new Argument([allMenAreMortalPremise, allGreeksAreMenPremise, someGreeksExist]);
+    argument = new PremiseCollection([allMenAreMortalPremise, allGreeksAreMenPremise, someGreeksExist]);
   });
 
   test('BARBARI premises represented correctly', () => {
@@ -297,7 +297,7 @@ describe('Sorites test', () => {
       firstTerm: `${c}`,
       secondTerm: `${d}`,
     });
-    argument = new Argument([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
+    argument = new PremiseCollection([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
   });
 
   test('All lions are carnivores is valid', () => {
