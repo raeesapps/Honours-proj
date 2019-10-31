@@ -3,6 +3,8 @@ import React from 'react';
 import * as d3 from 'd3';
 import * as venn from 'venn.js';
 
+import Typography from '@material-ui/core/Typography';
+
 import {
   removeOriginalVennAreas,
   getIntersectionAreasMapping,
@@ -65,9 +67,11 @@ class UninteractiveVennDiagram extends React.Component {
   }
 
   drawVennDiagram(sets) {
+    const { title } = this.props;
     const { width, height } = this.state;
+
     const chart = venn.VennDiagram().width(width).height(height);
-    const div = d3.select('#venn').datum(sets).call(chart);
+    const div = d3.select(`#${title}`).datum(sets).call(chart);
     const svg = div.select('svg');
     const defs = svg.append('defs');
     const labels = div.selectAll('text').remove();
@@ -140,19 +144,23 @@ class UninteractiveVennDiagram extends React.Component {
   }
 
   render() {
+    const { title } = this.props;
     const { width, height, argument, ...other } = this.state;
     const display = argument ? '' : 'none';
     if (argument) {
       this.shade();
     }
     return (
-      <div
-        id="venn"
-        style={{
-          display: `${display}`, padding: 0, width: `${width}px`, height: `${height}px`,
-        }}
-        {...other}
-      />
+      <div>
+        <Typography variant="h6">{title}</Typography>
+        <div
+          id={title}
+          style={{
+            display: `${display}`, padding: 0, width: `${width}px`, height: `${height}px`,
+          }}
+          {...other}
+        />
+      </div>
     );
   }
 }
