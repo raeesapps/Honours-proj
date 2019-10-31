@@ -7,7 +7,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
+import Typography from '@material-ui/core/Typography';
 
 import ArgumentForm from '../../components/Argument/ArgumentForm';
 import UninteractiveVennDiagram from '../../components/VennDiagram/UninteractiveVennDiagram';
@@ -26,10 +32,12 @@ class InstantSolver extends React.Component {
       snackbarType: ERROR,
       snackbarMsg: '',
       dialogOpen: false,
+      argumentSubmitted: false,
     };
 
     this.argumentFormRef = React.createRef();
-    this.vennDiagramRef = React.createRef();
+    this.premisesVennDiagramRef = React.createRef();
+    this.conclusionVennDiagramRef = React.createRef();
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.onError = this.onError.bind(this);
     this.warn = this.warn.bind(this);
@@ -40,25 +48,39 @@ class InstantSolver extends React.Component {
     const argumentForm = this.argumentFormRef.current;
     const { premises } = argumentForm.state;
     const { SUCCESS, ERROR } = snackbarTypes;
-    const vennDiagram = this.vennDiagramRef.current;
 
+    const premisesVennDiagram = this.premisesVennDiagramRef.current;
     const argument = new PremiseCollection(premises
       .filter((premise) => premise.name !== 'Conclusion')
       .map((premise) => premise.ref.current.getPremiseObj()));
+    premisesVennDiagram.applyShading(new PremiseCollection(premises
+      .filter((premise) => premise.name !== 'Conclusion')
+      .map((premise) => premise.ref.current.getPremiseObj())));
+
+    const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
     const conclusion = premises
       .find((premise) => premise.name === 'Conclusion')
       .ref.current.getPremiseObj();
-
-    vennDiagram.applyShading(new PremiseCollection(premises
-      .filter((premise) => premise.name !== 'Conclusion')
+    conclusionVennDiagram.applyShading(new PremiseCollection(premises
+      .filter((premise) => premise.name === 'Conclusion')
       .map((premise) => premise.ref.current.getPremiseObj())));
 
     const valid = argument.argue(conclusion);
 
     if (valid) {
-      this.setState({ snackbarVisible: true, snackbarType: SUCCESS, snackbarMsg: 'Valid!' });
+      this.setState({
+        argumentSubmitted: true,
+        snackbarVisible: true,
+        snackbarType: SUCCESS,
+        snackbarMsg: 'Valid!',
+      });
     } else {
-      this.setState({ snackbarVisible: true, snackbarType: ERROR, snackbarMsg: 'Invalid!' });
+      this.setState({
+        argumentSubmitted: true,
+        snackbarVisible: true,
+        snackbarType: ERROR,
+        snackbarMsg: 'Invalid!',
+      });
     }
   }
 
@@ -80,7 +102,14 @@ class InstantSolver extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { snackbarVisible, snackbarMsg, snackbarType, dialogOpen } = this.state;
+    const {
+      snackbarVisible,
+      snackbarMsg,
+      snackbarType,
+      dialogOpen,
+      argumentSubmitted,
+    } = this.state;
+    const displayDiagram = argumentSubmitted ? 'block' : 'none';
     return (
       <div className={classes.root}>
         <Container maxWidth="lg">
@@ -123,7 +152,27 @@ class InstantSolver extends React.Component {
           </Snackbar>
 
           <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
-          <UninteractiveVennDiagram ref={this.vennDiagramRef} />
+          <div style={{ display: displayDiagram }}>
+            <ExpansionPanel>
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Diagrammatic Representation</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid container spacing={3}>
+                  <Grid item xs={6}>
+                    <UninteractiveVennDiagram ref={this.premisesVennDiagramRef} title="Premises" />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <UninteractiveVennDiagram ref={this.conclusionVennDiagramRef} title="Conclusion" />
+                  </Grid>
+                </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </div>
         </Container>
       </div>
     );
