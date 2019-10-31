@@ -18,7 +18,7 @@ function Footer(props) {
       >
         <Grid item xs={9}>
           <Typography>
-            Soak Up Syllogisms was engineered by <a href="http://raeesaamir.net"> Raees Aamir </a> and created as part of the <a href="https://www.inf.ed.ac.uk/teaching/courses/proj/"> Honours Project </a>  at <a href="https://ed.ac.uk"> The University of Edinburgh </a>
+            Soak Up Syllogisms was engineered by <a href="http://raeesaamir.net">Raees Aamir</a> and created as part of the <a href="https://www.inf.ed.ac.uk/teaching/courses/proj/">Honours Project</a> at <a href="https://ed.ac.uk">The University of Edinburgh</a>
           </Typography>
         </Grid>
       </Grid>
