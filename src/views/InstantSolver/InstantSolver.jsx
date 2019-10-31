@@ -49,7 +49,9 @@ class InstantSolver extends React.Component {
       .find((premise) => premise.name === 'Conclusion')
       .ref.current.getPremiseObj();
 
-    vennDiagram.applyShading(argument);
+    vennDiagram.applyShading(new Argument(premises
+      .filter((premise) => premise.name !== 'Conclusion')
+      .map((premise) => premise.ref.current.getPremiseObj())));
 
     const valid = argument.argue(conclusion);
 
