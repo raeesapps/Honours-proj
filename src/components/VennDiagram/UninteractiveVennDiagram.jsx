@@ -54,8 +54,8 @@ class UninteractiveVennDiagram extends React.Component {
     super(props);
 
     this.state = {
-      width: 200,
-      height: 200,
+      width: 300,
+      height: 300,
       argument: null,
     };
   }
