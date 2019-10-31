@@ -31,6 +31,7 @@ class ArgumentForm extends React.Component {
     };
 
     this.onRemove = this.onRemove.bind(this);
+    this.onAddPremise = this.onAddPremise.bind(this);
     this.addPremise = this.addPremise.bind(this);
   }
 
@@ -63,6 +64,24 @@ class ArgumentForm extends React.Component {
     premises.splice(idx, 1);
 
     this.setState({ premises: [...premises] });
+  }
+
+  onAddPremise() {
+    const {
+      premises,
+    } = this.state;
+
+    const {
+      warn,
+    } = this.props;
+
+    const n = premises.length;
+
+    if (n > 4) {
+      warn();
+    } else {
+      this.addPremise();
+    }
   }
 
   addPremise() {
@@ -103,7 +122,7 @@ class ArgumentForm extends React.Component {
               })
             }
           </Grid>
-          <Fab color="primary" aria-label="add" className={classes.fab} onClick={this.addPremise}>
+          <Fab color="primary" aria-label="add" className={classes.fab} onClick={this.onAddPremise}>
             <AddIcon />
           </Fab>
         </form>

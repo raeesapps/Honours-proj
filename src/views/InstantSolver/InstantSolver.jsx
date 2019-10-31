@@ -1,6 +1,12 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import ArgumentForm from '../../components/Argument/ArgumentForm';
@@ -19,12 +25,15 @@ class InstantSolver extends React.Component {
       snackbarVisible: false,
       snackbarType: ERROR,
       snackbarMsg: '',
+      dialogOpen: false,
     };
 
     this.argumentFormRef = React.createRef();
     this.vennDiagramRef = React.createRef();
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.onError = this.onError.bind(this);
+    this.warn = this.warn.bind(this);
+    this.warningAddPremise = this.warningAddPremise.bind(this);
   }
 
   onSubmitForm() {
@@ -52,15 +61,50 @@ class InstantSolver extends React.Component {
   }
 
   onError(msg) {
-    this.setState({ snackbarVisible: true, snackbarMsg: msg });
+    const { ERROR } = snackbarTypes;
+
+    this.setState({ snackbarVisible: true, snackbarType: ERROR, snackbarMsg: msg });
+  }
+
+  warn() {
+    this.setState({ dialogOpen: true });
+  }
+
+  warningAddPremise() {
+    const argumentForm = this.argumentFormRef.current;
+    argumentForm.addPremise();
+    this.setState({ dialogOpen: false });
   }
 
   render() {
     const { classes } = this.props;
-    const { snackbarVisible, snackbarMsg, snackbarType } = this.state;
+    const { snackbarVisible, snackbarMsg, snackbarType, dialogOpen } = this.state;
     return (
       <div className={classes.root}>
         <Container maxWidth="lg">
+          <Dialog
+            open={dialogOpen}
+            onClose={() => this.setState({ dialogOpen: false })}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                You are trying to add more than 4 premises.
+                Thats some really complicated stuff to reason about.
+                Are you sure you want to add another premise?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.warningAddPremise} color="primary">
+                Yes
+              </Button>
+              <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Snackbar
             anchorOrigin={{
               vertical: 'bottom',
@@ -76,7 +120,7 @@ class InstantSolver extends React.Component {
             />
           </Snackbar>
 
-          <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} />
+          <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
           <UninteractiveVennDiagram ref={this.vennDiagramRef} />
         </Container>
       </div>
