@@ -144,8 +144,12 @@ class UninteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
-    const { width, height, argument, ...other } = this.state;
+    const { title, ...other } = this.props;
+    const {
+      width,
+      height,
+      argument,
+    } = this.state;
     const display = argument ? '' : 'none';
     if (argument) {
       this.shade();
