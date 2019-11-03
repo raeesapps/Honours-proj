@@ -1,5 +1,15 @@
 import * as d3 from 'd3';
 
+const DEFAULT_SET = [
+  { sets: ['A'], size: 8 },
+  { sets: ['B'], size: 8 },
+  { sets: ['C'], size: 8 },
+  { sets: ['A', 'B'], size: 2 },
+  { sets: ['B', 'C'], size: 2 },
+  { sets: ['A', 'C'], size: 2 },
+  { sets: ['A', 'B', 'C'], size: 2 },
+];
+
 function removeOriginalVennAreas() {
   d3.selectAll('g.venn-area').remove();
 }
@@ -126,6 +136,7 @@ function appendPatterns(defs) {
 }
 
 export {
+  DEFAULT_SET,
   removeOriginalVennAreas,
   getIntersectionAreasMapping,
   appendLabels,
