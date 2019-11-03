@@ -1,7 +1,7 @@
 import Home from '../views/Home/Home';
-import Practice from '../views/Practice/Practice';
 import Quiz from '../views/Quiz/Quiz';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
+import RepresentPremises from '../views/RepresentPremises/RepresentPremises';
 
 const routes = [
   {
@@ -10,9 +10,9 @@ const routes = [
     component: Home,
   },
   {
-    name: 'Practice',
-    path: '/practice',
-    component: Practice,
+    name: 'q2',
+    path: '/q2',
+    component: RepresentPremises,
   },
   {
     name: 'Quiz',
