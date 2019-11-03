@@ -96,6 +96,19 @@ class Premise {
     });
   }
 
+  getSets() {
+    const {
+      firstTerm,
+      secondTerm,
+    } = this.terms;
+
+    return [
+      { sets: [firstTerm], size: 8 },
+      { sets: [secondTerm], size: 8 },
+      { sets: [firstTerm, secondTerm], size: 2 },
+    ];
+  }
+
   hashCode() {
     return hash(this);
   }
