@@ -66,24 +66,16 @@ class InteractiveVennDiagram extends React.Component {
     super(props);
 
     this.state = {
-      sets: [
-        { sets: ['A'], size: 8 },
-        { sets: ['B'], size: 8 },
-        { sets: ['C'], size: 8 },
-        { sets: ['A', 'B'], size: 2 },
-        { sets: ['B', 'C'], size: 2 },
-        { sets: ['A', 'C'], size: 2 },
-        { sets: ['A', 'B', 'C'], size: 2 },
-      ],
-      width: 200,
-      height: 200,
+      width: 300,
+      height: 300,
     };
   }
 
   componentDidMount() {
-    const { sets, width, height } = this.state;
+    const { title, premise } = this.props;
+    const { width, height } = this.state;
     const chart = venn.VennDiagram().width(width).height(height);
-    const div = d3.select('#venn').datum(sets).call(chart);
+    const div = d3.select(`#${title}`).datum(premise.getSets()).call(chart);
     const svg = div.select('svg');
     const defs = svg.append('defs');
     const labels = div.selectAll('text').remove();
@@ -97,8 +89,9 @@ class InteractiveVennDiagram extends React.Component {
   }
 
   render() {
+    const { title } = this.props;
     const { width, height, ...other } = this.state;
-    return <div id="venn" style={{ padding: 0, width: `${width}px`, height: `${height}px` }} {...other} />;
+    return <div id={title} style={{ padding: 0, width: `${width}px`, height: `${height}px` }} {...other} />;
   }
 }
 
