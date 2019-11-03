@@ -103,6 +103,33 @@ class Premise {
   toString() {
     return JSON.stringify(this.form, this.terms);
   }
+
+  // todo: singular <-> plural algorithm
+  toSentence() {
+    const {
+      ALL_A_IS_B,
+      NO_A_IS_B,
+      SOME_A_IS_NOT_B,
+      SOME_A_IS_B,
+    } = forms;
+    const {
+      firstTerm,
+      secondTerm,
+    } = this.terms;
+    switch (this.form) {
+      case ALL_A_IS_B:
+        return `All ${firstTerm} is ${secondTerm}`;
+      case NO_A_IS_B:
+        return `No ${firstTerm} is ${secondTerm}`;
+      case SOME_A_IS_NOT_B:
+        return `Some ${firstTerm} is not ${secondTerm}`;
+      case SOME_A_IS_B:
+        return `Some ${firstTerm} is ${secondTerm}`;
+      default:
+        break;
+    }
+    return undefined;
+  }
 }
 
 export { Premise, forms };
