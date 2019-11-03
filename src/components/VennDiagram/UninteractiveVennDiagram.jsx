@@ -6,6 +6,7 @@ import * as venn from 'venn.js';
 import Typography from '@material-ui/core/Typography';
 
 import {
+  DEFAULT_SET,
   removeOriginalVennAreas,
   getIntersectionAreasMapping,
   appendLabels,
@@ -19,16 +20,6 @@ const shadings = Object.freeze({
   BLACK: 0,
   RED: 1,
 });
-
-const DEFAULT_SET = [
-  { sets: ['A'], size: 8 },
-  { sets: ['B'], size: 8 },
-  { sets: ['C'], size: 8 },
-  { sets: ['A', 'B'], size: 2 },
-  { sets: ['B', 'C'], size: 2 },
-  { sets: ['A', 'C'], size: 2 },
-  { sets: ['A', 'B', 'C'], size: 2 },
-];
 
 class UninteractiveVennDiagram extends React.Component {
   static shadeParts(div, part, shading) {
