@@ -18,7 +18,7 @@ const MAYBE_SHADED = '1';
 const SHADED = '2';
 
 class InteractiveVennDiagram extends React.Component {
-  static bindVennAreaPartListeners(div) {
+  static bindVennAreaPartListeners(component, div) {
     div.selectAll('g')
       .on('mouseover', function onMouseover() {
         const node = d3.select(this);
@@ -69,10 +69,13 @@ class InteractiveVennDiagram extends React.Component {
       width: 300,
       height: 300,
     };
+
+    this.getShadings = this.getShadings.bind(this);
+    this.shade = this.shade.bind(this);
   }
 
   componentDidMount() {
-    const { title, premise } = this.props;
+    const { title, premise, shadings } = this.props;
     const { width, height } = this.state;
     const chart = venn.VennDiagram().width(width).height(height);
     const div = d3.select(`#${title}`).datum(premise.getSets()).call(chart);
@@ -81,11 +84,19 @@ class InteractiveVennDiagram extends React.Component {
     const labels = div.selectAll('text').remove();
     const intersectionAreasMapping = getIntersectionAreasMapping();
 
+    this.div = div;
+
     appendPatterns(defs);
     appendVennAreaParts(svg, intersectionAreasMapping, true);
     appendLabels(svg, labels);
-    InteractiveVennDiagram.bindVennAreaPartListeners(div);
+    InteractiveVennDiagram.bindVennAreaPartListeners(this, div);
     removeOriginalVennAreas();
+
+    if (shadings) {
+      this.shade(shadings);
+    }
+  }
+
   getShadings() {
     const mappings = {};
     this.div.selectAll('g').each(function onEach() {
