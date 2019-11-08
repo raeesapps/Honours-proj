@@ -86,6 +86,25 @@ class InteractiveVennDiagram extends React.Component {
     appendLabels(svg, labels);
     InteractiveVennDiagram.bindVennAreaPartListeners(div);
     removeOriginalVennAreas();
+  getShadings() {
+    const mappings = {};
+    this.div.selectAll('g').each(function onEach() {
+      const node = d3.select(this);
+      const nodePart = node.attr('venn-area-part-id');
+      const nodeShaded = node.attr('shaded') || NOT_SHADED;
+
+      if (nodePart.indexOf('\\') > -1) {
+        const nodePartSplit = nodePart.split('\\');
+        const leftPart = nodePartSplit[0];
+
+        mappings[leftPart] = nodeShaded;
+      } else {
+        mappings[nodePart] = nodeShaded;
+      }
+    });
+
+    return mappings;
+  }
   }
 
   render() {
