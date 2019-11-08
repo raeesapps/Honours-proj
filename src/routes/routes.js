@@ -1,7 +1,7 @@
 import Home from '../views/Home/Home';
 import Quiz from '../views/Quiz/Quiz';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
-import RepresentPremises from '../views/RepresentPremises/RepresentPremises';
+import RepresentPremiseQuestion from '../views/RepresentPremiseQuestion/RepresentPremiseQuestion';
 
 const routes = [
   {
@@ -12,7 +12,7 @@ const routes = [
   {
     name: 'q2',
     path: '/q2',
-    component: RepresentPremises,
+    component: RepresentPremiseQuestion,
   },
   {
     name: 'Quiz',
