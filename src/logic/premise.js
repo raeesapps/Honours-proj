@@ -117,7 +117,6 @@ class Premise {
     return JSON.stringify(this.form, this.terms);
   }
 
-  // todo: singular <-> plural algorithm
   toSentence() {
     const {
       ALL_A_IS_B,
@@ -131,13 +130,13 @@ class Premise {
     } = this.terms;
     switch (this.form) {
       case ALL_A_IS_B:
-        return `All ${firstTerm} is ${secondTerm}`;
+        return `All ${firstTerm} are ${secondTerm}`;
       case NO_A_IS_B:
-        return `No ${firstTerm} is ${secondTerm}`;
+        return `No ${firstTerm} are ${secondTerm}`;
       case SOME_A_IS_NOT_B:
-        return `Some ${firstTerm} is not ${secondTerm}`;
+        return `Some ${firstTerm} are not ${secondTerm}`;
       case SOME_A_IS_B:
-        return `Some ${firstTerm} is ${secondTerm}`;
+        return `Some ${firstTerm} are ${secondTerm}`;
       default:
         break;
     }
