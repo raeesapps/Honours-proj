@@ -105,6 +105,31 @@ class InteractiveVennDiagram extends React.Component {
 
     return mappings;
   }
+
+  shade(shadings) {
+    this.div.selectAll('g').each(function onEach() {
+      const node = d3.select(this);
+      const nodePath = node.select('path');
+      const nodePart = node.attr('venn-area-part-id');
+
+      let shading;
+      if (nodePart.indexOf('\\') > -1) {
+        const nodePartSplit = nodePart.split('\\');
+        shading = shadings[nodePartSplit[0]];
+      } else {
+        shading = shadings[nodePart];
+      }
+
+      if (shading === NOT_SHADED) {
+        nodePath.attr('style', 'fill: #ffffff');
+      } else if (shading === MAYBE_SHADED) {
+        nodePath.attr('style', 'fill: url(#diagonal0)');
+      } else if (shading === SHADED) {
+        nodePath.attr('style', 'fill: url(#diagonal1)');
+      }
+
+      node.attr('shaded', (parseInt(shading)));
+    });
   }
 
   render() {
