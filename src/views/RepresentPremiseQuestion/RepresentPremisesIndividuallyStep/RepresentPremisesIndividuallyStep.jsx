@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { Premise, forms } from '../../../logic/premise';
-import validate from '../premise_validator';
+import { stages, validate } from '../premise_validator';
 import InteractiveVennDiagram from '../../../components/VennDiagram/InteractiveVennDiagram';
 
 import styles from '../../../assets/views/jss/RepresentPremises/RepresemtPremisesIndividuallyStep/represent_premises_individually_step_styles';
@@ -15,50 +15,21 @@ class RepresentPremisesIndividuallyStep extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      premises: [],
-      refs: [],
-    };
-
     this.validate = this.validate.bind(this);
     this.toSentenceAndVennDiagram = this.toSentenceAndVennDiagram.bind(this);
   }
 
-  componentDidMount() {
-    const { ALL_A_IS_B } = forms;
-    const refs = [React.createRef(), React.createRef()];
-    let { premises } = this.props;
-
-    premises = premises || [new Premise(ALL_A_IS_B, {
-      firstTerm: 'Men',
-      secondTerm: 'Mortal',
-    }), new Premise(ALL_A_IS_B, {
-      firstTerm: 'Greeks',
-      secondTerm: 'Men',
-    })];
-
-    this.setState({ premises, refs });
-  }
-
-  dumpState() {
-    const { refs } = this.state;
-
-    const vennDiagramShadings = refs.map((ref) => ref.current.getShadings());
-
-    return {
-      vennDiagramShadings,
-    };
-  }
-
   validate() {
-    return validate(this.state);
+    const { REPRESENTATION_STAGE } = stages;
+    const { premises, refs } = this.props;
+
+    return validate(premises, refs, REPRESENTATION_STAGE);
   }
 
   toSentenceAndVennDiagram(premise, idx) {
-    const { dump } = this.props;
-    const { refs } = this.state;
+    let { refs, vennDiagramShadings } = this.props;
 
-    const { vennDiagramShadings } = dump || { vennDiagramShadings: [] };
+    vennDiagramShadings = vennDiagramShadings || { vennDiagramShadings: [] };
     const title = `venn${idx.toString()}`;
 
     return (
@@ -74,8 +45,7 @@ class RepresentPremisesIndividuallyStep extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { premises } = this.state;
+    const { classes, premises } = this.props;
     return (
       <div className={classes.root}>
         <Container>

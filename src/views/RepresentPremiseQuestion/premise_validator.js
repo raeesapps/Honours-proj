@@ -4,9 +4,14 @@ const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
 const SHADED = '2';
 
-function validate(state) {
-  function getShadings(premise) {
-    const argument = new PremiseCollection([premise]);
+const stages = Object.freeze({
+  REPRESENTATION_STAGE: 0,
+  COMBINATION_STAGE: 1,
+});
+
+function validate(premisesOrArgument, refOrRefs, stage) {
+  function getShadings(premiseOrArgument) {
+    const argument = (premiseOrArgument instanceof PremiseCollection) ? premiseOrArgument : new PremiseCollection([premiseOrArgument]);
     const argumentVennDiagramParts = argument.getVennDiagramParts().slice(1);
     const resolvedColumn = argument.unifyAndResolve();
     const mappings = {};
@@ -34,20 +39,32 @@ function validate(state) {
     return ordered;
   }
 
-  const { refs, premises } = state;
+  const { REPRESENTATION_STAGE, COMBINATION_STAGE } = stages;
 
-  const result = refs.filter((ref, idx) => {
-    const premise = premises[idx];
+  let result;
 
-    const actualShadings = sortObject(ref.current.getShadings());
-    const expectedShadings = sortObject(getShadings(premise));
+  if (stage === REPRESENTATION_STAGE) {
+    result = refOrRefs.filter((ref, idx) => {
+      const premise = premisesOrArgument[idx];
 
-    return JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
-  }).length === 2;
+      const actualShadings = sortObject(ref.current.getShadings());
+      const expectedShadings = sortObject(getShadings(premise));
+
+      return JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
+    }).length === 2;
+  } else if (stage === COMBINATION_STAGE) {
+    const actualShadings = sortObject(refOrRefs.current.getShadings());
+    const expectedShadings = sortObject(getShadings(premisesOrArgument));
+
+    result = JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
+  }
 
   console.log(result);
 
   return result;
 }
 
-export default validate;
+export {
+  stages,
+  validate,
+};

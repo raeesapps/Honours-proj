@@ -10,31 +10,109 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
+import { Premise, forms } from '../../logic/premise';
+import PremiseCollection from '../../logic/premise_collection';
 import RepresentPremisesIndividuallyStep from './RepresentPremisesIndividuallyStep/RepresentPremisesIndividuallyStep';
+import CombinePremisesStep from './CombinePremisesStep/CombinePremisesStep';
 import styles from '../../assets/views/jss/RepresentPremises/represent_premise_question_styles';
 
 class RepresentPremiseQuestion extends React.Component {
   constructor(props) {
     super(props);
 
-    this.ref = React.createRef();
+    this.representationStepRef = React.createRef();
+    this.combinationStepRef = React.createRef();
 
     this.state = {
+      premises: [],
+      refs: [],
+      argument: null,
+      vennDiagramShadings: null,
+      premiseSets: null,
       step: 0,
-      childStateDump: null,
     };
 
     this.getStepContent = this.getStepContent.bind(this);
+    this.getVennDiagramShadingsAndSets = this.getVennDiagramShadingsAndSets.bind(this);
+    this.onNext = this.onNext.bind(this);
+  }
+
+  componentWillMount() {
+    const { ALL_A_IS_B } = forms;
+    let { premises } = this.props;
+
+    const refs = [React.createRef(), React.createRef()];
+
+    premises = premises || [new Premise(ALL_A_IS_B, {
+      firstTerm: 'Men',
+      secondTerm: 'Mortal',
+    }), new Premise(ALL_A_IS_B, {
+      firstTerm: 'Greeks',
+      secondTerm: 'Men',
+    })];
+    const argument = new PremiseCollection([...premises]);
+
+    this.setState({
+      premises,
+      argument,
+      refs,
+    });
+  }
+
+  onNext(step, steps) {
+    const { representationStepRef, combinationStepRef } = this;
+
+    if (step === steps.length - 1) {
+      combinationStepRef.current.validate();
+      this.setState({ step: step + 1 });
+    } else {
+      const { vennDiagramShadings, premiseSets } = this.getVennDiagramShadingsAndSets();
+      representationStepRef.current.validate();
+      this.setState({ step: step + 1, vennDiagramShadings, premiseSets });
+    }
+  }
+
+  getVennDiagramShadingsAndSets() {
+    const { refs, premises } = this.state;
+
+    const vennDiagramShadings = refs.map((ref) => ref.current.getShadings());
+    const premiseSets = premises.map((premise) => premise.getSets());
+
+    return {
+      vennDiagramShadings,
+      premiseSets,
+    };
   }
 
   getStepContent(step) {
-    const { ref } = this;
-    const { childStateDump } = this.state;
+    const { representationStepRef, combinationStepRef } = this;
+    const {
+      premises,
+      refs,
+      vennDiagramShadings,
+      argument,
+      premiseSets,
+    } = this.state;
+
     switch (step) {
       case 0:
-        return <RepresentPremisesIndividuallyStep ref={ref} dump={childStateDump} />;
+        return (
+          <RepresentPremisesIndividuallyStep
+            ref={representationStepRef}
+            premises={premises}
+            refs={refs}
+            vennDiagramShadings={vennDiagramShadings}
+          />
+        );
       default:
-        return <div />;
+        return (
+          <CombinePremisesStep
+            ref={combinationStepRef}
+            argument={argument}
+            vennDiagramShadings={vennDiagramShadings}
+            premiseSets={premiseSets}
+          />
+        );
     }
   }
 
@@ -63,10 +141,7 @@ class RepresentPremiseQuestion extends React.Component {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => {
-                          this.ref.current.validate();
-                          this.setState({ step: step + 1, childStateDump: this.ref.current.dumpState() });
-                        }}
+                        onClick={() => this.onNext(step, steps)}
                         className={classes.button}
                       >
                         {step === steps.length - 1 ? 'Finish' : 'Next'}
@@ -90,7 +165,6 @@ class RepresentPremiseQuestion extends React.Component {
         </Container>
       </div>
     );
-
   }
 }
 
