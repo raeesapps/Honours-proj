@@ -4,18 +4,20 @@ import * as d3 from "d3";
 import * as venn from 'venn.js';
 
 import {
+  DEFAULT_SET,
+  NOT_SHADED,
+  MAYBE_SHADED,
+  SHADED,
   removeOriginalVennAreas,
   getIntersectionAreasMapping,
   appendLabels,
   appendVennAreaParts,
   appendPatterns,
+  getShadings,
+  shadeAccordingToShadings,
 } from './venn_utils';
 
 import '../../assets/components/css/components/VennDiagram/venn_styles.css';
-
-const NOT_SHADED = '0';
-const MAYBE_SHADED = '1';
-const SHADED = '2';
 
 class InteractiveVennDiagram extends React.Component {
   static bindVennAreaPartListeners(component, div) {
@@ -69,16 +71,30 @@ class InteractiveVennDiagram extends React.Component {
       width: 300,
       height: 300,
     };
-
-    this.getShadings = this.getShadings.bind(this);
-    this.shade = this.shade.bind(this);
   }
 
   componentDidMount() {
-    const { title, premise, shadings } = this.props;
+    const { sets, premise } = this.props;
+
+    if (sets) {
+      this.drawVennDiagram(sets);
+    } else if (premise) {
+      this.drawVennDiagram(premise.getSets());
+    } else {
+      this.drawVennDiagram(DEFAULT_SET);
+    }
+  }
+
+  getShadings() {
+    return getShadings(this.div);
+  }
+
+  drawVennDiagram(sets) {
+    const { title, shadings } = this.props;
     const { width, height } = this.state;
+
     const chart = venn.VennDiagram().width(width).height(height);
-    const div = d3.select(`#${title}`).datum(premise.getSets()).call(chart);
+    const div = d3.select(`#${title}`).datum(sets).call(chart);
     const svg = div.select('svg');
     const defs = svg.append('defs');
     const labels = div.selectAll('text').remove();
@@ -93,54 +109,8 @@ class InteractiveVennDiagram extends React.Component {
     removeOriginalVennAreas();
 
     if (shadings) {
-      this.shade(shadings);
+      shadeAccordingToShadings(this.div, shadings);
     }
-  }
-
-  getShadings() {
-    const mappings = {};
-    this.div.selectAll('g').each(function onEach() {
-      const node = d3.select(this);
-      const nodePart = node.attr('venn-area-part-id');
-      const nodeShaded = node.attr('shaded') || NOT_SHADED;
-
-      if (nodePart.indexOf('\\') > -1) {
-        const nodePartSplit = nodePart.split('\\');
-        const leftPart = nodePartSplit[0];
-
-        mappings[leftPart] = nodeShaded;
-      } else {
-        mappings[nodePart] = nodeShaded;
-      }
-    });
-
-    return mappings;
-  }
-
-  shade(shadings) {
-    this.div.selectAll('g').each(function onEach() {
-      const node = d3.select(this);
-      const nodePath = node.select('path');
-      const nodePart = node.attr('venn-area-part-id');
-
-      let shading;
-      if (nodePart.indexOf('\\') > -1) {
-        const nodePartSplit = nodePart.split('\\');
-        shading = shadings[nodePartSplit[0]];
-      } else {
-        shading = shadings[nodePart];
-      }
-
-      if (shading === NOT_SHADED) {
-        nodePath.attr('style', 'fill: #ffffff');
-      } else if (shading === MAYBE_SHADED) {
-        nodePath.attr('style', 'fill: url(#diagonal0)');
-      } else if (shading === SHADED) {
-        nodePath.attr('style', 'fill: url(#diagonal1)');
-      }
-
-      node.attr('shaded', (parseInt(shading)));
-    });
   }
 
   render() {

@@ -10,6 +10,10 @@ const DEFAULT_SET = [
   { sets: ['A', 'B', 'C'], size: 2 },
 ];
 
+const NOT_SHADED = '0';
+const MAYBE_SHADED = '1';
+const SHADED = '2';
+
 function removeOriginalVennAreas() {
   d3.selectAll('g.venn-area').remove();
 }
@@ -135,11 +139,62 @@ function appendPatterns(defs) {
   });
 }
 
+function getShadings(div) {
+  const mappings = {};
+  div.selectAll('g').each(function onEach() {
+    const node = d3.select(this);
+    const nodePart = node.attr('venn-area-part-id');
+    const nodeShaded = node.attr('shaded') || NOT_SHADED;
+
+    if (nodePart.indexOf('\\') > -1) {
+      const nodePartSplit = nodePart.split('\\');
+      const leftPart = nodePartSplit[0];
+
+      mappings[leftPart] = nodeShaded;
+    } else {
+      mappings[nodePart] = nodeShaded;
+    }
+  });
+
+  return mappings;
+}
+
+function shadeAccordingToShadings(div, shadings) {
+  div.selectAll('g').each(function onEach() {
+    const node = d3.select(this);
+    const nodePath = node.select('path');
+    const nodePart = node.attr('venn-area-part-id');
+
+    let shading;
+    if (nodePart.indexOf('\\') > -1) {
+      const nodePartSplit = nodePart.split('\\');
+      shading = shadings[nodePartSplit[0]];
+    } else {
+      shading = shadings[nodePart];
+    }
+
+    if (shading === NOT_SHADED) {
+      nodePath.attr('style', 'fill: #ffffff');
+    } else if (shading === MAYBE_SHADED) {
+      nodePath.attr('style', 'fill: url(#diagonal0)');
+    } else if (shading === SHADED) {
+      nodePath.attr('style', 'fill: url(#diagonal1)');
+    }
+
+    node.attr('shaded', (parseInt(shading)));
+  });
+}
+
 export {
   DEFAULT_SET,
+  NOT_SHADED,
+  MAYBE_SHADED,
+  SHADED,
   removeOriginalVennAreas,
   getIntersectionAreasMapping,
   appendLabels,
   appendVennAreaParts,
   appendPatterns,
+  getShadings,
+  shadeAccordingToShadings,
 };

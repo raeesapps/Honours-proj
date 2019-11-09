@@ -12,6 +12,7 @@ import {
   appendLabels,
   appendVennAreaParts,
   appendPatterns,
+  shadeAccordingToShadings,
 } from './venn_utils';
 
 import '../../assets/components/css/components/VennDiagram/venn_styles.css';
@@ -54,12 +55,19 @@ class UninteractiveVennDiagram extends React.Component {
   }
 
   componentDidMount() {
-    this.drawVennDiagram(DEFAULT_SET);
+    const { argument } = this.state;
+    const { shading, sets } = this.props;
+
+    if (!argument && shading && sets) {
+      this.drawVennDiagram(sets);
+    } else {
+      this.drawVennDiagram(DEFAULT_SET);
+    }
   }
 
   drawVennDiagram(sets) {
-    const { title } = this.props;
-    const { width, height } = this.state;
+    const { title, shading } = this.props;
+    const { width, height, argument } = this.state;
 
     const chart = venn.VennDiagram().width(width).height(height);
     const div = d3.select(`#${title}`).datum(sets).call(chart);
@@ -74,6 +82,10 @@ class UninteractiveVennDiagram extends React.Component {
     appendVennAreaParts(svg, intersectionAreasMapping, false);
     appendLabels(svg, labels);
     removeOriginalVennAreas();
+
+    if (!argument && shading && this.props.sets) {
+      shadeAccordingToShadings(this.div, shading);
+    }
   }
 
   applyShading(argument) {
@@ -83,7 +95,7 @@ class UninteractiveVennDiagram extends React.Component {
     this.drawVennDiagram(argumentSets);
   }
 
-  shade() {
+  shadeAccordingToArgument() {
     const { argument } = this.state;
     const { BLACK, RED } = shadings;
 
@@ -135,15 +147,17 @@ class UninteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { title, ...other } = this.props;
+    const {
+      title,
+      ...other
+    } = this.props;
     const {
       width,
       height,
       argument,
     } = this.state;
-    const display = argument ? '' : 'none';
     if (argument) {
-      this.shade();
+      this.shadeAccordingToArgument();
     }
     return (
       <div>
@@ -151,7 +165,7 @@ class UninteractiveVennDiagram extends React.Component {
         <div
           id={title}
           style={{
-            display: `${display}`, padding: 0, width: `${width}px`, height: `${height}px`,
+            padding: 0, width: `${width}px`, height: `${height}px`,
           }}
           {...other}
         />
