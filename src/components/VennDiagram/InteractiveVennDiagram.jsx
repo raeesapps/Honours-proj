@@ -20,7 +20,7 @@ import {
 import '../../assets/components/css/components/VennDiagram/venn_styles.css';
 
 class InteractiveVennDiagram extends React.Component {
-  static bindVennAreaPartListeners(component, div) {
+  static bindVennAreaPartListeners(div) {
     div.selectAll('g')
       .on('mouseover', function onMouseover() {
         const node = d3.select(this);
@@ -105,7 +105,7 @@ class InteractiveVennDiagram extends React.Component {
     appendPatterns(defs);
     appendVennAreaParts(svg, intersectionAreasMapping, true);
     appendLabels(svg, labels);
-    InteractiveVennDiagram.bindVennAreaPartListeners(this, div);
+    InteractiveVennDiagram.bindVennAreaPartListeners(div);
     removeOriginalVennAreas();
 
     if (shadings) {
