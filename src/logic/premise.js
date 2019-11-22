@@ -142,6 +142,35 @@ class Premise {
     }
     return undefined;
   }
+
+  // this needs to implement de morgan's law
+  toHaskellForm() {
+    const {
+      ALL_A_IS_B,
+      NO_A_IS_B,
+      SOME_A_IS_NOT_B,
+      SOME_A_IS_B,
+    } = forms;
+    const {
+      firstTerm,
+      secondTerm,
+    } = this.terms;
+    const listOfXs = `[b x|x<-things,${firstTerm}x,${secondTerm}x]`;
+    const listOfNegatedXs = `[not(b x)|x<-things,${firstTerm}x,${secondTerm}x]`;
+    switch (this.form) {
+      case ALL_A_IS_B:
+        return `and${listOfXs}`;
+      case NO_A_IS_B:
+        return `and.not${listOfNegatedXs}`;
+      case SOME_A_IS_NOT_B:
+        return `not.and${listOfXs}`;
+      case SOME_A_IS_B:
+        return `not.and${listOfNegatedXs}`;
+      default:
+        break;
+    }
+    return undefined;
+  }
 }
 
 export { Premise, forms };
