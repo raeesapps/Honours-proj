@@ -5,9 +5,8 @@ export default function move(source, destination, droppableSource, droppableDest
 
   destinationCopy.splice(droppableDestination.index, 0, removed);
 
-  const result = {};
-  result[droppableSource.droppableId] = sourceCopy;
-  result[droppableDestination.droppableId] = destinationCopy;
-
-  return result;
+  return {
+    [droppableSource.droppableId]: sourceCopy,
+    [droppableDestination.droppableId]: destinationCopy,
+  };
 }
