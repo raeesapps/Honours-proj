@@ -13,9 +13,7 @@ import styles from '../../assets/views/jss/PremiseToListQuestion/premise_to_list
 
 const functions = [];
 
-const functions2 = [];
-
-const functions3 = [
+const functions2 = [
   {
     id: 'item-0',
     content: 'and',
@@ -44,13 +42,12 @@ class PremiseToListQuestion extends React.Component {
     this.state = {
       items: [...functions],
       items2: [...functions2],
-      items3: [...functions3],
     };
     this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   onDragEnd(result) {
-    const { items, items2, items3 } = this.state;
+    const { items, items2 } = this.state;
     const { source, destination } = result;
 
     if (!destination) {
@@ -68,10 +65,6 @@ class PremiseToListQuestion extends React.Component {
         sourceList = items2;
         key = 'items2';
         break;
-      case 'droppable3':
-        sourceList = items3;
-        key = 'items3';
-        break;
       default:
         break;
     }
@@ -83,9 +76,6 @@ class PremiseToListQuestion extends React.Component {
         break;
       case 'droppable2':
         destinationList = items2;
-        break;
-      case 'droppable3':
-        destinationList = items3;
         break;
       default:
         break;
@@ -109,17 +99,13 @@ class PremiseToListQuestion extends React.Component {
           state.items2 = moveResult.droppable2;
         }
 
-        if ('droppable3' in moveResult) {
-          state.items3 = moveResult.droppable3;
-        }
-
         this.setState(state);
       }
     }
   }
 
   render() {
-    const { items, items2, items3 } = this.state;
+    const { items, items2 } = this.state;
     const { classes } = this.props;
     const haskellListTemplate = '[b x | x <- things, a x, b x]';
     return (
@@ -133,7 +119,6 @@ class PremiseToListQuestion extends React.Component {
           </Typography>
           <br />
           <SimpleDroppable items={items2} droppableId="droppable2" />
-          <SimpleDroppable items={items3} droppableId="droppable3" />
         </DragDropContext>
       </Container>
     );
