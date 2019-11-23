@@ -1,4 +1,8 @@
-export default function move(source, destination, droppableSource, droppableDestination) {
+export default function move(source, destination, criteria, droppableSource, droppableDestination) {
+  if (!criteria) {
+    return {};
+  }
+
   const sourceCopy = [...source];
   const destinationCopy = [...destination];
   const [removed] = sourceCopy.splice(droppableSource.index, 1);
