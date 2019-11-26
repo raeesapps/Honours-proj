@@ -12,12 +12,14 @@ import reorder from '../../components/DragAndDrop/reorder';
 
 import styles from '../../assets/views/jss/PremiseToListQuestion/premise_to_list_question_styles';
 
-const quantifier = [];
-const drawnFrom = [];
-const firstCondition = [];
-const secondCondition = [];
+const parentFunctionArray = [];
+const grandparentFunctionArray = [];
+const contentsArray = [];
+const drawnFromArray = [];
+const firstConditionArray = [];
+const secondConditionArray = [];
 
-const functions = [
+const functionsArray = [
   {
     id: 'item-0',
     content: 'and',
@@ -40,21 +42,59 @@ const functions = [
   },
 ];
 
+const droppables = [
+  {
+    name: 'functions',
+    initialContents: functionsArray,
+    limit: 100,
+  },
+  {
+    name: 'contents',
+    initialContents: contentsArray,
+    limit: 1,
+  },
+  {
+    name: 'grandparent',
+    initialContents: grandparentFunctionArray,
+    limit: 1,
+  },
+  {
+    name: 'parent',
+    initialContents: parentFunctionArray,
+    limit: 1,
+  },
+  {
+    name: 'drawnFrom',
+    initialContents: drawnFromArray,
+    limit: 1,
+  },
+  {
+    name: 'firstCondition',
+    initialContents: firstConditionArray,
+    limit: 1,
+  },
+  {
+    name: 'secondCondition',
+    initialContents: secondConditionArray,
+    limit: 1,
+  },
+];
+
 class PremiseToListQuestion extends React.Component {
   constructor() {
     super();
-    this.state = {
-      functions: [...functions],
-      quantifier: [...quantifier],
-      drawnFrom: [...drawnFrom],
-      firstCondition: [...firstCondition],
-      secondCondition: [...secondCondition],
-    };
+    const state = {};
+
+    droppables.forEach((droppable) => {
+      const { name, initialContents } = droppable;
+      state[name] = [...initialContents];
+    });
+
+    this.state = state;
     this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   onDragEnd(result) {
-    const { functions, quantifier, drawnFrom, firstCondition, secondCondition } = this.state;
     const { source, destination } = result;
 
     if (!destination) {
@@ -62,82 +102,47 @@ class PremiseToListQuestion extends React.Component {
     }
 
     let sourceList;
-    let key;
-    switch (source.droppableId) {
-      case 'functionsDroppable':
-        sourceList = functions;
-        key = 'functionsDroppable';
-        break;
-      case 'quantifierDroppable':
-        sourceList = quantifier;
-        key = 'quantifierDroppable';
-        break;
-      case 'drawnFromDroppable':
-        sourceList = drawnFrom;
-        key = 'drawnFromDroppable';
-        break;
-      case 'firstConditionDroppable':
-        sourceList = firstCondition;
-        key = 'firstConditionDroppable';
-        break;
-      case 'secondConditionDroppable':
-        sourceList = secondCondition;
-        key = 'secondConditionDroppable';
-        break;
-      default:
-        break;
-    }
-
     let destinationList;
-    switch (destination.droppableId) {
-      case 'functionsDroppable':
-        destinationList = functions;
-        break;
-      case 'quantifierDroppable':
-        destinationList = quantifier;
-        break;
-      case 'drawnFromDroppable':
-        destinationList = drawnFrom;
-        break;
-      case 'firstConditionDroppable':
-        destinationList = firstCondition;
-        break;
-      case 'secondConditionDroppable':
-        destinationList = secondCondition;
-        break;
-      default:
-        break;
-    }
+    let destinationListLimit;
+    let key;
+
+    droppables.forEach((droppable) => {
+      const { name, limit } = droppable;
+
+      if (source.droppableId === name) {
+        sourceList = this.state[name];
+        key = name;
+      }
+
+      if (destination.droppableId === name) {
+        destinationList = this.state[name];
+
+        if (limit) {
+          destinationListLimit = limit;
+        }
+      }
+    });
 
     if (destination.droppableId === source.droppableId) {
       const reorderedItems = reorder(sourceList, source.index, destination.index);
 
       this.setState({ [key]: reorderedItems });
     } else {
-      const moveResult = move(sourceList, destinationList, destinationList.length <= 5, source, destination);
+      const moveResult = move(sourceList, destinationList, destinationList.length < destinationListLimit, source, destination);
+      const dragSuccessful = Object.keys(moveResult).length;
 
-      if (Object.keys(moveResult).length > 0) {
+      if (dragSuccessful) {
         const state = {};
 
-        if ('functionsDroppable' in moveResult) {
-          state.functions = moveResult.functionsDroppable;
-        }
+        droppables.filter((droppable) => {
+          const { name } = droppable;
 
-        if ('quantifierDroppable' in moveResult) {
-          state.quantifier = moveResult.quantifierDroppable;
-        }
+          return name in moveResult;
+        }).forEach((droppable) => {
+          const { name } = droppable;
 
-        if ('drawnFromDroppable' in moveResult) {
-          state.drawnFrom = moveResult.drawnFromDroppable;
-        }
-
-        if ('firstConditionDroppable' in moveResult) {
-          state.firstCondition = moveResult.firstConditionDroppable;
-        }
-
-        if ('secondConditionDroppable' in moveResult) {
-          state.secondCondition = moveResult.secondConditionDroppable;
-        }
+          state[name] = moveResult[name];
+        });
 
         this.setState(state);
       }
@@ -145,31 +150,46 @@ class PremiseToListQuestion extends React.Component {
   }
 
   render() {
-    const { functions, quantifier, drawnFrom, firstCondition, secondCondition } = this.state;
+    const { grandparentVisible } = this.props;
+    const {
+      functions,
+      parent,
+      grandparent,
+      contents,
+      drawnFrom,
+      firstCondition,
+      secondCondition,
+    } = this.state;
     const { classes } = this.props;
     const { HORIZONTAL, VERTICAL } = alignment;
-    const haskellListTemplate = '[b x | x <- things, a x, b x]';
     return (
       <Container>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <SimpleDroppable items={quantifier} droppableId="quantifierDroppable" alignment={VERTICAL} />
+          {
+            grandparentVisible && <SimpleDroppable items={grandparent} droppableId="grandparent" alignment={VERTICAL} />
+          }
+          <SimpleDroppable items={parent} droppableId="parent" alignment={VERTICAL} />
           <Typography className={classes.typography} variant="h4">
-            [b x |
+            [
           </Typography>
-          <SimpleDroppable items={drawnFrom} droppableId="drawnFromDroppable" alignment={VERTICAL} />
+          <SimpleDroppable items={contents} droppableId="contents" alignment={VERTICAL} />
+          <Typography className={classes.typography} variant="h4">
+            |
+          </Typography>
+          <SimpleDroppable items={drawnFrom} droppableId="drawnFrom" alignment={VERTICAL} />
           <Typography className={classes.typography} variant="h4">
             ,
           </Typography>
-          <SimpleDroppable items={firstCondition} droppableId="firstConditionDroppable" alignment={VERTICAL} />
+          <SimpleDroppable items={firstCondition} droppableId="firstCondition" alignment={VERTICAL} />
           <Typography className={classes.typography} variant="h4">
             ,
           </Typography>
-          <SimpleDroppable items={secondCondition} droppableId="secondConditionDroppable" alignment={VERTICAL} />
+          <SimpleDroppable items={secondCondition} droppableId="secondCondition" alignment={VERTICAL} />
           <Typography className={classes.typography} variant="h4">
             ]
           </Typography>
           <br />
-          <SimpleDroppable items={functions} droppableId="functionsDroppable" alignment={HORIZONTAL} />
+          <SimpleDroppable items={functions} droppableId="functions" alignment={HORIZONTAL} />
         </DragDropContext>
       </Container>
     );
