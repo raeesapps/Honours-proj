@@ -16,8 +16,7 @@ const parentFunctionArray = [];
 const grandparentFunctionArray = [];
 const contentsArray = [];
 const drawnFromArray = [];
-const firstConditionArray = [];
-const secondConditionArray = [];
+const conditionArray = [];
 
 const functionsArray = [
   {
@@ -34,11 +33,23 @@ const functionsArray = [
   },
   {
     id: 'item-3',
-    content: 'not',
+    content: 'not (isMan x)',
   },
   {
     id: 'item-4',
-    content: 'xor',
+    content: 'isMan x',
+  },
+  {
+    id: 'item-5',
+    content: 'isMortal x',
+  },
+  {
+    id: 'item-6',
+    content: 'not (isMortal x)',
+  },
+  {
+    id: 'item-7',
+    content: 'x <- things',
   },
 ];
 
@@ -69,13 +80,8 @@ const droppables = [
     limit: 1,
   },
   {
-    name: 'firstCondition',
-    initialContents: firstConditionArray,
-    limit: 1,
-  },
-  {
-    name: 'secondCondition',
-    initialContents: secondConditionArray,
+    name: 'condition',
+    initialContents: conditionArray,
     limit: 1,
   },
 ];
@@ -157,38 +163,39 @@ class PremiseToListQuestion extends React.Component {
       grandparent,
       contents,
       drawnFrom,
-      firstCondition,
-      secondCondition,
+      condition,
     } = this.state;
     const { classes } = this.props;
     const { HORIZONTAL, VERTICAL } = alignment;
     return (
       <Container>
+        <Typography className={classes.titleTypography} variant="h3">
+          Please translate the premise 'All Men are Mortal'
+        </Typography>
         <DragDropContext onDragEnd={this.onDragEnd}>
           {
             grandparentVisible && <SimpleDroppable items={grandparent} droppableId="grandparent" alignment={VERTICAL} />
           }
           <SimpleDroppable items={parent} droppableId="parent" alignment={VERTICAL} />
-          <Typography className={classes.typography} variant="h4">
+          <Typography className={classes.haskellTypography} variant="h4">
             [
           </Typography>
           <SimpleDroppable items={contents} droppableId="contents" alignment={VERTICAL} />
-          <Typography className={classes.typography} variant="h4">
+          <Typography className={classes.haskellTypography} variant="h4">
             |
           </Typography>
           <SimpleDroppable items={drawnFrom} droppableId="drawnFrom" alignment={VERTICAL} />
-          <Typography className={classes.typography} variant="h4">
+          <Typography className={classes.haskellTypography} variant="h4">
             ,
           </Typography>
-          <SimpleDroppable items={firstCondition} droppableId="firstCondition" alignment={VERTICAL} />
-          <Typography className={classes.typography} variant="h4">
-            ,
-          </Typography>
-          <SimpleDroppable items={secondCondition} droppableId="secondCondition" alignment={VERTICAL} />
-          <Typography className={classes.typography} variant="h4">
+          <SimpleDroppable items={condition} droppableId="condition" alignment={VERTICAL} />
+          <Typography className={classes.haskellTypography} variant="h4">
             ]
           </Typography>
-          <br />
+          <div className={classes.spacing} />
+          <Typography className={classes.instructionTypography} variant="h5">
+            Please drag Haskell statements below and drop them into the appropriate location above.
+          </Typography>
           <SimpleDroppable items={functions} droppableId="functions" alignment={HORIZONTAL} />
         </DragDropContext>
       </Container>
