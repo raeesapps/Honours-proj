@@ -1,9 +1,12 @@
-const grid = 8;
+import alignment from '../../../../components/DragAndDrop/alignment';
 
-function styles(isDraggingOver) {
+const grid = 8;
+const { HORIZONTAL } = alignment;
+
+function styles(isDraggingOver, direction) {
   return {
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    display: 'inline-block',
+    display: direction === HORIZONTAL ? 'inline-flex' : 'inline-block',
     padding: grid,
     overflow: 'auto',
     minHeight: '68px',
