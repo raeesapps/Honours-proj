@@ -26,24 +26,25 @@ function singularise(word) {
 
   const n = word.length;
 
-  const last3Characters = /(...)$/;
-  const last2Characters = /(..)$/;
-  const lastCharacter = /(.)$/;
+  const last3Characters = word.substring(n - 3, n);
+  const last2Characters = word.substring(n - 2, n);
+  const lastCharacter = word.substring(n - 1, n);
 
-  const matchLast3Characters = word.match(last3Characters);
-  const matchLast2Characters = word.match(last2Characters);
-  const matchLastCharacter = word.match(lastCharacter);
-
-  if (matchLast3Characters === 'ies') {
+  if (last3Characters === 'ies') {
     const wordWithoutIes = word.substring(0, n - 3);
     return `${wordWithoutIes}y`;
   }
 
-  if (matchLast2Characters === 'es') {
+  if (last2Characters === 'en') {
+    const wordWithoutEn = word.substring(0, n - 2);
+    return `${wordWithoutEn}an`;
+  }
+
+  if (last2Characters === 'es') {
     return word.substring(0, n - 2);
   }
 
-  if (matchLastCharacter === 's') {
+  if (lastCharacter === 's') {
     return word.substring(0, n - 1);
   }
 
