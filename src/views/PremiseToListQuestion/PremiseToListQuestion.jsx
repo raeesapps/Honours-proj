@@ -10,6 +10,8 @@ import alignment from '../../components/DragAndDrop/alignment';
 import move from '../../components/DragAndDrop/move';
 import reorder from '../../components/DragAndDrop/reorder';
 
+import premiseToFunctions from './premise_to_functions';
+
 import styles from '../../assets/views/jss/PremiseToListQuestion/premise_to_list_question_styles';
 
 const parentFunctionArray = [];
@@ -30,22 +32,6 @@ const functionsArray = [
   {
     id: 'item-2',
     content: 'not',
-  },
-  {
-    id: 'item-3',
-    content: 'not (isMan x)',
-  },
-  {
-    id: 'item-4',
-    content: 'isMan x',
-  },
-  {
-    id: 'item-5',
-    content: 'isMortal x',
-  },
-  {
-    id: 'item-6',
-    content: 'not (isMortal x)',
   },
   {
     id: 'item-7',
@@ -87,13 +73,22 @@ const droppables = [
 ];
 
 class PremiseToListQuestion extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { premise } = props;
     const state = {};
+
+    const premiseFunctions = premiseToFunctions(premise);
 
     droppables.forEach((droppable) => {
       const { name, initialContents } = droppable;
-      state[name] = [...initialContents];
+
+      if (name === 'functions') {
+        state[name] = [...functionsArray, ...premiseFunctions];
+      } else {
+        state[name] = [...initialContents];
+      }
     });
 
     this.state = state;
@@ -165,12 +160,15 @@ class PremiseToListQuestion extends React.Component {
       drawnFrom,
       condition,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, premise } = this.props;
     const { HORIZONTAL, VERTICAL } = alignment;
     return (
       <Container>
         <Typography className={classes.titleTypography} variant="h3">
-          Please translate the premise 'All Men are Mortal'
+          Please translate the premise
+          {
+            ` '${premise.toSentence()}'`
+          }
         </Typography>
         <DragDropContext onDragEnd={this.onDragEnd}>
           {
