@@ -1,4 +1,5 @@
 import hash from 'object-hash';
+import singularise from '../utils/inflector';
 
 const tableEntryFunctions = Object.freeze({
   e: function entryForE() {
@@ -143,8 +144,39 @@ class Premise {
     return undefined;
   }
 
-  // this needs to implement de morgan's law
-  toHaskellForm() {
+  toFunctions() {
+    const {
+      firstTerm,
+      secondTerm,
+    } = this.terms;
+
+    const singularisedFirstTerm = singularise(firstTerm);
+
+    if (!singularisedFirstTerm) {
+      throw new Error(`Inflector cannot singularise the word ${firstTerm}`);
+    }
+
+    return [
+      {
+        id: 'item-3',
+        content: `not (is${singularisedFirstTerm} x)`,
+      },
+      {
+        id: 'item-4',
+        content: `is${singularisedFirstTerm} x`,
+      },
+      {
+        id: 'item-5',
+        content: `is${secondTerm} x`,
+      },
+      {
+        id: 'item-6',
+        content: `not (is${secondTerm} x)`,
+      },
+    ];
+  }
+
+  toHaskellRepresentation() {
     const {
       ALL_A_IS_B,
       NO_A_IS_B,
@@ -155,21 +187,87 @@ class Premise {
       firstTerm,
       secondTerm,
     } = this.terms;
-    const listOfXs = `[b x|x<-things,${firstTerm}x,${secondTerm}x]`;
-    const listOfNegatedXs = `[not(b x)|x<-things,${firstTerm}x,${secondTerm}x]`;
+
+    const singularisedFirstTerm = singularise(firstTerm);
+
     switch (this.form) {
       case ALL_A_IS_B:
-        return `and${listOfXs}`;
+        return [['and'], `${singularisedFirstTerm} x`, 'x <- things', `${secondTerm}x`];
       case NO_A_IS_B:
-        return `and.not${listOfNegatedXs}`;
+        return [['and', 'not'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${secondTerm}x`];
       case SOME_A_IS_NOT_B:
-        return `not.and${listOfXs}`;
+        return [['not', 'and'], `${singularisedFirstTerm} x`, 'x <- things', `${secondTerm}x`];
       case SOME_A_IS_B:
-        return `not.and${listOfNegatedXs}`;
+        return [['not', 'and'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${secondTerm}x`];
       default:
         break;
     }
+
     return undefined;
+  }
+
+  validate(parent, grandparent, contents, drawnFrom, condition) {
+    const {
+      ALL_A_IS_B,
+      NO_A_IS_B,
+      SOME_A_IS_NOT_B,
+      SOME_A_IS_B,
+    } = forms;
+
+    const {
+      firstTerm,
+      secondTerm,
+    } = this.terms;
+
+    const singularisedFirstTerm = singularise(firstTerm);
+    const contentsNegated = contents === `not(${singularisedFirstTerm} x)`;
+    const contentsNotNegated = contents === `${singularisedFirstTerm} x`;
+
+    if (this.form === ALL_A_IS_B) {
+      const firstForm = grandparent === 'not' && parent === 'or' && contentsNegated;
+      const secondForm = grandparent === '' && parent === 'and' && contentsNotNegated;
+      const thirdForm = grandparent === 'and' && parent === '' && contentsNotNegated;
+
+      if (!firstForm && !secondForm && !thirdForm) {
+        return false;
+      }
+    } else if (this.form === NO_A_IS_B) {
+      const firstForm = grandparent === 'and' && parent === 'not' && contentsNotNegated;
+      const secondForm = grandparent === 'not' && parent === 'or' && contentsNotNegated;
+      const thirdForm = grandparent === 'and' && parent === '' && contentsNegated;
+      const fourthForm = grandparent === '' && parent === 'and' && contentsNegated;
+
+      if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
+        return false;
+      }
+    } else if (this.form === SOME_A_IS_NOT_B) {
+      const firstForm = grandparent === 'not' && parent === 'and' && contentsNotNegated;
+      const secondForm = grandparent === 'or' && parent === 'not' && contentsNotNegated;
+      const thirdForm = grandparent === 'or' && parent === '' && contentsNegated;
+      const fourthForm = grandparent === '' && parent === 'or' && contentsNegated;
+
+      if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
+        return false;
+      }
+    } else if (this.form === SOME_A_IS_B) {
+      const firstForm = grandparent === 'not' && parent === 'and' && contentsNegated;
+      const secondForm = grandparent === 'or' && parent === '' && contentsNotNegated;
+      const thirdForm = grandparent === '' && parent === 'or' && contentsNotNegated;
+
+      if (!firstForm && !secondForm && !thirdForm) {
+        return false;
+      }
+    }
+
+    if (drawnFrom !== 'x <- things') {
+      return false;
+    }
+
+    if (condition !== `${secondTerm}x`) {
+      return false;
+    }
+
+    return true;
   }
 }
 
