@@ -1,5 +1,6 @@
 import hash from 'object-hash';
 import singularise from '../utils/inflector';
+import capitaliseAndRemoveWhitespace from '../utils/string';
 
 const tableEntryFunctions = Object.freeze({
   e: function entryForE() {
@@ -150,10 +151,15 @@ class Premise {
       secondTerm,
     } = this.terms;
 
-    const singularisedFirstTerm = singularise(firstTerm);
+    const singularisedFirstTerm = capitaliseAndRemoveWhitespace(singularise(firstTerm));
+    const singularisedSecondTerm = capitaliseAndRemoveWhitespace(singularise(secondTerm));
 
     if (!singularisedFirstTerm) {
       throw new Error(`Inflector cannot singularise the word ${firstTerm}`);
+    }
+
+    if (!singularisedSecondTerm) {
+      throw new Error(`Inflector cannot singularise the phrase ${secondTerm}`);
     }
 
     return [
@@ -167,11 +173,11 @@ class Premise {
       },
       {
         id: 'item-5',
-        content: `is${secondTerm} x`,
+        content: `is${singularisedSecondTerm} x`,
       },
       {
         id: 'item-6',
-        content: `not (is${secondTerm} x)`,
+        content: `not (is${singularisedSecondTerm} x)`,
       },
     ];
   }
@@ -188,17 +194,18 @@ class Premise {
       secondTerm,
     } = this.terms;
 
-    const singularisedFirstTerm = singularise(firstTerm);
+    const singularisedFirstTerm = capitaliseAndRemoveWhitespace(singularise(firstTerm));
+    const singularisedSecondTerm = capitaliseAndRemoveWhitespace(singularise(secondTerm));
 
     switch (this.form) {
       case ALL_A_IS_B:
-        return [['and'], `${singularisedFirstTerm} x`, 'x <- things', `${secondTerm}x`];
+        return [['and'], `${singularisedFirstTerm} x`, 'x <- things', `${singularisedSecondTerm}x`];
       case NO_A_IS_B:
-        return [['and', 'not'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${secondTerm}x`];
+        return [['and', 'not'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${singularisedSecondTerm}x`];
       case SOME_A_IS_NOT_B:
-        return [['not', 'and'], `${singularisedFirstTerm} x`, 'x <- things', `${secondTerm}x`];
+        return [['not', 'and'], `${singularisedFirstTerm} x`, 'x <- things', `${singularisedSecondTerm}x`];
       case SOME_A_IS_B:
-        return [['not', 'and'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${secondTerm}x`];
+        return [['not', 'and'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${singularisedSecondTerm}x`];
       default:
         break;
     }
@@ -219,7 +226,9 @@ class Premise {
       secondTerm,
     } = this.terms;
 
-    const singularisedFirstTerm = singularise(firstTerm);
+    const singularisedFirstTerm = capitaliseAndRemoveWhitespace(singularise(firstTerm));
+    const singularisedSecondTerm = capitaliseAndRemoveWhitespace(singularise(secondTerm));
+
     const contentsNegated = contentsList.length && contentsList[0].content === `not(is${singularisedFirstTerm} x)`;
     const contentsNotNegated = contentsList.length && contentsList[0].content === `is${singularisedFirstTerm} x`;
 
@@ -263,7 +272,7 @@ class Premise {
       return false;
     }
 
-    if (conditionList.length && conditionList[0].content !== `is${secondTerm} x`) {
+    if (conditionList.length && conditionList[0].content !== `is${singularisedSecondTerm} x`) {
       return false;
     }
 
