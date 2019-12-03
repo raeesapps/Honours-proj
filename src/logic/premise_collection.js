@@ -23,6 +23,10 @@ class PremiseCollection {
     return this.table.resolve();
   }
 
+  size() {
+    return this.table.size();
+  }
+
   getVennDiagramParts() {
     const n = this.table.numberOfTerms;
     const vennDiagramParts = [];
