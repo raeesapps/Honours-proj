@@ -6,6 +6,8 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
 import SimpleDroppable from '../../../components/DragAndDrop/SimpleDroppable';
+import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
+import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 import alignment from '../../../components/DragAndDrop/alignment';
 import move from '../../../components/DragAndDrop/move';
 import reorder from '../../../components/DragAndDrop/reorder';
@@ -79,7 +81,10 @@ class PremiseToListStep extends React.Component {
     super(props);
 
     const { premise } = props;
-    const state = {};
+    const state = {
+      errorVisible: false,
+      errorMessage: null,
+    };
 
     const premiseFunctions = premise.toFunctions(premise);
 
@@ -96,6 +101,7 @@ class PremiseToListStep extends React.Component {
     this.state = state;
     this.onDragEnd = this.onDragEnd.bind(this);
     this.validate = this.validate.bind(this);
+    this.showErrorBar = this.showErrorBar.bind(this);
   }
 
   onDragEnd(result) {
@@ -166,6 +172,13 @@ class PremiseToListStep extends React.Component {
     return premise.validate(parent, grandparent, contents, drawnFrom, condition);
   }
 
+  showErrorBar(message) {
+    this.setState({
+      errorMessage: message,
+      errorVisible: true,
+    });
+  }
+
   render() {
     const {
       functions,
@@ -174,11 +187,23 @@ class PremiseToListStep extends React.Component {
       contents,
       drawnFrom,
       condition,
+      errorMessage,
+      errorVisible,
     } = this.state;
     const { classes, premise } = this.props;
+    const { ERROR } = snackbarTypes;
     const { HORIZONTAL, VERTICAL } = alignment;
+    const snackbarWrapperDisplayVal = !errorVisible ? 'none' : '';
     return (
       <Container>
+        <SnackbarWrapper
+          style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
+          variant={ERROR}
+          message={errorMessage}
+          onClose={() => {
+            this.setState({ errorVisible: false, errorMessage: null });
+          }}
+        />
         <Typography className={classes.titleTypography} variant="h3">
           Please translate the premise
           {

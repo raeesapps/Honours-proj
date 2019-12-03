@@ -46,6 +46,7 @@ class ArgumentToListQuestion extends React.Component {
     this.state = {
       premises: argument.premises,
       step: 0,
+      hint: null,
     };
     this.getStepContent = this.getStepContent.bind(this);
     this.onNext = this.onNext.bind(this);
@@ -55,10 +56,18 @@ class ArgumentToListQuestion extends React.Component {
     const { componentRefs } = this;
     const ref = componentRefs[step];
 
-    if (ref.current.validate()) {
+    if (!ref.current) {
+      throw new Error('Reference is not referencing a component!');
+    }
+
+    const { result, hint } = ref.current.validate();
+
+    if (result) {
       this.setState({
         step: step + 1,
       });
+    } else {
+      ref.current.showErrorBar(hint);
     }
   }
 
@@ -78,6 +87,13 @@ class ArgumentToListQuestion extends React.Component {
     return (
       <div className={classes.root}>
         <Container>
+          <Typography variant="h3" style={{ marginBottom: '5px' }}>Translate Premises to Haskell List Comprehension; </Typography>
+
+          {
+            premises.map((premise, idx) => (
+              <Typography style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="h4">{premise.toSentence()}</Typography>
+            ))
+          }
           <Stepper activeStep={step} orientation="vertical">
             {steps.map((label, index) => (
               <Step key={label}>
