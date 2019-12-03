@@ -32,7 +32,11 @@ const functionsArray = [
     content: 'not',
   },
   {
-    id: 'item-7',
+    id: 'item-12',
+    content: 'xor',
+  },
+  {
+    id: 'item-11',
     content: 'x <- things',
   },
 ];

@@ -179,6 +179,22 @@ class Premise {
         id: 'item-6',
         content: `not (is${singularisedSecondTerm} x)`,
       },
+      {
+        id: 'item-7',
+        content: `not is${singularisedSecondTerm}`,
+      },
+      {
+        id: 'item-8',
+        content: `not is${singularisedFirstTerm}`,
+      },
+      {
+        id: 'item-9',
+        content: `is${singularisedSecondTerm}`,
+      },
+      {
+        id: 'item-10',
+        content: `is${singularisedFirstTerm}`,
+      },
     ];
   }
 
