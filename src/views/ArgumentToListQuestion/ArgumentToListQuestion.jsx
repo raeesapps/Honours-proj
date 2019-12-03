@@ -39,14 +39,18 @@ class ArgumentToListQuestion extends React.Component {
       firstTerm: `${c}`,
       secondTerm: `${d}`,
     });
+    const allLionsAreCarnivores = new Premise(ALL_A_IS_B, {
+      firstTerm: `${a}`,
+      secondTerm: `${d}`,
+    });
 
     const argument = new PremiseCollection([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
+    argument.addConclusionButDoNotArgue(allLionsAreCarnivores);
 
     this.componentRefs = [...Array(argument.size()).keys()].map(() => React.createRef());
     this.state = {
       premises: argument.premises,
       step: 0,
-      hint: null,
     };
     this.getStepContent = this.getStepContent.bind(this);
     this.onNext = this.onNext.bind(this);

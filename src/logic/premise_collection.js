@@ -79,6 +79,11 @@ class PremiseCollection {
     return this.table.validate(conclusion);
   }
 
+  addConclusionButDoNotArgue(conclusion) {
+    this.premises = [...this.premises, conclusion];
+    this.table.addPremise(conclusion);
+  }
+
   toString() {
     return JSON.stringify(this.table, this.premises);
   }
