@@ -254,7 +254,10 @@ class Premise {
       const thirdForm = grandparentList.length && grandparentList[0].content === 'and' && !parentList.length && contentsNotNegated;
 
       if (!firstForm && !secondForm && !thirdForm) {
-        return false;
+        return {
+          hint: 'No hint defined yet!',
+          result: false,
+        };
       }
     } else if (this.form === NO_A_IS_B) {
       const firstForm = grandparentList.length && grandparentList[0].content === 'and' && parentList.length && parentList[0].content === 'not' && contentsNotNegated;
@@ -263,7 +266,10 @@ class Premise {
       const fourthForm = !grandparentList.length && parentList.length && parentList[0].content === 'and' && contentsNegated;
 
       if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
-        return false;
+        return {
+          hint: 'No hint defined yet!',
+          result: false,
+        };
       }
     } else if (this.form === SOME_A_IS_B) {
       const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'and' && contentsNotNegated;
@@ -272,7 +278,10 @@ class Premise {
       const fourthForm = !grandparentList.length && parentList.length && parentList[0].content === 'or' && contentsNegated;
 
       if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
-        return false;
+        return {
+          hint: 'No hint defined yet!',
+          result: false,
+        };
       }
     } else if (this.form === SOME_A_IS_NOT_B) {
       const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'and' && contentsNegated;
@@ -280,19 +289,30 @@ class Premise {
       const thirdForm = !grandparentList.length && parentList.length && parentList[0].content === 'or' && contentsNotNegated;
 
       if (!firstForm && !secondForm && !thirdForm) {
-        return false;
+        return {
+          hint: 'No hint defined yet!',
+          result: false,
+        };
       }
     }
 
     if (drawnFromList.length && drawnFromList[0].content !== 'x <- things') {
-      return false;
+      return {
+        hint: 'Is your generator correct?',
+        result: false,
+      };
     }
 
     if (conditionList.length && conditionList[0].content !== `is${singularisedSecondTerm} x`) {
-      return false;
+      return {
+        hint: 'Are you sure you are using the correct function for the second term?',
+        result: false,
+      };
     }
 
-    return true;
+    return {
+      result: true,
+    };
   }
 }
 
