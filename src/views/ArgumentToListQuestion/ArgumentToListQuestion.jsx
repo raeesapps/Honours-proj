@@ -75,8 +75,8 @@ class ArgumentToListQuestion extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { step } = this.state;
-    const steps = ['Step 1', 'Step 2', 'Step 3'];
+    const { step, premises } = this.state;
+    const steps = premises.map((premise) => premise.toSentence());
     return (
       <div className={classes.root}>
         <Container>
