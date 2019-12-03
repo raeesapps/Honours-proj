@@ -206,7 +206,7 @@ class Premise {
     return undefined;
   }
 
-  validate(parent, grandparent, contents, drawnFrom, condition) {
+  validate(parentList, grandparentList, contentsList, drawnFromList, conditionList) {
     const {
       ALL_A_IS_B,
       NO_A_IS_B,
@@ -220,50 +220,50 @@ class Premise {
     } = this.terms;
 
     const singularisedFirstTerm = singularise(firstTerm);
-    const contentsNegated = contents === `not(${singularisedFirstTerm} x)`;
-    const contentsNotNegated = contents === `${singularisedFirstTerm} x`;
+    const contentsNegated = contentsList.length && contentsList[0].content === `not(is${singularisedFirstTerm} x)`;
+    const contentsNotNegated = contentsList.length && contentsList[0].content === `is${singularisedFirstTerm} x`;
 
     if (this.form === ALL_A_IS_B) {
-      const firstForm = grandparent === 'not' && parent === 'or' && contentsNegated;
-      const secondForm = grandparent === '' && parent === 'and' && contentsNotNegated;
-      const thirdForm = grandparent === 'and' && parent === '' && contentsNotNegated;
+      const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'or' && contentsNegated;
+      const secondForm = !grandparentList.length && parentList.length && parentList[0].content === 'and' && contentsNotNegated;
+      const thirdForm = grandparentList.length && grandparentList[0].content === 'and' && !parentList.length && contentsNotNegated;
 
       if (!firstForm && !secondForm && !thirdForm) {
         return false;
       }
     } else if (this.form === NO_A_IS_B) {
-      const firstForm = grandparent === 'and' && parent === 'not' && contentsNotNegated;
-      const secondForm = grandparent === 'not' && parent === 'or' && contentsNotNegated;
-      const thirdForm = grandparent === 'and' && parent === '' && contentsNegated;
-      const fourthForm = grandparent === '' && parent === 'and' && contentsNegated;
-
-      if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
-        return false;
-      }
-    } else if (this.form === SOME_A_IS_NOT_B) {
-      const firstForm = grandparent === 'not' && parent === 'and' && contentsNotNegated;
-      const secondForm = grandparent === 'or' && parent === 'not' && contentsNotNegated;
-      const thirdForm = grandparent === 'or' && parent === '' && contentsNegated;
-      const fourthForm = grandparent === '' && parent === 'or' && contentsNegated;
+      const firstForm = grandparentList.length && grandparentList[0].content === 'and' && parentList.length && parentList[0].content === 'not' && contentsNotNegated;
+      const secondForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'or' && contentsNotNegated;
+      const thirdForm = grandparentList.length && grandparentList[0].content === 'and' && !parentList.length && contentsNegated;
+      const fourthForm = !grandparentList.length && parentList.length && parentList[0].content === 'and' && contentsNegated;
 
       if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
         return false;
       }
     } else if (this.form === SOME_A_IS_B) {
-      const firstForm = grandparent === 'not' && parent === 'and' && contentsNegated;
-      const secondForm = grandparent === 'or' && parent === '' && contentsNotNegated;
-      const thirdForm = grandparent === '' && parent === 'or' && contentsNotNegated;
+      const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'and' && contentsNotNegated;
+      const secondForm = grandparentList.length && grandparentList[0].content === 'or' && parentList.length && parentList[0].content === 'not' && contentsNotNegated;
+      const thirdForm = grandparentList.length && grandparentList[0].content === 'or' && !parentList.length && contentsNegated;
+      const fourthForm = !grandparentList.length && parentList.length && parentList[0].content === 'or' && contentsNegated;
+
+      if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
+        return false;
+      }
+    } else if (this.form === SOME_A_IS_NOT_B) {
+      const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'and' && contentsNegated;
+      const secondForm = grandparentList.length && grandparentList[0].content === 'or' && !parentList.length && contentsNotNegated;
+      const thirdForm = !grandparentList.length && parentList.length && parentList[0].content === 'or' && contentsNotNegated;
 
       if (!firstForm && !secondForm && !thirdForm) {
         return false;
       }
     }
 
-    if (drawnFrom !== 'x <- things') {
+    if (drawnFromList.length && drawnFromList[0].content !== 'x <- things') {
       return false;
     }
 
-    if (condition !== `${secondTerm}x`) {
+    if (conditionList.length && conditionList[0].content !== `is${secondTerm} x`) {
       return false;
     }
 
