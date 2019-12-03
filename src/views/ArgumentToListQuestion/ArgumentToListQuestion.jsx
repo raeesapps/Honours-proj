@@ -42,13 +42,11 @@ class ArgumentToListQuestion extends React.Component {
 
     const argument = new PremiseCollection([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
 
-    this.componentRefs = [...Array(3).keys()].map(() => React.createRef());
-
+    this.componentRefs = [...Array(argument.size()).keys()].map(() => React.createRef());
     this.state = {
       premises: argument.premises,
       step: 0,
     };
-
     this.getStepContent = this.getStepContent.bind(this);
     this.onNext = this.onNext.bind(this);
   }
