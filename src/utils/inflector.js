@@ -24,6 +24,10 @@ function singularise(word) {
     return 'genie';
   }
 
+  if (word === 'people') {
+    return 'person';
+  }
+
   const n = word.length;
 
   const last3Characters = word.substring(n - 3, n);
