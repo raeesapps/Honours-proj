@@ -180,6 +180,7 @@ class PremiseToListStep extends React.Component {
   }
 
   render() {
+    const { ERROR } = snackbarTypes;
     const {
       functions,
       parent,
@@ -191,7 +192,6 @@ class PremiseToListStep extends React.Component {
       errorVisible,
     } = this.state;
     const { classes, premise } = this.props;
-    const { ERROR } = snackbarTypes;
     const { HORIZONTAL, VERTICAL } = alignment;
     const snackbarWrapperDisplayVal = !errorVisible ? 'none' : '';
     return (
