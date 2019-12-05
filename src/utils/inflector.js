@@ -8,6 +8,10 @@ function singularise(word) {
     return word;
   }
 
+  if (word === 'mortal') {
+    return word;
+  }
+
   if (word === 'radii') {
     return 'radius';
   }
