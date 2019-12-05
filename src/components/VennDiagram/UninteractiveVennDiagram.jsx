@@ -69,8 +69,9 @@ class UninteractiveVennDiagram extends React.Component {
     const { title, shading } = this.props;
     const { width, height, argument } = this.state;
 
+    const id = title.split(' ').join('');
     const chart = venn.VennDiagram().width(width).height(height);
-    const div = d3.select(`#${title}`).datum(sets).call(chart);
+    const div = d3.select(`#${id}`).datum(sets).call(chart);
     const svg = div.select('svg');
     const defs = svg.append('defs');
     const labels = div.selectAll('text').remove();
@@ -156,6 +157,7 @@ class UninteractiveVennDiagram extends React.Component {
       height,
       argument,
     } = this.state;
+    const id = title.split(' ').join('');
     if (argument) {
       this.shadeAccordingToArgument();
     }
@@ -163,7 +165,7 @@ class UninteractiveVennDiagram extends React.Component {
       <div>
         <Typography variant="h6">{title}</Typography>
         <div
-          id={title}
+          id={id}
           style={{
             padding: 0, width: `${width}px`, height: `${height}px`,
           }}

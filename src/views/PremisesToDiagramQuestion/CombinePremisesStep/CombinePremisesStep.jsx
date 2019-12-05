@@ -21,8 +21,13 @@ class CombinePremisesStep extends React.Component {
   }
 
   shadingEntryToVennDiagram(shading, idx) {
-    const { premiseSets } = this.props;
-    const title = `venn${idx.toString()}l0l`;
+    const { premiseSets, argument } = this.props;
+
+    if (!premiseSets[idx] || !argument.premises[idx]) {
+      throw new Error('Invalid index!');
+    }
+
+    const title = argument.premises[idx].toSentence();
     return (
       <Grid item xs={6}>
         <UninteractiveVennDiagram title={title} shading={shading} sets={premiseSets[idx]} />
