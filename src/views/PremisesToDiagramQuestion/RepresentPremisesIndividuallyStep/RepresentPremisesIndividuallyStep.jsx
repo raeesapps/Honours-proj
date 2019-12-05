@@ -9,7 +9,7 @@ import { Premise, forms } from '../../../logic/premise';
 import { stages, validate } from '../premise_validator';
 import InteractiveVennDiagram from '../../../components/VennDiagram/InteractiveVennDiagram';
 
-import styles from '../../../assets/views/jss/RepresentPremises/RepresemtPremisesIndividuallyStep/represent_premises_individually_step_styles';
+import styles from '../../../assets/views/jss/PremisesToDiagramQuestion/RepresemtPremisesIndividuallyStep/represent_premises_individually_step_styles';
 
 class RepresentPremisesIndividuallyStep extends React.Component {
   constructor(props) {

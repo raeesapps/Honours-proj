@@ -10,7 +10,7 @@ import { stages, validate } from '../premise_validator';
 import InteractiveVennDiagram from '../../../components/VennDiagram/InteractiveVennDiagram';
 import UninteractiveVennDiagram from '../../../components/VennDiagram/UninteractiveVennDiagram';
 
-import styles from '../../../assets/views/jss/RepresentPremises/CombinePremisesStep/combine_premises_step_styles';
+import styles from '../../../assets/views/jss/PremisesToDiagramQuestion/CombinePremisesStep/combine_premises_step_styles';
 
 class CombinePremisesStep extends React.Component {
   constructor() {

@@ -14,9 +14,9 @@ import { Premise, forms } from '../../logic/premise';
 import PremiseCollection from '../../logic/premise_collection';
 import RepresentPremisesIndividuallyStep from './RepresentPremisesIndividuallyStep/RepresentPremisesIndividuallyStep';
 import CombinePremisesStep from './CombinePremisesStep/CombinePremisesStep';
-import styles from '../../assets/views/jss/RepresentPremises/represent_premise_question_styles';
+import styles from '../../assets/views/jss/PremisesToDiagramQuestion/premises_to_diagram_question_styles';
 
-class RepresentPremiseQuestion extends React.Component {
+class PremisesToDiagramQuestion extends React.Component {
   constructor(props) {
     super(props);
 
@@ -168,4 +168,4 @@ class RepresentPremiseQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(RepresentPremiseQuestion);
+export default withStyles(styles)(PremisesToDiagramQuestion);
