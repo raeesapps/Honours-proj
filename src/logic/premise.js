@@ -145,14 +145,11 @@ class Premise {
     return undefined;
   }
 
-  toFunctions() {
-    const {
-      firstTerm,
-      secondTerm,
-    } = this.terms;
+  formatAndSingularise() {
+    const { firstTerm, secondTerm } = this.terms;
 
-    const singularisedFirstTerm = capitaliseAndRemoveWhitespace(singularise(firstTerm));
-    const singularisedSecondTerm = capitaliseAndRemoveWhitespace(singularise(secondTerm));
+    const singularisedFirstTerm = singularise(firstTerm);
+    const singularisedSecondTerm = singularise(secondTerm);
 
     if (!singularisedFirstTerm) {
       throw new Error(`Inflector cannot singularise the word ${firstTerm}`);
@@ -162,38 +159,47 @@ class Premise {
       throw new Error(`Inflector cannot singularise the phrase ${secondTerm}`);
     }
 
+    const formattedFirstTerm = capitaliseAndRemoveWhitespace(singularisedFirstTerm);
+    const formattedSecondTerm = capitaliseAndRemoveWhitespace(singularisedSecondTerm);
+
+    return { formattedFirstTerm, formattedSecondTerm };
+  }
+
+  toFunctions() {
+    const { formattedFirstTerm, formattedSecondTerm } = this.formatAndSingularise();
+
     return [
       {
         id: 'item-3',
-        content: `not (is${singularisedFirstTerm} x)`,
+        content: `not (is${formattedFirstTerm} x)`,
       },
       {
         id: 'item-4',
-        content: `is${singularisedFirstTerm} x`,
+        content: `is${formattedFirstTerm} x`,
       },
       {
         id: 'item-5',
-        content: `is${singularisedSecondTerm} x`,
+        content: `is${formattedSecondTerm} x`,
       },
       {
         id: 'item-6',
-        content: `not (is${singularisedSecondTerm} x)`,
+        content: `not (is${formattedSecondTerm} x)`,
       },
       {
         id: 'item-7',
-        content: `not is${singularisedSecondTerm}`,
+        content: `not is${formattedSecondTerm}`,
       },
       {
         id: 'item-8',
-        content: `not is${singularisedFirstTerm}`,
+        content: `not is${formattedFirstTerm}`,
       },
       {
         id: 'item-9',
-        content: `is${singularisedSecondTerm}`,
+        content: `is${formattedSecondTerm}`,
       },
       {
         id: 'item-10',
-        content: `is${singularisedFirstTerm}`,
+        content: `is${formattedFirstTerm}`,
       },
     ];
   }
@@ -205,23 +211,18 @@ class Premise {
       SOME_A_IS_NOT_B,
       SOME_A_IS_B,
     } = forms;
-    const {
-      firstTerm,
-      secondTerm,
-    } = this.terms;
 
-    const singularisedFirstTerm = capitaliseAndRemoveWhitespace(singularise(firstTerm));
-    const singularisedSecondTerm = capitaliseAndRemoveWhitespace(singularise(secondTerm));
+    const { formattedFirstTerm, formattedSecondTerm } = this.formatAndSingularise();
 
     switch (this.form) {
       case ALL_A_IS_B:
-        return [['and'], `${singularisedFirstTerm} x`, 'x <- things', `${singularisedSecondTerm}x`];
+        return [['and'], `${formattedFirstTerm} x`, 'x <- things', `${formattedSecondTerm}x`];
       case NO_A_IS_B:
-        return [['and', 'not'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${singularisedSecondTerm}x`];
+        return [['and', 'not'], `not(${formattedFirstTerm} x)`, 'x <- things', `${formattedSecondTerm}x`];
       case SOME_A_IS_NOT_B:
-        return [['not', 'and'], `${singularisedFirstTerm} x`, 'x <- things', `${singularisedSecondTerm}x`];
+        return [['not', 'and'], `${formattedFirstTerm} x`, 'x <- things', `${formattedSecondTerm}x`];
       case SOME_A_IS_B:
-        return [['not', 'and'], `not(${singularisedFirstTerm} x)`, 'x <- things', `${singularisedSecondTerm}x`];
+        return [['not', 'and'], `not(${formattedFirstTerm} x)`, 'x <- things', `${formattedSecondTerm}x`];
       default:
         break;
     }
@@ -237,16 +238,10 @@ class Premise {
       SOME_A_IS_B,
     } = forms;
 
-    const {
-      firstTerm,
-      secondTerm,
-    } = this.terms;
+    const { formattedFirstTerm, formattedSecondTerm } = this.formatAndSingularise();
 
-    const singularisedFirstTerm = capitaliseAndRemoveWhitespace(singularise(firstTerm));
-    const singularisedSecondTerm = capitaliseAndRemoveWhitespace(singularise(secondTerm));
-
-    const contentsNegated = contentsList.length && contentsList[0].content === `not(is${singularisedFirstTerm} x)`;
-    const contentsNotNegated = contentsList.length && contentsList[0].content === `is${singularisedFirstTerm} x`;
+    const contentsNegated = contentsList.length && contentsList[0].content === `not(is${formattedFirstTerm} x)`;
+    const contentsNotNegated = contentsList.length && contentsList[0].content === `is${formattedFirstTerm} x`;
 
     if (this.form === ALL_A_IS_B) {
       const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'or' && contentsNegated;
@@ -303,7 +298,7 @@ class Premise {
       };
     }
 
-    if (conditionList.length && conditionList[0].content !== `is${singularisedSecondTerm} x`) {
+    if (conditionList.length && conditionList[0].content !== `is${formattedSecondTerm} x`) {
       return {
         hint: 'Are you sure you are using the correct function for the second term?',
         result: false,
