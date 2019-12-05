@@ -63,12 +63,15 @@ class PremisesToDiagramQuestion extends React.Component {
     const { representationStepRef, combinationStepRef } = this;
 
     if (step === steps.length - 1) {
-      combinationStepRef.current.validate();
-      this.setState({ step: step + 1 });
+      if (combinationStepRef.current.validate()) {
+        this.setState({ step: step + 1 });
+      }
     } else {
       const { vennDiagramShadings, premiseSets } = this.getVennDiagramShadingsAndSets();
-      representationStepRef.current.validate();
-      this.setState({ step: step + 1, vennDiagramShadings, premiseSets });
+
+      if (representationStepRef.current.validate()) {
+        this.setState({ step: step + 1, vennDiagramShadings, premiseSets });
+      }
     }
   }
 

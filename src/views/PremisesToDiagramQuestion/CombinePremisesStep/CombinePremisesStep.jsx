@@ -7,6 +7,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validate } from '../premise_validator';
+
+import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
+import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 import InteractiveVennDiagram from '../../../components/VennDiagram/InteractiveVennDiagram';
 import UninteractiveVennDiagram from '../../../components/VennDiagram/UninteractiveVennDiagram';
 
@@ -16,6 +19,9 @@ class CombinePremisesStep extends React.Component {
   constructor() {
     super();
 
+    this.state = {
+      showError: false,
+    };
     this.vennDiagramRef = React.createRef();
     this.shadingEntryToVennDiagram = this.shadingEntryToVennDiagram.bind(this);
   }
@@ -38,14 +44,29 @@ class CombinePremisesStep extends React.Component {
   validate() {
     const { COMBINATION_STAGE } = stages;
     const { argument } = this.props;
-    return validate(argument, this.vennDiagramRef, COMBINATION_STAGE);
+
+    const result = validate(argument, this.vennDiagramRef, COMBINATION_STAGE);
+    this.setState({ showError: !result });
+
+    return result;
   }
 
   render() {
+    const { ERROR } = snackbarTypes;
     const { classes, vennDiagramShadings, argument } = this.props;
+    const { showError } = this.state;
+    const snackbarWrapperDisplayVal = !showError ? 'none' : '';
     return (
       <div className={classes.root}>
         <Container>
+          <SnackbarWrapper
+            style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
+            variant={ERROR}
+            message="Incorrect!"
+            onClose={() => {
+              this.setState({ showError: false });
+            }}
+          />
           <Typography className={classes.instructions} variant="h6">
             Please combine the Venn Diagrams from the previous step into one Venn Diagram:
           </Typography>

@@ -7,7 +7,10 @@ import Typography from '@material-ui/core/Typography';
 
 import { Premise, forms } from '../../../logic/premise';
 import { stages, validate } from '../premise_validator';
+
 import InteractiveVennDiagram from '../../../components/VennDiagram/InteractiveVennDiagram';
+import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
+import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 
 import styles from '../../../assets/views/jss/PremisesToDiagramQuestion/RepresemtPremisesIndividuallyStep/represent_premises_individually_step_styles';
 
@@ -15,6 +18,9 @@ class RepresentPremisesIndividuallyStep extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showError: false,
+    };
     this.validate = this.validate.bind(this);
     this.toSentenceAndVennDiagram = this.toSentenceAndVennDiagram.bind(this);
   }
@@ -23,7 +29,10 @@ class RepresentPremisesIndividuallyStep extends React.Component {
     const { REPRESENTATION_STAGE } = stages;
     const { premises, refs } = this.props;
 
-    return validate(premises, refs, REPRESENTATION_STAGE);
+    const result = validate(premises, refs, REPRESENTATION_STAGE);
+    this.setState({ showError: !result });
+
+    return result;
   }
 
   toSentenceAndVennDiagram(premise, idx) {
@@ -45,10 +54,22 @@ class RepresentPremisesIndividuallyStep extends React.Component {
   }
 
   render() {
+    const { ERROR } = snackbarTypes;
     const { classes, premises } = this.props;
+    const { showError } = this.state;
+    const snackbarWrapperDisplayVal = !showError ? 'none' : '';
+
     return (
       <div className={classes.root}>
         <Container>
+          <SnackbarWrapper
+            style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
+            variant={ERROR}
+            message="Incorrect!"
+            onClose={() => {
+              this.setState({ showError: false });
+            }}
+          />
           <Typography className={classes.instructions} variant="h6">
             Please shade in the diagrams to represent the premises:
           </Typography>
