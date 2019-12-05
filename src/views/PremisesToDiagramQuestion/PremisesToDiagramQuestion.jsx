@@ -10,8 +10,6 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import { Premise, forms } from '../../logic/premise';
-import PremiseCollection from '../../logic/premise_collection';
 import RepresentPremisesIndividuallyStep from './RepresentPremisesIndividuallyStep/RepresentPremisesIndividuallyStep';
 import CombinePremisesStep from './CombinePremisesStep/CombinePremisesStep';
 import styles from '../../assets/views/jss/PremisesToDiagramQuestion/premises_to_diagram_question_styles';
@@ -38,23 +36,19 @@ class PremisesToDiagramQuestion extends React.Component {
   }
 
   componentWillMount() {
-    const { ALL_A_IS_B } = forms;
-    let { premises } = this.props;
+    const { location } = this.props;
+    const { question } = location;
 
+    if (!question) {
+      throw new Error('Question not provided! You must not use the refresh button on this app.');
+    }
+
+    const { content } = question;
     const refs = [React.createRef(), React.createRef()];
 
-    premises = premises || [new Premise(ALL_A_IS_B, {
-      firstTerm: 'Men',
-      secondTerm: 'Mortal',
-    }), new Premise(ALL_A_IS_B, {
-      firstTerm: 'Greeks',
-      secondTerm: 'Men',
-    })];
-    const argument = new PremiseCollection([...premises]);
-
     this.setState({
-      premises,
-      argument,
+      premises: content.premises,
+      argument: content,
       refs,
     });
   }

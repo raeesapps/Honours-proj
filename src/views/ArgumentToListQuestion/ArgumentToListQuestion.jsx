@@ -13,43 +13,22 @@ import Typography from '@material-ui/core/Typography';
 import PremiseToListStep from './PremiseToListStep/PremiseToListStep';
 
 import styles from '../../assets/views/jss/ArgumentToListQuestion/argument_to_list_question_styles';
-import PremiseCollection from '../../logic/premise_collection';
-import { Premise, forms } from '../../logic/premise';
 
 class ArgumentToListQuestion extends React.Component {
   constructor(props) {
     super(props);
+    const { location } = this.props;
+    const { question } = location;
 
-    const a = 'lions';
-    const b = 'big cats';
-    const c = 'predators';
-    const d = 'carnivores';
+    if (!question) {
+      throw new Error('Question not provided! You must not use the refresh button on this app.');
+    }
 
-    const { ALL_A_IS_B } = forms;
+    const { content } = question;
 
-    const allLionsAreBigCatsPremise = new Premise(ALL_A_IS_B, {
-      firstTerm: `${a}`,
-      secondTerm: `${b}`,
-    });
-    const allBigCatsArePredators = new Premise(ALL_A_IS_B, {
-      firstTerm: `${b}`,
-      secondTerm: `${c}`,
-    });
-    const allPredatorsAreCarnivores = new Premise(ALL_A_IS_B, {
-      firstTerm: `${c}`,
-      secondTerm: `${d}`,
-    });
-    const allLionsAreCarnivores = new Premise(ALL_A_IS_B, {
-      firstTerm: `${a}`,
-      secondTerm: `${d}`,
-    });
-
-    const argument = new PremiseCollection([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
-    argument.addConclusionButDoNotArgue(allLionsAreCarnivores);
-
-    this.componentRefs = [...Array(argument.size()).keys()].map(() => React.createRef());
+    this.componentRefs = [...Array(content.size()).keys()].map(() => React.createRef());
     this.state = {
-      premises: argument.premises,
+      premises: content.premises,
       step: 0,
     };
     this.getStepContent = this.getStepContent.bind(this);
