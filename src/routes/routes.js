@@ -1,7 +1,8 @@
 import Home from '../views/Home/Home';
-import Quiz from '../views/Quiz/Quiz';
+import Questions from '../views/Questions/Questions';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
-import RepresentPremiseQuestion from '../views/RepresentPremiseQuestion/RepresentPremiseQuestion';
+import ArgumentToListQuestion from '../views/ArgumentToListQuestion/ArgumentToListQuestion';
+import PremisesToDiagramQuestion from '../views/PremisesToDiagramQuestion/PremisesToDiagramQuestion';
 
 const routes = [
   {
@@ -10,14 +11,19 @@ const routes = [
     component: Home,
   },
   {
-    name: 'q2',
-    path: '/q2',
-    component: RepresentPremiseQuestion,
+    name: 'Questions',
+    path: '/questions',
+    component: Questions,
   },
   {
-    name: 'Quiz',
-    path: '/quiz',
-    component: Quiz,
+    name: 'argumentToListQuestion',
+    path: '/argumentToListQuestion',
+    component: ArgumentToListQuestion,
+  },
+  {
+    name: 'premisesToDiagramQuestion',
+    path: '/premisesToDiagramQuestion',
+    component: PremisesToDiagramQuestion,
   },
   {
     name: 'Instant Solver',
