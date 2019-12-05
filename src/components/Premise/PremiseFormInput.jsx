@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -7,7 +8,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import RemoveIcon from '@material-ui/icons/Remove';
+
 import { Premise, forms } from '../../logic/premise';
+
 import styles from '../../assets/components/jss/Premise/premise_form_input_styles';
 
 const quantifiers = Object.freeze({
