@@ -59,8 +59,6 @@ function validate(premisesOrArgument, refOrRefs, stage) {
     result = JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
   }
 
-  console.log(result);
-
   return result;
 }
 
