@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import syllogisms from '../../assets/views/img/Home/syllogisms.png';
 import styles from '../../assets/views/jss/Home/home_styles';
 
 function Home(props) {
@@ -43,6 +44,9 @@ function Home(props) {
               The web app also provides the instant solver where you can check if a syllogistic argument is valid.
             </Typography>
           </Paper>
+          <center>
+            <img src={syllogisms} alt="syllogisms" />
+          </center>
         </Grid>
       </Grid>
     </div>
