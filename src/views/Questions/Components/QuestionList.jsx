@@ -6,7 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import styles from '../../assets/components/jss/QuestionList/question_list_styles';
+import styles from '../../../assets/views/jss/Questions/Components/question_list_styles';
 
 function QuestionList(props) {
   const { questions, path, classes } = props;
