@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -15,7 +16,7 @@ import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
-import ArgumentForm from '../../components/Argument/ArgumentForm';
+import ArgumentForm from './Components/ArgumentForm';
 import UninteractiveVennDiagram from '../../components/VennDiagram/UninteractiveVennDiagram';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
 
@@ -23,10 +24,12 @@ import PremiseCollection from '../../logic/premise_collection';
 import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
 
+const { SUCCESS, ERROR } = snackbarTypes;
+
 class InstantSolver extends React.Component {
-  constructor(props) {
-    super(props);
-    const { ERROR } = snackbarTypes;
+  constructor() {
+    super();
+
     this.state = {
       snackbarVisible: false,
       snackbarType: ERROR,
@@ -47,7 +50,6 @@ class InstantSolver extends React.Component {
   onSubmitForm() {
     const argumentForm = this.argumentFormRef.current;
     const { premises } = argumentForm.state;
-    const { SUCCESS, ERROR } = snackbarTypes;
 
     const premisesVennDiagram = this.premisesVennDiagramRef.current;
     const argument = new PremiseCollection(premises
@@ -85,8 +87,6 @@ class InstantSolver extends React.Component {
   }
 
   onError(msg) {
-    const { ERROR } = snackbarTypes;
-
     this.setState({ snackbarVisible: true, snackbarType: ERROR, snackbarMsg: msg });
   }
 
