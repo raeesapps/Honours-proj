@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 
-import PremiseToDiagramStep from '../../PremiseToDiagramQuestion/PremiseToDiagramStep';
+import PremiseToDiagramStep from '../../../components/PremiseToDiagram/PremiseToDiagramStep';
 
 import styles from '../../../assets/views/jss/PremisesToDiagramQuestion/RepresentPremisesStep/represent_premises_step_styles';
 

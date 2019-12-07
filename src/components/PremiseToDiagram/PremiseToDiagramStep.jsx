@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 
 import { stages, validate } from '../../logic/premise_validator';
 
-import InteractiveVennDiagram from '../../components/VennDiagram/InteractiveVennDiagram';
+import InteractiveVennDiagram from '../VennDiagram/InteractiveVennDiagram';
 
-import styles from '../../assets/views/jss/PremiseToDiagramQuestion/premise_to_diagram_step_styles';
+import styles from '../../assets/components/jss/PremiseToDiagram/premise_to_diagram_step_styles';
 
 class PremiseToDiagramStep extends React.Component {
   constructor() {
