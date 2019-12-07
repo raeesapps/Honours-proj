@@ -9,9 +9,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { Premise, forms } from '../../logic/premise';
+import { Premise, forms } from '../../../logic/premise';
 
-import styles from '../../assets/components/jss/Premise/premise_form_input_styles';
+import styles from '../../../assets/views/jss/InstantSolver/Components/premise_form_input_styles';
 
 const quantifiers = Object.freeze({
   SOME: 'Some',
@@ -25,8 +25,8 @@ const relations = Object.freeze({
 });
 
 class PremiseFormInput extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     const {
       ALL,
     } = quantifiers;
