@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 
-import PremiseToDiagramStep from '../../../components/PremiseToDiagram/PremiseToDiagramStep';
+import PremiseToDiagram from '../../../components/PremiseToDiagram/PremiseToDiagram';
 
 import styles from '../../../assets/views/jss/PremisesToDiagramQuestion/RepresentPremisesStep/represent_premises_step_styles';
 
@@ -59,7 +59,7 @@ class RepresentPremisesStep extends React.Component {
           </Typography>
           {
             premises.map((premise, idx) => (
-              <PremiseToDiagramStep premise={premise} vennDiagramShading={vennDiagramShadings[idx]} ref={refs[idx]} />
+              <PremiseToDiagram premise={premise} vennDiagramShading={vennDiagramShadings[idx]} ref={refs[idx]} />
             ))
           }
         </Container>

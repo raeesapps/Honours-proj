@@ -8,9 +8,9 @@ import { stages, validate } from '../../logic/premise_validator';
 
 import InteractiveVennDiagram from '../VennDiagram/InteractiveVennDiagram';
 
-import styles from '../../assets/components/jss/PremiseToDiagram/premise_to_diagram_step_styles';
+import styles from '../../assets/components/jss/PremiseToDiagram/premise_to_diagram_styles';
 
-class PremiseToDiagramStep extends React.Component {
+class PremiseToDiagram extends React.Component {
   constructor() {
     super();
     this.vennDiagramRef = React.createRef();
@@ -60,4 +60,4 @@ class PremiseToDiagramStep extends React.Component {
   }
 }
 
-export default withStyles(styles)(PremiseToDiagramStep);
+export default withStyles(styles)(PremiseToDiagram);
