@@ -92,9 +92,10 @@ class InteractiveVennDiagram extends React.Component {
   drawVennDiagram(sets) {
     const { title, shadings } = this.props;
     const { width, height } = this.state;
+    const id = title.split(' ').join('');
 
     const chart = venn.VennDiagram().width(width).height(height);
-    const div = d3.select(`#${title}`).datum(sets).call(chart);
+    const div = d3.select(`#${id}`).datum(sets).call(chart);
     const svg = div.select('svg');
     const defs = svg.append('defs');
     const labels = div.selectAll('text').remove();
@@ -116,7 +117,9 @@ class InteractiveVennDiagram extends React.Component {
   render() {
     const { title } = this.props;
     const { width, height, ...other } = this.state;
-    return <div id={title} style={{ padding: 0, width: `${width}px`, height: `${height}px` }} {...other} />;
+    const id = title.split(' ').join('');
+
+    return <div id={id} style={{ padding: 0, width: `${width}px`, height: `${height}px` }} {...other} />;
   }
 }
 
