@@ -10,13 +10,13 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import RepresentPremisesIndividuallyStep from './RepresentPremisesIndividuallyStep/RepresentPremisesIndividuallyStep';
+import RepresentPremisesStep from './RepresentPremisesStep/RepresentPremisesStep';
 import CombinePremisesStep from './CombinePremisesStep/CombinePremisesStep';
 import styles from '../../assets/views/jss/PremisesToDiagramQuestion/premises_to_diagram_question_styles';
 
 class PremisesToDiagramQuestion extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.representationStepRef = React.createRef();
     this.combinationStepRef = React.createRef();
@@ -72,7 +72,7 @@ class PremisesToDiagramQuestion extends React.Component {
   getVennDiagramShadingsAndSets() {
     const { refs, premises } = this.state;
 
-    const vennDiagramShadings = refs.map((ref) => ref.current.getShadings());
+    const vennDiagramShadings = refs.map((ref) => ref.current.vennDiagramRef.current.getShadings());
     const premiseSets = premises.map((premise) => premise.getSets());
 
     return {
@@ -94,7 +94,7 @@ class PremisesToDiagramQuestion extends React.Component {
     switch (step) {
       case 0:
         return (
-          <RepresentPremisesIndividuallyStep
+          <RepresentPremisesStep
             ref={representationStepRef}
             premises={premises}
             refs={refs}
