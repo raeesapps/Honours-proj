@@ -1,17 +1,18 @@
 import React from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
-import PremiseFormInput from '../Premise/PremiseFormInput';
+import PremiseFormInput from './PremiseFormInput';
 
-import styles from '../../assets/components/jss/Argument/argument_form_styles';
+import styles from '../../../assets/views/jss/InstantSolver/Components/argument_form_styles';
 
 class ArgumentForm extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     const premises = [
       {
         name: 'Premise',
