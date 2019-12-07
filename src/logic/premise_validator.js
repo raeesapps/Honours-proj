@@ -1,4 +1,4 @@
-import PremiseCollection from "../../logic/premise_collection";
+import PremiseCollection from "./premise_collection";
 
 const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
@@ -51,7 +51,7 @@ function validate(premisesOrArgument, refOrRefs, stage) {
       const expectedShadings = sortObject(getShadings(premise));
 
       return JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
-    }).length === 2;
+    }).length === refOrRefs.length;
   } else if (stage === COMBINATION_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
     const expectedShadings = sortObject(getShadings(premisesOrArgument));
