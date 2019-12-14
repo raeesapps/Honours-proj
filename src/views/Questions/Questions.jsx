@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import PremiseCollection from '../../logic/premise_collection';
 import { Premise, forms } from '../../logic/premise';
 
-import QuestionList from './Components/QuestionList';
+import QuestionList from '../../components/QuestionList/QuestionList';
 import styles from '../../assets/views/jss/Questions/questions_styles';
 
 function generatePremiseCollection(premises, conclusion) {
@@ -61,20 +61,20 @@ function Quiz() {
   ];
   const premiseToDiagramQuestions = [
     {
-      title: 'BARBARA',
+      title: 'All A are B',
       content: new Premise(ALL_A_IS_B, {
-        firstTerm: 'men',
-        secondTerm: 'mortal',
+        firstTerm: 'A',
+        secondTerm: 'B',
       }),
     },
   ];
   return (
     <Container>
-      <QuestionList questions={argumentToListQuestions} path="/argumentToListQuestion" />
+      <QuestionList title="Syllogism to Haskell List" questions={argumentToListQuestions} path="/argumentToListQuestion" />
       <br />
-      <QuestionList questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
+      <QuestionList title="Syllogism to Venn Diagram" questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
       <br />
-      <QuestionList questions={premiseToDiagramQuestions} path="/premiseToDiagramQuestion" />
+      <QuestionList title="Premise to Venn Diagram" questions={premiseToDiagramQuestions} path="/premiseToDiagramQuestion" />
     </Container>
   );
 }
