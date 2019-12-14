@@ -83,7 +83,7 @@ class NavDrawer extends React.Component {
           </div>
           <Divider />
           <List>
-            {routes.map((prop) => {
+            {routes.filter((prop) => prop.displayInDrawer).map((prop) => {
               const isCurrPath = window.location.pathname === prop.path;
               return (
                 <NavLink
