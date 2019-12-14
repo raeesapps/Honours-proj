@@ -59,11 +59,22 @@ function Quiz() {
       ),
     },
   ];
+  const premiseToDiagramQuestions = [
+    {
+      title: 'BARBARA',
+      content: new Premise(ALL_A_IS_B, {
+        firstTerm: 'men',
+        secondTerm: 'mortal',
+      }),
+    },
+  ];
   return (
     <Container>
       <QuestionList questions={argumentToListQuestions} path="/argumentToListQuestion" />
       <br />
       <QuestionList questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
+      <br />
+      <QuestionList questions={premiseToDiagramQuestions} path="/premiseToDiagramQuestion" />
     </Container>
   );
 }

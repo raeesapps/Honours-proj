@@ -2,6 +2,7 @@ import Home from '../views/Home/Home';
 import Questions from '../views/Questions/Questions';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
 import ArgumentToListQuestion from '../views/ArgumentToListQuestion/ArgumentToListQuestion';
+import PremiseToDiagramQuestion from '../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
 import PremisesToDiagramQuestion from '../views/PremisesToDiagramQuestion/PremisesToDiagramQuestion';
 
 const routes = [
@@ -21,6 +22,12 @@ const routes = [
     name: 'argumentToListQuestion',
     path: '/argumentToListQuestion',
     component: ArgumentToListQuestion,
+    displayInDrawer: false,
+  },
+  {
+    name: 'premiseToDiagramQuestion',
+    path: '/premiseToDiagramQuestion',
+    component: PremiseToDiagramQuestion,
     displayInDrawer: false,
   },
   {
