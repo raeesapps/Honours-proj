@@ -1,5 +1,5 @@
 import Home from '../views/Home/Home';
-import Questions from '../views/Questions/Questions';
+import QuestionList from '../views/QuestionList/QuestionList';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
 import ArgumentToListQuestion from '../views/ArgumentToListQuestion/ArgumentToListQuestion';
 import PremiseToDiagramQuestion from '../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
@@ -15,7 +15,7 @@ const routes = [
   {
     name: 'Questions',
     path: '/questions',
-    component: Questions,
+    component: QuestionList,
     displayInDrawer: true,
   },
   {
