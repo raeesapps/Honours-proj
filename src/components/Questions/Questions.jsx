@@ -6,8 +6,8 @@ import Container from '@material-ui/core/Container';
 import PremiseCollection from '../../logic/premise_collection';
 import { Premise, forms } from '../../logic/premise';
 
-import QuestionList from '../../components/QuestionList/QuestionList';
-import styles from '../../assets/views/jss/Questions/questions_styles';
+import QuestionList from '../QuestionList/QuestionList';
+import styles from '../../assets/components/jss/Questions/questions_styles';
 
 function generatePremiseCollection(premises, conclusion) {
   const premiseCollection = new PremiseCollection([...premises]);
@@ -19,7 +19,7 @@ function generatePremiseCollection(premises, conclusion) {
   return premiseCollection;
 }
 
-function Quiz() {
+function Questions() {
   const { ALL_A_IS_B } = forms;
   const argumentToListQuestions = [
     {
@@ -79,4 +79,4 @@ function Quiz() {
   );
 }
 
-export default withStyles(styles)(Quiz);
+export default withStyles(styles)(Questions);
