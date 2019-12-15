@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import * as d3 from 'd3';
 import * as venn from 'venn.js';
@@ -175,5 +176,11 @@ class UninteractiveVennDiagram extends React.Component {
     );
   }
 }
+
+UninteractiveVennDiagram.propTypes = {
+  title: PropTypes.string.isRequired,
+  shading: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sets: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default UninteractiveVennDiagram;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -152,5 +153,12 @@ class PremiseFormInput extends React.Component {
     );
   }
 }
+
+PremiseFormInput.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+  name: PropTypes.string.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  idx: PropTypes.number.isRequired,
+};
 
 export default withStyles(styles)(PremiseFormInput);

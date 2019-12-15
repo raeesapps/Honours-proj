@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
@@ -78,5 +80,7 @@ function Questions() {
     </Container>
   );
 }
+
+Questions.propTypes = {};
 
 export default withStyles(styles)(Questions);

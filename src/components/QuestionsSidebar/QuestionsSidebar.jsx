@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
@@ -23,5 +25,8 @@ function QuestionsSidebar(props) {
   );
 }
 
-export default withStyles(styles)(QuestionsSidebar);
+QuestionsSidebar.propTypes = {
+  InjectedComponent: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
+export default withStyles(styles)(QuestionsSidebar);

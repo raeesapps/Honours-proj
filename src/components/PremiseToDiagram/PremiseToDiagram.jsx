@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -46,7 +48,7 @@ class PremiseToDiagram extends React.Component {
   }
 
   render() {
-    const { classes, premise } = this.props;
+    const { premise } = this.props;
 
     return (
       <div>
@@ -59,5 +61,10 @@ class PremiseToDiagram extends React.Component {
     );
   }
 }
+
+PremiseToDiagram.propTypes = {
+  vennDiagramShading: PropTypes.objectOf(PropTypes.object).isRequired,
+  premise: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default withStyles(styles)(PremiseToDiagram);

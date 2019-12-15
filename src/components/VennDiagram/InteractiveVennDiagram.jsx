@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import * as d3 from "d3";
 import * as venn from 'venn.js';
@@ -122,5 +123,12 @@ class InteractiveVennDiagram extends React.Component {
     return <div id={id} style={{ padding: 0, width: `${width}px`, height: `${height}px` }} {...other} />;
   }
 }
+
+InteractiveVennDiagram.propTypes = {
+  title: PropTypes.string.isRequired,
+  shadings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sets: PropTypes.arrayOf(PropTypes.object).isRequired,
+  premise: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default InteractiveVennDiagram;

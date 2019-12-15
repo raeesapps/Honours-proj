@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -238,5 +239,10 @@ class PremiseToListStep extends React.Component {
     );
   }
 }
+
+PremiseToListStep.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+  premise: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default withStyles(styles)(PremiseToListStep);

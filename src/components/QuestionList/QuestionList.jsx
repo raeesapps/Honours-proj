@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles';
@@ -39,5 +40,12 @@ function QuestionList(props) {
     </div>
   );
 }
+
+QuestionList.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+  title: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
+};
 
 export default withStyles(styles)(QuestionList);

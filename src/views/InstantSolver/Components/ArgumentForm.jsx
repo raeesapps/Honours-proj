@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -134,5 +135,10 @@ class ArgumentForm extends React.Component {
     );
   }
 }
+
+ArgumentForm.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(ArgumentForm);

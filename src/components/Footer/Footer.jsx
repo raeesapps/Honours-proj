@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -25,5 +27,9 @@ function Footer(props) {
     </div>
   );
 }
+
+Footer.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default withStyles(styles)(Footer);

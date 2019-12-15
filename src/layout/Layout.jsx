@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter, Switch, Route } from 'react-router-dom';
 
 import { withStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -63,5 +64,9 @@ class Layout extends React.Component {
     );
   }
 }
+
+Layout.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default withRouter(withStyles({})(Layout));

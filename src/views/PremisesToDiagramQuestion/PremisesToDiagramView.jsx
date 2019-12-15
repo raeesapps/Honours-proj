@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -164,5 +165,10 @@ class PremisesToDiagramView extends React.Component {
     );
   }
 }
+
+PremisesToDiagramView.propTypes = {
+  location: PropTypes.objectOf(PropTypes.object).isRequired,
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default withStyles(styles)(PremisesToDiagramView);
