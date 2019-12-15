@@ -21,8 +21,8 @@ class Layout extends React.Component {
     );
   }
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { width: 0 };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
