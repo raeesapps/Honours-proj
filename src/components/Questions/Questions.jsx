@@ -57,6 +57,10 @@ function Questions() {
             firstTerm: 'greeks',
             secondTerm: 'men',
           }),
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'greeks',
+            secondTerm: 'frogs',
+          }),
         ],
       ),
     },
