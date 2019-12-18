@@ -45,7 +45,7 @@ class PremisesToDiagramView extends React.Component {
     }
 
     const { content } = question;
-    const refs = [React.createRef(), React.createRef()];
+    const refs = [...Array.from(content.premises.length).keys()].map(() => React.createRef());
 
     this.setState({
       premises: content.premises,
