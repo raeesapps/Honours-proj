@@ -2,6 +2,12 @@ import React from 'react';
 
 import * as d3 from 'd3';
 
+import {
+  NOT_SHADED,
+  MAYBE_SHADED,
+  SHADED,
+} from './venn_utils';
+
 const paths = [
   {
     name: 'p1',
@@ -84,27 +90,72 @@ function init(id, ellipses) {
   }
 
   function drawEllipsePaths(diagram) {
-    paths.forEach((pathEntry) => {
-      const { name, path } = pathEntry;
-
-      diagram.append('path')
-        .attr('d', path)
-        .attr('id', name)
-        .attr('fill', 'black')
-        .attr('fill-opacity', 0)
-        .attr('stroke', 'white')
-        .attr('stroke-width', '2')
-        .attr('stroke-opacity', 0)
+    function bindMouseEventListeners(div) {
+      div
         .on('mouseover', function onMouseover() {
-          d3.select(this).transition()
-            .style('fill-opacity', 0.1)
-            .style('stroke-opacity', 1);
+          const node = d3.select(this);
+          const nodeShaded = node.attr('shaded') || NOT_SHADED;
+
+          const nodeTransition = node.transition();
+          nodeTransition.attr('fill-opacity', 0.2);
+
+          if (nodeShaded === NOT_SHADED) {
+            node.attr('fill', '#009fdf');
+          } else if (nodeShaded === MAYBE_SHADED) {
+            node.attr('fill', '#000000');
+          } else if (nodeShaded === SHADED) {
+            node.attr('fill', '#ff0000');
+          }
         })
         .on('mouseout', function onMouseout() {
-          d3.select(this).transition()
-            .style('fill-opacity', 0)
-            .style('stroke-opacity', 0);
+          const node = d3.select(this);
+          const nodeShaded = node.attr('shaded') || NOT_SHADED;
+          if (nodeShaded === null) {
+            node.attr('shaded', NOT_SHADED);
+          }
+
+          const nodeTransition = node.transition();
+
+          if (node.attr('fill-opacity') < 0.9) {
+            nodeTransition.attr('fill-opacity', 0.2);
+          }
+
+          if (nodeShaded === NOT_SHADED) {
+            nodeTransition.attr('fill', '#ffffff');
+          } else if (nodeShaded === MAYBE_SHADED) {
+            nodeTransition.attr('fill', '#000000');
+          } else if (nodeShaded === SHADED) {
+            nodeTransition.attr('fill', '#ff0000');
+          }
+        })
+        .on('click', function onClick() {
+          const node = d3.select(this);
+          const nodeShaded = node.attr('shaded') || NOT_SHADED;
+
+          const nodeTransition = node.transition();
+          nodeTransition.attr('fill-opacity', 1);
+
+          if (nodeShaded === NOT_SHADED) {
+            nodeTransition.attr('fill', '#000000');
+          } else if (nodeShaded === MAYBE_SHADED) {
+            nodeTransition.attr('fill', '#ff0000');
+          } else if (nodeShaded === SHADED) {
+            nodeTransition.attr('fill', '#ffffff');
+          }
+          node.attr('shaded', (parseInt(nodeShaded) + 1) % 3);
         });
+    }
+    paths.forEach((pathEntry) => {
+      const { name, path } = pathEntry;
+      const appendedPath = diagram.append('path');
+
+      appendedPath
+        .attr('d', path)
+        .attr('id', name)
+        .attr('fill', 'white')
+        .attr('fill-opacity', 0.2);
+
+      bindMouseEventListeners(appendedPath);
     });
   }
 
@@ -118,7 +169,14 @@ function init(id, ellipses) {
   const diagram = d3.select(`#${id}`).append('svg').attr('width', width).attr('height', height);
 
   ellipses.forEach((ellipse) => {
-    const { cX, cY, rX, rY, rotationAng, eID } = ellipse;
+    const {
+      cX,
+      cY,
+      rX,
+      rY,
+      rotationAng,
+      eID,
+    } = ellipse;
     drawEllipse(diagram, cX, cY, rX, rY, rotationAng, eID);
   });
 
