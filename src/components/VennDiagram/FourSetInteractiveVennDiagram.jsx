@@ -164,7 +164,7 @@ function init(id, ellipses) {
   }
 
   const width = 746;
-  const height = 900;
+  const height = 500;
 
   const diagram = d3.select(`#${id}`).append('svg').attr('width', width).attr('height', height);
 
