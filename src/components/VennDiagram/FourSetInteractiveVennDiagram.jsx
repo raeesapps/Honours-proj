@@ -8,6 +8,41 @@ import {
   SHADED,
 } from './venn_utils';
 
+const ellipses = [
+  {
+    cX: 196,
+    cY: 246,
+    rX: 200,
+    rY: 110,
+    rotationAng: 45,
+    eId: 'e4th1',
+  },
+  {
+    cX: 266,
+    cY: 176,
+    rX: 200,
+    rY: 110,
+    rotationAng: 45,
+    eId: 'e4th2',
+  },
+  {
+    cX: 326,
+    cY: 176,
+    rX: 200,
+    rY: 110,
+    rotationAng: 135,
+    eId: 'e4th3',
+  },
+  {
+    cX: 396,
+    cY: 246,
+    rX: 200,
+    rY: 110,
+    rotationAng: 135,
+    eId: 'e4th4',
+  },
+];
+
 const paths = [
   {
     name: '(A)',
@@ -166,7 +201,8 @@ function init(id, ellipses) {
   const width = 746;
   const height = 500;
 
-  const diagram = d3.select(`#${id}`).append('svg').attr('width', width).attr('height', height);
+  const div = d3.select(`#${id}`);
+  const diagram = div.append('svg').attr('width', width).attr('height', height);
 
   ellipses.forEach((ellipse) => {
     const {
@@ -181,46 +217,89 @@ function init(id, ellipses) {
   });
 
   drawEllipsePaths(diagram);
+
+  return div;
 }
 
 class FourSetInteractiveVennDiagram extends React.Component {
-  componentDidMount() {
-    const ellipses = [
-      {
-        cX: 196,
-        cY: 246,
-        rX: 200,
-        rY: 110,
-        rotationAng: 45,
-        eId: 'e4th1',
-      },
-      {
-        cX: 266,
-        cY: 176,
-        rX: 200,
-        rY: 110,
-        rotationAng: 45,
-        eId: 'e4th2',
-      },
-      {
-        cX: 326,
-        cY: 176,
-        rX: 200,
-        rY: 110,
-        rotationAng: 135,
-        eId: 'e4th3',
-      },
-      {
-        cX: 396,
-        cY: 246,
-        rX: 200,
-        rY: 110,
-        rotationAng: 135,
-        eId: 'e4th4',
-      },
-    ];
+  constructor() {
+    super();
 
-    init('ellipseVenn', ellipses);
+    this.state = {
+      a: null,
+      b: null,
+      c: null,
+      d: null,
+    };
+    this.getShadings = this.getShadings.bind(this);
+  }
+
+  componentDidMount() {
+    const { premises } = this.props;
+
+    const compartments = premises.getSets();
+    const filteredCompartments = compartments.filter((compartment) => {
+      const { sets } = compartment;
+      return sets.length === 4;
+    });
+
+    if (filteredCompartments.length !== 1) {
+      throw new Error('Something went wrong!');
+    }
+
+    const variables = filteredCompartments[0].sets;
+
+    this.setState({
+      a: variables[0],
+      b: variables[1],
+      c: variables[2],
+      d: variables[3],
+    });
+
+    const div = init('ellipseVenn', ellipses);
+    this.div = div;
+  }
+
+  getShadings() {
+    const {
+      a,
+      b,
+      c,
+      d,
+    } = this.state;
+
+    const mappings = {};
+    this.div.selectAll('path').each(function onEach() {
+      const node = d3.select(this);
+      const nodeId = node.attr('id');
+      const nodeShaded = node.attr('shaded') || NOT_SHADED;
+
+      let mappedId = nodeId;
+
+      if (nodeId.includes('A')) {
+        const indexOfA = mappedId.indexOf('A');
+        mappedId = `${mappedId.substring(0, indexOfA)}${a}${mappedId.substring(indexOfA + 1)}`;
+      }
+
+      if (nodeId.includes('B')) {
+        const indexOfB = mappedId.indexOf('B');
+        mappedId = `${mappedId.substring(0, indexOfB)}${b}${mappedId.substring(indexOfB + 1)}`;
+      }
+
+      if (nodeId.includes('C')) {
+        const indexOfC = mappedId.indexOf('C');
+        mappedId = `${mappedId.substring(0, indexOfC)}${c}${mappedId.substring(indexOfC + 1)}`;
+      }
+
+      if (nodeId.includes('D')) {
+        const indexOfD = mappedId.indexOf('D');
+        mappedId = `${mappedId.substring(0, indexOfD)}${d}${mappedId.substring(indexOfD + 1)}`;
+      }
+
+      mappings[mappedId] = nodeShaded;
+    });
+
+    return mappings;
   }
 
   render() {
