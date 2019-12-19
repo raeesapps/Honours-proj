@@ -11,6 +11,7 @@ import { stages, validate } from '../../../logic/premise_validator';
 
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
+import FourSetInteractiveVennDiagram from '../../../components/VennDiagram/FourSetInteractiveVennDiagram';
 import InteractiveVennDiagram from '../../../components/VennDiagram/InteractiveVennDiagram';
 import UninteractiveVennDiagram from '../../../components/VennDiagram/UninteractiveVennDiagram';
 
@@ -53,8 +54,30 @@ class CombinePremisesStep extends React.Component {
   }
 
   render() {
+    function renderInteractiveVennDiagram(props, vennDiagramRef) {
+      const { argument } = props;
+
+      if (argument.premises.length <= 2) {
+        return (
+          <div>
+            <Grid item xs={3} />
+            <Grid item xs={9}>
+              <InteractiveVennDiagram title="Combination" sets={argument.getSets()} ref={vennDiagramRef} />
+            </Grid>
+          </div>
+        );
+      }
+      if (argument.premises.length === 3) {
+        return (
+          <Grid item xs={9}>
+            <FourSetInteractiveVennDiagram premises={argument} ref={vennDiagramRef} />
+          </Grid>
+        );
+      }
+      throw new Error('5 sets are not supported!');
+    }
     const { ERROR } = snackbarTypes;
-    const { classes, vennDiagramShadings, argument } = this.props;
+    const { classes, vennDiagramShadings } = this.props;
     const { showError } = this.state;
     const snackbarWrapperDisplayVal = !showError ? 'none' : '';
     return (
@@ -81,10 +104,9 @@ class CombinePremisesStep extends React.Component {
                 </Grid>
               </Paper>
             </Grid>
-            <Grid item xs={3} />
-            <Grid item xs={6}>
-              <InteractiveVennDiagram title="Combination" sets={argument.getSets()} ref={this.vennDiagramRef} />
-            </Grid>
+            {
+              renderInteractiveVennDiagram(this.props, this.vennDiagramRef)
+            }
           </Grid>
         </Container>
       </div>
