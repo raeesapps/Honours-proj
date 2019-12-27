@@ -9,6 +9,33 @@ import {
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/four_set_uninteractive_venn_diagram_styles';
+
+const shadings = Object.freeze({
+  BLACK: 0,
+  RED: 1,
+});
+
+function shadeRegions(div, region, shading) {
+  div.selectAll('path').each(function each() {
+    const { RED, BLACK } = shadings;
+    const node = d3.select(this);
+    //TODO: add this attribute to the path
+    const nodeRegion = node.attr('region');
+    if (nodeRegion === region) {
+      switch (shading) {
+        case RED:
+          node.attr('style', 'fill: url(#diagonal3)');
+          break;
+        case BLACK:
+          node.attr('style', 'fill: url(#diagonal2)');
+          break;
+        default:
+          break;
+      }
+    }
+  });
+}
+
 class FourSetUninteractiveVennDiagram extends React.Component {
   constructor() {
     super();
