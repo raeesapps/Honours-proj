@@ -69,23 +69,13 @@ function appendLabels(svg, labels) {
   });
 }
 
-function appendVennAreaPart(svg, d, partId, pointer) {
-  if (pointer) {
-    svg.append('g')
-      .attr('class', 'venn-area-part')
-      .attr('venn-area-part-id', partId)
-      .append('path')
-      .attr('d', d)
-      .attr('fill-rule', 'evenodd');
-  } else {
-    svg.append('g')
-      .attr('class', 'venn-area-part')
-      .attr('venn-area-part-id', partId)
-      .append('path')
-      .attr('d', d)
-      .attr('fill-rule', 'evenodd')
-      .style('cursor', 'default');
-  }
+function appendVennAreaPart(svg, d, partId) {
+  svg.append('g')
+    .attr('class', 'venn-area-part')
+    .attr('venn-area-part-id', partId)
+    .append('path')
+    .attr('d', d)
+    .attr('fill-rule', 'evenodd');
 }
 
 function appendVennAreaParts(svg, intersectionAreasMapping, pointer) {

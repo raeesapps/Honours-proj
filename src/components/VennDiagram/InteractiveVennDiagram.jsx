@@ -105,7 +105,7 @@ class InteractiveVennDiagram extends React.Component {
     this.div = div;
 
     appendPatterns(defs);
-    appendVennAreaParts(svg, intersectionAreasMapping, true);
+    appendVennAreaParts(svg, intersectionAreasMapping);
     appendLabels(svg, labels);
     InteractiveVennDiagram.bindVennAreaPartListeners(div);
     removeOriginalVennAreas();

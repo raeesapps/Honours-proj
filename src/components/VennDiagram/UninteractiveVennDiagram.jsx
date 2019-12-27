@@ -81,13 +81,19 @@ class UninteractiveVennDiagram extends React.Component {
     this.div = div;
 
     appendPatterns(defs);
-    appendVennAreaParts(svg, intersectionAreasMapping, false);
+    appendVennAreaParts(svg, intersectionAreasMapping);
     appendLabels(svg, labels);
     removeOriginalVennAreas();
 
     if (!argument && shading && this.props.sets) {
       shadeAccordingToShadings(this.div, shading);
     }
+
+    div.selectAll('g').each(function each() {
+      const node = d3.select(this);
+
+      node.style('cursor', 'default');
+    });
   }
 
   applyShading(argument) {
