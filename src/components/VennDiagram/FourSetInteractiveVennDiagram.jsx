@@ -136,10 +136,8 @@ function init(id, ellipses) {
           const node = d3.select(this);
           const nodeShaded = node.attr('shaded') || NOT_SHADED;
 
-          const nodeTransition = node.transition();
-
           node.style('cursor', 'pointer');
-          nodeTransition.attr('fill-opacity', 0.2);
+          node.attr('fill-opacity', 0.2);
 
           if (nodeShaded === NOT_SHADED) {
             node.attr('fill', '#009fdf');
@@ -158,34 +156,30 @@ function init(id, ellipses) {
 
           node.style('cursor', 'default');
 
-          const nodeTransition = node.transition();
-
           if (nodeShaded === NOT_SHADED) {
-            nodeTransition.attr('fill', '#ffffff');
-            nodeTransition.attr('fill-opacity', 0.2);
+            node.attr('fill', '#ffffff');
+            node.attr('fill-opacity', 0.2);
           } else if (nodeShaded === MAYBE_SHADED) {
-            nodeTransition.attr('fill', '#000000');
-            nodeTransition.attr('fill-opacity', 1);
+            node.attr('fill', '#000000');
+            node.attr('fill-opacity', 1);
           } else if (nodeShaded === SHADED) {
-            nodeTransition.attr('fill', '#ff0000');
-            nodeTransition.attr('fill-opacity', 1);
+            node.attr('fill', '#ff0000');
+            node.attr('fill-opacity', 1);
           }
         })
         .on('click', function onClick() {
           const node = d3.select(this);
           const nodeShaded = node.attr('shaded') || NOT_SHADED;
 
-          const nodeTransition = node.transition();
-
           if (nodeShaded === NOT_SHADED) {
-            nodeTransition.attr('fill', '#000000');
-            nodeTransition.attr('fill-opacity', 1);
+            node.attr('fill', '#000000');
+            node.attr('fill-opacity', 1);
           } else if (nodeShaded === MAYBE_SHADED) {
-            nodeTransition.attr('fill', '#ff0000');
-            nodeTransition.attr('fill-opacity', 1);
+            node.attr('fill', '#ff0000');
+            node.attr('fill-opacity', 1);
           } else if (nodeShaded === SHADED) {
-            nodeTransition.attr('fill', '#ffffff');
-            nodeTransition.attr('fill-opacity', 0.2);
+            node.attr('fill', '#ffffff');
+            node.attr('fill-opacity', 0.2);
           }
           node.attr('shaded', (parseInt(nodeShaded) + 1) % 3);
         });
