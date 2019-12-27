@@ -138,6 +138,7 @@ function init(id, ellipses) {
 
           const nodeTransition = node.transition();
 
+          node.style('cursor', 'pointer');
           nodeTransition.attr('fill-opacity', 0.2);
 
           if (nodeShaded === NOT_SHADED) {
@@ -154,6 +155,8 @@ function init(id, ellipses) {
           if (nodeShaded === null) {
             node.attr('shaded', NOT_SHADED);
           }
+
+          node.style('cursor', 'default');
 
           const nodeTransition = node.transition();
 
