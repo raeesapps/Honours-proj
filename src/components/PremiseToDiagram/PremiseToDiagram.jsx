@@ -1,14 +1,11 @@
 import React from 'react';
 
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validate } from '../../logic/premise_validator';
 
 import InteractiveVennDiagram from '../VennDiagram/InteractiveVennDiagram';
-
-import styles from '../../assets/components/jss/PremiseToDiagram/premise_to_diagram_styles';
 
 class PremiseToDiagram extends React.Component {
   constructor() {
@@ -46,7 +43,7 @@ class PremiseToDiagram extends React.Component {
   }
 
   render() {
-    const { classes, premise } = this.props;
+    const { premise } = this.props;
 
     return (
       <div>
@@ -60,4 +57,4 @@ class PremiseToDiagram extends React.Component {
   }
 }
 
-export default withStyles(styles)(PremiseToDiagram);
+export default PremiseToDiagram;
