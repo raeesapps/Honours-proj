@@ -91,7 +91,7 @@ class Table {
     const conclusionCompartments = this.tableDictionary.get(conclusion);
 
     let i = this.compartments.length - 1;
-    while (i) {
+    while (i >= 0) {
       const compartment = this.compartments[i];
       const resolvedEntry = resolvedCompartments[compartment.hashCode()];
       const conclusionEntry = conclusionCompartments.get(compartment);
@@ -104,7 +104,7 @@ class Table {
     let xNotCompletelyContainedCount = 0;
     xEntries.forEach((x) => {
       i = this.compartments.length - 1;
-      while (i) {
+      while (i >= 0) {
         const compartment = this.compartments[i];
         if (resolvedCompartments[compartment.hashCode()].includes(x)) {
           const xIndexCut = x.substring(1, 0);
