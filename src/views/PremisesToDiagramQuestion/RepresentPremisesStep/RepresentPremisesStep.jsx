@@ -25,7 +25,7 @@ class RepresentPremisesStep extends React.Component {
     const { refs } = this.props;
 
     const validatedVennDiagrams = refs.filter((ref) => ref.current.validate()).length;
-    this.setState({ showError: validatedVennDiagrams !== 2 });
+    this.setState({ showError: validatedVennDiagrams !== refs.length });
 
     return validatedVennDiagrams === refs.length;
   }
