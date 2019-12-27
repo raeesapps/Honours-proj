@@ -2,11 +2,16 @@ import React from 'react';
 
 import * as d3 from 'd3';
 
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import {
   NOT_SHADED,
   MAYBE_SHADED,
   SHADED,
 } from './venn_utils';
+
+import styles from '../../assets/components/jss/VennDiagram/four_set_interactive_venn_diagram_styles';
 
 const ellipses = [
   {
@@ -303,10 +308,26 @@ class FourSetInteractiveVennDiagram extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
+    const { a, b, c, d } = this.state;
     return (
-      <div id="ellipseVenn" />
+      <div className={classes.content}>
+        <Typography variant="body1" className={classes.topLeft}>
+          {a}
+        </Typography>
+        <Typography variant="body1" className={classes.topRight}>
+          {b}
+        </Typography>
+        <Typography variant="body1" className={classes.bottomLeft}>
+          {c}
+        </Typography>
+        <Typography variant="body1" className={classes.bottomRight}>
+          {d}
+        </Typography>
+        <div id="ellipseVenn" />
+      </div>
     );
   }
 }
 
-export default FourSetInteractiveVennDiagram;
+export default withStyles(styles)(FourSetInteractiveVennDiagram);
