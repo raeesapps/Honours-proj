@@ -99,9 +99,8 @@ function singularise(word) {
 
   let idx = singularisationRules.length - 1;
 
-  while (idx) {
+  while (idx >= 0) {
     const rule = singularisationRules[idx];
-
     if (rule[0].test(word)) {
       return word.replace(rule[0], () => rule[1].replace(/\$(\d{1,2})/g));
     }
