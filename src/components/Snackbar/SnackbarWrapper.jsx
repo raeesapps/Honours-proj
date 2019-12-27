@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
-
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
@@ -19,7 +17,6 @@ const variantIcon = Object.freeze({
   info: InfoIcon,
 });
 
-//rewrite this!
 function SnackbarWrapper(props) {
   const classes = styles();
   const { className, message, onClose, variant, ...other } = props;
@@ -44,12 +41,5 @@ function SnackbarWrapper(props) {
     />
   );
 }
-
-SnackbarWrapper.propTypes = {
-  className: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
-  variant: PropTypes.string.isRequired,
-};
 
 export default SnackbarWrapper;

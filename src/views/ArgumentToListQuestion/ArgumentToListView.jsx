@@ -1,7 +1,5 @@
 import React from 'react';
 
-import PropTypes from 'prop-types';
-
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Stepper from '@material-ui/core/Stepper';
@@ -123,10 +121,5 @@ class ArgumentToListView extends React.Component {
     );
   }
 }
-
-ArgumentToListView.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  location: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withStyles(styles)(ArgumentToListView);

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -68,12 +67,5 @@ class RepresentPremisesStep extends React.Component {
     );
   }
 }
-
-RepresentPremisesStep.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  vennDiagramShadings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  premises: PropTypes.arrayOf(PropTypes.object).isRequired,
-  refs: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
 
 export default withStyles(styles)(RepresentPremisesStep);

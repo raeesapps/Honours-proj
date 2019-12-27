@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -113,12 +112,5 @@ class CombinePremisesStep extends React.Component {
     );
   }
 }
-
-CombinePremisesStep.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  vennDiagramShadings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  argument: PropTypes.objectOf(PropTypes.object).isRequired,
-  premiseSets: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withStyles(styles)(CombinePremisesStep);

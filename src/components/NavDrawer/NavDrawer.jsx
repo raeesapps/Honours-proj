@@ -1,7 +1,6 @@
 import React from 'react';
-
-import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom'
+
 import clsx from 'clsx';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -124,10 +123,5 @@ class NavDrawer extends React.Component {
     );
   }
 }
-
-NavDrawer.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  routes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withStyles(styles)(NavDrawer);

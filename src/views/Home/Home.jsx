@@ -1,7 +1,5 @@
 import React from 'react';
 
-import PropTypes from 'prop-types';
-
 import { withStyles } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
@@ -54,9 +52,5 @@ function Home(props) {
     </div>
   );
 }
-
-Home.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withStyles(styles)(Home);
