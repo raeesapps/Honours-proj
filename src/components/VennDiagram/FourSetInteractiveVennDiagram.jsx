@@ -137,6 +137,7 @@ function init(id, ellipses) {
           const nodeShaded = node.attr('shaded') || NOT_SHADED;
 
           const nodeTransition = node.transition();
+
           nodeTransition.attr('fill-opacity', 0.2);
 
           if (nodeShaded === NOT_SHADED) {
@@ -156,16 +157,15 @@ function init(id, ellipses) {
 
           const nodeTransition = node.transition();
 
-          if (node.attr('fill-opacity') < 0.9) {
-            nodeTransition.attr('fill-opacity', 0.2);
-          }
-
           if (nodeShaded === NOT_SHADED) {
             nodeTransition.attr('fill', '#ffffff');
+            nodeTransition.attr('fill-opacity', 0.2);
           } else if (nodeShaded === MAYBE_SHADED) {
             nodeTransition.attr('fill', '#000000');
+            nodeTransition.attr('fill-opacity', 1);
           } else if (nodeShaded === SHADED) {
             nodeTransition.attr('fill', '#ff0000');
+            nodeTransition.attr('fill-opacity', 1);
           }
         })
         .on('click', function onClick() {
@@ -173,14 +173,16 @@ function init(id, ellipses) {
           const nodeShaded = node.attr('shaded') || NOT_SHADED;
 
           const nodeTransition = node.transition();
-          nodeTransition.attr('fill-opacity', 1);
 
           if (nodeShaded === NOT_SHADED) {
             nodeTransition.attr('fill', '#000000');
+            nodeTransition.attr('fill-opacity', 1);
           } else if (nodeShaded === MAYBE_SHADED) {
             nodeTransition.attr('fill', '#ff0000');
+            nodeTransition.attr('fill-opacity', 1);
           } else if (nodeShaded === SHADED) {
             nodeTransition.attr('fill', '#ffffff');
+            nodeTransition.attr('fill-opacity', 0.2);
           }
           node.attr('shaded', (parseInt(nodeShaded) + 1) % 3);
         });
