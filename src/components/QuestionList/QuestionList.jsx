@@ -22,10 +22,12 @@ function QuestionList(props) {
         <List>
           {
             questions.map((question) => (
-              <NavLink to={{
-                pathname: path,
-                question,
-              }}>
+              <NavLink
+                key={question.title}
+                to={{
+                  pathname: path,
+                  question,
+                }}>
                 <ListItem button>
                   <ListItemText>
                     {question.title}
