@@ -17,6 +17,7 @@ class PremiseCollection {
     this.premises.forEach((premise) => {
       this.table.addPremise(premise, false);
     });
+    this.terms = termNames;
   }
 
   unifyAndResolve() {
@@ -76,6 +77,12 @@ class PremiseCollection {
   }
 
   argue(conclusion) {
+    const { firstTerm, secondTerm } = conclusion.terms;
+    const termSet = new Set([...this.terms]);
+    termSet.add(firstTerm);
+    termSet.add(secondTerm);
+    this.terms = [...termSet];
+
     return this.table.validate(conclusion);
   }
 
