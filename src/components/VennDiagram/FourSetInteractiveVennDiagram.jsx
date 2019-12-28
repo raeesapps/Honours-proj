@@ -11,6 +11,7 @@ import {
   SHADED,
   createFourSetEllipticVennDiagram,
   ellipses,
+  mapRegion,
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/four_set_interactive_venn_diagram_styles';
@@ -121,28 +122,7 @@ class FourSetInteractiveVennDiagram extends React.Component {
       const node = d3.select(this);
       const nodeId = node.attr('id');
       const nodeShaded = node.attr('shaded') || NOT_SHADED;
-
-      let mappedId = nodeId;
-
-      if (nodeId.includes('A')) {
-        const indexOfA = mappedId.indexOf('A');
-        mappedId = `${mappedId.substring(0, indexOfA)}${a}${mappedId.substring(indexOfA + 1)}`;
-      }
-
-      if (nodeId.includes('B')) {
-        const indexOfB = mappedId.indexOf('B');
-        mappedId = `${mappedId.substring(0, indexOfB)}${b}${mappedId.substring(indexOfB + 1)}`;
-      }
-
-      if (nodeId.includes('C')) {
-        const indexOfC = mappedId.indexOf('C');
-        mappedId = `${mappedId.substring(0, indexOfC)}${c}${mappedId.substring(indexOfC + 1)}`;
-      }
-
-      if (nodeId.includes('D')) {
-        const indexOfD = mappedId.indexOf('D');
-        mappedId = `${mappedId.substring(0, indexOfD)}${d}${mappedId.substring(indexOfD + 1)}`;
-      }
+      const mappedId = mapRegion(nodeId, a, b, c, d);
 
       mappings[mappedId] = nodeShaded;
     });

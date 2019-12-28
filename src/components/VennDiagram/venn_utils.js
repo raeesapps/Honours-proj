@@ -174,6 +174,32 @@ function createFourSetEllipticVennDiagram(id, ellipses, bindMouseEventListeners)
   return div;
 }
 
+function mapRegion(nodeId, a, b, c, d) {
+  let mappedId = nodeId;
+
+  if (nodeId.includes('A')) {
+    const indexOfA = mappedId.indexOf('A');
+    mappedId = `${mappedId.substring(0, indexOfA)}${a}${mappedId.substring(indexOfA + 1)}`;
+  }
+
+  if (nodeId.includes('B')) {
+    const indexOfB = mappedId.indexOf('B');
+    mappedId = `${mappedId.substring(0, indexOfB)}${b}${mappedId.substring(indexOfB + 1)}`;
+  }
+
+  if (nodeId.includes('C')) {
+    const indexOfC = mappedId.indexOf('C');
+    mappedId = `${mappedId.substring(0, indexOfC)}${c}${mappedId.substring(indexOfC + 1)}`;
+  }
+
+  if (nodeId.includes('D')) {
+    const indexOfD = mappedId.indexOf('D');
+    mappedId = `${mappedId.substring(0, indexOfD)}${d}${mappedId.substring(indexOfD + 1)}`;
+  }
+
+  return mappedId;
+}
+
 function removeOriginalVennAreas() {
   d3.selectAll('g.venn-area').remove();
 }
@@ -349,4 +375,5 @@ export {
   shadeAccordingToShadings,
   createFourSetEllipticVennDiagram,
   ellipses,
+  mapRegion,
 };
