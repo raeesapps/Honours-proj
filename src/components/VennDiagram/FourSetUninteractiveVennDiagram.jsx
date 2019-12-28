@@ -62,18 +62,25 @@ class FourSetUninteractiveVennDiagram extends React.Component {
     const { a, b, c, d } = this.state;
     return (
       <div className={classes.content}>
-        <Typography variant="body1" className={classes.topLeft}>
-          {a}
-        </Typography>
-        <Typography variant="body1" className={classes.topRight}>
-          {b}
-        </Typography>
-        <Typography variant="body1" className={classes.bottomLeft}>
-          {c}
-        </Typography>
-        <Typography variant="body1" className={classes.bottomRight}>
-          {d}
-        </Typography>
+        {
+          (a && b && c && d)
+          && (
+            <div>
+              <Typography variant="body1" className={classes.topLeft}>
+                {a}
+              </Typography>
+              <Typography variant="body1" className={classes.topRight}>
+                {b}
+              </Typography>
+              <Typography variant="body1" className={classes.bottomLeft}>
+                {c}
+              </Typography>
+              <Typography variant="body1" className={classes.bottomRight}>
+                {d}
+              </Typography>
+            </div>
+          )
+        }
         <div id="ellipseVenn" />
       </div>
     );
