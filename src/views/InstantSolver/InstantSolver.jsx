@@ -17,6 +17,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
 import ArgumentForm from './Components/ArgumentForm';
+import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
 import UninteractiveVennDiagram from '../../components/VennDiagram/UninteractiveVennDiagram';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
 
@@ -36,68 +37,107 @@ class InstantSolver extends React.Component {
       snackbarMsg: '',
       dialogOpen: false,
       argumentSubmitted: false,
+      needsUpdate: false,
     };
 
     this.argumentFormRef = React.createRef();
-    this.premisesVennDiagramRef = React.createRef();
+    this.premisesVennDiagramRef = null;
     this.conclusionVennDiagramRef = React.createRef();
+    this.uninteractiveVennDiagramRef = React.createRef();
+    this.fourSetUninteractiveVennDiagramRef = React.createRef();
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.onError = this.onError.bind(this);
     this.warn = this.warn.bind(this);
     this.warningAddPremise = this.warningAddPremise.bind(this);
+    this.getNumberOfTerms = this.getNumberOfTerms.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { needsUpdate } = this.state;
+
+    if (needsUpdate) {
+      const argumentForm = this.argumentFormRef.current;
+      const { premises } = argumentForm.state;
+
+      if (this.getNumberOfTerms() === 4) {
+        this.premisesVennDiagramRef = this.fourSetUninteractiveVennDiagramRef;
+      } else if (this.getNumberOfTerms() < 4) {
+        this.premisesVennDiagramRef = this.uninteractiveVennDiagramRef;
+      }
+
+      const premisesVennDiagram = this.premisesVennDiagramRef.current;
+      const premiseCollection = new PremiseCollection(premises
+        .filter((premise) => premise.name !== 'Conclusion')
+        .map((premise) => premise.ref.current.getPremiseObj()));
+      premisesVennDiagram.applyShading(new PremiseCollection(premises
+        .filter((premise) => premise.name !== 'Conclusion')
+        .map((premise) => premise.ref.current.getPremiseObj())));
+
+      const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
+      const conclusion = premises
+        .find((premise) => premise.name === 'Conclusion')
+        .ref.current.getPremiseObj();
+      conclusionVennDiagram.applyShading(new PremiseCollection(premises
+        .filter((premise) => premise.name === 'Conclusion')
+        .map((premise) => premise.ref.current.getPremiseObj())));
+
+      const valid = premiseCollection.argue(conclusion);
+
+      if (valid) {
+        this.setState({
+          argumentSubmitted: true,
+          snackbarVisible: true,
+          snackbarType: SUCCESS,
+          snackbarMsg: 'Valid!',
+          needsUpdate: false,
+        });
+      } else {
+        this.setState({
+          argumentSubmitted: true,
+          snackbarVisible: true,
+          snackbarType: ERROR,
+          snackbarMsg: 'Invalid!',
+          needsUpdate: false,
+        });
+      }
+    }
   }
 
   onSubmitForm() {
-    const argumentForm = this.argumentFormRef.current;
-    const { premises } = argumentForm.state;
-
-    const premisesVennDiagram = this.premisesVennDiagramRef.current;
-    const argument = new PremiseCollection(premises
-      .filter((premise) => premise.name !== 'Conclusion')
-      .map((premise) => premise.ref.current.getPremiseObj()));
-    premisesVennDiagram.applyShading(new PremiseCollection(premises
-      .filter((premise) => premise.name !== 'Conclusion')
-      .map((premise) => premise.ref.current.getPremiseObj())));
-
-    const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
-    const conclusion = premises
-      .find((premise) => premise.name === 'Conclusion')
-      .ref.current.getPremiseObj();
-    conclusionVennDiagram.applyShading(new PremiseCollection(premises
-      .filter((premise) => premise.name === 'Conclusion')
-      .map((premise) => premise.ref.current.getPremiseObj())));
-
-    const valid = argument.argue(conclusion);
-
-    if (valid) {
-      this.setState({
-        argumentSubmitted: true,
-        snackbarVisible: true,
-        snackbarType: SUCCESS,
-        snackbarMsg: 'Valid!',
-      });
-    } else {
-      this.setState({
-        argumentSubmitted: true,
-        snackbarVisible: true,
-        snackbarType: ERROR,
-        snackbarMsg: 'Invalid!',
-      });
-    }
+    this.setState({ argumentSubmitted: true, needsUpdate: true });
   }
 
   onError(msg) {
     this.setState({ snackbarVisible: true, snackbarType: ERROR, snackbarMsg: msg });
   }
 
-  warn() {
-    this.setState({ dialogOpen: true });
+  getNumberOfTerms() {
+    const argumentForm = this.argumentFormRef.current;
+    if (argumentForm) {
+      const { premises } = argumentForm.state;
+      const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
+
+      const termSet = new Set();
+      premiseObjs.forEach((premiseObj) => {
+        const { firstTerm, secondTerm } = premiseObj.terms;
+
+        termSet.add(firstTerm);
+        termSet.add(secondTerm);
+      });
+
+      return termSet.size;
+    }
+    return -1;
   }
 
   warningAddPremise() {
     const argumentForm = this.argumentFormRef.current;
     argumentForm.addPremise();
     this.setState({ dialogOpen: false });
+  }
+
+  warn() {
+    this.setState({ dialogOpen: true });
   }
 
   render() {
@@ -109,7 +149,6 @@ class InstantSolver extends React.Component {
       dialogOpen,
       argumentSubmitted,
     } = this.state;
-    const displayDiagram = argumentSubmitted ? 'block' : 'none';
     return (
       <div className={classes.root}>
         <Container maxWidth="lg">
@@ -152,27 +191,30 @@ class InstantSolver extends React.Component {
           </Snackbar>
 
           <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
-          <div style={{ display: displayDiagram }}>
-            <ExpansionPanel>
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Diagrammatic Representation</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
-                    <UninteractiveVennDiagram ref={this.premisesVennDiagramRef} title="Premises" />
+          {argumentSubmitted
+            && (
+              <ExpansionPanel>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>Diagrammatic Representation</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      {this.getNumberOfTerms() === 4 && <FourSetUninteractiveVennDiagram ref={this.fourSetUninteractiveVennDiagramRef} />}
+                      {this.getNumberOfTerms() < 4 && <UninteractiveVennDiagram ref={this.uninteractiveVennDiagramRef} title="Premises" />}
+                    </Grid>
+                    <Grid item xs={6}>
+                      <UninteractiveVennDiagram ref={this.conclusionVennDiagramRef} title="Conclusion" />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <UninteractiveVennDiagram ref={this.conclusionVennDiagramRef} title="Conclusion" />
-                  </Grid>
-                </Grid>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </div>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )
+          }
         </Container>
       </div>
     );
