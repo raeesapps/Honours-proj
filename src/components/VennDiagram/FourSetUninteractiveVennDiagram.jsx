@@ -19,8 +19,7 @@ function shadeRegions(div, region, shading) {
   div.selectAll('path').each(function each() {
     const { RED, BLACK } = shadings;
     const node = d3.select(this);
-    //TODO: add this attribute to the path
-    const nodeRegion = node.attr('region');
+    const nodeRegion = node.attr('id');
     if (nodeRegion === region) {
       switch (shading) {
         case RED:
