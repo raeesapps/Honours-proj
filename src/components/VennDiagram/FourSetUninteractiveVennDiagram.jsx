@@ -23,10 +23,12 @@ function shadeRegions(div, region, shading) {
     if (nodeRegion === region) {
       switch (shading) {
         case RED:
-          node.attr('style', 'fill: url(#diagonal3)');
+          node.attr('fill', '#ff0000');
+          node.attr('fill-opacity', 1);
           break;
         case BLACK:
-          node.attr('style', 'fill: url(#diagonal2)');
+          node.attr('fill', '#000000');
+          node.attr('fill-opacity', 1);
           break;
         default:
           break;
