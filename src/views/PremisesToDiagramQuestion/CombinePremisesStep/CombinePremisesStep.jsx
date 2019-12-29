@@ -37,7 +37,7 @@ class CombinePremisesStep extends React.Component {
     const title = argument.premises[idx].toSentence();
     return (
       <Grid item xs={6}>
-        <UninteractiveVennDiagram title={title} shading={shading} sets={premiseSets[idx]} />
+        <UninteractiveVennDiagram title={title} shading={shading} sets={premiseSets[idx]} renderTitle={1} />
       </Grid>
     );
   }

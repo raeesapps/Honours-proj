@@ -156,6 +156,7 @@ class UninteractiveVennDiagram extends React.Component {
   render() {
     const {
       title,
+      renderTitle,
       ...other
     } = this.props;
     const {
@@ -169,7 +170,7 @@ class UninteractiveVennDiagram extends React.Component {
     }
     return (
       <div>
-        <Typography variant="h6">{title}</Typography>
+        {!!renderTitle && <Typography variant="h6">{title}</Typography>}
         <div
           id={id}
           style={{
