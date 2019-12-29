@@ -3,6 +3,9 @@ function styles(theme) {
     root: {
       marginTop: theme.spacing(8),
     },
+    premisesExpansionPanel: {
+      marginBottom: theme.spacing(1),
+    },
   };
 }
 

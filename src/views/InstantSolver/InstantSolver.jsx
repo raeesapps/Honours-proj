@@ -198,7 +198,7 @@ class InstantSolver extends React.Component {
               <div>
                 {this.getNumberOfTerms() <= 4
                   && (
-                    <ExpansionPanel>
+                    <ExpansionPanel className={classes.premisesExpansionPanel}>
                       <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="premisesAriaControls"
