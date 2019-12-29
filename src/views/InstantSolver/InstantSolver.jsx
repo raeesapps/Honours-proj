@@ -220,7 +220,7 @@ class InstantSolver extends React.Component {
                     aria-controls="conclusionAriaControls"
                     id="conclusionExpasionPanel"
                   >
-                    <Typography>Diagrammatic Representation</Typography>
+                    <Typography>Conclusion Venn Diagram</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <Container>
