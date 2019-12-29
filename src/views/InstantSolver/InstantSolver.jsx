@@ -209,7 +209,7 @@ class InstantSolver extends React.Component {
                       <ExpansionPanelDetails>
                         <Container>
                           {this.getNumberOfTerms() === 4 && <FourSetUninteractiveVennDiagram ref={this.fourSetUninteractiveVennDiagramRef} />}
-                          {this.getNumberOfTerms() < 4 && <UninteractiveVennDiagram ref={this.uninteractiveVennDiagramRef} title="Premises" />}
+                          {this.getNumberOfTerms() < 4 && <UninteractiveVennDiagram ref={this.uninteractiveVennDiagramRef} title="Premises" renderTitle={0} />}
                         </Container>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -224,7 +224,7 @@ class InstantSolver extends React.Component {
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <Container>
-                      <UninteractiveVennDiagram ref={this.conclusionVennDiagramRef} title="Conclusion" />
+                      <UninteractiveVennDiagram ref={this.conclusionVennDiagramRef} title="Conclusion" renderTitle={0} />
                     </Container>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
