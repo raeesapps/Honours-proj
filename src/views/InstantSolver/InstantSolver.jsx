@@ -12,7 +12,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
@@ -69,9 +68,12 @@ class InstantSolver extends React.Component {
       const premiseCollection = new PremiseCollection(premises
         .filter((premise) => premise.name !== 'Conclusion')
         .map((premise) => premise.ref.current.getPremiseObj()));
-      premisesVennDiagram.applyShading(new PremiseCollection(premises
-        .filter((premise) => premise.name !== 'Conclusion')
-        .map((premise) => premise.ref.current.getPremiseObj())));
+
+      if (this.getNumberOfTerms() <= 4) {
+        premisesVennDiagram.applyShading(new PremiseCollection(premises
+          .filter((premise) => premise.name !== 'Conclusion')
+          .map((premise) => premise.ref.current.getPremiseObj())));
+      }
 
       const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
       const conclusion = premises
@@ -193,26 +195,40 @@ class InstantSolver extends React.Component {
           <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
           {argumentSubmitted
             && (
-              <ExpansionPanel>
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>Diagrammatic Representation</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                      {this.getNumberOfTerms() === 4 && <FourSetUninteractiveVennDiagram ref={this.fourSetUninteractiveVennDiagramRef} />}
-                      {this.getNumberOfTerms() < 4 && <UninteractiveVennDiagram ref={this.uninteractiveVennDiagramRef} title="Premises" />}
-                    </Grid>
-                    <Grid item xs={6}>
+              <div>
+                {this.getNumberOfTerms() <= 4
+                  && (
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="premisesAriaControls"
+                        id="premisesExpansionPanel"
+                      >
+                        <Typography>Premises Venn Diagram</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <Container>
+                          {this.getNumberOfTerms() === 4 && <FourSetUninteractiveVennDiagram ref={this.fourSetUninteractiveVennDiagramRef} />}
+                          {this.getNumberOfTerms() < 4 && <UninteractiveVennDiagram ref={this.uninteractiveVennDiagramRef} title="Premises" />}
+                        </Container>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  )}
+                <ExpansionPanel>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="conclusionAriaControls"
+                    id="conclusionExpasionPanel"
+                  >
+                    <Typography>Diagrammatic Representation</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <Container>
                       <UninteractiveVennDiagram ref={this.conclusionVennDiagramRef} title="Conclusion" />
-                    </Grid>
-                  </Grid>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+                    </Container>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              </div>
             )
           }
         </Container>
