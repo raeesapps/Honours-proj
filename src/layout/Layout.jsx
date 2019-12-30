@@ -4,9 +4,9 @@ import { withRouter, Switch, Route } from 'react-router-dom';
 import { withStyles, ThemeProvider } from '@material-ui/core/styles';
 
 import Footer from '../components/Footer/Footer';
-import NavDrawer from '../components/NavDrawer/NavDrawer';
-import routes from '../routes/routes';
+import Header from '../components/Header/Header';
 
+import routes from '../routes/routes';
 import theme from '../assets/theme';
 
 class Layout extends React.Component {
@@ -49,7 +49,7 @@ class Layout extends React.Component {
         <div style={{ position: 'relative', minHeight: '100vh' }}>
           <div style={{ paddingBottom: `${limitedWidth}rem` }}>
             <div className={classes.appFrame}>
-              <NavDrawer routes={routes} />
+              <Header routes={routes} />
               <main className={classes.content}>
                 <Switch>
                   {routes.map(Layout.createRouteTag)}

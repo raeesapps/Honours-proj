@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import styles from '../../assets/components/jss/NavDrawer/nav_drawer_styles';
+import styles from '../../assets/components/jss/Header/header_styles';
 
 function Header(props) {
   const { classes, routes } = props;
