@@ -216,13 +216,13 @@ class Premise {
 
     switch (this.form) {
       case ALL_A_IS_B:
-        return [['and'], `${formattedFirstTerm} x`, 'x <- things', `${formattedSecondTerm}x`];
+        return [['and'], `is${formattedFirstTerm} x`, 'x <- things', `is${formattedSecondTerm} x`];
       case NO_A_IS_B:
-        return [['and', 'not'], `not(${formattedFirstTerm} x)`, 'x <- things', `${formattedSecondTerm}x`];
+        return [['and', 'not'], `not(is${formattedFirstTerm} x)`, 'x <- things', `is${formattedSecondTerm} x`];
       case SOME_A_IS_NOT_B:
-        return [['not', 'and'], `${formattedFirstTerm} x`, 'x <- things', `${formattedSecondTerm}x`];
+        return [['not', 'and'], `is${formattedFirstTerm} x`, 'x <- things', `is${formattedSecondTerm} x`];
       case SOME_A_IS_B:
-        return [['not', 'and'], `not(${formattedFirstTerm} x)`, 'x <- things', `${formattedSecondTerm}x`];
+        return [['not', 'and'], `not(is${formattedFirstTerm} x)`, 'x <- things', `is${formattedSecondTerm} x`];
       default:
         break;
     }
