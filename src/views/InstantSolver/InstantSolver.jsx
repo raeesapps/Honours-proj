@@ -119,6 +119,8 @@ class InstantSolver extends React.Component {
       const { premises } = argumentForm.state;
       const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
 
+      premiseObjs.pop();
+
       const termSet = new Set();
       premiseObjs.forEach((premiseObj) => {
         const { firstTerm, secondTerm } = premiseObj.terms;
