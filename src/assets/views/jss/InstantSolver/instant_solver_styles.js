@@ -3,7 +3,7 @@ function styles(theme) {
     root: {
       marginTop: theme.spacing.unit * 15,
     },
-    premisesExpansionPanel: {
+    spacedExpansionPanel: {
       marginBottom: theme.spacing.unit,
     },
   };
