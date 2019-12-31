@@ -18,12 +18,12 @@ const shadings = Object.freeze({
   RED: 1,
 });
 
-function shadeRegions(div, region, shading) {
+function shadeRegions(div, region, mappings, shading) {
   div.selectAll('path').each(function each() {
     const { RED, BLACK } = shadings;
     const node = d3.select(this);
     const nodeRegion = node.attr('id');
-    if (nodeRegion === region) {
+    if (mappings[nodeRegion] === region) {
       switch (shading) {
         case RED:
           node.attr('fill', '#ff0000');
@@ -65,16 +65,19 @@ class FourSetUninteractiveVennDiagram extends React.Component {
       this.setState({ a, b, c, d });
     }
 
-    const mappings = {};
+    const mappedRegionToShadingMapping = {};
+    const nodeRegionToMappedRegionMapping = {};
     this.div.selectAll('path').each(function each() {
       const node = d3.select(this);
       const nodeRegion = node.attr('id');
       const mappedRegion = mapRegion(nodeRegion, a, b, c, d);
 
-      mappings[mappedRegion] = null;
+      nodeRegionToMappedRegionMapping[nodeRegion] = mappedRegion;
+      mappedRegionToShadingMapping[mappedRegion] = null;
     });
     const resolvedColumn = premiseCollection.unifyAndResolve();
     const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
+
     premiseCollectionVennDiagramParts.forEach((premiseCollectionVennDiagramPart) => {
       const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
       const resolvedValueArray = resolvedColumn[compartment.hashCode()];
@@ -83,16 +86,16 @@ class FourSetUninteractiveVennDiagram extends React.Component {
         const vennDiagramPartSplit = vennDiagramPart.split('\\');
         const leftPart = vennDiagramPartSplit[0];
 
-        if (!(leftPart in mappings)) {
-          throw new Error(`Shading algorithm failed! ${leftPart} not found in ${JSON.stringify(mappings)}`);
+        if (!(leftPart in mappedRegionToShadingMapping)) {
+          throw new Error(`Shading algorithm failed! ${leftPart} not found in ${JSON.stringify(mappedRegionToShadingMapping)}`);
         }
 
         const shading = resolvedValueArray[0] === 'e' ? BLACK : RED;
-        mappings[leftPart] = shading;
+        mappedRegionToShadingMapping[leftPart] = shading;
       }
     });
-    Object.keys(mappings).forEach((mapping) => {
-      shadeRegions(this.div, mapping, mappings[mapping]);
+    Object.keys(mappedRegionToShadingMapping).forEach((mapping) => {
+      shadeRegions(this.div, mapping, nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping[mapping]);
     });
   }
 

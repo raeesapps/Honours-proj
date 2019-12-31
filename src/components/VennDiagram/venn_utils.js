@@ -175,29 +175,38 @@ function createFourSetEllipticVennDiagram(id, ellipses, bindMouseEventListeners)
 }
 
 function mapRegion(nodeId, a, b, c, d) {
-  let mappedId = nodeId;
+  const setsIncluded = ['A', 'B', 'C', 'D'].map((set) => {
+    const mappedObj = {
+      set,
+      included: nodeId.includes(set),
+    };
 
-  if (nodeId.includes('A')) {
-    const indexOfA = mappedId.indexOf('A');
-    mappedId = `${mappedId.substring(0, indexOfA)}${a}${mappedId.substring(indexOfA + 1)}`;
-  }
+    return mappedObj;
+  });
 
-  if (nodeId.includes('B')) {
-    const indexOfB = mappedId.indexOf('B');
-    mappedId = `${mappedId.substring(0, indexOfB)}${b}${mappedId.substring(indexOfB + 1)}`;
-  }
+  let result = '(';
+  setsIncluded.forEach((mappedObj) => {
+    const { set, included } = mappedObj;
 
-  if (nodeId.includes('C')) {
-    const indexOfC = mappedId.indexOf('C');
-    mappedId = `${mappedId.substring(0, indexOfC)}${c}${mappedId.substring(indexOfC + 1)}`;
-  }
-
-  if (nodeId.includes('D')) {
-    const indexOfD = mappedId.indexOf('D');
-    mappedId = `${mappedId.substring(0, indexOfD)}${d}${mappedId.substring(indexOfD + 1)}`;
-  }
-
-  return mappedId;
+    if (included) {
+      let substitute;
+      if (set === 'A') {
+        substitute = a;
+      } else if (set === 'B') {
+        substitute = b;
+      } else if (set === 'C') {
+        substitute = c;
+      } else if (set === 'D') {
+        substitute = d;
+      } else {
+        throw new Error('Invalid set!');
+      }
+      result += substitute;
+      result += '&';
+    }
+  });
+  result = `${result.substring(0, result.length - 1)})`;
+  return result;
 }
 
 function removeOriginalVennAreas() {
