@@ -136,7 +136,7 @@ function createFourSetEllipticVennDiagram(id, ellipses, bindMouseEventListeners)
         .attr('fill', 'white')
         .attr('fill-opacity', 0.2);
 
-      if (bindMouseEventListeners) {
+      if (mouseEventListener) {
         bindMouseEventListeners(appendedPath);
       }
     });
