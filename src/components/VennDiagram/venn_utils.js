@@ -235,7 +235,7 @@ function bindMouseEventListeners(div) {
         node.attr('fill', '#ffffff');
         node.attr('fill-opacity', 0.2);
       }
-      node.attr('shaded', (parseInt(nodeShaded) + 1) % 3);
+      node.attr('shaded', (parseInt(nodeShaded, 10) + 1) % 3);
     });
 }
 
@@ -409,29 +409,7 @@ function mapRegion(nodeId, a, b, c, d) {
   return result;
 }
 
-function applyShadings(div, premiseCollection) {
-  function shadeRegions(region, mappings, shading) {
-    div.selectAll('path').each(function each() {
-      const node = d3.select(this);
-      const nodeRegion = node.attr('id');
-      if (mappings[nodeRegion] === region) {
-        switch (shading) {
-          case RED:
-            node.attr('fill', '#ff0000');
-            node.attr('fill-opacity', 1);
-            break;
-          case BLACK:
-            node.attr('fill', '#000000');
-            node.attr('fill-opacity', 1);
-            break;
-          default:
-            break;
-        }
-      }
-    });
-  }
-  const { BLACK, RED } = shadings;
-  const [a, b, c, d] = premiseCollection.terms;
+function generateMappingObjects(div, a, b, c, d) {
   const mappedRegionToShadingMapping = {};
   const nodeRegionToMappedRegionMapping = {};
   div.selectAll('path').each(function each() {
@@ -442,6 +420,41 @@ function applyShadings(div, premiseCollection) {
     nodeRegionToMappedRegionMapping[nodeRegion] = mappedRegion;
     mappedRegionToShadingMapping[mappedRegion] = null;
   });
+
+  return {
+    nodeRegionToMappedRegionMapping,
+    mappedRegionToShadingMapping,
+  };
+}
+
+function shadeRegion(div, region, mappings, shading) {
+  const { BLACK, RED } = shadings;
+
+  div.selectAll('path').each(function each() {
+    const node = d3.select(this);
+    const nodeRegion = node.attr('id');
+    if (mappings[nodeRegion] === region) {
+      switch (shading) {
+        case RED:
+          node.attr('fill', '#ff0000');
+          node.attr('fill-opacity', 1);
+          break;
+        case BLACK:
+          node.attr('fill', '#000000');
+          node.attr('fill-opacity', 1);
+          break;
+        default:
+          break;
+      }
+    }
+  });
+}
+
+function applyShadings(div, premiseCollection) {
+  const { BLACK, RED } = shadings;
+  const [a, b, c, d] = premiseCollection.terms;
+  const { nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping } = this.generateMappingObjects(div, a, b, c, d);
+
   const resolvedColumn = premiseCollection.unifyAndResolve();
   const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
 
@@ -462,7 +475,7 @@ function applyShadings(div, premiseCollection) {
     }
   });
   Object.keys(mappedRegionToShadingMapping).forEach((mapping) => {
-    shadeRegions(mapping, nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping[mapping]);
+    shadeRegion(div, mapping, nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping[mapping]);
   });
 }
 
@@ -477,6 +490,8 @@ export {
   twoSetCircles,
   threeSetCircles,
   mapRegion,
+  generateMappingObjects,
+  shadeRegion,
   applyShadings,
   bindMouseEventListeners,
 };
