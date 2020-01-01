@@ -1,44 +1,15 @@
 import React from 'react';
 
-import * as d3 from 'd3';
-
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import {
   createFourSetEllipticVennDiagram,
-  ellipses,
-  mapRegion,
+  fourSetEllipses,
+  applyShadings,
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/four_set_uninteractive_venn_diagram_styles';
-
-const shadings = Object.freeze({
-  BLACK: 0,
-  RED: 1,
-});
-
-function shadeRegions(div, region, mappings, shading) {
-  div.selectAll('path').each(function each() {
-    const { RED, BLACK } = shadings;
-    const node = d3.select(this);
-    const nodeRegion = node.attr('id');
-    if (mappings[nodeRegion] === region) {
-      switch (shading) {
-        case RED:
-          node.attr('fill', '#ff0000');
-          node.attr('fill-opacity', 1);
-          break;
-        case BLACK:
-          node.attr('fill', '#000000');
-          node.attr('fill-opacity', 1);
-          break;
-        default:
-          break;
-      }
-    }
-  });
-}
 
 class FourSetUninteractiveVennDiagram extends React.Component {
   constructor() {
@@ -54,49 +25,17 @@ class FourSetUninteractiveVennDiagram extends React.Component {
   }
 
   componentDidMount() {
-    this.div = createFourSetEllipticVennDiagram('ellipseVenn', ellipses);
+    this.div = createFourSetEllipticVennDiagram('ellipseVenn', fourSetEllipses);
   }
 
   applyShading(premiseCollection) {
-    const { BLACK, RED } = shadings;
     const [a, b, c, d] = premiseCollection.terms;
 
     if (!(this.state.a && this.state.b && this.state.c && this.state.d)) {
       this.setState({ a, b, c, d });
     }
 
-    const mappedRegionToShadingMapping = {};
-    const nodeRegionToMappedRegionMapping = {};
-    this.div.selectAll('path').each(function each() {
-      const node = d3.select(this);
-      const nodeRegion = node.attr('id');
-      const mappedRegion = mapRegion(nodeRegion, a, b, c, d);
-
-      nodeRegionToMappedRegionMapping[nodeRegion] = mappedRegion;
-      mappedRegionToShadingMapping[mappedRegion] = null;
-    });
-    const resolvedColumn = premiseCollection.unifyAndResolve();
-    const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
-
-    premiseCollectionVennDiagramParts.forEach((premiseCollectionVennDiagramPart) => {
-      const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
-      const resolvedValueArray = resolvedColumn[compartment.hashCode()];
-
-      if (resolvedValueArray.length) {
-        const vennDiagramPartSplit = vennDiagramPart.split('\\');
-        const leftPart = vennDiagramPartSplit[0];
-
-        if (!(leftPart in mappedRegionToShadingMapping)) {
-          throw new Error(`Shading algorithm failed! ${leftPart} not found in ${JSON.stringify(mappedRegionToShadingMapping)}`);
-        }
-
-        const shading = resolvedValueArray[0] === 'e' ? BLACK : RED;
-        mappedRegionToShadingMapping[leftPart] = shading;
-      }
-    });
-    Object.keys(mappedRegionToShadingMapping).forEach((mapping) => {
-      shadeRegions(this.div, mapping, nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping[mapping]);
-    });
+    applyShadings(this.div, premiseCollection);
   }
 
   render() {

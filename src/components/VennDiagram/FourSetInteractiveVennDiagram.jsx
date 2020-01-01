@@ -7,69 +7,14 @@ import Typography from '@material-ui/core/Typography';
 
 import {
   NOT_SHADED,
-  MAYBE_SHADED,
-  SHADED,
   createFourSetEllipticVennDiagram,
-  ellipses,
+  fourSetEllipses,
   mapRegion,
+  bindMouseEventListeners,
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/four_set_interactive_venn_diagram_styles';
 
-function bindMouseEventListeners(div) {
-  div
-    .on('mouseover', function onMouseover() {
-      const node = d3.select(this);
-      const nodeShaded = node.attr('shaded') || NOT_SHADED;
-
-      node.style('cursor', 'pointer');
-      node.attr('fill-opacity', 0.2);
-
-      if (nodeShaded === NOT_SHADED) {
-        node.attr('fill', '#009fdf');
-      } else if (nodeShaded === MAYBE_SHADED) {
-        node.attr('fill', '#000000');
-      } else if (nodeShaded === SHADED) {
-        node.attr('fill', '#ff0000');
-      }
-    })
-    .on('mouseout', function onMouseout() {
-      const node = d3.select(this);
-      const nodeShaded = node.attr('shaded') || NOT_SHADED;
-      if (nodeShaded === null) {
-        node.attr('shaded', NOT_SHADED);
-      }
-
-      node.style('cursor', 'default');
-
-      if (nodeShaded === NOT_SHADED) {
-        node.attr('fill', '#ffffff');
-        node.attr('fill-opacity', 0.2);
-      } else if (nodeShaded === MAYBE_SHADED) {
-        node.attr('fill', '#000000');
-        node.attr('fill-opacity', 1);
-      } else if (nodeShaded === SHADED) {
-        node.attr('fill', '#ff0000');
-        node.attr('fill-opacity', 1);
-      }
-    })
-    .on('click', function onClick() {
-      const node = d3.select(this);
-      const nodeShaded = node.attr('shaded') || NOT_SHADED;
-
-      if (nodeShaded === NOT_SHADED) {
-        node.attr('fill', '#000000');
-        node.attr('fill-opacity', 1);
-      } else if (nodeShaded === MAYBE_SHADED) {
-        node.attr('fill', '#ff0000');
-        node.attr('fill-opacity', 1);
-      } else if (nodeShaded === SHADED) {
-        node.attr('fill', '#ffffff');
-        node.attr('fill-opacity', 0.2);
-      }
-      node.attr('shaded', (parseInt(nodeShaded) + 1) % 3);
-    });
-}
 class FourSetInteractiveVennDiagram extends React.Component {
   constructor() {
     super();
@@ -105,7 +50,7 @@ class FourSetInteractiveVennDiagram extends React.Component {
       d: variables[3],
     });
 
-    const div = createFourSetEllipticVennDiagram('ellipseVenn', ellipses, bindMouseEventListeners);
+    const div = createFourSetEllipticVennDiagram('ellipseVenn', fourSetEllipses, bindMouseEventListeners);
     this.div = div;
   }
 
