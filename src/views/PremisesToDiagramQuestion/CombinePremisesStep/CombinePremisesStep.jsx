@@ -11,8 +11,8 @@ import { stages, validate } from '../../../logic/premise_validator';
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 import FourSetInteractiveVennDiagram from '../../../components/VennDiagram/FourSetInteractiveVennDiagram';
-import InteractiveVennDiagram from '../../../components/VennDiagram/InteractiveVennDiagram';
-import UninteractiveVennDiagram from '../../../components/VennDiagram/UninteractiveVennDiagram';
+import ThreeSetInteractiveVennDiagram from '../../../components/VennDiagram/ThreeSetInteractiveVennDiagram';
+import TwoSetUninteractiveVennDiagram from '../../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 
 import styles from '../../../assets/views/jss/PremisesToDiagramQuestion/CombinePremisesStep/combine_premises_step_styles';
 
@@ -28,16 +28,16 @@ class CombinePremisesStep extends React.Component {
   }
 
   shadingEntryToVennDiagram(shading, idx) {
-    const { premiseSets, argument } = this.props;
+    const { argument } = this.props;
 
-    if (!premiseSets[idx] || !argument.premises[idx]) {
+    if (!argument.premises[idx]) {
       throw new Error('Invalid index!');
     }
 
     const title = argument.premises[idx].toSentence();
     return (
       <Grid item xs={6}>
-        <UninteractiveVennDiagram title={title} shading={shading} sets={premiseSets[idx]} renderTitle={1} />
+        <TwoSetUninteractiveVennDiagram title={title} shading={shading} />
       </Grid>
     );
   }
@@ -56,24 +56,24 @@ class CombinePremisesStep extends React.Component {
     function renderInteractiveVennDiagram(props, vennDiagramRef) {
       const { argument } = props;
 
-      if (argument.premises.length <= 2) {
+      if (argument.terms.length === 3) {
         return (
           <div>
             <Grid item xs={3} />
             <Grid item xs={9}>
-              <InteractiveVennDiagram title="Combination" sets={argument.getSets()} ref={vennDiagramRef} />
+              <ThreeSetInteractiveVennDiagram title="Combination" premises={argument} ref={vennDiagramRef} />
             </Grid>
           </div>
         );
       }
-      if (argument.premises.length === 3) {
+      if (argument.terms.length === 4) {
         return (
           <Grid item xs={9}>
             <FourSetInteractiveVennDiagram premises={argument} ref={vennDiagramRef} />
           </Grid>
         );
       }
-      throw new Error('5 sets are not supported!');
+      throw new Error('Only 3 or 4 sets are supported!');
     }
     const { ERROR } = snackbarTypes;
     const { classes, vennDiagramShadings } = this.props;
