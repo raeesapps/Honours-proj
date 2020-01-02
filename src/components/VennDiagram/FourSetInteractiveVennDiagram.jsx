@@ -31,23 +31,11 @@ class FourSetInteractiveVennDiagram extends React.Component {
   componentDidMount() {
     const { premises } = this.props;
 
-    const compartments = premises.getSets();
-    const filteredCompartments = compartments.filter((compartment) => {
-      const { sets } = compartment;
-      return sets.length === 4;
-    });
-
-    if (filteredCompartments.length !== 1) {
-      throw new Error('Something went wrong!');
-    }
-
-    const variables = filteredCompartments[0].sets;
-
     this.setState({
-      a: variables[0],
-      b: variables[1],
-      c: variables[2],
-      d: variables[3],
+      a: premises.terms[0],
+      b: premises.terms[1],
+      c: premises.terms[2],
+      d: premises.terms[3],
     });
 
     const div = createFourSetEllipticVennDiagram('ellipseVenn', fourSetEllipses, bindMouseEventListeners);
