@@ -2,6 +2,9 @@ import React from 'react';
 
 import * as d3 from 'd3';
 
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import {
   NOT_SHADED,
   createThreeSetCircularVennDiagram,
@@ -9,6 +12,8 @@ import {
   mapRegion,
   bindMouseEventListeners,
 } from './venn_utils';
+
+import styles from '../../assets/components/jss/VennDiagram/three_set_interactive_venn_diagram_styles';
 
 class ThreeSetInteractiveVennDiagram extends React.Component {
   constructor() {
@@ -57,14 +62,31 @@ class ThreeSetInteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { classes, title } = this.props;
+    const { a, b, c } = this.state;
     const id = title.split(' ').join('');
     return (
-      <div>
+      <div className={classes.content}>
+        {
+          (a && b && c)
+          && (
+            <div>
+              <Typography variant="body1" className={classes.topRight}>
+                {a}
+              </Typography>
+              <Typography variant="body1" className={classes.bottomLeft}>
+                {b}
+              </Typography>
+              <Typography variant="body1" className={classes.bottomRight}>
+                {c}
+              </Typography>
+            </div>
+          )
+        }
         <div id={id} />
       </div>
     );
   }
 }
 
-export default ThreeSetInteractiveVennDiagram;
+export default withStyles(styles)(ThreeSetInteractiveVennDiagram);

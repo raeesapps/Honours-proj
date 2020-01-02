@@ -1,10 +1,15 @@
 import React from 'react';
 
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import {
   createThreeSetCircularVennDiagram,
   threeSetCircles,
   applyShadings,
 } from './venn_utils';
+
+import styles from '../../assets/components/jss/VennDiagram/three_set_uninteractive_venn_diagram_styles';
 
 class ThreeSetUninteractiveVennDiagram extends React.Component {
   constructor() {
@@ -35,14 +40,31 @@ class ThreeSetUninteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { classes, title } = this.props;
+    const { a, b, c } = this.state;
     const id = title.split(' ').join('');
     return (
-      <div>
+      <div className={classes.content}>
+        {
+          (a && b && c)
+          && (
+            <div>
+              <Typography variant="body1" className={classes.topRight}>
+                {a}
+              </Typography>
+              <Typography variant="body1" className={classes.bottomLeft}>
+                {b}
+              </Typography>
+              <Typography variant="body1" className={classes.bottomRight}>
+                {c}
+              </Typography>
+            </div>
+          )
+        }
         <div id={id} />
       </div>
     );
   }
 }
 
-export default ThreeSetUninteractiveVennDiagram;
+export default withStyles(styles)(ThreeSetUninteractiveVennDiagram);
