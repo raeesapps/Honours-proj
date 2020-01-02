@@ -2,6 +2,7 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
@@ -57,11 +58,15 @@ class RepresentPremisesStep extends React.Component {
           <Typography className={classes.instructions} variant="h6">
             Please shade in the diagrams to represent the premises:
           </Typography>
-          {
-            premises.map((premise, idx) => (
-              <PremiseToDiagram premise={premise} vennDiagramShading={vennDiagramShadings[idx]} ref={refs[idx]} />
-            ))
-          }
+          <Grid container>
+            {
+              premises.map((premise, idx) => (
+                <Grid item xs={6}>
+                  <PremiseToDiagram premise={premise} vennDiagramShading={vennDiagramShadings[idx]} ref={refs[idx]} />
+                </Grid>
+              ))
+            }
+          </Grid>
         </Container>
       </div>
     );
