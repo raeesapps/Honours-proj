@@ -2,6 +2,8 @@ import React from 'react';
 
 import {
   createTwoSetCircularVennDiagram,
+  generateMappingObjects,
+  shadeRegion,
   twoSetCircles,
   applyShadings,
 } from './venn_utils';
@@ -18,9 +20,18 @@ class TwoSetUninteractiveVennDiagram extends React.Component {
   }
 
   componentDidMount() {
-    const { title } = this.props;
+    const { title, shadings, terms } = this.props;
     const id = title.split(' ').join('');
-    this.div = createTwoSetCircularVennDiagram(id, twoSetCircles);
+    const div = createTwoSetCircularVennDiagram(id, twoSetCircles);
+    this.div = div;
+
+    if (shadings) {
+      const { firstTerm, secondTerm } = terms;
+      const { nodeRegionToMappedRegionMapping } = generateMappingObjects(div, firstTerm, secondTerm);
+      Object.keys(shadings).forEach((mapping) => {
+        shadeRegion(div, mapping, nodeRegionToMappedRegionMapping, shadings[mapping]);
+      });
+    }
   }
 
   applyShading(premiseCollection) {

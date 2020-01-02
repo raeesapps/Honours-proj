@@ -34,10 +34,10 @@ class CombinePremisesStep extends React.Component {
       throw new Error('Invalid index!');
     }
 
-    const title = argument.premises[idx].toSentence();
+    const premise = argument.premises[idx];
     return (
       <Grid item xs={6}>
-        <TwoSetUninteractiveVennDiagram title={title} shading={shading} />
+        <TwoSetUninteractiveVennDiagram title={premise.toSentence()} shadings={shading} terms={premise.terms} />
       </Grid>
     );
   }

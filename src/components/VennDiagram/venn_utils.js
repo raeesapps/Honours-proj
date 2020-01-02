@@ -4,11 +4,6 @@ const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
 const SHADED = '2';
 
-const shadings = Object.freeze({
-  BLACK: 0,
-  RED: 1,
-});
-
 const twoSetCircles = [
   {
     cX: 90,
@@ -428,18 +423,16 @@ function generateMappingObjects(div, a, b, c, d) {
 }
 
 function shadeRegion(div, region, mappings, shading) {
-  const { BLACK, RED } = shadings;
-
   div.selectAll('path').each(function each() {
     const node = d3.select(this);
     const nodeRegion = node.attr('id');
     if (mappings[nodeRegion] === region) {
       switch (shading) {
-        case RED:
+        case SHADED:
           node.attr('fill', '#ff0000');
           node.attr('fill-opacity', 1);
           break;
-        case BLACK:
+        case MAYBE_SHADED:
           node.attr('fill', '#000000');
           node.attr('fill-opacity', 1);
           break;
@@ -451,9 +444,8 @@ function shadeRegion(div, region, mappings, shading) {
 }
 
 function applyShadings(div, premiseCollection) {
-  const { BLACK, RED } = shadings;
   const [a, b, c, d] = premiseCollection.terms;
-  const { nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping } = this.generateMappingObjects(div, a, b, c, d);
+  const { nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping } = generateMappingObjects(div, a, b, c, d);
 
   const resolvedColumn = premiseCollection.unifyAndResolve();
   const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
@@ -470,7 +462,7 @@ function applyShadings(div, premiseCollection) {
         throw new Error(`Shading algorithm failed! ${leftPart} not found in ${JSON.stringify(mappedRegionToShadingMapping)}`);
       }
 
-      const shading = resolvedValueArray[0] === 'e' ? BLACK : RED;
+      const shading = resolvedValueArray[0] === 'e' ? MAYBE_SHADED : SHADED;
       mappedRegionToShadingMapping[leftPart] = shading;
     }
   });
