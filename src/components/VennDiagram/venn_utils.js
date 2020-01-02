@@ -1,20 +1,87 @@
 import * as d3 from 'd3';
 
-const DEFAULT_SET = [
-  { sets: ['A'], size: 8 },
-  { sets: ['B'], size: 8 },
-  { sets: ['C'], size: 8 },
-  { sets: ['A', 'B'], size: 2 },
-  { sets: ['B', 'C'], size: 2 },
-  { sets: ['A', 'C'], size: 2 },
-  { sets: ['A', 'B', 'C'], size: 2 },
-];
-
 const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
 const SHADED = '2';
 
-const ellipses = [
+const twoSetCircles = [
+  {
+    cX: 90,
+    cY: 92,
+    id: 'circle1',
+  },
+  {
+    cX: 200,
+    cY: 92,
+    id: 'circle2',
+  },
+];
+
+const twoSetCircleVennDiagramPaths = [
+  {
+    name: '(A)',
+    path: 'M 81.00,13.42 C 74.80,14.36 70.05,15.00 64.00,17.08 41.41,24.83 22.83,43.41 15.08,66.00 -1.85,115.37 33.79,170.37 87.00,171.00 102.80,171.18 116.26,168.58 130.00,160.40 132.71,158.78 139.87,154.42 141.26,151.83 143.36,147.91 135.35,140.37 133.09,137.00 124.72,124.50 121.06,112.80 119.28,98.00 117.66,84.47 122.28,65.83 128.86,54.00 131.83,48.67 133.80,45.76 137.61,41.00 138.97,39.30 141.83,36.27 141.81,34.04 141.76,30.20 132.13,24.84 129.00,23.01 115.08,14.88 96.98,11.47 81.00,13.42 Z',
+  },
+  {
+    name: '(A&B)',
+    path: 'M 144.00,37.54 C 138.09,40.63 134.36,47.27 131.01,53.00 119.86,72.09 117.89,98.25 125.44,119.00 128.25,126.75 132.54,134.53 137.67,141.00 139.49,143.30 142.61,147.52 146.00,146.66 150.29,145.57 157.30,133.99 159.57,130.00 171.38,109.25 171.88,81.76 162.57,60.00 160.22,54.50 152.13,40.26 146.99,37.54 145.03,36.78 144.78,37.37 144.00,37.54 Z',
+  },
+  {
+    name: '(B)',
+    path: 'M 191.00,13.42 C 177.44,15.47 169.87,17.45 158.00,24.81 155.53,26.35 149.10,30.32 148.34,33.09 147.43,36.38 155.54,44.85 157.56,48.00 165.58,60.45 168.60,70.51 170.58,85.00 172.48,98.92 167.94,117.82 161.14,130.00 158.32,135.04 155.86,138.46 152.34,143.00 151.01,144.71 148.17,147.75 148.19,149.96 148.23,153.37 155.33,157.53 158.00,159.19 169.65,166.41 183.21,170.84 197.00,171.00 210.19,171.15 221.96,169.39 234.00,163.68 243.53,159.17 251.77,152.70 258.91,145.00 264.83,138.62 270.13,130.07 273.40,122.00 295.81,66.54 250.92,6.11 191.00,13.42 Z',
+  },
+];
+
+const threeSetCircles = [
+  {
+    cX: 90,
+    cY: 180,
+    id: 'circle1',
+  },
+  {
+    cX: 200,
+    cY: 180,
+    id: 'circle2',
+  },
+  {
+    cX: 150,
+    cY: 95,
+    id: 'circle3',
+  },
+];
+
+const threeSetCircleVennDiagramPaths = [
+  {
+    name: '(A)',
+    path: 'M 71.00,101.00 C 71.00,101.00 85.00,99.17 85.00,99.17 96.14,98.10 109.62,101.09 120.00,105.06 125.02,106.98 131.59,110.69 136.00,113.77 138.35,115.41 142.13,118.98 145.00,118.98 147.95,118.98 153.27,114.19 156.00,112.44 164.04,107.26 168.96,105.17 178.00,102.35 190.10,98.57 201.60,98.34 214.00,100.43 214.00,100.43 229.00,104.00 229.00,104.00 229.00,85.51 228.40,71.53 218.55,55.00 190.37,7.71 124.97,2.32 89.30,44.00 74.35,61.47 71.00,78.82 71.00,101.00 Z',
+  },
+  {
+    name: '(A&B)',
+    path: 'M 71.00,103.00 C 71.00,103.00 75.44,122.00 75.44,122.00 82.21,140.65 100.46,162.42 120.00,168.00 122.23,156.16 125.42,147.27 131.81,137.00 133.72,133.94 141.84,124.42 141.81,122.04 141.76,118.04 131.30,112.30 128.00,110.43 110.07,100.23 90.81,99.44 71.00,103.00 Z',
+  },
+  {
+    name: '(A&B&C)',
+    path: 'M 169.00,172.00 C 165.08,156.09 165.50,149.61 155.28,135.00 153.35,132.24 148.61,125.20 145.00,125.20 141.76,125.20 137.92,130.59 136.16,133.00 130.43,140.84 126.05,149.59 123.63,159.00 122.98,161.54 121.46,166.15 123.04,168.49 124.63,170.86 132.17,172.24 135.00,172.72 148.01,174.89 156.14,174.31 169.00,172.00 Z',
+  },
+  {
+    name: '(A&C)',
+    path: 'M 170.00,171.00 C 179.85,170.11 191.33,163.37 199.00,157.33 205.19,152.46 211.59,145.59 215.92,139.00 220.80,131.58 224.16,124.62 226.37,116.00 227.02,113.46 228.54,108.85 226.96,106.51 225.19,103.88 216.17,102.45 213.00,102.00 198.22,99.91 183.95,100.97 170.00,106.60 164.25,108.93 157.97,112.45 153.00,116.16 151.22,117.49 148.22,119.57 148.19,122.04 148.16,124.42 156.28,133.94 158.19,137.00 164.29,146.80 169.46,159.36 170.00,171.00 Z',
+  },
+  {
+    name: '(B)',
+    path: 'M 120.00,170.00 C 94.29,158.92 71.33,132.97 70.00,104.00 60.92,104.82 51.35,110.25 44.00,115.44 15.65,135.44 4.62,171.17 14.44,204.00 24.94,239.12 57.39,259.41 93.00,259.00 106.27,258.84 119.71,254.65 131.00,247.80 133.66,246.18 140.85,241.85 141.66,238.91 142.37,236.35 139.87,233.84 138.42,232.00 133.96,226.38 131.74,223.38 128.31,217.00 120.97,203.38 117.26,185.28 120.00,170.00 Z',
+  },
+  {
+    name: '(B&C)',
+    path: 'M 121.00,171.00 C 121.00,191.37 121.66,204.01 132.81,222.00 134.87,225.31 140.87,234.80 145.00,234.80 149.13,234.80 155.13,225.31 157.19,222.00 167.46,205.43 169.00,192.97 169.00,174.00 169.00,174.00 146.00,175.91 146.00,175.91 146.00,175.91 121.00,171.00 121.00,171.00 Z',
+  },
+  {
+    name: '(C)',
+    path: 'M 230.00,107.00 C 225.71,129.77 215.03,147.51 196.00,161.09 191.61,164.23 186.00,167.52 181.00,169.55 178.67,170.49 173.40,171.82 171.99,173.70 170.56,175.61 171.07,183.07 170.72,186.00 169.60,195.30 167.58,204.43 163.69,213.00 160.90,219.13 157.19,224.67 153.11,230.00 151.68,231.87 148.16,235.64 148.19,237.96 148.23,241.37 155.33,245.53 158.00,247.19 169.65,254.41 183.21,258.84 197.00,259.00 229.27,259.37 257.55,243.82 271.68,214.00 286.27,183.22 279.18,146.72 255.00,123.01 248.66,116.80 238.60,109.46 230.00,107.00 Z',
+  },
+];
+
+const fourSetEllipses = [
   {
     cX: 196,
     cY: 246,
@@ -49,7 +116,7 @@ const ellipses = [
   },
 ];
 
-const paths = [
+const fourSetEllipticVennDiagramPaths = [
   {
     name: '(A)',
     path: 'M 106.00,84.00 C 106.00,84.00 115.00,84.00 115.00,84.00 126.65,84.02 139.81,87.08 151.00,90.29 173.07,96.63 203.93,111.05 222.00,125.00 227.65,120.60 233.53,112.50 239.00,107.00 255.45,90.47 274.16,71.42 294.00,59.00 289.97,54.24 284.30,51.19 279.00,48.00 270.26,42.74 261.36,37.65 252.00,33.58 252.00,33.58 232.00,25.34 232.00,25.34 196.72,13.10 145.52,7.15 119.90,41.00 115.82,46.38 112.57,52.63 110.34,59.00 107.20,67.99 106.01,74.48 106.00,84.00 Z',
@@ -112,7 +179,134 @@ const paths = [
   },
 ];
 
-function createFourSetEllipticVennDiagram(id, ellipses, bindMouseEventListeners) {
+function bindMouseEventListeners(div) {
+  div
+    .on('mouseover', function onMouseover() {
+      const node = d3.select(this);
+      const nodeShaded = node.attr('shaded') || NOT_SHADED;
+
+      node.style('cursor', 'pointer');
+      node.attr('fill-opacity', 0.2);
+
+      if (nodeShaded === NOT_SHADED) {
+        node.attr('fill', '#009fdf');
+      } else if (nodeShaded === MAYBE_SHADED) {
+        node.attr('fill', '#000000');
+      } else if (nodeShaded === SHADED) {
+        node.attr('fill', '#ff0000');
+      }
+    })
+    .on('mouseout', function onMouseout() {
+      const node = d3.select(this);
+      const nodeShaded = node.attr('shaded') || NOT_SHADED;
+      if (nodeShaded === null) {
+        node.attr('shaded', NOT_SHADED);
+      }
+
+      node.style('cursor', 'default');
+
+      if (nodeShaded === NOT_SHADED) {
+        node.attr('fill', '#ffffff');
+        node.attr('fill-opacity', 0.2);
+      } else if (nodeShaded === MAYBE_SHADED) {
+        node.attr('fill', '#000000');
+        node.attr('fill-opacity', 1);
+      } else if (nodeShaded === SHADED) {
+        node.attr('fill', '#ff0000');
+        node.attr('fill-opacity', 1);
+      }
+    })
+    .on('click', function onClick() {
+      const node = d3.select(this);
+      const nodeShaded = node.attr('shaded') || NOT_SHADED;
+
+      if (nodeShaded === NOT_SHADED) {
+        node.attr('fill', '#000000');
+        node.attr('fill-opacity', 1);
+      } else if (nodeShaded === MAYBE_SHADED) {
+        node.attr('fill', '#ff0000');
+        node.attr('fill-opacity', 1);
+      } else if (nodeShaded === SHADED) {
+        node.attr('fill', '#ffffff');
+        node.attr('fill-opacity', 0.2);
+      }
+      node.attr('shaded', (parseInt(nodeShaded, 10) + 1) % 3);
+    });
+}
+
+function drawCircle(diagram, cX, cY, id) {
+  diagram.append('circle')
+    .attr('fill-opacity', 0)
+    .attr('stroke', '#ff0000')
+    .attr('stroke-width', 1)
+    .attr('opacity', 1)
+    .attr('fill', '#ffffff')
+    .attr('r', 80)
+    .attr('cx', cX)
+    .attr('cy', cY)
+    .attr('id', id);
+}
+
+function drawPaths(diagram, paths, mouseEventListener) {
+  paths.forEach((pathEntry) => {
+    const { name, path } = pathEntry;
+    const appendedPath = diagram.append('path');
+
+    appendedPath
+      .attr('d', path)
+      .attr('id', name)
+      .attr('fill', 'white')
+      .attr('fill-opacity', 0.2);
+
+    if (mouseEventListener) {
+      bindMouseEventListeners(appendedPath);
+    }
+  });
+}
+
+function createTwoSetCircularVennDiagram(elementId, circles, mouseEventListener) {
+  const width = 300;
+  const height = 180;
+
+  const div = d3.select(`#${elementId}`);
+  const diagram = div.append('svg').attr('width', width).attr('height', height);
+
+  circles.forEach((circle) => {
+    const {
+      cX,
+      cY,
+      id,
+    } = circle;
+    drawCircle(diagram, cX, cY, id);
+  });
+
+  drawPaths(diagram, twoSetCircleVennDiagramPaths, mouseEventListener);
+
+  return div;
+}
+
+function createThreeSetCircularVennDiagram(elementId, circles, mouseEventListener) {
+  const width = 300;
+  const height = 270;
+
+  const div = d3.select(`#${elementId}`);
+  const diagram = div.append('svg').attr('width', width).attr('height', height);
+
+  circles.forEach((circle) => {
+    const {
+      cX,
+      cY,
+      id,
+    } = circle;
+    drawCircle(diagram, cX, cY, id);
+  });
+
+  drawPaths(diagram, threeSetCircleVennDiagramPaths, mouseEventListener);
+
+  return div;
+}
+
+function createFourSetEllipticVennDiagram(id, ellipses, mouseEventListener) {
   function drawEllipse(diagram, cX, cY, rX, rY, rotationAng, eID) {
     const transformation = `rotate(${rotationAng} ${cX} ${cY})`;
 
@@ -128,23 +322,6 @@ function createFourSetEllipticVennDiagram(id, ellipses, bindMouseEventListeners)
       .attr('stroke-width', 1)
       .attr('opacity', 1)
       .attr('fill', '#ffffff');
-  }
-
-  function drawEllipsePaths(diagram) {
-    paths.forEach((pathEntry) => {
-      const { name, path } = pathEntry;
-      const appendedPath = diagram.append('path');
-
-      appendedPath
-        .attr('d', path)
-        .attr('id', name)
-        .attr('fill', 'white')
-        .attr('fill-opacity', 0.2);
-
-      if (bindMouseEventListeners) {
-        bindMouseEventListeners(appendedPath);
-      }
-    });
   }
 
   if (ellipses.length !== 4) {
@@ -169,13 +346,31 @@ function createFourSetEllipticVennDiagram(id, ellipses, bindMouseEventListeners)
     drawEllipse(diagram, cX, cY, rX, rY, rotationAng, eID);
   });
 
-  drawEllipsePaths(diagram);
+  drawPaths(diagram, fourSetEllipticVennDiagramPaths, mouseEventListener);
 
   return div;
 }
 
 function mapRegion(nodeId, a, b, c, d) {
-  const setsIncluded = ['A', 'B', 'C', 'D'].map((set) => {
+  const sets = [];
+
+  if (a) {
+    sets.push('A');
+  }
+
+  if (b) {
+    sets.push('B');
+  }
+
+  if (c) {
+    sets.push('C');
+  }
+
+  if (d) {
+    sets.push('D');
+  }
+
+  const setsIncluded = sets.map((set) => {
     const mappedObj = {
       set,
       included: nodeId.includes(set),
@@ -209,180 +404,86 @@ function mapRegion(nodeId, a, b, c, d) {
   return result;
 }
 
-function removeOriginalVennAreas() {
-  d3.selectAll('g.venn-area').remove();
-}
-
-function getIntersectionAreasMapping() {
-  const intersectionAreasMapping = {};
-  const vennAreas = d3.selectAll('.venn-area');
-  vennAreas.each((areaData, areaIdx, areas) => {
-    const area = areas[areaIdx];
-    const areaSets = areaData.sets;
-    const areaSelection = d3.select(area);
-    const areaD = areaSelection.select('path').attr('d');
-    const areaSetsId = area.dataset.vennSets;
-    const intersectedAreas = d3.selectAll('.venn-area')
-      .filter((cAreaData, cAreaIdx, cAreas) => {
-        const cAreaSetsId = cAreas[cAreaIdx].dataset.vennSets;
-        const cAreaSets = cAreaData.sets;
-        const isContained = areaSets.every((setId) => cAreaSets.indexOf(setId) > -1);
-        return (isContained && cAreaSetsId !== areaSetsId);
-      }).nodes().map((intersectedArea) => {
-        const intersectedAreaSelection = d3.select(intersectedArea);
-        return {
-          sets: intersectedAreaSelection.data()[0].sets,
-          d: intersectedAreaSelection.select('path').attr('d'),
-        };
-      });
-
-    intersectionAreasMapping[areaSetsId] = {
-      vennArea: {
-        sets: areaSets,
-        d: areaD,
-      },
-      intersectedAreas,
-    };
-  });
-  return intersectionAreasMapping;
-}
-
-function getPartId(vennArea, intersectedAreas) {
-  let partId = `(${vennArea.sets.join('&')})`;
-  partId += intersectedAreas.length > 1 ? '\\(' : '';
-  partId += intersectedAreas.length === 1 ? '\\' : '';
-  partId += intersectedAreas
-    .map((intersectedArea) => intersectedArea.sets)
-    .map((set) => `${(set.join('&'))}`).join('|');
-  partId += intersectedAreas.length > 1 ? ')' : '';
-  return partId;
-}
-
-function appendLabels(svg, labels) {
-  labels.nodes().forEach((label) => {
-    svg.append(() => label);
-  });
-}
-
-function appendVennAreaPart(svg, d, partId) {
-  svg.append('g')
-    .attr('class', 'venn-area-part')
-    .attr('venn-area-part-id', partId)
-    .append('path')
-    .attr('d', d)
-    .attr('fill-rule', 'evenodd');
-}
-
-function appendVennAreaParts(svg, intersectionAreasMapping, pointer) {
-  Object.keys(intersectionAreasMapping).forEach((areaSetsId) => {
-    const intersectionAreasItem = intersectionAreasMapping[areaSetsId];
-    const { vennArea, intersectedAreas } = intersectionAreasItem;
-    const partId = getPartId(vennArea, intersectedAreas);
-    const d = [vennArea.d].concat(intersectedAreas.map((intersectedArea) => intersectedArea.d));
-    appendVennAreaPart(svg, d.join(''), partId, pointer);
-  });
-}
-
-function appendPatterns(defs) {
-  const colours = [
-    {
-      rectColour: 'none',
-      pathColour: '#000000',
-    },
-    {
-      rectColour: 'none',
-      pathColour: '#ff0000',
-    },
-    {
-      rectColour: '#009fdf',
-      pathColour: '#000000',
-    },
-    {
-      rectColour: '#009fdf',
-      pathColour: '#ff0000',
-    },
-  ];
-  colours.forEach((colour, idx) => {
-    const { rectColour, pathColour } = colour;
-    const diagonal = defs.append('pattern')
-      .attr('id', 'diagonal'.toString() + idx.toString())
-      .attr('patternUnits', 'userSpaceOnUse')
-      .attr('width', '10')
-      .attr('height', '10');
-    diagonal.append('rect')
-      .attr('width', '10')
-      .attr('height', '10')
-      .attr('x', '0')
-      .attr('y', '0')
-      .attr('fill', rectColour)
-      .attr('fill-opacity', '0.15');
-    diagonal.append('path')
-      .attr('d', 'M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2')
-      .attr('stroke', pathColour)
-      .attr('opacity', '1')
-      .attr('stroke-width', '1');
-  });
-}
-
-function getShadings(div) {
-  const mappings = {};
-  div.selectAll('g').each(function onEach() {
+function generateMappingObjects(div, a, b, c, d) {
+  const mappedRegionToShadingMapping = {};
+  const nodeRegionToMappedRegionMapping = {};
+  div.selectAll('path').each(function each() {
     const node = d3.select(this);
-    const nodePart = node.attr('venn-area-part-id');
-    const nodeShaded = node.attr('shaded') || NOT_SHADED;
+    const nodeRegion = node.attr('id');
+    const mappedRegion = mapRegion(nodeRegion, a, b, c, d);
 
-    if (nodePart.indexOf('\\') > -1) {
-      const nodePartSplit = nodePart.split('\\');
-      const leftPart = nodePartSplit[0];
-
-      mappings[leftPart] = nodeShaded;
-    } else {
-      mappings[nodePart] = nodeShaded;
-    }
+    nodeRegionToMappedRegionMapping[nodeRegion] = mappedRegion;
+    mappedRegionToShadingMapping[mappedRegion] = null;
   });
 
-  return mappings;
+  return {
+    nodeRegionToMappedRegionMapping,
+    mappedRegionToShadingMapping,
+  };
 }
 
-function shadeAccordingToShadings(div, shadings) {
-  div.selectAll('g').each(function onEach() {
+function shadeRegion(div, region, mappings, shading) {
+  div.selectAll('path').each(function each() {
     const node = d3.select(this);
-    const nodePath = node.select('path');
-    const nodePart = node.attr('venn-area-part-id');
-
-    let shading;
-    if (nodePart.indexOf('\\') > -1) {
-      const nodePartSplit = nodePart.split('\\');
-      shading = shadings[nodePartSplit[0]];
-    } else {
-      shading = shadings[nodePart];
+    const nodeRegion = node.attr('id');
+    if (mappings[nodeRegion] === region) {
+      switch (shading) {
+        case SHADED:
+          node.attr('fill', '#ff0000');
+          node.attr('fill-opacity', 1);
+          break;
+        case MAYBE_SHADED:
+          node.attr('fill', '#000000');
+          node.attr('fill-opacity', 1);
+          break;
+        default:
+          break;
+      }
     }
+  });
+}
 
-    if (shading === NOT_SHADED) {
-      nodePath.attr('style', 'fill: #ffffff');
-    } else if (shading === MAYBE_SHADED) {
-      nodePath.attr('style', 'fill: url(#diagonal0)');
-    } else if (shading === SHADED) {
-      nodePath.attr('style', 'fill: url(#diagonal1)');
+function applyShadings(div, premiseCollection) {
+  const [a, b, c, d] = premiseCollection.terms;
+  const { nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping } = generateMappingObjects(div, a, b, c, d);
+
+  const resolvedColumn = premiseCollection.unifyAndResolve();
+  const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
+
+  premiseCollectionVennDiagramParts.forEach((premiseCollectionVennDiagramPart) => {
+    const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
+    const resolvedValueArray = resolvedColumn[compartment.hashCode()];
+
+    if (resolvedValueArray.length) {
+      const vennDiagramPartSplit = vennDiagramPart.split('\\');
+      const leftPart = vennDiagramPartSplit[0];
+
+      if (!(leftPart in mappedRegionToShadingMapping)) {
+        throw new Error(`Shading algorithm failed! ${leftPart} not found in ${JSON.stringify(mappedRegionToShadingMapping)}`);
+      }
+
+      const shading = resolvedValueArray[0] === 'e' ? MAYBE_SHADED : SHADED;
+      mappedRegionToShadingMapping[leftPart] = shading;
     }
-
-    node.attr('shaded', (parseInt(shading)));
+  });
+  Object.keys(mappedRegionToShadingMapping).forEach((mapping) => {
+    shadeRegion(div, mapping, nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping[mapping]);
   });
 }
 
 export {
-  DEFAULT_SET,
   NOT_SHADED,
   MAYBE_SHADED,
   SHADED,
-  removeOriginalVennAreas,
-  getIntersectionAreasMapping,
-  appendLabels,
-  appendVennAreaParts,
-  appendPatterns,
-  getShadings,
-  shadeAccordingToShadings,
   createFourSetEllipticVennDiagram,
-  ellipses,
+  createThreeSetCircularVennDiagram,
+  createTwoSetCircularVennDiagram,
+  fourSetEllipses,
+  twoSetCircles,
+  threeSetCircles,
   mapRegion,
+  generateMappingObjects,
+  shadeRegion,
+  applyShadings,
+  bindMouseEventListeners,
 };

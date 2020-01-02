@@ -4,14 +4,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import {
-  createFourSetEllipticVennDiagram,
-  fourSetEllipses,
+  createThreeSetCircularVennDiagram,
+  threeSetCircles,
   applyShadings,
 } from './venn_utils';
 
-import styles from '../../assets/components/jss/VennDiagram/four_set_uninteractive_venn_diagram_styles';
+import styles from '../../assets/components/jss/VennDiagram/three_set_uninteractive_venn_diagram_styles';
 
-class FourSetUninteractiveVennDiagram extends React.Component {
+class ThreeSetUninteractiveVennDiagram extends React.Component {
   constructor() {
     super();
 
@@ -19,58 +19,52 @@ class FourSetUninteractiveVennDiagram extends React.Component {
       a: null,
       b: null,
       c: null,
-      d: null,
     };
     this.applyShading = this.applyShading.bind(this);
   }
 
   componentDidMount() {
-    this.div = createFourSetEllipticVennDiagram('ellipseVenn', fourSetEllipses);
+    const { title } = this.props;
+    const id = title.split(' ').join('');
+    this.div = createThreeSetCircularVennDiagram(id, threeSetCircles);
   }
 
   applyShading(premiseCollection) {
-    const [a, b, c, d] = premiseCollection.terms;
+    const [a, b, c] = premiseCollection.terms;
 
-    if (!(this.state.a && this.state.b && this.state.c && this.state.d)) {
-      this.setState({ a, b, c, d });
+    if (!(this.state.a && this.state.b && this.state.c)) {
+      this.setState({ a, b, c });
     }
 
     applyShadings(this.div, premiseCollection);
   }
 
   render() {
-    const { classes } = this.props;
-    const {
-      a,
-      b,
-      c,
-      d,
-    } = this.state;
+    const { classes, title } = this.props;
+    const { a, b, c } = this.state;
+    const id = title.split(' ').join('');
     return (
       <div className={classes.content}>
         {
-          (a && b && c && d)
+          (a && b && c)
           && (
             <div>
-              <Typography variant="body1" className={classes.topLeft}>
+              <Typography variant="body1" className={classes.topRight}>
                 {a}
               </Typography>
-              <Typography variant="body1" className={classes.topRight}>
+              <Typography variant="body1" className={classes.bottomLeft}>
                 {b}
               </Typography>
-              <Typography variant="body1" className={classes.bottomLeft}>
-                {c}
-              </Typography>
               <Typography variant="body1" className={classes.bottomRight}>
-                {d}
+                {c}
               </Typography>
             </div>
           )
         }
-        <div id="ellipseVenn" />
+        <div id={id} />
       </div>
     );
   }
 }
 
-export default withStyles(styles)(FourSetUninteractiveVennDiagram);
+export default withStyles(styles)(ThreeSetUninteractiveVennDiagram);

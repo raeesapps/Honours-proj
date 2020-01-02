@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { stages, validate } from '../../logic/premise_validator';
 
-import InteractiveVennDiagram from '../VennDiagram/InteractiveVennDiagram';
+import TwoSetInteractiveVennDiagram from '../VennDiagram/TwoSetInteractiveVennDiagram';
 
 class PremiseToDiagram extends React.Component {
   constructor() {
@@ -37,7 +37,7 @@ class PremiseToDiagram extends React.Component {
             title
           }
         </Typography>
-        <InteractiveVennDiagram title={`${title}rep`} premise={premise} ref={vennDiagramRef} shadings={vennDiagramShading} />
+        <TwoSetInteractiveVennDiagram title={`${title}rep`} premise={premise} ref={vennDiagramRef} shadings={vennDiagramShading} />
       </Grid>
     );
   }

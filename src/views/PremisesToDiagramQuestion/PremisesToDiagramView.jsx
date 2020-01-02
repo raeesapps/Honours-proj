@@ -26,7 +26,6 @@ class PremisesToDiagramView extends React.Component {
       refs: [],
       argument: null,
       vennDiagramShadings: null,
-      premiseSets: null,
       step: 0,
     };
 
@@ -61,23 +60,21 @@ class PremisesToDiagramView extends React.Component {
         this.setState({ step: step + 1 });
       }
     } else {
-      const { vennDiagramShadings, premiseSets } = this.getVennDiagramShadingsAndSets();
+      const { vennDiagramShadings } = this.getVennDiagramShadingsAndSets();
 
       if (representationStepRef.current.validate()) {
-        this.setState({ step: step + 1, vennDiagramShadings, premiseSets });
+        this.setState({ step: step + 1, vennDiagramShadings });
       }
     }
   }
 
   getVennDiagramShadingsAndSets() {
-    const { refs, premises } = this.state;
+    const { refs } = this.state;
 
     const vennDiagramShadings = refs.map((ref) => ref.current.vennDiagramRef.current.getShadings());
-    const premiseSets = premises.map((premise) => premise.getSets());
 
     return {
       vennDiagramShadings,
-      premiseSets,
     };
   }
 
@@ -88,7 +85,6 @@ class PremisesToDiagramView extends React.Component {
       refs,
       vennDiagramShadings,
       argument,
-      premiseSets,
     } = this.state;
 
     switch (step) {
@@ -107,7 +103,6 @@ class PremisesToDiagramView extends React.Component {
             ref={combinationStepRef}
             argument={argument}
             vennDiagramShadings={vennDiagramShadings}
-            premiseSets={premiseSets}
           />
         );
     }

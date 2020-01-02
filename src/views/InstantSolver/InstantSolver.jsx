@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -18,7 +19,8 @@ import Typography from '@material-ui/core/Typography';
 
 import ArgumentForm from './Components/ArgumentForm';
 import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
-import UninteractiveVennDiagram from '../../components/VennDiagram/UninteractiveVennDiagram';
+import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
+import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
 
 import PremiseCollection from '../../logic/premise_collection';
@@ -38,13 +40,13 @@ class InstantSolver extends React.Component {
       dialogOpen: false,
       argumentSubmitted: false,
       needsUpdate: false,
+      premisesKey: Math.random(),
+      conclusionsKey: Math.random(),
     };
 
     this.argumentFormRef = React.createRef();
-    this.premisesVennDiagramRef = null;
+    this.premisesVennDiagramRef = React.createRef();
     this.conclusionVennDiagramRef = React.createRef();
-    this.uninteractiveVennDiagramRef = React.createRef();
-    this.fourSetUninteractiveVennDiagramRef = React.createRef();
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.onError = this.onError.bind(this);
     this.warn = this.warn.bind(this);
@@ -59,12 +61,6 @@ class InstantSolver extends React.Component {
     if (needsUpdate) {
       const argumentForm = this.argumentFormRef.current;
       const { premises } = argumentForm.state;
-
-      if (this.getNumberOfTerms() === 4) {
-        this.premisesVennDiagramRef = this.fourSetUninteractiveVennDiagramRef;
-      } else if (this.getNumberOfTerms() < 4) {
-        this.premisesVennDiagramRef = this.uninteractiveVennDiagramRef;
-      }
 
       const premisesVennDiagram = this.premisesVennDiagramRef.current;
       const premiseCollection = new PremiseCollection(premises
@@ -108,7 +104,12 @@ class InstantSolver extends React.Component {
   }
 
   onSubmitForm() {
-    this.setState({ argumentSubmitted: true, needsUpdate: true });
+    this.setState({
+      argumentSubmitted: true,
+      needsUpdate: true,
+      premisesKey: Math.random(),
+      conclusionsKey: Math.random(),
+    });
   }
 
   onError(msg) {
@@ -181,6 +182,8 @@ class InstantSolver extends React.Component {
       snackbarType,
       dialogOpen,
       argumentSubmitted,
+      premisesKey,
+      conclusionsKey,
     } = this.state;
     return (
       <div className={classes.root}>
@@ -239,8 +242,9 @@ class InstantSolver extends React.Component {
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <Container>
-                          {this.getNumberOfTerms() === 4 && <FourSetUninteractiveVennDiagram ref={this.fourSetUninteractiveVennDiagramRef} />}
-                          {this.getNumberOfTerms() < 4 && <UninteractiveVennDiagram ref={this.uninteractiveVennDiagramRef} title="Premises" renderTitle={0} />}
+                          {this.getNumberOfTerms() === 4 && <FourSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} />}
+                          {this.getNumberOfTerms() === 3 && <ThreeSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
+                          {this.getNumberOfTerms() === 2 && <TwoSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
                         </Container>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -255,7 +259,7 @@ class InstantSolver extends React.Component {
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <Container>
-                      <UninteractiveVennDiagram ref={this.conclusionVennDiagramRef} title="Conclusion" renderTitle={0} />
+                      <TwoSetUninteractiveVennDiagram key={conclusionsKey} ref={this.conclusionVennDiagramRef} title="Conclusion" />
                     </Container>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -274,8 +278,7 @@ class InstantSolver extends React.Component {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </div>
-            )
-          }
+            )}
         </Container>
       </div>
     );
