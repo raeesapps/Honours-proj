@@ -44,24 +44,35 @@ class ThreeSetUninteractiveVennDiagram extends React.Component {
     const { a, b, c } = this.state;
     const id = title.split(' ').join('');
     return (
-      <div className={classes.content}>
+      <div>
+        <div className={classes.content}>
+          <Typography variant="body1" className={classes.topRight}>
+            A
+          </Typography>
+          <Typography variant="body1" className={classes.bottomLeft}>
+            B
+          </Typography>
+          <Typography variant="body1" className={classes.bottomRight}>
+            C
+          </Typography>
+          <div id={id} />
+        </div>
         {
           (a && b && c)
           && (
             <div>
-              <Typography variant="body1" className={classes.topRight}>
-                {a}
+              <Typography variant="h5">
+                where A = {a}
               </Typography>
-              <Typography variant="body1" className={classes.bottomLeft}>
-                {b}
+              <Typography variant="h5">
+                where B = {b}
               </Typography>
-              <Typography variant="body1" className={classes.bottomRight}>
-                {c}
+              <Typography variant="h5">
+                where C = {c}
               </Typography>
             </div>
           )
         }
-        <div id={id} />
       </div>
     );
   }

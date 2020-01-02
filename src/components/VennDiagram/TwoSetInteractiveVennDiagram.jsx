@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
 import * as d3 from 'd3';
@@ -101,20 +102,26 @@ class TwoSetInteractiveVennDiagram extends React.Component {
     const id = title.split(' ').join('');
     return (
       <div className={classes.content}>
+        <Typography variant="body1" className={classes.topLeft}>
+          A
+        </Typography>
+        <Typography variant="body1" className={classes.topRight}>
+          B
+        </Typography>
+        <div id={id} />
         {
           (a && b)
           && (
             <div>
-              <Typography variant="body1" className={classes.topLeft}>
-                {a}
+              <Typography variant="h5">
+                where A = {a}
               </Typography>
-              <Typography variant="body1" className={classes.topRight}>
-                {b}
+              <Typography variant="h5">
+                where B = {b}
               </Typography>
             </div>
           )
         }
-        <div id={id} />
       </div>
     );
   }

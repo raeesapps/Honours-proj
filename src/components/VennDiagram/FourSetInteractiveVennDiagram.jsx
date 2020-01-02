@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
 import * as d3 from 'd3';
@@ -65,22 +66,41 @@ class FourSetInteractiveVennDiagram extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { a, b, c, d } = this.state;
+    const {
+      a,
+      b,
+      c,
+      d,
+    } = this.state;
     return (
-      <div className={classes.content}>
-        <Typography variant="body1" className={classes.topLeft}>
-          {a}
+      <div>
+        <div className={classes.content}>
+          <Typography variant="body1" className={classes.topLeft}>
+            A
+          </Typography>
+          <Typography variant="body1" className={classes.topRight}>
+            B
+          </Typography>
+          <Typography variant="body1" className={classes.bottomLeft}>
+            C
+          </Typography>
+          <Typography variant="body1" className={classes.bottomRight}>
+            D
+          </Typography>
+          <div id="ellipseVenn" />
+        </div>
+        <Typography variant="h5">
+          where A = {a}
         </Typography>
-        <Typography variant="body1" className={classes.topRight}>
-          {b}
+        <Typography variant="h5">
+          where B = {b}
         </Typography>
-        <Typography variant="body1" className={classes.bottomLeft}>
-          {c}
+        <Typography variant="h5">
+          where C = {c}
         </Typography>
-        <Typography variant="body1" className={classes.bottomRight}>
-          {d}
+        <Typography variant="h5">
+          where D = {d}
         </Typography>
-        <div id="ellipseVenn" />
       </div>
     );
   }

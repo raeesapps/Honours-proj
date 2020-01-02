@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -31,8 +32,14 @@ class FourSetUninteractiveVennDiagram extends React.Component {
   applyShading(premiseCollection) {
     const [a, b, c, d] = premiseCollection.terms;
 
+    // eslint-disable-next-line react/destructuring-assignment
     if (!(this.state.a && this.state.b && this.state.c && this.state.d)) {
-      this.setState({ a, b, c, d });
+      this.setState({
+        a,
+        b,
+        c,
+        d,
+      });
     }
 
     applyShadings(this.div, premiseCollection);
@@ -47,27 +54,41 @@ class FourSetUninteractiveVennDiagram extends React.Component {
       d,
     } = this.state;
     return (
-      <div className={classes.content}>
+      <div>
+        <div className={classes.content}>
+          <Typography variant="body1" className={classes.topLeft}>
+            A
+          </Typography>
+          <Typography variant="body1" className={classes.topRight}>
+            B
+          </Typography>
+          <Typography variant="body1" className={classes.bottomLeft}>
+            C
+          </Typography>
+          <Typography variant="body1" className={classes.bottomRight}>
+            D
+          </Typography>
+          <div id="ellipseVenn" />
+        </div>
         {
           (a && b && c && d)
           && (
             <div>
-              <Typography variant="body1" className={classes.topLeft}>
-                {a}
+              <Typography variant="h5">
+                where A = {a}
               </Typography>
-              <Typography variant="body1" className={classes.topRight}>
-                {b}
+              <Typography variant="h5">
+                where B = {b}
               </Typography>
-              <Typography variant="body1" className={classes.bottomLeft}>
-                {c}
+              <Typography variant="h5">
+                where C = {c}
               </Typography>
-              <Typography variant="body1" className={classes.bottomRight}>
-                {d}
+              <Typography variant="h5">
+                where D = {d}
               </Typography>
             </div>
           )
         }
-        <div id="ellipseVenn" />
       </div>
     );
   }
