@@ -58,12 +58,11 @@ class CombinePremisesStep extends React.Component {
 
       if (argument.terms.length === 3) {
         return (
-          <div>
-            <Grid item xs={3} />
-            <Grid item xs={9}>
+          <Grid item xs={12}>
+            <center>
               <ThreeSetInteractiveVennDiagram title="Combination" premises={argument} ref={vennDiagramRef} />
-            </Grid>
-          </div>
+            </center>
+          </Grid>
         );
       }
       if (argument.terms.length === 4) {
@@ -93,7 +92,10 @@ class CombinePremisesStep extends React.Component {
           <Typography className={classes.instructions} variant="h6">
             Please combine the Venn Diagrams from the previous step into one Venn Diagram:
           </Typography>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+          >
             <Grid item xs={12}>
               <Paper>
                 <Grid container spacing={2}>
