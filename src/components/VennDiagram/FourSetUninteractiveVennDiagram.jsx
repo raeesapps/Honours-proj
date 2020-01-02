@@ -40,7 +40,12 @@ class FourSetUninteractiveVennDiagram extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { a, b, c, d } = this.state;
+    const {
+      a,
+      b,
+      c,
+      d,
+    } = this.state;
     return (
       <div className={classes.content}>
         {
