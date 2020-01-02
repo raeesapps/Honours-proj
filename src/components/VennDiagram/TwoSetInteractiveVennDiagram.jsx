@@ -2,6 +2,9 @@ import React from 'react';
 
 import * as d3 from 'd3';
 
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import {
   NOT_SHADED,
   MAYBE_SHADED,
@@ -12,6 +15,8 @@ import {
   generateMappingObjects,
   bindMouseEventListeners,
 } from './venn_utils';
+
+import styles from '../../assets/components/jss/VennDiagram/two_set_interactive_venn_diagram_styles';
 
 class TwoSetInteractiveVennDiagram extends React.Component {
   constructor() {
@@ -91,14 +96,28 @@ class TwoSetInteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { classes, title } = this.props;
+    const { a, b } = this.state;
     const id = title.split(' ').join('');
     return (
-      <div>
+      <div className={classes.content}>
+        {
+          (a && b)
+          && (
+            <div>
+              <Typography variant="body1" className={classes.topLeft}>
+                {a}
+              </Typography>
+              <Typography variant="body1" className={classes.topRight}>
+                {b}
+              </Typography>
+            </div>
+          )
+        }
         <div id={id} />
       </div>
     );
   }
 }
 
-export default TwoSetInteractiveVennDiagram;
+export default withStyles(styles)(TwoSetInteractiveVennDiagram);
