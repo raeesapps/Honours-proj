@@ -17,6 +17,11 @@ class TwoSetUninteractiveVennDiagram extends React.Component {
   constructor() {
     super();
 
+    this.state = {
+      a: null,
+      b: null,
+    };
+
     this.applyShading = this.applyShading.bind(this);
   }
 
@@ -32,32 +37,34 @@ class TwoSetUninteractiveVennDiagram extends React.Component {
       Object.keys(shadings).forEach((mapping) => {
         shadeRegion(div, mapping, nodeRegionToMappedRegionMapping, shadings[mapping]);
       });
+
+      this.setState({ a: firstTerm, b: secondTerm });
     }
   }
 
   applyShading(premiseCollection) {
     applyShadings(this.div, premiseCollection);
+    this.setState({ a: premiseCollection.terms[0], b: premiseCollection.terms[1] });
   }
 
   render() {
     const {
       classes,
       title,
-      terms,
     } = this.props;
-    const { firstTerm, secondTerm } = terms;
+    const { a, b } = this.state;
     const id = title.split(' ').join('');
     return (
       <div className={classes.content}>
         {
-          (firstTerm && secondTerm)
+          (a && b)
           && (
             <div>
               <Typography variant="body1" className={classes.topLeft}>
-                {firstTerm}
+                {a}
               </Typography>
               <Typography variant="body1" className={classes.topRight}>
-                {secondTerm}
+                {b}
               </Typography>
             </div>
           )
