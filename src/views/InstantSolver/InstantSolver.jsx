@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -277,8 +278,7 @@ class InstantSolver extends React.Component {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </div>
-            )
-          }
+            )}
         </Container>
       </div>
     );
