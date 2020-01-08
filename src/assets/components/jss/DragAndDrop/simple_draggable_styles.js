@@ -5,7 +5,7 @@ function styles(isDragging, draggableStyle) {
     userSelect: 'none',
     padding: grid * 2,
     margin: `0 ${grid}px 0 0`,
-    background: isDragging ? 'lightgreen' : 'grey',
+    background: isDragging ? 'lightgreen' : 'lightblue',
     ...draggableStyle,
   };
 }
