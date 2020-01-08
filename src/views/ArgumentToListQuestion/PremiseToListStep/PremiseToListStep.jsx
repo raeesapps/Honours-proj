@@ -13,15 +13,62 @@ import alignment from '../../../components/DragAndDrop/alignment';
 import move from '../../../components/DragAndDrop/move';
 import reorder from '../../../components/DragAndDrop/reorder';
 
-import { Premise } from '../../../logic/premise';
-
 import styles from '../../../assets/views/jss/ArgumentToListQuestion/PremiseToListStep/premise_to_list_step_styles';
+
+function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
+  const entries = [
+    {
+      id: 'item-3',
+      content: `!${firstAtom}`,
+    },
+    {
+      id: 'item-4',
+      content: `!${secondAtom}`,
+    },
+    {
+      id: 'item-5',
+      content: `${firstAtom}`,
+    },
+    {
+      id: 'item-6',
+      content: `${secondAtom}`,
+    },
+  ];
+
+  if (thirdAtom) {
+    entries.push(
+      {
+        id: 'item-6',
+        content: `${thirdAtom}`,
+      },
+      {
+        id: 'item-7',
+        content: `!${thirdAtom}`,
+      },
+    );
+  }
+
+  if (fourthAtom) {
+    entries.push(
+      {
+        id: 'item-6',
+        content: `${fourthAtom}`,
+      },
+      {
+        id: 'item-7',
+        content: `!${fourthAtom}`,
+      },
+    );
+  }
+
+  return entries;
+}
 
 const firstEntryArray = [];
 const secondEntryArray = [];
 const thirdEntryArray = [];
 
-const functionsArray = [
+const entriesArray = [
   {
     id: 'item-0',
     content: '⊨',
@@ -34,8 +81,8 @@ const functionsArray = [
 
 const droppables = [
   {
-    name: 'functions',
-    initialContents: functionsArray,
+    name: 'entries',
+    initialContents: entriesArray,
     limit: 100,
   },
   {
@@ -64,13 +111,13 @@ class PremiseToListStep extends React.Component {
       errorMessage: null,
     };
 
-    const premiseFunctions = Premise.toFunctions('A', 'B');
+    const dragDropEntries = getDragDropEntries('A', 'B', 'C');
 
     droppables.forEach((droppable) => {
       const { name, initialContents } = droppable;
 
-      if (name === 'functions') {
-        state[name] = [...functionsArray, ...premiseFunctions];
+      if (name === 'entries') {
+        state[name] = [...entriesArray, ...dragDropEntries];
       } else {
         state[name] = [...initialContents];
       }
@@ -162,7 +209,7 @@ class PremiseToListStep extends React.Component {
   render() {
     const { ERROR } = snackbarTypes;
     const {
-      functions,
+      entries,
       firstEntry,
       secondEntry,
       thirdEntry,
@@ -201,7 +248,7 @@ class PremiseToListStep extends React.Component {
           <Typography className={classes.instructionTypography} variant="subtitle1">
             Drag these to the appropriate location.
           </Typography>
-          <SimpleDroppable items={functions} droppableId="functions" alignment={HORIZONTAL} />
+          <SimpleDroppable items={entries} droppableId="entries" alignment={HORIZONTAL} />
         </DragDropContext>
         <div className={classes.spacing} />
       </Container>

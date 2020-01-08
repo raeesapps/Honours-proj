@@ -129,27 +129,6 @@ class Premise {
     }
     return undefined;
   }
-
-  static toFunctions(firstAtom, secondAtom) {
-    return [
-      {
-        id: 'item-3',
-        content: `!${firstAtom}`,
-      },
-      {
-        id: 'item-4',
-        content: `!${secondAtom}`,
-      },
-      {
-        id: 'item-5',
-        content: `${firstAtom}`,
-      },
-      {
-        id: 'item-6',
-        content: `${secondAtom}`,
-      },
-    ];
-  }
 }
 
 export { Premise, forms };
