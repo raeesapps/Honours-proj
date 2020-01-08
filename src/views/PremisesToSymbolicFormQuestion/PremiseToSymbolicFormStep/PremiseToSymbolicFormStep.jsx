@@ -123,7 +123,7 @@ class PremiseToSymbolicFormStep extends React.Component {
 
     this.state = state;
     this.onDragEnd = this.onDragEnd.bind(this);
-    this.validate = this.validate.bind(this);
+    this.getEntries = this.getEntries.bind(this);
     this.showErrorBar = this.showErrorBar.bind(this);
   }
 
@@ -182,19 +182,14 @@ class PremiseToSymbolicFormStep extends React.Component {
     }
   }
 
-  validate() {
-    const { premise } = this.props;
+  getEntries() {
     const {
-      parent,
-      grandparent,
-      contents,
-      drawnFrom,
-      condition,
+      firstEntry,
+      secondEntry,
+      thirdEntry,
     } = this.state;
 
-    return true;
-
-    //return premise.validate(parent, grandparent, contents, drawnFrom, condition);
+    return { firstEntry, secondEntry, thirdEntry };
   }
 
   showErrorBar(message) {

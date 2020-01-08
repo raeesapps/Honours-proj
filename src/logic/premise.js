@@ -20,6 +20,44 @@ const forms = Object.freeze({
   SOME_A_EXIST: 4,
 });
 
+const symbolicForms = Object.freeze({
+  A_ENTAILS_B: 0,
+  A_DOES_NOT_ENTAIL_B: 1,
+  A_ENTAILS_NOT_B: 2,
+  A_DOES_NOT_ENTAIL_NOT_B: 3,
+});
+
+function getSymbolicForm(premise) {
+  const {
+    ALL_A_IS_B,
+    NO_A_IS_B,
+    SOME_A_IS_B,
+    SOME_A_IS_NOT_B,
+  } = forms;
+
+  const {
+    A_ENTAILS_B,
+    A_DOES_NOT_ENTAIL_B,
+    A_ENTAILS_NOT_B,
+    A_DOES_NOT_ENTAIL_NOT_B,
+  } = symbolicForms;
+
+  switch (premise.form) {
+    case ALL_A_IS_B:
+      return A_ENTAILS_B;
+    case NO_A_IS_B:
+      return A_ENTAILS_NOT_B;
+    case SOME_A_IS_B:
+      return A_DOES_NOT_ENTAIL_NOT_B;
+    case SOME_A_IS_NOT_B:
+      return A_DOES_NOT_ENTAIL_B;
+    default:
+      break;
+  }
+
+  return null;
+}
+
 class Premise {
   constructor(form, terms) {
     this.form = form;
@@ -131,4 +169,9 @@ class Premise {
   }
 }
 
-export { Premise, forms };
+export {
+  Premise,
+  forms,
+  symbolicForms,
+  getSymbolicForm,
+};

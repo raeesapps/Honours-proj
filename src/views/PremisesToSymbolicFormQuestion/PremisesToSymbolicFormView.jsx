@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
+import { symbolicForms, getSymbolicForm } from '../../logic/premise';
+import copy from '../../utils/copy';
 import PremiseToSymbolicFormStep from './PremiseToSymbolicFormStep/PremiseToSymbolicFormStep';
 
 import styles from '../../assets/views/jss/PremisesToSymbolicFormQuestion/premises_to_symbolic_form_view_styles';
@@ -30,12 +32,25 @@ class PremisesToSymbolicFormView extends React.Component {
     this.state = {
       premises: content.premises,
       step: 0,
+      mappingTable: {},
+      previousMappingTables: [],
     };
     this.getStepContent = this.getStepContent.bind(this);
+    this.updateMappingTable = this.updateMappingTable.bind(this);
     this.onNext = this.onNext.bind(this);
+    this.onBack = this.onBack.bind(this);
+    this.onReset = this.onReset.bind(this);
+    this.verify = this.verify.bind(this);
   }
 
-  onNext(step, steps) {
+  onBack(step) {
+    const { previousMappingTables } = this.state;
+    const previousMappingTable = previousMappingTables.pop();
+
+    this.setState({ mappingTable: previousMappingTable, step: step - 1 });
+  }
+
+  onNext(step) {
     const { componentRefs } = this;
     const ref = componentRefs[step];
 
@@ -43,15 +58,14 @@ class PremisesToSymbolicFormView extends React.Component {
       throw new Error('Reference is not referencing a component!');
     }
 
-    const { result, hint } = ref.current.validate();
+    const { firstEntry, secondEntry, thirdEntry } = ref.current.getEntries();
 
-    if (result) {
-      this.setState({
-        step: step + 1,
-      });
-    } else {
-      ref.current.showErrorBar(hint);
-    }
+    const updatedMappingTable = this.updateMappingTable(firstEntry, secondEntry, thirdEntry);
+    this.verify(firstEntry, secondEntry, thirdEntry, updatedMappingTable, ref);
+  }
+
+  onReset() {
+    this.setState({ step: 0, previousMappingTables: [], mappingTable: {} });
   }
 
   getStepContent(step) {
@@ -61,6 +75,169 @@ class PremisesToSymbolicFormView extends React.Component {
     const premise = premises[step];
 
     return <PremiseToSymbolicFormStep premise={premise} ref={ref} />;
+  }
+
+  verify(firstEntry, secondEntry, thirdEntry, updatedMappingTable, ref) {
+    if (updatedMappingTable) {
+      let hint;
+      let result = true;
+
+      if (firstEntry.length === 0) {
+        hint = 'Please drag an item into the first box!';
+        result = false;
+      }
+
+      if (secondEntry.length === 0) {
+        hint = 'Please drag an item into the second box!';
+        result = false;
+      }
+
+      if (thirdEntry.length === 0) {
+        hint = 'Please drag an item into the third box!';
+        result = false;
+      }
+
+      if (!hint) {
+        const {
+          A_ENTAILS_B,
+          A_DOES_NOT_ENTAIL_B,
+          A_ENTAILS_NOT_B,
+          A_DOES_NOT_ENTAIL_NOT_B,
+        } = symbolicForms;
+
+        const { content: firstEntryContents } = firstEntry[0];
+        const { content: secondEntryContents } = secondEntry[0];
+        const { content: thirdEntryContents } = thirdEntry[0];
+
+        const { premises, step } = this.state;
+        const currentPremise = premises[step];
+        const { firstTerm, secondTerm } = currentPremise.terms;
+
+        let expectedEntailmentSymbol;
+        switch (getSymbolicForm(currentPremise)) {
+          case A_DOES_NOT_ENTAIL_NOT_B:
+          case A_DOES_NOT_ENTAIL_B:
+            expectedEntailmentSymbol = '!⊨';
+            break;
+          case A_ENTAILS_B:
+          case A_ENTAILS_NOT_B:
+            expectedEntailmentSymbol = '⊨';
+            break;
+          default:
+            break;
+        }
+
+        let count = 0;
+        Object.keys(updatedMappingTable).forEach((mappingKey) => {
+          const entry = updatedMappingTable[mappingKey];
+
+          let secondMappingKey;
+          switch (getSymbolicForm(currentPremise)) {
+            case A_DOES_NOT_ENTAIL_NOT_B:
+            case A_ENTAILS_NOT_B:
+              secondMappingKey = `!${mappingKey}`;
+              break;
+            case A_ENTAILS_B:
+            case A_DOES_NOT_ENTAIL_B:
+              secondMappingKey = mappingKey;
+              break;
+            default:
+              break;
+          }
+
+          if ((entry === firstTerm && mappingKey === firstEntryContents)
+            || (entry === secondTerm && secondMappingKey === thirdEntryContents)) {
+            count += 1;
+          }
+        });
+        result = result && count === 2 && expectedEntailmentSymbol === secondEntryContents;
+
+        if (expectedEntailmentSymbol !== secondEntryContents && count !== 2) {
+          hint = 'Both your mappings and entailment symbol are wrong!';
+        } else if (expectedEntailmentSymbol !== secondEntryContents) {
+          hint = 'Your entailment symbol is wrong!';
+        } else if (count !== 2) {
+          hint = 'Your mappings are wrong!';
+        }
+      }
+
+      if (result) {
+        const { mappingTable: previousMappingTable, previousMappingTables, step } = this.state;
+        const nextPreviousMappingTables = copy(previousMappingTables);
+        nextPreviousMappingTables.push(previousMappingTable);
+        this.setState({
+          step: step + 1,
+          mappingTable: updatedMappingTable,
+          previousMappingTables: nextPreviousMappingTables,
+        });
+      } else {
+        ref.current.showErrorBar(hint);
+      }
+    }
+  }
+
+
+  updateMappingTable(firstEntry, secondEntry, thirdEntry) {
+    if (firstEntry.length && secondEntry.length && thirdEntry.length) {
+      const {
+        premises,
+        mappingTable,
+        step,
+      } = this.state;
+      const {
+        A_ENTAILS_B,
+        A_DOES_NOT_ENTAIL_B,
+        A_ENTAILS_NOT_B,
+        A_DOES_NOT_ENTAIL_NOT_B,
+      } = symbolicForms;
+      const currentPremise = premises[step];
+      const symbolicForm = getSymbolicForm(currentPremise);
+      const { firstTerm, secondTerm } = currentPremise.terms;
+      const updatedMappingTable = copy(mappingTable);
+
+      const { content: firstEntryContents } = firstEntry[0];
+      const { content: thirdEntryContents } = thirdEntry[0];
+
+      let firstSymbol;
+      if (firstEntryContents.length === 2) {
+        const [, secondItem] = firstEntryContents;
+        firstSymbol = secondItem;
+      } else {
+        const [firstItem] = firstEntryContents;
+        firstSymbol = firstItem;
+      }
+
+      if (!(firstSymbol in mappingTable)) {
+        updatedMappingTable[firstSymbol] = firstTerm;
+      }
+
+      let secondSymbol;
+      switch (symbolicForm) {
+        case A_DOES_NOT_ENTAIL_NOT_B:
+        case A_ENTAILS_NOT_B:
+          if (thirdEntryContents.length !== 1) {
+            const [, secondItem] = thirdEntryContents;
+            secondSymbol = secondItem;
+          }
+          break;
+        case A_ENTAILS_B:
+        case A_DOES_NOT_ENTAIL_B:
+          if (thirdEntryContents.length !== 2) {
+            const [firstItem] = thirdEntryContents;
+            secondSymbol = firstItem;
+          }
+          break;
+        default:
+          break;
+      }
+      if (!(secondSymbol in mappingTable)) {
+        updatedMappingTable[secondSymbol] = secondTerm;
+      }
+
+      return updatedMappingTable;
+    }
+
+    return null;
   }
 
   render() {
@@ -87,7 +264,7 @@ class PremisesToSymbolicFormView extends React.Component {
                     <div>
                       <Button
                         disabled={step === 0}
-                        onClick={() => this.setState({ step: step - 1 })}
+                        onClick={() => this.onBack(step)}
                         className={classes.button}
                       >
                         Back
@@ -110,7 +287,7 @@ class PremisesToSymbolicFormView extends React.Component {
             step === steps.length && (
               <Paper square elevation={0} className={classes.resetContainer}>
                 <Typography>All steps completed - you&apos;re finished</Typography>
-                <Button onClick={() => this.setState({ step: 0 })} className={classes.button}>
+                <Button onClick={this.onReset} className={classes.button}>
                   Reset
                 </Button>
               </Paper>
