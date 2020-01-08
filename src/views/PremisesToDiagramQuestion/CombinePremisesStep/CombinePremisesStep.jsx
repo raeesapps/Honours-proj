@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import { stages, validate } from '../../../logic/premise_validator';
+import { stages, validate } from '../../../logic/validator';
 
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';

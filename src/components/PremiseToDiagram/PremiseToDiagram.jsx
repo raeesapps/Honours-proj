@@ -3,7 +3,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import { stages, validate } from '../../logic/premise_validator';
+import { stages, validate } from '../../logic/validator';
 
 import TwoSetInteractiveVennDiagram from '../VennDiagram/TwoSetInteractiveVennDiagram';
 
