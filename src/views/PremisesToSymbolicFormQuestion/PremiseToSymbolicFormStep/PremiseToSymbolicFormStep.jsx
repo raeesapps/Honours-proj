@@ -6,12 +6,10 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import { alignments, move, reorder } from '../../../components/DragAndDrop/drag_and_drop_utils';
 import SimpleDroppable from '../../../components/DragAndDrop/SimpleDroppable';
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
-import alignment from '../../../components/DragAndDrop/alignment';
-import move from '../../../components/DragAndDrop/move';
-import reorder from '../../../components/DragAndDrop/reorder';
 
 import styles from '../../../assets/views/jss/PremisesToSymbolicFormQuestion/PremiseToSymbolicFormStep/premise_to_symbolic_form_step_styles';
 
@@ -217,7 +215,7 @@ class PremiseToSymbolicFormStep extends React.Component {
       errorVisible,
     } = this.state;
     const { classes, premise } = this.props;
-    const { HORIZONTAL, VERTICAL } = alignment;
+    const { HORIZONTAL, VERTICAL } = alignments;
     const snackbarWrapperDisplayVal = !errorVisible ? 'none' : '';
     return (
       <Container>

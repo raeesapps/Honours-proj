@@ -1,7 +1,7 @@
-import alignment from '../../../../components/DragAndDrop/alignment';
+import { alignments } from '../../../../components/DragAndDrop/drag_and_drop_utils';
 
 const grid = 8;
-const { HORIZONTAL } = alignment;
+const { HORIZONTAL } = alignments;
 
 function styles(isDraggingOver, direction) {
   return {
