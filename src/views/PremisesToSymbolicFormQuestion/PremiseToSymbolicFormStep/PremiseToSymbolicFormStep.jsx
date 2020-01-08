@@ -13,7 +13,7 @@ import alignment from '../../../components/DragAndDrop/alignment';
 import move from '../../../components/DragAndDrop/move';
 import reorder from '../../../components/DragAndDrop/reorder';
 
-import styles from '../../../assets/views/jss/ArgumentToListQuestion/PremiseToListStep/premise_to_list_step_styles';
+import styles from '../../../assets/views/jss/PremisesToSymbolicFormQuestion/PremiseToSymbolicFormStep/premise_to_symbolic_form_step_styles';
 
 function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
   const entries = [
@@ -102,7 +102,7 @@ const droppables = [
   },
 ];
 
-class PremiseToListStep extends React.Component {
+class PremiseToSymbolicFormStep extends React.Component {
   constructor() {
     super();
 
@@ -256,4 +256,4 @@ class PremiseToListStep extends React.Component {
   }
 }
 
-export default withStyles(styles)(PremiseToListStep);
+export default withStyles(styles)(PremiseToSymbolicFormStep);

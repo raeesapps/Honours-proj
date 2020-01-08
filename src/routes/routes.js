@@ -1,7 +1,7 @@
 import Home from '../views/Home/Home';
 import QuestionList from '../views/QuestionList/QuestionList';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
-import ArgumentToListQuestion from '../views/ArgumentToListQuestion/ArgumentToListQuestion';
+import PremisesToSymbolicFormQuestion from '../views/PremisesToSymbolicFormQuestion/PremisesToSymbolicFormQuestion';
 import PremiseToDiagramQuestion from '../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
 import PremisesToDiagramQuestion from '../views/PremisesToDiagramQuestion/PremisesToDiagramQuestion';
 
@@ -20,8 +20,8 @@ const routes = [
   },
   {
     name: 'argumentToListQuestion',
-    path: '/argumentToListQuestion',
-    component: ArgumentToListQuestion,
+    path: '/premisesToSymbolicFormQuestion',
+    component: PremisesToSymbolicFormQuestion,
     displayInDrawer: false,
   },
   {

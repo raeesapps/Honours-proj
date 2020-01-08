@@ -10,11 +10,11 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import PremiseToListStep from './PremiseToListStep/PremiseToListStep';
+import PremiseToSymbolicFormStep from './PremiseToSymbolicFormStep/PremiseToSymbolicFormStep';
 
-import styles from '../../assets/views/jss/ArgumentToListQuestion/argument_to_list_view_styles';
+import styles from '../../assets/views/jss/PremisesToSymbolicFormQuestion/premises_to_symbolic_form_view_styles';
 
-class ArgumentToListView extends React.Component {
+class PremisesToSymbolicFormView extends React.Component {
   constructor(props) {
     super(props);
     const { location } = this.props;
@@ -60,7 +60,7 @@ class ArgumentToListView extends React.Component {
     const ref = componentRefs[step];
     const premise = premises[step];
 
-    return <PremiseToListStep premise={premise} ref={ref} />;
+    return <PremiseToSymbolicFormStep premise={premise} ref={ref} />;
   }
 
   render() {
@@ -122,4 +122,4 @@ class ArgumentToListView extends React.Component {
   }
 }
 
-export default withStyles(styles)(ArgumentToListView);
+export default withStyles(styles)(PremisesToSymbolicFormView);

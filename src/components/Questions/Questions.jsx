@@ -21,7 +21,7 @@ function generatePremiseCollection(premises, conclusion) {
 
 function Questions() {
   const { ALL_A_IS_B } = forms;
-  const argumentToListQuestions = [
+  const premisesToSymbolicFormQuestions = [
     {
       title: 'BARBARA',
       content: generatePremiseCollection(
@@ -70,7 +70,7 @@ function Questions() {
   ];
   return (
     <Container>
-      <QuestionList title="Syllogism to Haskell List" questions={argumentToListQuestions} path="/argumentToListQuestion" />
+      <QuestionList title="Syllogism to Symbolic Form" questions={premisesToSymbolicFormQuestions} path="/premisesToSymbolicFormQuestion" />
       <br />
       <QuestionList title="Syllogism to Venn Diagram" questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
       <br />
