@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
@@ -51,6 +52,7 @@ class InstantSolver extends React.Component {
     this.warn = this.warn.bind(this);
     this.warningAddPremise = this.warningAddPremise.bind(this);
     this.getNumberOfTerms = this.getNumberOfTerms.bind(this);
+    this.renderHaskellListComprehensions = this.renderHaskellListComprehensions.bind(this);
   }
 
   componentDidUpdate() {
@@ -145,6 +147,33 @@ class InstantSolver extends React.Component {
     this.setState({ dialogOpen: true });
   }
 
+  renderHaskellListComprehensions() {
+    function getHaskellListComprehension(premise) {
+      const haskellListComprehension = premise.toHaskellRepresentation();
+
+      if (haskellListComprehension) {
+        return `${haskellListComprehension[0][0]}[${haskellListComprehension[1]}| ${haskellListComprehension[2]}, ${haskellListComprehension[3]}]`;
+      }
+
+      throw new Error('Cannot get haskell list comprehension!');
+    }
+    const argumentForm = this.argumentFormRef.current;
+
+    if (argumentForm) {
+      const { premises } = argumentForm.state;
+      const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
+
+      return premiseObjs.map((premise) => (
+        <Grid item xs={3}>
+          <Typography variant="h6">{premise.toSentence()}</Typography>
+          <Typography variant="subtitle1">{getHaskellListComprehension(premise)}</Typography>
+        </Grid>
+      ));
+    }
+
+    throw new Error('Argument form not rendered!');
+  }
+
   render() {
     const { classes } = this.props;
     const {
@@ -232,6 +261,20 @@ class InstantSolver extends React.Component {
                     <Container>
                       <TwoSetUninteractiveVennDiagram key={conclusionsKey} ref={this.conclusionVennDiagramRef} title="Conclusion" />
                     </Container>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="listCompAriaControls"
+                    id="listCompExpansionPanel"
+                  >
+                    <Typography>Haskell List Comprehensions</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <Grid container>
+                      {this.renderHaskellListComprehensions()}
+                    </Grid>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </div>

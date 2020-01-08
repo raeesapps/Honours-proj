@@ -21,6 +21,27 @@ function generatePremiseCollection(premises, conclusion) {
 
 function Questions() {
   const { ALL_A_IS_B } = forms;
+  const argumentToListQuestions = [
+    {
+      title: 'BARBARA',
+      content: generatePremiseCollection(
+        [
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'men',
+            secondTerm: 'mortal',
+          }),
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'greeks',
+            secondTerm: 'men',
+          }),
+        ],
+        new Premise(ALL_A_IS_B, {
+          firstTerm: 'greeks',
+          secondTerm: 'mortal',
+        }),
+      ),
+    },
+  ];
   const premisesToDiagramQuestions = [
     {
       title: 'BARBARA',
@@ -49,6 +70,8 @@ function Questions() {
   ];
   return (
     <Container>
+      <QuestionList title="Syllogism to Haskell List" questions={argumentToListQuestions} path="/argumentToListQuestion" />
+      <br />
       <QuestionList title="Syllogism to Venn Diagram" questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
       <br />
       <QuestionList title="Premise to Venn Diagram" questions={premiseToDiagramQuestions} path="/premiseToDiagramQuestion" />
