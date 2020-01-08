@@ -3,6 +3,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import SimpleDroppable from '../../../components/DragAndDrop/SimpleDroppable';
@@ -55,10 +56,9 @@ const droppables = [
 ];
 
 class PremiseToListStep extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
-    const { premise } = props;
     const state = {
       errorVisible: false,
       errorMessage: null,
@@ -182,22 +182,28 @@ class PremiseToListStep extends React.Component {
             this.setState({ errorVisible: false, errorMessage: null });
           }}
         />
-        <Typography className={classes.titleTypography} variant="h3">
-          Please translate the premise
-          {
-            ` '${premise.toSentence()}'`
-          }
-        </Typography>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <SimpleDroppable items={firstEntry} droppableId="firstEntry" alignment={VERTICAL} />
-          <SimpleDroppable items={secondEntry} droppableId="secondEntry" alignment={VERTICAL} />
-          <SimpleDroppable items={thirdEntry} droppableId="thirdEntry" alignment={VERTICAL} />
+          <Grid container spacing={2}>
+            <Grid item>
+              <Typography className={classes.titleTypography} variant="h5">
+                {
+                  `${premise.toSentence()} <=>`
+                }
+              </Typography>
+            </Grid>
+            <Grid item>
+              <SimpleDroppable items={firstEntry} droppableId="firstEntry" alignment={VERTICAL} />
+              <SimpleDroppable items={secondEntry} droppableId="secondEntry" alignment={VERTICAL} />
+              <SimpleDroppable items={thirdEntry} droppableId="thirdEntry" alignment={VERTICAL} />
+            </Grid>
+          </Grid>
           <div className={classes.spacing} />
-          <Typography className={classes.instructionTypography} variant="h5">
-            Please drag Haskell statements below and drop them into the appropriate location above.
+          <Typography className={classes.instructionTypography} variant="subtitle1">
+            Drag these to the appropriate location.
           </Typography>
           <SimpleDroppable items={functions} droppableId="functions" alignment={HORIZONTAL} />
         </DragDropContext>
+        <div className={classes.spacing} />
       </Container>
     );
   }
