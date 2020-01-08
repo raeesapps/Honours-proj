@@ -12,34 +12,22 @@ import alignment from '../../../components/DragAndDrop/alignment';
 import move from '../../../components/DragAndDrop/move';
 import reorder from '../../../components/DragAndDrop/reorder';
 
+import { Premise } from '../../../logic/premise';
+
 import styles from '../../../assets/views/jss/ArgumentToListQuestion/PremiseToListStep/premise_to_list_step_styles';
 
-const parentFunctionArray = [];
-const grandparentFunctionArray = [];
-const contentsArray = [];
-const drawnFromArray = [];
-const conditionArray = [];
+const firstEntryArray = [];
+const secondEntryArray = [];
+const thirdEntryArray = [];
 
 const functionsArray = [
   {
     id: 'item-0',
-    content: 'and',
+    content: '⊨',
   },
   {
     id: 'item-1',
-    content: 'or',
-  },
-  {
-    id: 'item-2',
-    content: 'not',
-  },
-  {
-    id: 'item-12',
-    content: 'xor',
-  },
-  {
-    id: 'item-11',
-    content: 'x <- things',
+    content: '!⊨',
   },
 ];
 
@@ -50,28 +38,18 @@ const droppables = [
     limit: 100,
   },
   {
-    name: 'contents',
-    initialContents: contentsArray,
+    name: 'firstEntry',
+    initialContents: firstEntryArray,
     limit: 1,
   },
   {
-    name: 'grandparent',
-    initialContents: grandparentFunctionArray,
+    name: 'secondEntry',
+    initialContents: secondEntryArray,
     limit: 1,
   },
   {
-    name: 'parent',
-    initialContents: parentFunctionArray,
-    limit: 1,
-  },
-  {
-    name: 'drawnFrom',
-    initialContents: drawnFromArray,
-    limit: 1,
-  },
-  {
-    name: 'condition',
-    initialContents: conditionArray,
+    name: 'thirdEntry',
+    initialContents: thirdEntryArray,
     limit: 1,
   },
 ];
@@ -86,7 +64,7 @@ class PremiseToListStep extends React.Component {
       errorMessage: null,
     };
 
-    const premiseFunctions = premise.toFunctions(premise);
+    const premiseFunctions = Premise.toFunctions('A', 'B');
 
     droppables.forEach((droppable) => {
       const { name, initialContents } = droppable;
@@ -169,7 +147,9 @@ class PremiseToListStep extends React.Component {
       condition,
     } = this.state;
 
-    return premise.validate(parent, grandparent, contents, drawnFrom, condition);
+    return true;
+
+    //return premise.validate(parent, grandparent, contents, drawnFrom, condition);
   }
 
   showErrorBar(message) {
@@ -183,11 +163,9 @@ class PremiseToListStep extends React.Component {
     const { ERROR } = snackbarTypes;
     const {
       functions,
-      parent,
-      grandparent,
-      contents,
-      drawnFrom,
-      condition,
+      firstEntry,
+      secondEntry,
+      thirdEntry,
       errorMessage,
       errorVisible,
     } = this.state;
@@ -211,23 +189,9 @@ class PremiseToListStep extends React.Component {
           }
         </Typography>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <SimpleDroppable items={grandparent} droppableId="grandparent" alignment={VERTICAL} />
-          <SimpleDroppable items={parent} droppableId="parent" alignment={VERTICAL} />
-          <Typography className={classes.haskellTypography} variant="h4">
-            [
-          </Typography>
-          <SimpleDroppable items={contents} droppableId="contents" alignment={VERTICAL} />
-          <Typography className={classes.haskellTypography} variant="h4">
-            |
-          </Typography>
-          <SimpleDroppable items={drawnFrom} droppableId="drawnFrom" alignment={VERTICAL} />
-          <Typography className={classes.haskellTypography} variant="h4">
-            ,
-          </Typography>
-          <SimpleDroppable items={condition} droppableId="condition" alignment={VERTICAL} />
-          <Typography className={classes.haskellTypography} variant="h4">
-            ]
-          </Typography>
+          <SimpleDroppable items={firstEntry} droppableId="firstEntry" alignment={VERTICAL} />
+          <SimpleDroppable items={secondEntry} droppableId="secondEntry" alignment={VERTICAL} />
+          <SimpleDroppable items={thirdEntry} droppableId="thirdEntry" alignment={VERTICAL} />
           <div className={classes.spacing} />
           <Typography className={classes.instructionTypography} variant="h5">
             Please drag Haskell statements below and drop them into the appropriate location above.

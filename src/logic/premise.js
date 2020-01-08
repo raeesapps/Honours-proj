@@ -1,6 +1,4 @@
 import hash from 'object-hash';
-import singularise from '../utils/inflector';
-import capitaliseAndRemoveWhitespace from '../utils/string';
 
 const tableEntryFunctions = Object.freeze({
   e: function entryForE() {
@@ -132,169 +130,25 @@ class Premise {
     return undefined;
   }
 
-  formatAndSingularise() {
-    const { firstTerm, secondTerm } = this.terms;
-
-    const singularisedFirstTerm = singularise(firstTerm);
-    const singularisedSecondTerm = singularise(secondTerm);
-
-    if (!singularisedFirstTerm) {
-      throw new Error(`Inflector cannot singularise the word ${firstTerm}`);
-    }
-
-    if (!singularisedSecondTerm) {
-      throw new Error(`Inflector cannot singularise the phrase ${secondTerm}`);
-    }
-
-    const formattedFirstTerm = capitaliseAndRemoveWhitespace(singularisedFirstTerm);
-    const formattedSecondTerm = capitaliseAndRemoveWhitespace(singularisedSecondTerm);
-
-    return { formattedFirstTerm, formattedSecondTerm };
-  }
-
-  toFunctions() {
-    const { formattedFirstTerm, formattedSecondTerm } = this.formatAndSingularise();
-
+  static toFunctions(firstAtom, secondAtom) {
     return [
       {
         id: 'item-3',
-        content: `not (is${formattedFirstTerm} x)`,
+        content: `!${firstAtom}`,
       },
       {
         id: 'item-4',
-        content: `is${formattedFirstTerm} x`,
+        content: `!${secondAtom}`,
       },
       {
         id: 'item-5',
-        content: `is${formattedSecondTerm} x`,
+        content: `${firstAtom}`,
       },
       {
         id: 'item-6',
-        content: `not (is${formattedSecondTerm} x)`,
-      },
-      {
-        id: 'item-7',
-        content: `not is${formattedSecondTerm}`,
-      },
-      {
-        id: 'item-8',
-        content: `not is${formattedFirstTerm}`,
-      },
-      {
-        id: 'item-9',
-        content: `is${formattedSecondTerm}`,
-      },
-      {
-        id: 'item-10',
-        content: `is${formattedFirstTerm}`,
+        content: `${secondAtom}`,
       },
     ];
-  }
-
-  toHaskellRepresentation() {
-    const {
-      ALL_A_IS_B,
-      NO_A_IS_B,
-      SOME_A_IS_NOT_B,
-      SOME_A_IS_B,
-    } = forms;
-
-    const { formattedFirstTerm, formattedSecondTerm } = this.formatAndSingularise();
-
-    switch (this.form) {
-      case ALL_A_IS_B:
-        return [['and'], `is${formattedFirstTerm} x`, 'x <- things', `is${formattedSecondTerm} x`];
-      case NO_A_IS_B:
-        return [['and', 'not'], `not(is${formattedFirstTerm} x)`, 'x <- things', `is${formattedSecondTerm} x`];
-      case SOME_A_IS_NOT_B:
-        return [['not', 'and'], `is${formattedFirstTerm} x`, 'x <- things', `is${formattedSecondTerm} x`];
-      case SOME_A_IS_B:
-        return [['not', 'and'], `not(is${formattedFirstTerm} x)`, 'x <- things', `is${formattedSecondTerm} x`];
-      default:
-        break;
-    }
-
-    return undefined;
-  }
-
-  validate(parentList, grandparentList, contentsList, drawnFromList, conditionList) {
-    const {
-      ALL_A_IS_B,
-      NO_A_IS_B,
-      SOME_A_IS_NOT_B,
-      SOME_A_IS_B,
-    } = forms;
-
-    const { formattedFirstTerm, formattedSecondTerm } = this.formatAndSingularise();
-
-    const contentsNegated = contentsList.length && contentsList[0].content === `not(is${formattedFirstTerm} x)`;
-    const contentsNotNegated = contentsList.length && contentsList[0].content === `is${formattedFirstTerm} x`;
-
-    if (this.form === ALL_A_IS_B) {
-      const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'or' && contentsNegated;
-      const secondForm = !grandparentList.length && parentList.length && parentList[0].content === 'and' && contentsNotNegated;
-      const thirdForm = grandparentList.length && grandparentList[0].content === 'and' && !parentList.length && contentsNotNegated;
-
-      if (!firstForm && !secondForm && !thirdForm) {
-        return {
-          hint: 'No hint defined yet!',
-          result: false,
-        };
-      }
-    } else if (this.form === NO_A_IS_B) {
-      const firstForm = grandparentList.length && grandparentList[0].content === 'and' && parentList.length && parentList[0].content === 'not' && contentsNotNegated;
-      const secondForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'or' && contentsNotNegated;
-      const thirdForm = grandparentList.length && grandparentList[0].content === 'and' && !parentList.length && contentsNegated;
-      const fourthForm = !grandparentList.length && parentList.length && parentList[0].content === 'and' && contentsNegated;
-
-      if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
-        return {
-          hint: 'No hint defined yet!',
-          result: false,
-        };
-      }
-    } else if (this.form === SOME_A_IS_B) {
-      const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'and' && contentsNotNegated;
-      const secondForm = grandparentList.length && grandparentList[0].content === 'or' && parentList.length && parentList[0].content === 'not' && contentsNotNegated;
-      const thirdForm = grandparentList.length && grandparentList[0].content === 'or' && !parentList.length && contentsNegated;
-      const fourthForm = !grandparentList.length && parentList.length && parentList[0].content === 'or' && contentsNegated;
-
-      if (!firstForm && !secondForm && !thirdForm && !fourthForm) {
-        return {
-          hint: 'No hint defined yet!',
-          result: false,
-        };
-      }
-    } else if (this.form === SOME_A_IS_NOT_B) {
-      const firstForm = grandparentList.length && grandparentList[0].content === 'not' && parentList.length && parentList[0].content === 'and' && contentsNegated;
-      const secondForm = grandparentList.length && grandparentList[0].content === 'or' && !parentList.length && contentsNotNegated;
-      const thirdForm = !grandparentList.length && parentList.length && parentList[0].content === 'or' && contentsNotNegated;
-
-      if (!firstForm && !secondForm && !thirdForm) {
-        return {
-          hint: 'No hint defined yet!',
-          result: false,
-        };
-      }
-    }
-
-    if (drawnFromList.length && drawnFromList[0].content !== 'x <- things') {
-      return {
-        hint: 'Is your generator correct?',
-        result: false,
-      };
-    }
-
-    if (conditionList.length && conditionList[0].content !== `is${formattedSecondTerm} x`) {
-      return {
-        hint: 'Are you sure you are using the correct function for the second term?',
-        result: false,
-      };
-    }
-
-    return {
-      result: true,
-    };
   }
 }
 
