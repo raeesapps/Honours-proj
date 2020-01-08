@@ -38,11 +38,11 @@ function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
   if (thirdAtom) {
     entries.push(
       {
-        id: 'item-6',
+        id: 'item-7',
         content: `${thirdAtom}`,
       },
       {
-        id: 'item-7',
+        id: 'item-8',
         content: `!${thirdAtom}`,
       },
     );
@@ -51,11 +51,11 @@ function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
   if (fourthAtom) {
     entries.push(
       {
-        id: 'item-6',
+        id: 'item-9',
         content: `${fourthAtom}`,
       },
       {
-        id: 'item-7',
+        id: 'item-10',
         content: `!${fourthAtom}`,
       },
     );
