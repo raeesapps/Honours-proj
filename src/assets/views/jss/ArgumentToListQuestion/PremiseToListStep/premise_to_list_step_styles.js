@@ -1,10 +1,5 @@
 function styles(theme) {
   return {
-    haskellTypography: {
-      bottom: '25px',
-      display: 'inline',
-      position: 'relative',
-    },
     spacing: {
       marginBottom: theme.spacing.unit * 2,
     },
@@ -12,7 +7,7 @@ function styles(theme) {
       marginBottom: theme.spacing.unit,
     },
     titleTypography: {
-      marginBottom: theme.spacing.unit * 3,
+      marginTop: theme.spacing.unit * 1.62,
     },
   };
 }
