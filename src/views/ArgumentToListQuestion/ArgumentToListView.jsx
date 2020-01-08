@@ -70,11 +70,11 @@ class ArgumentToListView extends React.Component {
     return (
       <div className={classes.root}>
         <Container>
-          <Typography variant="h3" style={{ marginBottom: '5px' }}>Translate Premises to Haskell List Comprehension; </Typography>
+          <Typography variant="h5" style={{ marginBottom: '5px' }}>Translate Syllogism to Symbolic Form</Typography>
 
           {
             premises.map((premise, idx) => (
-              <Typography style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="h4">{premise.toSentence()}</Typography>
+              <Typography style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="subtitle1">{premise.toSentence()}</Typography>
             ))
           }
           <Stepper activeStep={step} orientation="vertical">
