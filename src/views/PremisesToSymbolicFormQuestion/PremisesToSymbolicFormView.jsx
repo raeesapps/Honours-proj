@@ -38,7 +38,7 @@ class PremisesToSymbolicFormView extends React.Component {
     this.onNext = this.onNext.bind(this);
     this.onBack = this.onBack.bind(this);
     this.onReset = this.onReset.bind(this);
-    this.verify = this.verify.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   onBack(step) {
@@ -56,7 +56,7 @@ class PremisesToSymbolicFormView extends React.Component {
       }
 
       const { firstEntry, secondEntry, thirdEntry } = ref.current.getEntries();
-      this.verify(firstEntry, secondEntry, thirdEntry, ref);
+      this.validate(firstEntry, secondEntry, thirdEntry, ref);
     };
 
     if (goingBack) {
@@ -82,7 +82,7 @@ class PremisesToSymbolicFormView extends React.Component {
     return <PremiseToSymbolicForm premise={premise} ref={ref} />;
   }
 
-  verify(firstEntry, secondEntry, thirdEntry, ref) {
+  validate(firstEntry, secondEntry, thirdEntry, ref) {
     const validationResult = validateMappings(firstEntry, secondEntry, thirdEntry, this.state);
 
     if (validationResult) {
