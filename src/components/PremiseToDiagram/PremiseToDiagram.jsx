@@ -14,7 +14,6 @@ class PremiseToDiagram extends React.Component {
     this.vennDiagramRef = React.createRef();
 
     this.validate = this.validate.bind(this);
-    this.toSentenceAndVennDiagram = this.toSentenceAndVennDiagram.bind(this);
   }
 
   validate() {
@@ -25,9 +24,9 @@ class PremiseToDiagram extends React.Component {
     return validateVennDiagram(premiseCollection, [vennDiagramRef], REPRESENTATION_STAGE);
   }
 
-  toSentenceAndVennDiagram(premiseCollection) {
+  render() {
     const { vennDiagramRef } = this;
-    const { vennDiagramShading } = this.props;
+    const { premiseCollection, vennDiagramShading } = this.props;
 
     if (!premiseCollection.premises.length) {
       throw new Error('No premises in premise collection!');
@@ -59,12 +58,6 @@ class PremiseToDiagram extends React.Component {
         }
       </div>
     );
-  }
-
-  render() {
-    const { premiseCollection } = this.props;
-
-    return this.toSentenceAndVennDiagram(premiseCollection);
   }
 }
 
