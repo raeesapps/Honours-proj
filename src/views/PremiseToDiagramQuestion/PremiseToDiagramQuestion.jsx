@@ -18,7 +18,7 @@ class PremiseToDiagramView extends React.Component {
 
     super();
     this.state = {
-      premise: null,
+      premiseCollection: null,
       showSnackbar: false,
       snackbarType: ERROR,
     };
@@ -37,7 +37,7 @@ class PremiseToDiagramView extends React.Component {
     const { content } = question;
 
     this.setState({
-      premise: content,
+      premiseCollection: content,
     });
   }
 
@@ -67,7 +67,7 @@ class PremiseToDiagramView extends React.Component {
     const { ERROR } = snackbarTypes;
 
     const { classes } = this.props;
-    const { premise, snackbarType, showSnackbar } = this.state;
+    const { premiseCollection, snackbarType, showSnackbar } = this.state;
 
     const snackbarWrapperDisplayVal = !showSnackbar ? 'none' : '';
     const snackbarMessage = snackbarType === ERROR ? 'Incorrect!' : 'Correct!';
@@ -86,7 +86,7 @@ class PremiseToDiagramView extends React.Component {
             Shade the Venn Diagram to represent the premise.
           </Typography>
           <Paper className={classes.paper}>
-            <PremiseToDiagram ref={this.vennDiagramRef} premises={premise} />
+            <PremiseToDiagram ref={this.vennDiagramRef} premiseCollection={premiseCollection} />
           </Paper>
           <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
         </Container>

@@ -21,7 +21,7 @@ class PremiseToDiagram extends React.Component {
   validate() {
     const { REPRESENTATION_STAGE } = stages;
     const { vennDiagramRef } = this;
-    const { premises: premiseCollection } = this.props;
+    const { premiseCollection } = this.props;
 
     return validateVennDiagram(premiseCollection, [vennDiagramRef], REPRESENTATION_STAGE);
   }
@@ -63,7 +63,7 @@ class PremiseToDiagram extends React.Component {
   }
 
   render() {
-    const { premises: premiseCollection } = this.props;
+    const { premiseCollection } = this.props;
 
     return (
       <div>
