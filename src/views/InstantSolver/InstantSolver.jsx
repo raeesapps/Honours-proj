@@ -29,6 +29,17 @@ import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
 
 const { SUCCESS, ERROR } = snackbarTypes;
 
+function getTermSets(premiseObjs) {
+  const termSet = new Set();
+  premiseObjs.forEach((premiseObj) => {
+    const { firstTerm, secondTerm } = premiseObj.terms;
+
+    termSet.add(firstTerm);
+    termSet.add(secondTerm);
+  });
+  return termSet;
+}
+
 class InstantSolver extends React.Component {
   constructor() {
     super();
@@ -52,7 +63,7 @@ class InstantSolver extends React.Component {
     this.warn = this.warn.bind(this);
     this.warningAddPremise = this.warningAddPremise.bind(this);
     this.getNumberOfTerms = this.getNumberOfTerms.bind(this);
-    this.renderHaskellListComprehensions = this.renderHaskellListComprehensions.bind(this);
+    this.renderSymbolicForms = this.renderSymbolicForms.bind(this);
   }
 
   componentDidUpdate() {
@@ -116,22 +127,17 @@ class InstantSolver extends React.Component {
     this.setState({ snackbarVisible: true, snackbarType: ERROR, snackbarMsg: msg });
   }
 
-  getNumberOfTerms() {
+  getNumberOfTerms(excludeConclusion) {
     const argumentForm = this.argumentFormRef.current;
     if (argumentForm) {
       const { premises } = argumentForm.state;
       const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
 
-      premiseObjs.pop();
+      if (excludeConclusion) {
+        premiseObjs.pop();
+      }
 
-      const termSet = new Set();
-      premiseObjs.forEach((premiseObj) => {
-        const { firstTerm, secondTerm } = premiseObj.terms;
-
-        termSet.add(firstTerm);
-        termSet.add(secondTerm);
-      });
-
+      const termSet = getTermSets(premiseObjs);
       return termSet.size;
     }
     return -1;
@@ -147,15 +153,17 @@ class InstantSolver extends React.Component {
     this.setState({ dialogOpen: true });
   }
 
-  renderHaskellListComprehensions() {
-    function getHaskellListComprehension(premise) {
-      const haskellListComprehension = premise.toHaskellRepresentation();
+  renderSymbolicForms() {
+    function getSymbolicForm(premise, mappings) {
+      const {
+        firstTerm,
+        secondTerm,
+      } = premise.terms;
 
-      if (haskellListComprehension) {
-        return `${haskellListComprehension[0][0]}[${haskellListComprehension[1]}| ${haskellListComprehension[2]}, ${haskellListComprehension[3]}]`;
-      }
+      const firstSymbol = mappings[firstTerm];
+      const secondSymbol = mappings[secondTerm];
 
-      throw new Error('Cannot get haskell list comprehension!');
+      return premise.toSymbolicForm(firstSymbol, secondSymbol);
     }
     const argumentForm = this.argumentFormRef.current;
 
@@ -163,15 +171,22 @@ class InstantSolver extends React.Component {
       const { premises } = argumentForm.state;
       const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
 
+      const termSet = getTermSets(premiseObjs);
+      const letters = [...Array(25).keys()].map((i) => String.fromCharCode(65 + i));
+      const mappings = {};
+      [...termSet].forEach((term, idx) => {
+        const letter = letters[idx];
+        mappings[term] = letter;
+      });
+
       return premiseObjs.map((premise) => (
         <Grid item xs={3}>
           <Typography variant="h6">{premise.toSentence()}</Typography>
-          <Typography variant="subtitle1">{getHaskellListComprehension(premise)}</Typography>
+          <Typography variant="subtitle1">{getSymbolicForm(premise, mappings)}</Typography>
         </Grid>
       ));
     }
-
-    throw new Error('Argument form not rendered!');
+    throw new Error('Unable to render symbolic forms!');
   }
 
   render() {
@@ -230,7 +245,7 @@ class InstantSolver extends React.Component {
           {argumentSubmitted
             && (
               <div>
-                {this.getNumberOfTerms() <= 4
+                {this.getNumberOfTerms(true) <= 4
                   && (
                     <ExpansionPanel className={classes.spacedExpansionPanel}>
                       <ExpansionPanelSummary
@@ -242,9 +257,9 @@ class InstantSolver extends React.Component {
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <Container>
-                          {this.getNumberOfTerms() === 4 && <FourSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} />}
-                          {this.getNumberOfTerms() === 3 && <ThreeSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
-                          {this.getNumberOfTerms() === 2 && <TwoSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
+                          {this.getNumberOfTerms(true) === 4 && <FourSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} />}
+                          {this.getNumberOfTerms(true) === 3 && <ThreeSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
+                          {this.getNumberOfTerms(true) === 2 && <TwoSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
                         </Container>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -263,20 +278,25 @@ class InstantSolver extends React.Component {
                     </Container>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
-                <ExpansionPanel>
-                  <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="listCompAriaControls"
-                    id="listCompExpansionPanel"
-                  >
-                    <Typography>Haskell List Comprehensions</Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    <Grid container>
-                      {this.renderHaskellListComprehensions()}
-                    </Grid>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                {
+                  this.getNumberOfTerms(false) <= 26
+                  && (
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="symbolicFormAriaControls"
+                        id="symbolicFormExpansionPanel"
+                      >
+                        <Typography>Symbolic Form Representations</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <Grid container>
+                          {this.renderSymbolicForms()}
+                        </Grid>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  )
+                }
               </div>
             )}
         </Container>

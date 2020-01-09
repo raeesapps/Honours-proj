@@ -191,6 +191,31 @@ class Premise {
     }
     return undefined;
   }
+
+  toSymbolicForm(firstSymbol, secondSymbol) {
+    const {
+      A_ENTAILS_B,
+      A_DOES_NOT_ENTAIL_B,
+      A_ENTAILS_NOT_B,
+      A_DOES_NOT_ENTAIL_NOT_B,
+    } = symbolicForms;
+
+    const symbolicFormOfPremise = getSymbolicForm(this);
+
+    switch (symbolicFormOfPremise) {
+      case A_ENTAILS_B:
+        return `${firstSymbol} ⊨ ${secondSymbol}`;
+      case A_DOES_NOT_ENTAIL_B:
+        return `${firstSymbol} !⊨ ${secondSymbol}`;
+      case A_ENTAILS_NOT_B:
+        return `${firstSymbol} ⊨ !${secondSymbol}`;
+      case A_DOES_NOT_ENTAIL_NOT_B:
+        return `${firstSymbol} !⊨ !${secondSymbol}`;
+      default:
+        break;
+    }
+    return null;
+  }
 }
 
 export {
