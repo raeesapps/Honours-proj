@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from '../../logic/premise';
 import copy from '../../utils/copy';
-import PremiseToSymbolicFormStep from './PremiseToSymbolicFormStep/PremiseToSymbolicFormStep';
+import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
 
 import styles from '../../assets/views/jss/PremisesToSymbolicFormQuestion/premises_to_symbolic_form_view_styles';
 
@@ -81,9 +81,9 @@ class PremisesToSymbolicFormView extends React.Component {
     const premise = premises[step];
 
     if (goingBack) {
-      return <PremiseToSymbolicFormStep premise={premise} ref={ref} mappingTable={mappingTable} />;
+      return <PremiseToSymbolicForm premise={premise} ref={ref} mappingTable={mappingTable} />;
     }
-    return <PremiseToSymbolicFormStep premise={premise} ref={ref} />;
+    return <PremiseToSymbolicForm premise={premise} ref={ref} />;
   }
 
   verify(firstEntry, secondEntry, thirdEntry, updatedMappingTable, ref) {

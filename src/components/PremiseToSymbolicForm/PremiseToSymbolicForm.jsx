@@ -6,14 +6,14 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import { alignments, move, reorder } from '../../../components/DragAndDrop/drag_and_drop_utils';
-import SimpleDroppable from '../../../components/DragAndDrop/SimpleDroppable';
-import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
-import snackbarTypes from '../../../components/Snackbar/snackbar_types';
+import { alignments, move, reorder } from '../DragAndDrop/drag_and_drop_utils';
+import SimpleDroppable from '../DragAndDrop/SimpleDroppable';
+import SnackbarWrapper from '../Snackbar/SnackbarWrapper';
+import snackbarTypes from '../Snackbar/snackbar_types';
 
-import { symbolicForms, getSymbolicForm, getEntailmentSymbol } from '../../../logic/premise';
+import { symbolicForms, getSymbolicForm, getEntailmentSymbol } from '../../logic/premise';
 
-import styles from '../../../assets/views/jss/PremisesToSymbolicFormQuestion/PremiseToSymbolicFormStep/premise_to_symbolic_form_step_styles';
+import styles from '../../assets/components/jss/PremiseToSymbolicForm/premise_to_symbolic_form_styles';
 
 function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
   const entries = [
@@ -102,7 +102,7 @@ const droppables = [
   },
 ];
 
-class PremiseToSymbolicFormStep extends React.Component {
+class PremiseToSymbolicForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -288,4 +288,4 @@ class PremiseToSymbolicFormStep extends React.Component {
   }
 }
 
-export default withStyles(styles)(PremiseToSymbolicFormStep);
+export default withStyles(styles)(PremiseToSymbolicForm);
