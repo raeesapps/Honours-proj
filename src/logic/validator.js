@@ -11,15 +11,14 @@ const stages = Object.freeze({
   COMBINATION_STAGE: 1,
 });
 
-function validateVennDiagram(premisesOrArgument, refOrRefs, stage) {
-  function getShadings(premiseOrArgument) {
-    const argument = (premiseOrArgument instanceof PremiseCollection) ? premiseOrArgument : new PremiseCollection([premiseOrArgument]);
-    const argumentVennDiagramParts = argument.getVennDiagramParts().slice(1);
-    const resolvedColumn = argument.unifyAndResolve();
+function validateVennDiagram(premiseCollection, refOrRefs, stage) {
+  function getShadings() {
+    const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
+    const resolvedColumn = premiseCollection.unifyAndResolve();
     const mappings = {};
 
-    argumentVennDiagramParts.forEach((argumentVennDiagramPart) => {
-      const { compartment, vennDiagramPart } = argumentVennDiagramPart;
+    premiseCollectionVennDiagramParts.forEach((premiseCollectionVennDiagramPart) => {
+      const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
       const resolvedValueArray = resolvedColumn[compartment.hashCode()];
 
       if (resolvedValueArray.length) {
@@ -46,17 +45,15 @@ function validateVennDiagram(premisesOrArgument, refOrRefs, stage) {
   let result;
 
   if (stage === REPRESENTATION_STAGE) {
-    result = refOrRefs.filter((ref, idx) => {
-      const premise = premisesOrArgument[idx];
-
+    result = refOrRefs.filter((ref) => {
       const actualShadings = sortObject(ref.current.getShadings());
-      const expectedShadings = sortObject(getShadings(premise));
+      const expectedShadings = sortObject(getShadings());
 
       return JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
     }).length === refOrRefs.length;
   } else if (stage === COMBINATION_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
-    const expectedShadings = sortObject(getShadings(premisesOrArgument));
+    const expectedShadings = sortObject(getShadings());
 
     result = JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
   }

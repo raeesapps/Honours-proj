@@ -23,7 +23,7 @@ class PremiseToDiagram extends React.Component {
     const { vennDiagramRef } = this;
     const { premises: premiseCollection } = this.props;
 
-    return validateVennDiagram([premiseCollection], [vennDiagramRef], REPRESENTATION_STAGE);
+    return validateVennDiagram(premiseCollection, [vennDiagramRef], REPRESENTATION_STAGE);
   }
 
   toSentenceAndVennDiagram(premiseCollection) {
