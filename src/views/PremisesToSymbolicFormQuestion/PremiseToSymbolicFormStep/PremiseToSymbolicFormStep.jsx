@@ -11,6 +11,8 @@ import SimpleDroppable from '../../../components/DragAndDrop/SimpleDroppable';
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 
+import { symbolicForms, getSymbolicForm, getEntailmentSymbol } from '../../../logic/premise';
+
 import styles from '../../../assets/views/jss/PremisesToSymbolicFormQuestion/PremiseToSymbolicFormStep/premise_to_symbolic_form_step_styles';
 
 function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
@@ -101,8 +103,8 @@ const droppables = [
 ];
 
 class PremiseToSymbolicFormStep extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     const state = {
       errorVisible: false,
@@ -120,6 +122,43 @@ class PremiseToSymbolicFormStep extends React.Component {
         state[name] = [...initialContents];
       }
     });
+
+    const { premise, mappingTable } = props;
+
+    if (mappingTable) {
+      const {
+        A_ENTAILS_NOT_B,
+        A_DOES_NOT_ENTAIL_NOT_B,
+        A_DOES_NOT_ENTAIL_B,
+        A_ENTAILS_B,
+      } = symbolicForms;
+      const { firstTerm, secondTerm } = premise.terms;
+      const symbolicFormOfPremise = getSymbolicForm(premise);
+      const entailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
+      const mappingTableKeys = Object.keys(mappingTable);
+      const firstKey = mappingTableKeys.find((key) => mappingTable[key] === firstTerm);
+      let secondKey = mappingTableKeys.find((key) => mappingTable[key] === secondTerm);
+      switch (symbolicFormOfPremise) {
+        case A_DOES_NOT_ENTAIL_NOT_B:
+        case A_ENTAILS_NOT_B:
+          secondKey = `!${secondKey}`;
+          break;
+        default:
+          break;
+      }
+
+      const itemThatShouldBeFirstEntry = state.entries.find((entry) => entry.content === firstKey);
+      const itemThatShouldBeSecondEntry = state.entries.find((entry) => entry.content === entailmentSymbol);
+      const itemThatShouldBeThirdEntry = state.entries.find((entry) => entry.content === secondKey);
+
+      state.firstEntry.push(itemThatShouldBeFirstEntry);
+      state.secondEntry.push(itemThatShouldBeSecondEntry);
+      state.thirdEntry.push(itemThatShouldBeThirdEntry);
+
+      state.entries = state.entries.filter((entry) => entry.id !== itemThatShouldBeFirstEntry.id);
+      state.entries = state.entries.filter((entry) => entry.id !== itemThatShouldBeSecondEntry.id);
+      state.entries = state.entries.filter((entry) => entry.id !== itemThatShouldBeThirdEntry.id);
+    }
 
     this.state = state;
     this.onDragEnd = this.onDragEnd.bind(this);

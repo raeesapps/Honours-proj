@@ -58,6 +58,30 @@ function getSymbolicForm(premise) {
   return null;
 }
 
+function getEntailmentSymbol(symbolicForm) {
+  const {
+    A_ENTAILS_B,
+    A_DOES_NOT_ENTAIL_B,
+    A_ENTAILS_NOT_B,
+    A_DOES_NOT_ENTAIL_NOT_B,
+  } = symbolicForms;
+
+  let expectedEntailmentSymbol;
+  switch (symbolicForm) {
+    case A_DOES_NOT_ENTAIL_NOT_B:
+    case A_DOES_NOT_ENTAIL_B:
+      expectedEntailmentSymbol = '!⊨';
+      break;
+    case A_ENTAILS_B:
+    case A_ENTAILS_NOT_B:
+      expectedEntailmentSymbol = '⊨';
+      break;
+    default:
+      break;
+  }
+  return expectedEntailmentSymbol;
+}
+
 class Premise {
   constructor(form, terms) {
     this.form = form;
@@ -174,4 +198,5 @@ export {
   forms,
   symbolicForms,
   getSymbolicForm,
+  getEntailmentSymbol,
 };

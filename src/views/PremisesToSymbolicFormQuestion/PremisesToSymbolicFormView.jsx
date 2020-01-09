@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import { symbolicForms, getSymbolicForm } from '../../logic/premise';
+import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from '../../logic/premise';
 import copy from '../../utils/copy';
 import PremiseToSymbolicFormStep from './PremiseToSymbolicFormStep/PremiseToSymbolicFormStep';
 
@@ -33,7 +33,7 @@ class PremisesToSymbolicFormView extends React.Component {
       premises: content.premises,
       step: 0,
       mappingTable: {},
-      previousMappingTables: [],
+      goingBack: false,
     };
     this.getStepContent = this.getStepContent.bind(this);
     this.updateMappingTable = this.updateMappingTable.bind(this);
@@ -44,36 +44,45 @@ class PremisesToSymbolicFormView extends React.Component {
   }
 
   onBack(step) {
-    const { previousMappingTables } = this.state;
-    const previousMappingTable = previousMappingTables.pop();
-
-    this.setState({ mappingTable: previousMappingTable, step: step - 1 });
+    this.setState({ step: step - 1, goingBack: true });
   }
 
   onNext(step) {
-    const { componentRefs } = this;
-    const ref = componentRefs[step];
+    const { goingBack } = this.state;
+    const onNextCallback = () => {
+      const { componentRefs } = this;
+      const ref = componentRefs[step];
 
-    if (!ref.current) {
-      throw new Error('Reference is not referencing a component!');
+      if (!ref.current) {
+        throw new Error('Reference is not referencing a component!');
+      }
+
+      const { firstEntry, secondEntry, thirdEntry } = ref.current.getEntries();
+
+      const updatedMappingTable = this.updateMappingTable(firstEntry, secondEntry, thirdEntry);
+      this.verify(firstEntry, secondEntry, thirdEntry, updatedMappingTable, ref);
+    };
+
+    if (goingBack) {
+      this.setState({ goingBack: false }, onNextCallback);
+    } else {
+      onNextCallback();
     }
-
-    const { firstEntry, secondEntry, thirdEntry } = ref.current.getEntries();
-
-    const updatedMappingTable = this.updateMappingTable(firstEntry, secondEntry, thirdEntry);
-    this.verify(firstEntry, secondEntry, thirdEntry, updatedMappingTable, ref);
   }
 
   onReset() {
-    this.setState({ step: 0, previousMappingTables: [], mappingTable: {} });
+    this.setState({ step: 0, goingBack: false, mappingTable: {} });
   }
 
   getStepContent(step) {
     const { componentRefs } = this;
-    const { premises } = this.state;
+    const { premises, mappingTable, goingBack } = this.state;
     const ref = componentRefs[step];
     const premise = premises[step];
 
+    if (goingBack) {
+      return <PremiseToSymbolicFormStep premise={premise} ref={ref} mappingTable={mappingTable} />;
+    }
     return <PremiseToSymbolicFormStep premise={premise} ref={ref} />;
   }
 
@@ -111,28 +120,16 @@ class PremisesToSymbolicFormView extends React.Component {
 
         const { premises, step } = this.state;
         const currentPremise = premises[step];
+        const symbolicFormOfPremise = getSymbolicForm(currentPremise);
+        const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
         const { firstTerm, secondTerm } = currentPremise.terms;
-
-        let expectedEntailmentSymbol;
-        switch (getSymbolicForm(currentPremise)) {
-          case A_DOES_NOT_ENTAIL_NOT_B:
-          case A_DOES_NOT_ENTAIL_B:
-            expectedEntailmentSymbol = '!⊨';
-            break;
-          case A_ENTAILS_B:
-          case A_ENTAILS_NOT_B:
-            expectedEntailmentSymbol = '⊨';
-            break;
-          default:
-            break;
-        }
 
         let count = 0;
         Object.keys(updatedMappingTable).forEach((mappingKey) => {
           const entry = updatedMappingTable[mappingKey];
 
           let secondMappingKey;
-          switch (getSymbolicForm(currentPremise)) {
+          switch (symbolicFormOfPremise) {
             case A_DOES_NOT_ENTAIL_NOT_B:
             case A_ENTAILS_NOT_B:
               secondMappingKey = `!${mappingKey}`;
@@ -162,13 +159,10 @@ class PremisesToSymbolicFormView extends React.Component {
       }
 
       if (result) {
-        const { mappingTable: previousMappingTable, previousMappingTables, step } = this.state;
-        const nextPreviousMappingTables = copy(previousMappingTables);
-        nextPreviousMappingTables.push(previousMappingTable);
+        const { step } = this.state;
         this.setState({
           step: step + 1,
           mappingTable: updatedMappingTable,
-          previousMappingTables: nextPreviousMappingTables,
         });
       } else {
         ref.current.showErrorBar(hint);
@@ -208,6 +202,11 @@ class PremisesToSymbolicFormView extends React.Component {
       }
 
       if (!(firstSymbol in mappingTable)) {
+        const firstTermKey = Object.keys(updatedMappingTable).find((key) => updatedMappingTable[key] === firstTerm);
+
+        if (firstTermKey) {
+          delete updatedMappingTable[firstTermKey];
+        }
         updatedMappingTable[firstSymbol] = firstTerm;
       }
 
@@ -231,6 +230,11 @@ class PremisesToSymbolicFormView extends React.Component {
           break;
       }
       if (!(secondSymbol in mappingTable)) {
+        const secondTermKey = Object.keys(updatedMappingTable).find((key) => updatedMappingTable[key] === secondTerm);
+
+        if (secondTermKey) {
+          delete updatedMappingTable[secondTermKey];
+        }
         updatedMappingTable[secondSymbol] = secondTerm;
       }
 
