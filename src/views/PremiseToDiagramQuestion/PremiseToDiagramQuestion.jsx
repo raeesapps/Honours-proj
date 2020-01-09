@@ -86,7 +86,7 @@ class PremiseToDiagramView extends React.Component {
             Shade the Venn Diagram to represent the premise.
           </Typography>
           <Paper className={classes.paper}>
-            <PremiseToDiagram ref={this.vennDiagramRef} premise={premise} />
+            <PremiseToDiagram ref={this.vennDiagramRef} premises={premise} />
           </Paper>
           <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
         </Container>

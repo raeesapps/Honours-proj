@@ -1,13 +1,19 @@
 import Table from './table';
 
 class PremiseCollection {
-  constructor(premises) {
+  constructor(premises, additionalTerms) {
     function getTermNames() {
       const allTerms = premises.map((premise) => {
         const { firstTerm, secondTerm } = premise.terms;
         return secondTerm ? [firstTerm, secondTerm] : [firstTerm];
       }).flat();
       const uniqueTerms = new Set([...allTerms]);
+
+      if (additionalTerms) {
+        additionalTerms.forEach((term) => {
+          uniqueTerms.add(term);
+        });
+      }
       return [...uniqueTerms];
     }
     const termNames = getTermNames(this.premises);

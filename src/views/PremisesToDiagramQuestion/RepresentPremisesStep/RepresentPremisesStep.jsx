@@ -9,8 +9,13 @@ import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
 
 import PremiseToDiagram from '../../../components/PremiseToDiagram/PremiseToDiagram';
+import PremiseCollection from '../../../logic/premise_collection';
 
 import styles from '../../../assets/views/jss/PremisesToDiagramQuestion/RepresentPremisesStep/represent_premises_step_styles';
+
+function putPremiseIntoPremiseCollection(premise) {
+  return new PremiseCollection([premise]);
+}
 
 class RepresentPremisesStep extends React.Component {
   constructor() {
@@ -62,7 +67,7 @@ class RepresentPremisesStep extends React.Component {
             {
               premises.map((premise, idx) => (
                 <Grid item xs={6}>
-                  <PremiseToDiagram premise={premise} vennDiagramShading={vennDiagramShadings[idx]} ref={refs[idx]} />
+                  <PremiseToDiagram premises={putPremiseIntoPremiseCollection(premise)} vennDiagramShading={vennDiagramShadings[idx]} ref={refs[idx]} />
                 </Grid>
               ))
             }

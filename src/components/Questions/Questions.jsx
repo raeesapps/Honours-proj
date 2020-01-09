@@ -71,10 +71,14 @@ function Questions() {
   const premiseToDiagramQuestions = [
     {
       title: 'All A are B',
-      content: new Premise(ALL_A_IS_B, {
-        firstTerm: 'A',
-        secondTerm: 'B',
-      }),
+      content: new PremiseCollection(
+        [
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'B',
+          }),
+        ],
+      ),
     },
   ];
   return (
