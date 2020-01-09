@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import PremiseCollection from '../../logic/premise_collection';
 import { Premise, forms } from '../../logic/premise';
 
-import QuestionList from '../QuestionList/QuestionList';
+import QuestionList from './QuestionList';
 import styles from '../../assets/components/jss/Questions/questions_styles';
 
 function generatePremiseCollection(premises, conclusion) {

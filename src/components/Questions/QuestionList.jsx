@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import styles from '../../assets/components/jss/QuestionList/question_list_styles';
+import styles from '../../assets/components/jss/Questions/question_list_styles';
 
 function QuestionList(props) {
   const { questions, title, path, classes } = props;
