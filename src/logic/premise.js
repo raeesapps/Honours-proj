@@ -202,15 +202,31 @@ class Premise {
 
     const symbolicFormOfPremise = getSymbolicForm(this);
 
+    let firstSymbolOrTerm;
+    let secondSymbolOrTerm;
+
+    if (firstSymbol && secondSymbol) {
+      firstSymbolOrTerm = firstSymbol;
+      secondSymbolOrTerm = secondSymbol;
+    } else if (!(firstSymbol && secondSymbol)) {
+      const {
+        firstTerm,
+        secondTerm,
+      } = this.terms;
+
+      firstSymbolOrTerm = firstTerm;
+      secondSymbolOrTerm = secondTerm;
+    }
+
     switch (symbolicFormOfPremise) {
       case A_ENTAILS_B:
-        return `${firstSymbol} ⊨ ${secondSymbol}`;
+        return `${firstSymbolOrTerm} ⊨ ${secondSymbolOrTerm}`;
       case A_DOES_NOT_ENTAIL_B:
-        return `${firstSymbol} !⊨ ${secondSymbol}`;
+        return `${firstSymbolOrTerm} !⊨ ${secondSymbolOrTerm}`;
       case A_ENTAILS_NOT_B:
-        return `${firstSymbol} ⊨ !${secondSymbol}`;
+        return `${firstSymbolOrTerm} ⊨ !${secondSymbolOrTerm}`;
       case A_DOES_NOT_ENTAIL_NOT_B:
-        return `${firstSymbol} !⊨ !${secondSymbol}`;
+        return `${firstSymbolOrTerm} !⊨ !${secondSymbolOrTerm}`;
       default:
         break;
     }
