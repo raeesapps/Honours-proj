@@ -24,4 +24,3 @@ function QuestionsSidebar(props) {
 }
 
 export default withStyles(styles)(QuestionsSidebar);
-

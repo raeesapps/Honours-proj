@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import { stages, validate } from '../../../logic/premise_validator';
+import { stages, validateVennDiagram } from '../../../logic/validator';
 
 import SnackbarWrapper from '../../../components/Snackbar/SnackbarWrapper';
 import snackbarTypes from '../../../components/Snackbar/snackbar_types';
@@ -46,7 +46,7 @@ class CombinePremisesStep extends React.Component {
     const { COMBINATION_STAGE } = stages;
     const { argument } = this.props;
 
-    const result = validate(argument, this.vennDiagramRef, COMBINATION_STAGE);
+    const result = validateVennDiagram(argument, this.vennDiagramRef, COMBINATION_STAGE);
     this.setState({ showError: !result });
 
     return result;
