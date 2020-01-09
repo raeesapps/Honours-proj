@@ -1,4 +1,6 @@
 import PremiseCollection from "./premise_collection";
+import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './premise';
+import copy from '../utils/copy';
 
 const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
@@ -62,7 +64,159 @@ function validate(premisesOrArgument, refOrRefs, stage) {
   return result;
 }
 
+function validateMappings(firstEntry, secondEntry, thirdEntry, state) {
+  const {
+    A_ENTAILS_B,
+    A_DOES_NOT_ENTAIL_B,
+    A_ENTAILS_NOT_B,
+    A_DOES_NOT_ENTAIL_NOT_B,
+  } = symbolicForms;
+
+  function updateMappingTable() {
+    if (firstEntry.length && secondEntry.length && thirdEntry.length) {
+      const {
+        premises,
+        mappingTable,
+        step,
+      } = state;
+      const currentPremise = premises[step];
+      const symbolicForm = getSymbolicForm(currentPremise);
+      const { firstTerm, secondTerm } = currentPremise.terms;
+      const updatedMappingTable = copy(mappingTable);
+
+      const { content: firstEntryContents } = firstEntry[0];
+      const { content: thirdEntryContents } = thirdEntry[0];
+
+      let firstSymbol;
+      if (firstEntryContents.length === 2) {
+        const [, secondItem] = firstEntryContents;
+        firstSymbol = secondItem;
+      } else {
+        const [firstItem] = firstEntryContents;
+        firstSymbol = firstItem;
+      }
+
+      if (!(firstSymbol in mappingTable)) {
+        const firstTermKey = Object.keys(updatedMappingTable).find((key) => updatedMappingTable[key] === firstTerm);
+
+        if (firstTermKey) {
+          delete updatedMappingTable[firstTermKey];
+        }
+        updatedMappingTable[firstSymbol] = firstTerm;
+      }
+
+      let secondSymbol;
+      switch (symbolicForm) {
+        case A_DOES_NOT_ENTAIL_NOT_B:
+        case A_ENTAILS_NOT_B:
+          if (thirdEntryContents.length !== 1) {
+            const [, secondItem] = thirdEntryContents;
+            secondSymbol = secondItem;
+          }
+          break;
+        case A_ENTAILS_B:
+        case A_DOES_NOT_ENTAIL_B:
+          if (thirdEntryContents.length !== 2) {
+            const [firstItem] = thirdEntryContents;
+            secondSymbol = firstItem;
+          }
+          break;
+        default:
+          break;
+      }
+      if (!(secondSymbol in mappingTable)) {
+        const secondTermKey = Object.keys(updatedMappingTable).find((key) => updatedMappingTable[key] === secondTerm);
+
+        if (secondTermKey) {
+          delete updatedMappingTable[secondTermKey];
+        }
+        updatedMappingTable[secondSymbol] = secondTerm;
+      }
+
+      return updatedMappingTable;
+    }
+
+    return null;
+  }
+  function performValidation() {
+    const updatedMappingTable = updateMappingTable();
+    if (updatedMappingTable) {
+      let hint;
+      let result = true;
+
+      if (firstEntry.length === 0) {
+        hint = 'Please drag an item into the first box!';
+        result = false;
+      }
+
+      if (secondEntry.length === 0) {
+        hint = 'Please drag an item into the second box!';
+        result = false;
+      }
+
+      if (thirdEntry.length === 0) {
+        hint = 'Please drag an item into the third box!';
+        result = false;
+      }
+
+      if (!hint) {
+        const { content: firstEntryContents } = firstEntry[0];
+        const { content: secondEntryContents } = secondEntry[0];
+        const { content: thirdEntryContents } = thirdEntry[0];
+
+        const { premises, step } = state;
+        const currentPremise = premises[step];
+        const symbolicFormOfPremise = getSymbolicForm(currentPremise);
+        const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
+        const { firstTerm, secondTerm } = currentPremise.terms;
+
+        let count = 0;
+        Object.keys(updatedMappingTable).forEach((mappingKey) => {
+          const entry = updatedMappingTable[mappingKey];
+
+          let secondMappingKey;
+          switch (symbolicFormOfPremise) {
+            case A_DOES_NOT_ENTAIL_NOT_B:
+            case A_ENTAILS_NOT_B:
+              secondMappingKey = `!${mappingKey}`;
+              break;
+            case A_ENTAILS_B:
+            case A_DOES_NOT_ENTAIL_B:
+              secondMappingKey = mappingKey;
+              break;
+            default:
+              break;
+          }
+
+          if ((entry === firstTerm && mappingKey === firstEntryContents)
+            || (entry === secondTerm && secondMappingKey === thirdEntryContents)) {
+            count += 1;
+          }
+        });
+        result = result && count === 2 && expectedEntailmentSymbol === secondEntryContents;
+
+        if (expectedEntailmentSymbol !== secondEntryContents && count !== 2) {
+          hint = 'Both your mappings and entailment symbol are wrong!';
+        } else if (expectedEntailmentSymbol !== secondEntryContents) {
+          hint = 'Your entailment symbol is wrong!';
+        } else if (count !== 2) {
+          hint = 'Your mappings are wrong!';
+        }
+      }
+      return {
+        hint,
+        result,
+        updatedMappingTable,
+      };
+    }
+    return null;
+  }
+
+  return performValidation();
+}
+
 export {
   stages,
   validate,
+  validateMappings,
 };
