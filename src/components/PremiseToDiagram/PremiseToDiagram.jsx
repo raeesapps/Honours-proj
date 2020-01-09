@@ -26,7 +26,7 @@ class PremiseToDiagram extends React.Component {
 
   render() {
     const { vennDiagramRef } = this;
-    const { premiseCollection, vennDiagramShading } = this.props;
+    const { premiseCollection, vennDiagramShading, renderTitle } = this.props;
 
     if (!premiseCollection.premises.length) {
       throw new Error('No premises in premise collection!');
@@ -44,7 +44,7 @@ class PremiseToDiagram extends React.Component {
       <div>
         <Typography variant="h5">
           {
-            title
+            renderTitle && title
           }
         </Typography>
         {
