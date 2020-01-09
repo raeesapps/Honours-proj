@@ -69,10 +69,17 @@ class PremiseToDiagramView extends React.Component {
     const { classes } = this.props;
     const { premiseCollection, snackbarType, showSnackbar } = this.state;
 
+    if (!premiseCollection.premises.length) {
+      throw new Error('No premises in premise collection!');
+    }
+
+    const premise = premiseCollection.premises[0];
+
     const snackbarWrapperDisplayVal = !showSnackbar ? 'none' : '';
     const snackbarMessage = snackbarType === ERROR ? 'Incorrect!' : 'Correct!';
+    const width = premiseCollection.terms.length === 4 ? { width: '70%' } : { width: '35%' };
     return (
-      <div className={classes.root}>
+      <div>
         <Container>
           <SnackbarWrapper
             style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
@@ -82,11 +89,14 @@ class PremiseToDiagramView extends React.Component {
               this.setState({ showSnackbar: false });
             }}
           />
-          <Typography className={classes.instructions} variant="h5" component="h3">
-            Shade the Venn Diagram to represent the premise.
+          <Typography className={classes.instructions} variant="h5">
+            Shade the Venn Diagram to represent
+            {
+              ` "${premise.toSymbolicForm()}" `
+            }
           </Typography>
-          <Paper className={classes.paper}>
-            <PremiseToDiagram ref={this.vennDiagramRef} premiseCollection={premiseCollection} />
+          <Paper className={classes.paper} style={width}>
+            <PremiseToDiagram renderTitle={false} ref={this.vennDiagramRef} premiseCollection={premiseCollection} />
           </Paper>
           <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
         </Container>

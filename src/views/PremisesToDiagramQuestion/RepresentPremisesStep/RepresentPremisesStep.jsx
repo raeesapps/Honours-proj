@@ -67,7 +67,12 @@ class RepresentPremisesStep extends React.Component {
             {
               premises.map((premise, idx) => (
                 <Grid item xs={6}>
-                  <PremiseToDiagram premiseCollection={putPremiseIntoPremiseCollection(premise)} vennDiagramShading={vennDiagramShadings[idx]} ref={refs[idx]} />
+                  <PremiseToDiagram
+                    renderTitle={1}
+                    premiseCollection={putPremiseIntoPremiseCollection(premise)}
+                    vennDiagramShading={vennDiagramShadings[idx]}
+                    ref={refs[idx]}
+                  />
                 </Grid>
               ))
             }
