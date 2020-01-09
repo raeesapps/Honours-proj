@@ -64,7 +64,7 @@ function validateVennDiagram(premisesOrArgument, refOrRefs, stage) {
   return result;
 }
 
-function validateMappings(firstEntry, secondEntry, thirdEntry, state) {
+function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingTable) {
   const {
     A_ENTAILS_B,
     A_DOES_NOT_ENTAIL_B,
@@ -74,14 +74,8 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, state) {
 
   function updateMappingTable() {
     if (firstEntry.length && secondEntry.length && thirdEntry.length) {
-      const {
-        premises,
-        mappingTable,
-        step,
-      } = state;
-      const currentPremise = premises[step];
-      const symbolicForm = getSymbolicForm(currentPremise);
-      const { firstTerm, secondTerm } = currentPremise.terms;
+      const symbolicForm = getSymbolicForm(premise);
+      const { firstTerm, secondTerm } = premise.terms;
       const updatedMappingTable = copy(mappingTable);
 
       const { content: firstEntryContents } = firstEntry[0];
@@ -164,11 +158,9 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, state) {
         const { content: secondEntryContents } = secondEntry[0];
         const { content: thirdEntryContents } = thirdEntry[0];
 
-        const { premises, step } = state;
-        const currentPremise = premises[step];
-        const symbolicFormOfPremise = getSymbolicForm(currentPremise);
+        const symbolicFormOfPremise = getSymbolicForm(premise);
         const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
-        const { firstTerm, secondTerm } = currentPremise.terms;
+        const { firstTerm, secondTerm } = premise.terms;
 
         let count = 0;
         Object.keys(updatedMappingTable).forEach((mappingKey) => {

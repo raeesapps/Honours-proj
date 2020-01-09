@@ -83,7 +83,9 @@ class PremisesToSymbolicFormView extends React.Component {
   }
 
   validate(firstEntry, secondEntry, thirdEntry, ref) {
-    const validationResult = validateMappings(firstEntry, secondEntry, thirdEntry, this.state);
+    const { mappingTable, step, premises } = this.state;
+
+    const validationResult = validateMappings(firstEntry, secondEntry, thirdEntry, premises[step], mappingTable);
 
     if (validationResult) {
       const {
