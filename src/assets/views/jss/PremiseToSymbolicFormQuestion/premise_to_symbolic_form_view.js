@@ -8,7 +8,7 @@ function styles(theme) {
     },
     typography: {
       marginBottom: theme.spacing.unit * 2,
-    }
+    },
   };
 }
 
