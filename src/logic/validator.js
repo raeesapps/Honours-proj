@@ -11,7 +11,7 @@ const stages = Object.freeze({
   COMBINATION_STAGE: 1,
 });
 
-function validate(premisesOrArgument, refOrRefs, stage) {
+function validateVennDiagram(premisesOrArgument, refOrRefs, stage) {
   function getShadings(premiseOrArgument) {
     const argument = (premiseOrArgument instanceof PremiseCollection) ? premiseOrArgument : new PremiseCollection([premiseOrArgument]);
     const argumentVennDiagramParts = argument.getVennDiagramParts().slice(1);
@@ -217,6 +217,6 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, state) {
 
 export {
   stages,
-  validate,
+  validateVennDiagram,
   validateMappings,
 };

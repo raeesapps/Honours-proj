@@ -3,7 +3,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import { stages, validate } from '../../logic/validator';
+import { stages, validateVennDiagram } from '../../logic/validator';
 
 import TwoSetInteractiveVennDiagram from '../VennDiagram/TwoSetInteractiveVennDiagram';
 
@@ -21,7 +21,7 @@ class PremiseToDiagram extends React.Component {
     const { vennDiagramRef } = this;
     const { premise } = this.props;
 
-    return validate([premise], [vennDiagramRef], REPRESENTATION_STAGE);
+    return validateVennDiagram([premise], [vennDiagramRef], REPRESENTATION_STAGE);
   }
 
   toSentenceAndVennDiagram(premise) {
