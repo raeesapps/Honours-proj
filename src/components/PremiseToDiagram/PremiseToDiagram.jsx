@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
@@ -43,8 +42,8 @@ class PremiseToDiagram extends React.Component {
     }
 
     return (
-      <Grid item xs={5}>
-        <Typography variant="subtitle2">
+      <div>
+        <Typography variant="h5">
           {
             title
           }
@@ -58,22 +57,14 @@ class PremiseToDiagram extends React.Component {
         {
           numberOfTermsInPremiseCollection === 4 && <FourSetInteractiveVennDiagram title={`${title}rep`} premises={premiseCollection} ref={vennDiagramRef} />
         }
-      </Grid>
+      </div>
     );
   }
 
   render() {
     const { premiseCollection } = this.props;
 
-    return (
-      <div>
-        <Grid container>
-          {
-            this.toSentenceAndVennDiagram(premiseCollection)
-          }
-        </Grid>
-      </div>
-    );
+    return this.toSentenceAndVennDiagram(premiseCollection);
   }
 }
 
