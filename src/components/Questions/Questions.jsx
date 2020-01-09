@@ -21,6 +21,15 @@ function generatePremiseCollection(premises, conclusion) {
 
 function Questions() {
   const { ALL_A_IS_B } = forms;
+  const premiseToSymbolicFormQuestions = [
+    {
+      title: 'BARBARA',
+      content: new Premise(ALL_A_IS_B, {
+        firstTerm: 'men',
+        secondTerm: 'mortal',
+      }),
+    },
+  ];
   const premisesToSymbolicFormQuestions = [
     {
       title: 'BARBARA',
@@ -70,11 +79,13 @@ function Questions() {
   ];
   return (
     <Container>
+      <QuestionList title="Premise to Symbolic Form" questions={premiseToSymbolicFormQuestions} path="/premiseToSymbolicFormQuestion" />
+      <br />
       <QuestionList title="Syllogism to Symbolic Form" questions={premisesToSymbolicFormQuestions} path="/premisesToSymbolicFormQuestion" />
       <br />
-      <QuestionList title="Syllogism to Venn Diagram" questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
-      <br />
       <QuestionList title="Premise to Venn Diagram" questions={premiseToDiagramQuestions} path="/premiseToDiagramQuestion" />
+      <br />
+      <QuestionList title="Syllogism to Venn Diagram" questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
     </Container>
   );
 }
