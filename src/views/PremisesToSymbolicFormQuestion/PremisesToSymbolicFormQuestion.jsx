@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { validateMappings } from '../../logic/validator';
 import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
 import withSidebar from '../../components/Questions/SidebarHOC';
+import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
+
 import styles from '../../assets/views/jss/PremisesToSymbolicFormQuestion/premises_to_symbolic_form_question_styles';
 
 class PremisesToSymbolicFormView extends React.Component {
@@ -83,6 +85,7 @@ class PremisesToSymbolicFormView extends React.Component {
   }
 
   validate(firstEntry, secondEntry, thirdEntry, ref) {
+    const { onValidate } = this.props;
     const { mappingTable, step, premises } = this.state;
 
     const validationResult = validateMappings(firstEntry, secondEntry, thirdEntry, premises[step], mappingTable);
@@ -94,14 +97,14 @@ class PremisesToSymbolicFormView extends React.Component {
         updatedMappingTable,
       } = validationResult;
 
+      onValidate(result, hint);
+
       if (result) {
         const { step } = this.state;
         this.setState({
           step: step + 1,
           mappingTable: updatedMappingTable,
         });
-      } else {
-        ref.current.showErrorBar(hint);
       }
     }
   }
@@ -165,4 +168,4 @@ class PremisesToSymbolicFormView extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(PremisesToSymbolicFormView));
+export default withStyles(styles)(withSidebar(withQuestionTemplate(PremisesToSymbolicFormView)));
