@@ -28,7 +28,7 @@ class Arrow extends React.Component {
       .attr('orient', 'auto')
       .append('path')
       .attr('d', 'M 0 0 12 6 0 12 3 6')
-      .style('fill', 'blue');
+      .style('fill', 'lightblue');
 
     drawingSpace.append('line')
       .attr('x1', x1)
@@ -36,7 +36,7 @@ class Arrow extends React.Component {
       .attr('x2', x2)
       .attr('y2', y2)
       .attr('stroke-width', 3)
-      .attr('stroke', 'blue')
+      .attr('stroke', 'lightblue')
       .attr('marker-end', 'url(#triangle)');
   }
 
