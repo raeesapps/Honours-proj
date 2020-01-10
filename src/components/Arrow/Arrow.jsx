@@ -41,8 +41,8 @@ class Arrow extends React.Component {
   }
 
   render() {
-    const { id } = this.props;
-    return <div id={id} />;
+    const { id, ...rest } = this.props;
+    return <div id={id} {...rest} />;
   }
 }
 

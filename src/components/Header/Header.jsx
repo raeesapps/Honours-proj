@@ -12,10 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import styles from '../../assets/components/jss/Header/header_styles';
 
 function Header(props) {
-  const { classes, routes } = props;
+  const { classes, routes, ...rest } = props;
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} {...rest}>
       <CssBaseline />
       <AppBar position="fixed">
         <Toolbar>

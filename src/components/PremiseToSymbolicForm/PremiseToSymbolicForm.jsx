@@ -248,11 +248,11 @@ class PremiseToSymbolicForm extends React.Component {
       errorMessage,
       errorVisible,
     } = this.state;
-    const { classes, premise } = this.props;
+    const { classes, premise, ...rest } = this.props;
     const { HORIZONTAL, VERTICAL } = alignments;
     const snackbarWrapperDisplayVal = !errorVisible ? 'none' : '';
     return (
-      <Container>
+      <Container {...rest}>
         <SnackbarWrapper
           style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
           variant={ERROR}

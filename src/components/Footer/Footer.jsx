@@ -7,9 +7,9 @@ import Grid from '@material-ui/core/Grid';
 import styles from '../../assets/components/jss/Footer/footer_styles'
 
 function Footer(props) {
-  const { classes } = props;
+  const { classes, ...rest } = props;
   return (
-    <div className={classes.root}>
+    <div className={classes.root} {...rest}>
       <Grid
         container
         direction="column"

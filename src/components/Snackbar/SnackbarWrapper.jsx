@@ -19,7 +19,13 @@ const variantIcon = Object.freeze({
 
 function SnackbarWrapper(props) {
   const classes = styles();
-  const { className, message, onClose, variant, ...other } = props;
+  const {
+    className,
+    message,
+    onClose,
+    variant,
+    ...rest
+  } = props;
   const Icon = variantIcon[variant];
 
   return (
@@ -37,7 +43,7 @@ function SnackbarWrapper(props) {
           <CloseIcon className={classes.icon} />
         </IconButton>,
       ]}
-      {...other}
+      {...rest}
     />
   );
 }

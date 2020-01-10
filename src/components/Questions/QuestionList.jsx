@@ -11,10 +11,16 @@ import Typography from '@material-ui/core/Typography';
 import styles from '../../assets/components/jss/Questions/question_list_styles';
 
 function QuestionList(props) {
-  const { questions, title, path, classes } = props;
+  const {
+    questions,
+    title,
+    path,
+    classes,
+    ...rest
+  } = props;
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} {...rest}>
       <Paper>
         <Typography variant="h6">
           {title}

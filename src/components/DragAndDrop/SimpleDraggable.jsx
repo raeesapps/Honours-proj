@@ -3,9 +3,9 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import styles from '../../assets/components/jss/DragAndDrop/simple_draggable_styles';
 
-function SimpleDraggable({ item, index }) {
+function SimpleDraggable({ item, index, ...rest }) {
   return (
-    <Draggable key={item.id} draggableId={item.id} index={index}>
+    <Draggable key={item.id} draggableId={item.id} index={index} {...rest}>
       {(providedInner, snapshotInner) => (
         <div
           ref={providedInner.innerRef}

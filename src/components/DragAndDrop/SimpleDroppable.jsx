@@ -5,10 +5,10 @@ import { alignments } from './drag_and_drop_utils';
 import SimpleDraggable from './SimpleDraggable';
 import styles from '../../assets/components/jss/DragAndDrop/simple_droppable_styles';
 
-function SimpleDroppable({ items, droppableId, alignment }) {
+function SimpleDroppable({ items, droppableId, alignment, ...rest }) {
   const { HORIZONTAL } = alignments;
   return (
-    <Droppable droppableId={droppableId} direction={alignment === HORIZONTAL ? 'horizontal' : 'vertical'}>
+    <Droppable droppableId={droppableId} direction={alignment === HORIZONTAL ? 'horizontal' : 'vertical'} {...rest}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
