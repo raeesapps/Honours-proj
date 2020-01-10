@@ -8,8 +8,6 @@ import Typography from '@material-ui/core/Typography';
 
 import { alignments, move, reorder } from '../DragAndDrop/drag_and_drop_utils';
 import SimpleDroppable from '../DragAndDrop/SimpleDroppable';
-import SnackbarWrapper from '../Snackbar/SnackbarWrapper';
-import snackbarTypes from '../Snackbar/snackbar_types';
 
 import { symbolicForms, getSymbolicForm, getEntailmentSymbol } from '../../logic/premise';
 
@@ -106,11 +104,7 @@ class PremiseToSymbolicForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const state = {
-      errorVisible: false,
-      errorMessage: null,
-    };
-
+    const state = {};
     const dragDropEntries = getDragDropEntries('A', 'B', 'C');
 
     droppables.forEach((droppable) => {
@@ -163,7 +157,6 @@ class PremiseToSymbolicForm extends React.Component {
     this.state = state;
     this.onDragEnd = this.onDragEnd.bind(this);
     this.getEntries = this.getEntries.bind(this);
-    this.showErrorBar = this.showErrorBar.bind(this);
   }
 
   onDragEnd(result) {
@@ -231,36 +224,17 @@ class PremiseToSymbolicForm extends React.Component {
     return { firstEntry, secondEntry, thirdEntry };
   }
 
-  showErrorBar(message) {
-    this.setState({
-      errorMessage: message,
-      errorVisible: true,
-    });
-  }
-
   render() {
-    const { ERROR } = snackbarTypes;
     const {
       entries,
       firstEntry,
       secondEntry,
       thirdEntry,
-      errorMessage,
-      errorVisible,
     } = this.state;
     const { classes, premise, ...rest } = this.props;
     const { HORIZONTAL, VERTICAL } = alignments;
-    const snackbarWrapperDisplayVal = !errorVisible ? 'none' : '';
     return (
       <Container {...rest}>
-        <SnackbarWrapper
-          style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
-          variant={ERROR}
-          message={errorMessage}
-          onClose={() => {
-            this.setState({ errorVisible: false, errorMessage: null });
-          }}
-        />
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Grid container spacing={2}>
             <Grid item>
