@@ -77,20 +77,10 @@ class CombinePremisesQuestion extends React.Component {
     function renderInteractiveVennDiagram(argument, vennDiagramRef) {
 
       if (argument.terms.length === 3) {
-        return (
-          <Grid item xs={12}>
-            <center>
-              <ThreeSetInteractiveVennDiagram title="Combination" premises={argument} ref={vennDiagramRef} />
-            </center>
-          </Grid>
-        );
+        return <ThreeSetInteractiveVennDiagram title="Combination" premises={argument} ref={vennDiagramRef} />;
       }
       if (argument.terms.length === 4) {
-        return (
-          <Grid item xs={9}>
-            <FourSetInteractiveVennDiagram premises={argument} ref={vennDiagramRef} />
-          </Grid>
-        );
+        return <FourSetInteractiveVennDiagram premises={argument} ref={vennDiagramRef} />;
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }
@@ -112,23 +102,16 @@ class CombinePremisesQuestion extends React.Component {
           <Typography className={classes.instructions} variant="h6">
             Please combine the Venn Diagrams from the previous step into one Venn Diagram:
           </Typography>
-          <Grid
-            container
-            spacing={2}
-          >
-            <Grid item xs={12}>
-              <Paper>
-                <Grid container spacing={2}>
-                  {
-                    premises.map(this.renderPremiseVennDiagram)
-                  }
-                </Grid>
-              </Paper>
+          <Paper>
+            <Grid container spacing={2}>
+              {
+                premises.map(this.renderPremiseVennDiagram)
+              }
             </Grid>
-            {
-              renderInteractiveVennDiagram(this.premiseCollection, this.combinationVennDiagramRef)
-            }
-          </Grid>
+          </Paper>
+          {
+            renderInteractiveVennDiagram(this.premiseCollection, this.combinationVennDiagramRef)
+          }
         </Container>
       </div>
     );
