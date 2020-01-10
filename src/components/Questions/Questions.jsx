@@ -51,7 +51,7 @@ function Questions() {
       ),
     },
   ];
-  const premisesToDiagramQuestions = [
+  const combinePremisesQuestion = [
     {
       title: 'BARBARA',
       content: generatePremiseCollection(
@@ -89,7 +89,7 @@ function Questions() {
       <br />
       <QuestionList title="Premise to Venn Diagram" questions={premiseToDiagramQuestions} path="/premiseToDiagramQuestion" />
       <br />
-      <QuestionList title="Syllogism to Venn Diagram" questions={premisesToDiagramQuestions} path="/premisesToDiagramQuestion" />
+      <QuestionList title="Combine Premises" questions={combinePremisesQuestion} path="/combinePremisesQuestion" />
     </Container>
   );
 }
