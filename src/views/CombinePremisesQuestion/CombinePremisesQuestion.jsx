@@ -87,6 +87,29 @@ class CombinePremisesQuestion extends React.Component {
           default:
             break;
         }
+      } else if (numberOfPremises === 3) {
+        switch (idx) {
+          case 0:
+            x1 = 50;
+            y1 = 0;
+            x2 = 200;
+            y2 = 250;
+            break;
+          case 1:
+            x1 = 150;
+            y1 = 0;
+            x2 = 150;
+            y2 = 250;
+            break;
+          case 2:
+            x1 = 250;
+            y1 = 0;
+            x2 = 100;
+            y2 = 250;
+            break;
+          default:
+            break;
+        }
       }
 
       return (
@@ -119,7 +142,7 @@ class CombinePremisesQuestion extends React.Component {
         return <ThreeSetInteractiveVennDiagram className={classes.threeSetInteractiveVennDiagram} title="Combination" premises={argument} ref={vennDiagramRef} />;
       }
       if (argument.terms.length === 4) {
-        return <FourSetInteractiveVennDiagram premises={argument} ref={vennDiagramRef} />;
+        return <FourSetInteractiveVennDiagram className={classes.fourSetInteractiveVennDiagram} premises={argument} ref={vennDiagramRef} />;
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }

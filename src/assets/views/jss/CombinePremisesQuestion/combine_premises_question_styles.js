@@ -9,6 +9,9 @@ function styles(theme) {
     threeSetInteractiveVennDiagram: {
       marginLeft: '16%',
     },
+    fourSetInteractiveVennDiagram: {
+      marginLeft: '16%',
+    },
   };
 }
 
