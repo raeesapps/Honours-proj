@@ -17,7 +17,7 @@ import styles from '../../assets/views/jss/PremiseToSymbolicFormQuestion/premise
 
 const { ERROR, SUCCESS } = snackbarTypes;
 
-class PremiseToSymbolicFormView extends React.Component {
+class PremiseToSymbolicFormQuestion extends React.Component {
   constructor(props) {
     super(props);
 
@@ -94,4 +94,4 @@ class PremiseToSymbolicFormView extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(PremiseToSymbolicFormView));
+export default withStyles(styles)(withSidebar(PremiseToSymbolicFormQuestion));
