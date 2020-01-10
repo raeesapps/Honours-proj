@@ -65,7 +65,7 @@ class FourSetInteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, ...otherProps } = this.props;
     const {
       a,
       b,
@@ -73,7 +73,7 @@ class FourSetInteractiveVennDiagram extends React.Component {
       d,
     } = this.state;
     return (
-      <div>
+      <div {...otherProps}>
         <div className={classes.content}>
           <Typography variant="body1" className={classes.topLeft}>
             A

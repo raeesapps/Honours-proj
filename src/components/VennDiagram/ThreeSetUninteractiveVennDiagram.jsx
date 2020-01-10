@@ -40,11 +40,11 @@ class ThreeSetUninteractiveVennDiagram extends React.Component {
   }
 
   render() {
-    const { classes, title } = this.props;
+    const { classes, title, ...otherProps } = this.props;
     const { a, b, c } = this.state;
     const id = title.split(' ').join('');
     return (
-      <div>
+      <div {...otherProps}>
         <div className={classes.content}>
           <Typography variant="body1" className={classes.topRight}>
             A
