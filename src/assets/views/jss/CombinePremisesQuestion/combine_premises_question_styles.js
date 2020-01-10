@@ -6,6 +6,9 @@ function styles(theme) {
     instructions: {
       marginBottom: theme.spacing(2),
     },
+    threeSetInteractiveVennDiagram: {
+      marginLeft: '16%',
+    },
   };
 }
 
