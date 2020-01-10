@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Questions from './Questions';
 
 function withSidebar(WrappedComponent) {
-  function ComponentWithQuestionsSidebar(props) {
+  return function ComponentWithQuestionsSidebar(props) {
     return (
       <div>
         <Grid container>
@@ -18,8 +18,7 @@ function withSidebar(WrappedComponent) {
         </Grid>
       </div>
     );
-  }
-  return ComponentWithQuestionsSidebar;
+  };
 }
 
 export default withSidebar;

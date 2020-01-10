@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
-import withSidebar from '../../components/Questions/SidebarHOC';
+import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import { validateMappings } from '../../logic/validator';
@@ -63,7 +63,7 @@ class PremiseToSymbolicFormQuestion extends React.Component {
           to Symbolic Form
         </Typography>
         <Paper className={classes.paper}>
-          <PremiseToSymbolicForm ref={premiseToSymbolicFormRef} premise={premise} />
+          <PremiseToSymbolicForm className={classes.premiseToSymbolicForm} ref={premiseToSymbolicFormRef} premise={premise} />
           <br />
         </Paper>
         <Button className={classes.button} variant="contained" color="primary" onClick={this.validate}>Check Answer</Button>

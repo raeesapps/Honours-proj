@@ -2,7 +2,6 @@ import React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
@@ -234,7 +233,7 @@ class PremiseToSymbolicForm extends React.Component {
     const { classes, premise, ...rest } = this.props;
     const { HORIZONTAL, VERTICAL } = alignments;
     return (
-      <Container {...rest}>
+      <div {...rest}>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Grid container spacing={2}>
             <Grid item>
@@ -256,8 +255,7 @@ class PremiseToSymbolicForm extends React.Component {
           </Typography>
           <SimpleDroppable items={entries} droppableId="entries" alignment={HORIZONTAL} />
         </DragDropContext>
-        <div className={classes.spacing} />
-      </Container>
+      </div>
     );
   }
 }

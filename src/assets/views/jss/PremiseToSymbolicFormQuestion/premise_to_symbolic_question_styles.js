@@ -9,6 +9,9 @@ function styles(theme) {
     typography: {
       marginBottom: theme.spacing.unit * 2,
     },
+    premiseToSymbolicForm: {
+      marginLeft: theme.spacing.unit * 2,
+    },
   };
 }
 

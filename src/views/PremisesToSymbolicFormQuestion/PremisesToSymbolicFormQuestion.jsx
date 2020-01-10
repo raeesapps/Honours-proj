@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -12,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { validateMappings } from '../../logic/validator';
 import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
-import withSidebar from '../../components/Questions/SidebarHOC';
+import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/PremisesToSymbolicFormQuestion/premises_to_symbolic_form_question_styles';
@@ -115,54 +114,52 @@ class PremisesToSymbolicFormView extends React.Component {
     const steps = premises.map((premise) => premise.toSentence());
     return (
       <div className={classes.root}>
-        <Container>
-          <Typography variant="h5" style={{ marginBottom: '5px' }}>Translate Syllogism to Symbolic Form</Typography>
+        <Typography variant="h5" style={{ marginBottom: '5px' }}>Translate Syllogism to Symbolic Form</Typography>
 
-          {
-            premises.map((premise, idx) => (
-              <Typography style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="subtitle1">{premise.toSentence()}</Typography>
-            ))
-          }
-          <Stepper activeStep={step} orientation="vertical">
-            {steps.map((label, index) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-                <StepContent>
-                  {this.getStepContent(index)}
-                  <div className={classes.actionsContainer}>
-                    <div>
-                      <Button
-                        disabled={step === 0}
-                        onClick={() => this.onBack(step)}
-                        className={classes.button}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => this.onNext(step, steps)}
-                        className={classes.button}
-                      >
-                        {step === steps.length - 1 ? 'Finish' : 'Next'}
-                      </Button>
-                    </div>
+        {
+          premises.map((premise, idx) => (
+            <Typography style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="subtitle1">{premise.toSentence()}</Typography>
+          ))
+        }
+        <Stepper activeStep={step} orientation="vertical">
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+              <StepContent>
+                {this.getStepContent(index)}
+                <div className={classes.actionsContainer}>
+                  <div>
+                    <Button
+                      disabled={step === 0}
+                      onClick={() => this.onBack(step)}
+                      className={classes.button}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => this.onNext(step, steps)}
+                      className={classes.button}
+                    >
+                      {step === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
                   </div>
-                </StepContent>
-              </Step>
-            ))}
-          </Stepper>
-          {
-            step === steps.length && (
-              <Paper square elevation={0} className={classes.resetContainer}>
-                <Typography>All steps completed - you&apos;re finished</Typography>
-                <Button onClick={this.onReset} className={classes.button}>
-                  Reset
-                </Button>
-              </Paper>
-            )
-          }
-        </Container>
+                </div>
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+        {
+          step === steps.length && (
+            <Paper square elevation={0} className={classes.resetContainer}>
+              <Typography>All steps completed - you&apos;re finished</Typography>
+              <Button onClick={this.onReset} className={classes.button}>
+                Reset
+              </Button>
+            </Paper>
+          )
+        }
       </div>
     );
   }

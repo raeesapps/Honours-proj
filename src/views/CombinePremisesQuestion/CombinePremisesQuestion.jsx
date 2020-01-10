@@ -1,24 +1,19 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
 
 import Arrow from '../../components/Arrow/Arrow';
-import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
-import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import FourSetInteractiveVennDiagram from '../../components/VennDiagram/FourSetInteractiveVennDiagram';
 import ThreeSetInteractiveVennDiagram from '../../components/VennDiagram/ThreeSetInteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
-import withSidebar from '../../components/Questions/SidebarHOC';
+import PremiseCollection from '../../logic/premise_collection';
+import withSidebar from '../../components/Questions/QuestionSidebar';
+import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/CombinePremisesQuestion/combine_premises_question_styles';
-import PremiseCollection from '../../logic/premise_collection';
-
-const { ERROR } = snackbarTypes;
 
 class CombinePremisesQuestion extends React.Component {
   constructor(props) {
@@ -33,9 +28,6 @@ class CombinePremisesQuestion extends React.Component {
 
     const { content } = question;
 
-    this.state = {
-      showError: false,
-    };
     this.premiseCollection = content;
     this.premiseVennDiagramRef = [...Array(content.premises.length).keys()].map(() => React.createRef());
     this.combinationVennDiagramRef = React.createRef();
@@ -56,9 +48,10 @@ class CombinePremisesQuestion extends React.Component {
 
   validate() {
     const { COMBINATION_STAGE } = stages;
+    const { onValidate } = this.props;
 
     const result = validateVennDiagram(this.premiseCollection, this.vennDiagramRef, COMBINATION_STAGE);
-    this.setState({ showError: !result });
+    onValidate(result, 'Incorrect!');
 
     return result;
   }
@@ -148,34 +141,22 @@ class CombinePremisesQuestion extends React.Component {
     }
     const { premises } = this.premiseCollection;
     const { classes } = this.props;
-    const { showError } = this.state;
-    const snackbarWrapperDisplayVal = !showError ? 'none' : '';
     return (
       <div className={classes.root}>
-        <Container>
-          <SnackbarWrapper
-            style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
-            variant={ERROR}
-            message="Incorrect!"
-            onClose={() => {
-              this.setState({ showError: false });
-            }}
-          />
-          <Typography className={classes.instructions} variant="h6">
-            Please combine the Venn Diagrams from the previous step into one Venn Diagram:
-          </Typography>
-          <div style={{ display: 'flex' }}>
-            {
-              premises.map((premise, idx) => this.renderPremiseVennDiagram(premise, idx, premises.length))
-            }
-          </div>
+        <Typography className={classes.instructions} variant="h6">
+          Please combine the Venn Diagrams from the previous step into one Venn Diagram:
+        </Typography>
+        <div style={{ display: 'flex' }}>
           {
-            renderInteractiveVennDiagram(this.premiseCollection, this.combinationVennDiagramRef)
+            premises.map((premise, idx) => this.renderPremiseVennDiagram(premise, idx, premises.length))
           }
-        </Container>
+        </div>
+        {
+          renderInteractiveVennDiagram(this.premiseCollection, this.combinationVennDiagramRef)
+        }
       </div>
     );
   }
 }
 
-export default withStyles(styles)(withSidebar(CombinePremisesQuestion));
+export default withStyles(styles)(withSidebar(withQuestionTemplate(CombinePremisesQuestion)));
