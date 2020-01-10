@@ -53,12 +53,12 @@ class TwoSetUninteractiveVennDiagram extends React.Component {
       classes,
       title,
       displayKey,
-      ...otherProps
+      ...rest
     } = this.props;
     const { a, b } = this.state;
     const id = title.split(' ').join('');
     return (
-      <div className={classes.content} {...otherProps}>
+      <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
           A
         </Typography>
