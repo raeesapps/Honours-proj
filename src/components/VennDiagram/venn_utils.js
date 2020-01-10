@@ -237,7 +237,7 @@ function bindMouseEventListeners(div) {
 function drawCircle(diagram, cX, cY, id) {
   diagram.append('circle')
     .attr('fill-opacity', 0)
-    .attr('stroke', '#ff0000')
+    .attr('stroke', 'blue')
     .attr('stroke-width', 1)
     .attr('opacity', 1)
     .attr('fill', '#ffffff')
@@ -318,7 +318,7 @@ function createFourSetEllipticVennDiagram(id, ellipses, mouseEventListener) {
       .attr('id', eID)
       .attr('transform', transformation)
       .attr('fill-opacity', 0)
-      .attr('stroke', '#ff0000')
+      .attr('stroke', 'blue')
       .attr('stroke-width', 1)
       .attr('opacity', 1)
       .attr('fill', '#ffffff');
