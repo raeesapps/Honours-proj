@@ -26,7 +26,6 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
       c: null,
       d: null,
     };
-    this.getShadings = this.getShadings.bind(this);
   }
 
   componentDidMount() {
@@ -43,7 +42,7 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
     this.div = div;
   }
 
-  getShadings() {
+  getShadings = () => {
     const {
       a,
       b,

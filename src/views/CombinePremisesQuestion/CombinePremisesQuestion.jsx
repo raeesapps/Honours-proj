@@ -33,8 +33,6 @@ class CombinePremisesQuestion extends React.Component {
     this.premiseCollection = content;
     this.premiseVennDiagramRef = [...Array(content.premises.length).keys()].map(() => React.createRef());
     this.combinationVennDiagramRef = React.createRef();
-    this.renderPremiseVennDiagram = this.renderPremiseVennDiagram.bind(this);
-    this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +47,7 @@ class CombinePremisesQuestion extends React.Component {
     });
   }
 
-  validate() {
+  validate = () => {
     const { COMBINATION_STAGE } = stages;
     const { onValidate } = this.props;
 
@@ -59,7 +57,7 @@ class CombinePremisesQuestion extends React.Component {
     return result;
   }
 
-  renderPremiseVennDiagram(premise, idx, numberOfPremises) {
+  renderPremiseVennDiagram = (premise, idx, numberOfPremises) => {
     function renderArrow() {
       let x1;
       let y1;

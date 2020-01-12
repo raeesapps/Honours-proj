@@ -152,11 +152,9 @@ class PremiseToSymbolicForm extends React.PureComponent {
     }
 
     this.state = state;
-    this.onDragEnd = this.onDragEnd.bind(this);
-    this.getEntries = this.getEntries.bind(this);
   }
 
-  onDragEnd(result) {
+  onDragEnd = (result) => {
     const { source, destination } = result;
 
     if (!destination) {
@@ -211,7 +209,7 @@ class PremiseToSymbolicForm extends React.PureComponent {
     }
   }
 
-  getEntries() {
+  getEntries = () => {
     const {
       firstEntry,
       secondEntry,

@@ -22,8 +22,6 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
       a: null,
       b: null,
     };
-
-    this.applyShading = this.applyShading.bind(this);
   }
 
   componentDidMount() {
@@ -43,7 +41,7 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     }
   }
 
-  applyShading(premiseCollection) {
+  applyShading = (premiseCollection) => {
     applyShadings(this.div, premiseCollection);
     this.setState({ a: premiseCollection.terms[0], b: premiseCollection.terms[1] });
   }

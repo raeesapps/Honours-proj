@@ -30,13 +30,9 @@ class ArgumentForm extends React.PureComponent {
     this.state = {
       premises,
     };
-
-    this.onRemove = this.onRemove.bind(this);
-    this.onAddPremise = this.onAddPremise.bind(this);
-    this.addPremise = this.addPremise.bind(this);
   }
 
-  onRemove(idx) {
+  onRemove = (idx) => {
     const {
       premises,
     } = this.state;
@@ -67,7 +63,7 @@ class ArgumentForm extends React.PureComponent {
     this.setState({ premises: [...premises] });
   }
 
-  onAddPremise() {
+  onAddPremise = () => {
     const {
       premises,
     } = this.state;
@@ -85,7 +81,7 @@ class ArgumentForm extends React.PureComponent {
     }
   }
 
-  addPremise() {
+  addPremise = () => {
     const {
       premises,
     } = this.state;

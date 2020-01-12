@@ -27,7 +27,6 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
       a: null,
       b: null,
     };
-    this.getShadings = this.getShadings.bind(this);
   }
 
   componentDidMount() {
@@ -77,7 +76,7 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
     }
   }
 
-  getShadings() {
+  getShadings = () => {
     const {
       a,
       b,

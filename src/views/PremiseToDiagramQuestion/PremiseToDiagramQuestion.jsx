@@ -23,10 +23,9 @@ class PremiseToDiagramQuestion extends React.Component {
     const { content } = question;
     this.premiseCollection = content;
     this.vennDiagramRef = React.createRef();
-    this.validate = this.validate.bind(this);
   }
 
-  validate() {
+  validate = () => {
     const { onValidate } = this.props;
 
     if (!this.vennDiagramRef.current) {

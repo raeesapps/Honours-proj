@@ -58,12 +58,6 @@ class InstantSolver extends React.Component {
     this.argumentFormRef = React.createRef();
     this.premisesVennDiagramRef = React.createRef();
     this.conclusionVennDiagramRef = React.createRef();
-    this.onSubmitForm = this.onSubmitForm.bind(this);
-    this.onError = this.onError.bind(this);
-    this.warn = this.warn.bind(this);
-    this.warningAddPremise = this.warningAddPremise.bind(this);
-    this.getNumberOfTerms = this.getNumberOfTerms.bind(this);
-    this.renderSymbolicForms = this.renderSymbolicForms.bind(this);
   }
 
   componentDidUpdate() {
@@ -114,7 +108,7 @@ class InstantSolver extends React.Component {
     }
   }
 
-  onSubmitForm() {
+  onSubmitForm = () => {
     this.setState({
       argumentSubmitted: true,
       needsUpdate: true,
@@ -123,11 +117,11 @@ class InstantSolver extends React.Component {
     });
   }
 
-  onError(msg) {
+  onError = (msg) => {
     this.setState({ snackbarVisible: true, snackbarType: ERROR, snackbarMsg: msg });
   }
 
-  getNumberOfTerms(excludeConclusion) {
+  getNumberOfTerms = (excludeConclusion) => {
     const argumentForm = this.argumentFormRef.current;
     if (argumentForm) {
       const { premises } = argumentForm.state;
@@ -143,17 +137,17 @@ class InstantSolver extends React.Component {
     return -1;
   }
 
-  warningAddPremise() {
+  warningAddPremise = () => {
     const argumentForm = this.argumentFormRef.current;
     argumentForm.addPremise();
     this.setState({ dialogOpen: false });
   }
 
-  warn() {
+  warn = () => {
     this.setState({ dialogOpen: true });
   }
 
-  renderSymbolicForms() {
+  renderSymbolicForms = () => {
     function getSymbolicForm(premise, mappings) {
       const {
         firstTerm,

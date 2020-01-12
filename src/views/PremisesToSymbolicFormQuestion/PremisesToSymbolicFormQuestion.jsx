@@ -30,18 +30,13 @@ class PremisesToSymbolicFormQuestion extends React.Component {
       mappingTable: {},
       goingBack: false,
     };
-    this.getStepContent = this.getStepContent.bind(this);
-    this.onNext = this.onNext.bind(this);
-    this.onBack = this.onBack.bind(this);
-    this.onReset = this.onReset.bind(this);
-    this.validate = this.validate.bind(this);
   }
 
-  onBack(step) {
+  onBack = (step) => {
     this.setState({ step: step - 1, goingBack: true });
   }
 
-  onNext(step) {
+  onNext = (step) => {
     const { goingBack } = this.state;
     const onNextCallback = () => {
       const { componentRefs } = this;
@@ -62,11 +57,11 @@ class PremisesToSymbolicFormQuestion extends React.Component {
     }
   }
 
-  onReset() {
+  onReset = () => {
     this.setState({ step: 0, goingBack: false, mappingTable: {} });
   }
 
-  getStepContent(step) {
+  getStepContent = (step) => {
     const { componentRefs } = this;
     const { premises, mappingTable, goingBack } = this.state;
     const ref = componentRefs[step];
@@ -78,7 +73,7 @@ class PremisesToSymbolicFormQuestion extends React.Component {
     return <PremiseToSymbolicForm premise={premise} ref={ref} />;
   }
 
-  validate(firstEntry, secondEntry, thirdEntry, ref) {
+  validate = (firstEntry, secondEntry, thirdEntry, ref) => {
     const { onValidate } = this.props;
     const { mappingTable, step, premises } = this.state;
 

@@ -17,10 +17,9 @@ function withQuestionTemplate(WrappedComponent) {
         showSnackbar: false,
         incorrectMesssage: null,
       };
-      this.onValidate = this.onValidate.bind(this);
     }
 
-    onValidate(result, incorrectMessage) {
+    onValidate = (result, incorrectMessage) => {
       const snackbarType = result ? SUCCESS : ERROR;
       this.setState({
         showSnackbar: true,

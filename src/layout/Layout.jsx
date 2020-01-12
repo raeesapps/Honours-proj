@@ -24,7 +24,6 @@ class Layout extends React.Component {
   constructor() {
     super();
     this.state = { width: 0 };
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +35,7 @@ class Layout extends React.Component {
     window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
-  updateWindowDimensions() {
+  updateWindowDimensions = () => {
     this.setState({ width: window.innerWidth });
   }
 

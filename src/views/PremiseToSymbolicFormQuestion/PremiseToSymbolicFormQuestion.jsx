@@ -27,10 +27,9 @@ class PremiseToSymbolicFormQuestion extends React.Component {
       hint: null,
     };
     this.premiseToSymbolicFormRef = React.createRef();
-    this.validate = this.validate.bind(this);
   }
 
-  validate() {
+  validate = () => {
     const { premise, premiseToSymbolicFormRef } = this;
     const { onValidate } = this.props;
 

@@ -12,11 +12,9 @@ class PremiseToDiagram extends React.PureComponent {
   constructor() {
     super();
     this.vennDiagramRef = React.createRef();
-
-    this.validate = this.validate.bind(this);
   }
 
-  validate() {
+  validate = () => {
     const { REPRESENTATION_STAGE } = stages;
     const { vennDiagramRef } = this;
     const { premiseCollection } = this.props;

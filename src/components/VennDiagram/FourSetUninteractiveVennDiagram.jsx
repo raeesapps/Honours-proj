@@ -22,14 +22,13 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
       c: null,
       d: null,
     };
-    this.applyShading = this.applyShading.bind(this);
   }
 
   componentDidMount() {
     this.div = createFourSetEllipticVennDiagram('ellipseVenn', fourSetEllipses);
   }
 
-  applyShading(premiseCollection) {
+  applyShading = (premiseCollection) => {
     const [a, b, c, d] = premiseCollection.terms;
 
     // eslint-disable-next-line react/destructuring-assignment

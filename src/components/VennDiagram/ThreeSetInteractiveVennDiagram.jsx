@@ -24,7 +24,6 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
       b: null,
       c: null,
     };
-    this.getShadings = this.getShadings.bind(this);
   }
 
   componentDidMount() {
@@ -41,7 +40,7 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
     this.div = div;
   }
 
-  getShadings() {
+  getShadings = () => {
     const {
       a,
       b,

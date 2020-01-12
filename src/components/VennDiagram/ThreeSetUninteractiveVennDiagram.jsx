@@ -20,7 +20,6 @@ class ThreeSetUninteractiveVennDiagram extends React.PureComponent {
       b: null,
       c: null,
     };
-    this.applyShading = this.applyShading.bind(this);
   }
 
   componentDidMount() {
@@ -29,7 +28,7 @@ class ThreeSetUninteractiveVennDiagram extends React.PureComponent {
     this.div = createThreeSetCircularVennDiagram(id, threeSetCircles);
   }
 
-  applyShading(premiseCollection) {
+  applyShading = (premiseCollection) => {
     const [a, b, c] = premiseCollection.terms;
 
     if (!(this.state.a && this.state.b && this.state.c)) {
