@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
 
 import Arrow from '../../components/Arrow/Arrow';
+import SimpleStepper from '../../components/Stepper/SimpleStepper';
 import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
 import TwoSetInteractiveVennDiagram from '../../components/VennDiagram/TwoSetInteractiveVennDiagram';
@@ -35,10 +34,12 @@ class ReduceAndArgueQuestion extends React.Component {
 
     const { content } = question;
 
+    this.state = {
+      step: 0,
+    };
     this.premiseCollection = content;
     this.premisesVennDiagramRef = React.createRef();
     this.reducedPremisesVennDiagramRef = React.createRef();
-    this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -49,29 +50,24 @@ class ReduceAndArgueQuestion extends React.Component {
     this.premisesVennDiagramRef.current.applyShading(this.premiseCollection);
   }
 
-  validate() {
-    function getTermsToExclude(premiseCollection) {
-      const { premises } = premiseCollection;
-
-      const termSet = new Set();
-      premises.forEach((premise) => {
-        const { firstTerm, secondTerm } = premise.terms;
-        termSet.add(firstTerm);
-        termSet.add(secondTerm);
-      });
-
-      const conclusion = getConclusionPremise(premiseCollection);
-      const { firstTerm: conclusionFirstTerm, secondTerm: conclusionSecondTerm } = conclusion.terms;
-      return [...termSet].filter((term) => term !== conclusionFirstTerm && term !== conclusionSecondTerm);
-    }
-    const { REDUCTION_STAGE } = stages;
-    const { onValidate } = this.props;
-
-    const result = validateVennDiagram(this.premiseCollection, this.reducedPremisesVennDiagramRef, REDUCTION_STAGE, getTermsToExclude(this.premiseCollection));
-    onValidate(result, 'Incorrect!');
+  onBack = (step) => {
+    this.setState({ step: step - 1 });
   }
 
-  render() {
+  onNext = () => {
+    const { step } = this.state;
+    const result = this.validate();
+
+    if (result) {
+      this.setState({ step: step + 1 });
+    }
+  }
+
+  onReset = () => {
+    this.setState({ step: 0 });
+  }
+
+  getStepContent = (step) => {
     function renderUninteractiveVennDiagram(premiseCollection, vennDiagramRef) {
       const n = premiseCollection.terms.length;
       let x1;
@@ -111,18 +107,60 @@ class ReduceAndArgueQuestion extends React.Component {
       );
     }
     const marginLeft = this.premiseCollection.terms.length === 4 ? { marginLeft: '14%' } : {};
+    if (step === 0) {
+      return (
+        <div>
+          {
+            renderUninteractiveVennDiagram(this.premiseCollection, this.premisesVennDiagramRef)
+          }
+          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={getConclusionPremise(this.premiseCollection)} ref={this.reducedPremisesVennDiagramRef} />
+
+        </div>
+      );
+    }
+    return <div />;
+  }
+
+  validate = () => {
+    function getTermsToExclude(premiseCollection) {
+      const { premises } = premiseCollection;
+
+      const termSet = new Set();
+      premises.forEach((premise) => {
+        const { firstTerm, secondTerm } = premise.terms;
+        termSet.add(firstTerm);
+        termSet.add(secondTerm);
+      });
+
+      const conclusion = getConclusionPremise(premiseCollection);
+      const { firstTerm: conclusionFirstTerm, secondTerm: conclusionSecondTerm } = conclusion.terms;
+      return [...termSet].filter((term) => term !== conclusionFirstTerm && term !== conclusionSecondTerm);
+    }
+    const { REDUCTION_STAGE } = stages;
+    const { onValidate } = this.props;
+
+    const result = validateVennDiagram(this.premiseCollection, this.reducedPremisesVennDiagramRef, REDUCTION_STAGE, getTermsToExclude(this.premiseCollection));
+    onValidate(result, 'Incorrect!');
+
+    return result;
+  }
+
+  render() {
+    const { step } = this.state;
+    const steps = ['Reduce Venn Diagram', 'Argue'];
     return (
       <div>
         <Typography variant="h5">
           Reduce and argue
         </Typography>
-        <Paper>
-          {
-            renderUninteractiveVennDiagram(this.premiseCollection, this.premisesVennDiagramRef)
-          }
-          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={getConclusionPremise(this.premiseCollection)} ref={this.reducedPremisesVennDiagramRef} />
-        </Paper>
-        <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
+        <SimpleStepper
+          step={step}
+          steps={steps}
+          content={this.getStepContent}
+          onBack={this.onBack}
+          onNext={this.onNext}
+          onReset={this.onReset}
+        />
       </div>
     );
   }
