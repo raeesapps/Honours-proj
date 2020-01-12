@@ -1,4 +1,3 @@
-import PremiseCollection from "./premise_collection";
 import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './premise';
 import copy from '../utils/copy';
 
