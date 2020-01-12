@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
@@ -32,6 +34,7 @@ class CombinePremisesQuestion extends React.Component {
     this.premiseVennDiagramRef = [...Array(content.premises.length).keys()].map(() => React.createRef());
     this.combinationVennDiagramRef = React.createRef();
     this.renderPremiseVennDiagram = this.renderPremiseVennDiagram.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +53,7 @@ class CombinePremisesQuestion extends React.Component {
     const { COMBINATION_STAGE } = stages;
     const { onValidate } = this.props;
 
-    const result = validateVennDiagram(this.premiseCollection, this.vennDiagramRef, COMBINATION_STAGE);
+    const result = validateVennDiagram(this.premiseCollection, this.combinationVennDiagramRef, COMBINATION_STAGE);
     onValidate(result, 'Incorrect!');
 
     return result;
@@ -117,6 +120,7 @@ class CombinePremisesQuestion extends React.Component {
         />
       );
     }
+
     const ref = this.premiseVennDiagramRef[idx];
 
     return (
@@ -139,21 +143,36 @@ class CombinePremisesQuestion extends React.Component {
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }
+    function mapPremiseToSymbolicForm(premise, idx, numberOfPremises) {
+      const symbolicForm = premise.toSymbolicForm();
+
+      if (idx === numberOfPremises - 1) {
+        return ` "${symbolicForm}" `;
+      }
+      return ` "${symbolicForm}", `;
+    }
     const { premises } = this.premiseCollection;
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography className={classes.instructions} variant="h6">
-          Please combine the Venn Diagrams from the previous step into one Venn Diagram:
-        </Typography>
-        <div style={{ display: 'flex' }}>
+        <Typography className={classes.instructions} variant="h5">
+          Combine the Venn Diagrams of
           {
-            premises.map((premise, idx) => this.renderPremiseVennDiagram(premise, idx, premises.length))
+            premises.map((premise, idx) => mapPremiseToSymbolicForm(premise, idx, premises.length))
           }
-        </div>
-        {
-          renderInteractiveVennDiagram(this.premiseCollection, this.combinationVennDiagramRef)
-        }
+          into one Venn Diagram
+        </Typography>
+        <Paper>
+          <div style={{ display: 'flex' }}>
+            {
+              premises.map((premise, idx) => this.renderPremiseVennDiagram(premise, idx, premises.length))
+            }
+          </div>
+          {
+            renderInteractiveVennDiagram(this.premiseCollection, this.combinationVennDiagramRef)
+          }
+        </Paper>
+        <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
       </div>
     );
   }
