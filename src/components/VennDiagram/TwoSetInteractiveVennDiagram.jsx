@@ -103,14 +103,14 @@ class TwoSetInteractiveVennDiagram extends React.Component {
     return (
       <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
-          A
+          {a && a.length === 1 ? a : 'A'}
         </Typography>
         <Typography variant="body1" className={classes.topRight}>
-          B
+          {b && b.length === 1 ? b : 'B'}
         </Typography>
         <div id={id} />
         {
-          (a && b)
+          (a && b && a.length > 1 && b.length > 1)
           && (
             <div>
               <Typography variant="h5">

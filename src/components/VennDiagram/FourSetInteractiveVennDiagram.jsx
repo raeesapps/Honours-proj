@@ -76,31 +76,38 @@ class FourSetInteractiveVennDiagram extends React.Component {
       <div {...rest}>
         <div className={classes.content}>
           <Typography variant="body1" className={classes.topLeft}>
-            A
+            {a.length === 1 ? a : 'A'}
           </Typography>
           <Typography variant="body1" className={classes.topRight}>
-            B
+            {b.length === 1 ? b : 'B'}
           </Typography>
           <Typography variant="body1" className={classes.bottomLeft}>
-            C
+            {c.length === 1 ? c : 'C'}
           </Typography>
           <Typography variant="body1" className={classes.bottomRight}>
-            D
+            {d.length === 1 ? d : 'D'}
           </Typography>
           <div id="ellipseVenn" />
         </div>
-        <Typography variant="h5">
-          where A = {a}
-        </Typography>
-        <Typography variant="h5">
-          where B = {b}
-        </Typography>
-        <Typography variant="h5">
-          where C = {c}
-        </Typography>
-        <Typography variant="h5">
-          where D = {d}
-        </Typography>
+        {
+          (a.length > 1 && b.length > 1 && c.length > 1 && d.length > 1)
+          && (
+            <div>
+              <Typography variant="h5">
+                where A = {a}
+              </Typography>
+              <Typography variant="h5">
+                where B = {b}
+              </Typography>
+              <Typography variant="h5">
+                where C = {c}
+              </Typography>
+              <Typography variant="h5">
+                where D = {d}
+              </Typography>
+            </div>
+          )
+        }
       </div>
     );
   }

@@ -52,7 +52,6 @@ class TwoSetUninteractiveVennDiagram extends React.Component {
     const {
       classes,
       title,
-      displayKey,
       ...rest
     } = this.props;
     const { a, b } = this.state;
@@ -60,14 +59,14 @@ class TwoSetUninteractiveVennDiagram extends React.Component {
     return (
       <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
-          A
+          {a && a.length === 1 ? a : 'A'}
         </Typography>
         <Typography variant="body1" className={classes.topRight}>
-          B
+          {b && b.length === 1 ? b : 'B'}
         </Typography>
         <div id={id} />
         {
-          (a && b && displayKey)
+          (a && b && a.length > 1 && b.length > 1)
           && (
             <div>
               <Typography variant="h5">

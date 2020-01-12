@@ -69,18 +69,18 @@ class ThreeSetInteractiveVennDiagram extends React.Component {
       <div {...rest}>
         <div className={classes.content}>
           <Typography variant="body1" className={classes.topRight}>
-            A
+            {a && a.length === 1 ? a : 'A'}
           </Typography>
           <Typography variant="body1" className={classes.bottomLeft}>
-            B
+            {b && b.length === 1 ? b : 'B'}
           </Typography>
           <Typography variant="body1" className={classes.bottomRight}>
-            C
+            {c && c.length === 1 ? c : 'C'}
           </Typography>
           <div id={id} />
         </div>
         {
-          (a && b && c)
+          (a && b && c && a.length > 1 && b.length > 1 && c.length > 1)
           && (
             <div>
               <Typography variant="h5">
