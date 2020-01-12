@@ -1,17 +1,7 @@
-function styles(theme) {
+function styles() {
   return {
     root: {
       width: '90%',
-    },
-    button: {
-      marginTop: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-    actionsContainer: {
-      marginBottom: theme.spacing(2),
-    },
-    resetContainer: {
-      padding: theme.spacing(3),
     },
   };
 }
