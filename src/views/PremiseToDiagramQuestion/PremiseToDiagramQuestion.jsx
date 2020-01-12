@@ -10,7 +10,7 @@ import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 import styles from '../../assets/views/jss/PremiseToDiagramQuestion/premise_to_diagram_question_styles';
 
-class PremiseToDiagramView extends React.Component {
+class PremiseToDiagramQuestion extends React.Component {
   constructor(props) {
     super(props);
     const { location } = props;
@@ -64,4 +64,4 @@ class PremiseToDiagramView extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(PremiseToDiagramView)));
+export default withStyles(styles)(withSidebar(withQuestionTemplate(PremiseToDiagramQuestion)));

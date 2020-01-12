@@ -16,7 +16,7 @@ import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/PremisesToSymbolicFormQuestion/premises_to_symbolic_form_question_styles';
 
-class PremisesToSymbolicFormView extends React.Component {
+class PremisesToSymbolicFormQuestion extends React.Component {
   constructor(props) {
     super(props);
     const { location } = this.props;
@@ -165,4 +165,4 @@ class PremisesToSymbolicFormView extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(PremisesToSymbolicFormView)));
+export default withStyles(styles)(withSidebar(withQuestionTemplate(PremisesToSymbolicFormQuestion)));
