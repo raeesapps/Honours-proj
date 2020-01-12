@@ -12,7 +12,7 @@ import {
 
 import styles from '../../assets/components/jss/VennDiagram/four_set_uninteractive_venn_diagram_styles';
 
-class FourSetUninteractiveVennDiagram extends React.Component {
+class FourSetUninteractiveVennDiagram extends React.PureComponent {
   constructor() {
     super();
 

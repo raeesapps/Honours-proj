@@ -116,4 +116,4 @@ function Questions() {
   );
 }
 
-export default withStyles(styles)(Questions);
+export default withStyles(styles)(React.memo(Questions));

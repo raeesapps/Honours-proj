@@ -99,7 +99,7 @@ const droppables = [
   },
 ];
 
-class PremiseToSymbolicForm extends React.Component {
+class PremiseToSymbolicForm extends React.PureComponent {
   constructor(props) {
     super(props);
 

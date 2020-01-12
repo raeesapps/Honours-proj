@@ -8,7 +8,7 @@ import TwoSetInteractiveVennDiagram from '../VennDiagram/TwoSetInteractiveVennDi
 import ThreeSetInteractiveVennDiagram from '../VennDiagram/ThreeSetInteractiveVennDiagram';
 import FourSetInteractiveVennDiagram from '../VennDiagram/FourSetInteractiveVennDiagram';
 
-class PremiseToDiagram extends React.Component {
+class PremiseToDiagram extends React.PureComponent {
   constructor() {
     super();
     this.vennDiagramRef = React.createRef();

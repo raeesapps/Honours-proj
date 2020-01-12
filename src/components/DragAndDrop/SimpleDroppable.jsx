@@ -25,4 +25,4 @@ function SimpleDroppable({ items, droppableId, alignment, ...rest }) {
   );
 }
 
-export default SimpleDroppable;
+export default React.memo(SimpleDroppable);

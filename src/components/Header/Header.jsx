@@ -35,4 +35,4 @@ function Header(props) {
   );
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(React.memo(Header));

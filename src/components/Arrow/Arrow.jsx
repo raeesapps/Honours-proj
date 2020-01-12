@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as d3 from 'd3';
 
-class Arrow extends React.Component {
+class Arrow extends React.PureComponent {
   componentDidMount() {
     const {
       id,

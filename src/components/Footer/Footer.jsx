@@ -26,4 +26,4 @@ function Footer(props) {
   );
 }
 
-export default withStyles(styles)(Footer);
+export default withStyles(styles)(React.memo(Footer));

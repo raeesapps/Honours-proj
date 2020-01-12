@@ -19,7 +19,7 @@ import {
 
 import styles from '../../assets/components/jss/VennDiagram/two_set_interactive_venn_diagram_styles';
 
-class TwoSetInteractiveVennDiagram extends React.Component {
+class TwoSetInteractiveVennDiagram extends React.PureComponent {
   constructor() {
     super();
 

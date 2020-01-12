@@ -48,4 +48,4 @@ function QuestionList(props) {
   );
 }
 
-export default withStyles(styles)(QuestionList);
+export default withStyles(styles)(React.memo(QuestionList));

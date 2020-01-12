@@ -10,7 +10,7 @@ import PremiseFormInput from './PremiseFormInput';
 
 import styles from '../../../assets/views/jss/InstantSolver/Components/argument_form_styles';
 
-class ArgumentForm extends React.Component {
+class ArgumentForm extends React.PureComponent {
   constructor() {
     super();
     const premises = [

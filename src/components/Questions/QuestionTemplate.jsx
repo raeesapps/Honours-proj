@@ -8,7 +8,7 @@ import snackbarTypes from '../Snackbar/snackbar_types';
 const { ERROR, SUCCESS } = snackbarTypes;
 
 function withQuestionTemplate(WrappedComponent) {
-  return class extends React.Component {
+  return class extends React.PureComponent {
     constructor() {
       super();
 

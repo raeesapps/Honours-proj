@@ -24,7 +24,7 @@ const relations = Object.freeze({
   ARE_NOT: 'are not',
 });
 
-class PremiseFormInput extends React.Component {
+class PremiseFormInput extends React.PureComponent {
   constructor() {
     super();
     const {

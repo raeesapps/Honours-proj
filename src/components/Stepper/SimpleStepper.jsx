@@ -67,4 +67,4 @@ function SimpleStepper(props) {
   );
 }
 
-export default withStyles(styles)(SimpleStepper);
+export default withStyles(styles)(React.memo(SimpleStepper));

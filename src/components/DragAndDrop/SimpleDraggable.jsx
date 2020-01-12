@@ -23,4 +23,4 @@ function SimpleDraggable({ item, index, ...rest }) {
   );
 }
 
-export default SimpleDraggable;
+export default React.memo(SimpleDraggable);

@@ -48,4 +48,4 @@ function SnackbarWrapper(props) {
   );
 }
 
-export default SnackbarWrapper;
+export default React.memo(SnackbarWrapper);
