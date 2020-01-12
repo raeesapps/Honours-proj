@@ -24,7 +24,7 @@ function Header(props) {
           </Typography>
           {
             routes.filter((route) => route.displayInDrawer).map((route) => (
-              <Button className={classes.link} component={RouterLink} to={route.path}>
+              <Button key={route.name} className={classes.link} component={RouterLink} to={route.path}>
                 {route.name}
               </Button>
             ))

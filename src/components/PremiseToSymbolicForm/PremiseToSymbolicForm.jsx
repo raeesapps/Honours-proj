@@ -116,14 +116,12 @@ class PremiseToSymbolicForm extends React.Component {
       }
     });
 
-    const { premise, mappingTable } = props;
+    const { premise, table: mappingTable } = props;
 
     if (mappingTable) {
       const {
         A_ENTAILS_NOT_B,
         A_DOES_NOT_ENTAIL_NOT_B,
-        A_DOES_NOT_ENTAIL_B,
-        A_ENTAILS_B,
       } = symbolicForms;
       const { firstTerm, secondTerm } = premise.terms;
       const symbolicFormOfPremise = getSymbolicForm(premise);

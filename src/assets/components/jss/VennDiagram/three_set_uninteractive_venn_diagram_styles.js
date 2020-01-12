@@ -3,14 +3,14 @@ function styles(theme) {
     content: {
       position: 'relative',
       width: '300px',
-      marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing(2),
     },
     topRight: {
       position: 'absolute',
       top: 0,
       right: 0,
       textAlign: 'right',
-      marginRight: theme.spacing.unit * 8,
+      marginRight: theme.spacing(8),
     },
     bottomRight: {
       position: 'absolute',

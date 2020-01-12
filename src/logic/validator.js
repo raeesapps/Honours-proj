@@ -19,7 +19,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude
 
     const parts = termsToExclude ? premiseCollectionVennDiagramParts
       .filter((premiseCollectionVennDiagramPart) => {
-        const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
+        const { vennDiagramPart } = premiseCollectionVennDiagramPart;
 
         return !termsToExclude.find((term) => vennDiagramPart.includes(term));
       }) : premiseCollectionVennDiagramParts;

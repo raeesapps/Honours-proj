@@ -99,15 +99,15 @@ class PremiseFormInput extends React.Component {
       onRemove,
       idx,
     } = this.props;
+    const displayName = name === 'Conclusion' ? 'Conclusion' : 'Premise';
     const paddingTopPercentage = relationship === ARE_NOT ? '22.55%' : '34%';
     return (
       <div>
         <div className={classes.formControlParent}>
           <FormControl>
-            <InputLabel id="premiseQuantifierDropdownLabel">{name}</InputLabel>
+            <InputLabel id={`${name}QuantifierDropdownLabel`}>{displayName}</InputLabel>
             <Select
-              labelId="premiseQuantifierDropdownLabel"
-              id="premiseSelectQuantifier"
+              id={`${name}SelectQuantifier`}
               value={quantifier}
               onChange={(event) => this.setState({ quantifier: event.target.value })}
             >
@@ -118,7 +118,7 @@ class PremiseFormInput extends React.Component {
           </FormControl>
           <TextField
             required
-            id="premiseTextFieldA"
+            id={`${name}TextFieldA`}
             value={a}
             className={classes.textField}
             margin="normal"
@@ -127,7 +127,7 @@ class PremiseFormInput extends React.Component {
           <br />
           <FormControl>
             <Select
-              id="premiseSelectRelationship"
+              id={`${name}SelectRelationship`}
               style={{ paddingTop: paddingTopPercentage }}
               value={relationship}
               onChange={(event) => this.setState({ relationship: event.target.value })}
@@ -138,7 +138,7 @@ class PremiseFormInput extends React.Component {
           </FormControl>
           <TextField
             required
-            id="premiseTextFieldB"
+            id={`${name}TextFieldB`}
             value={b}
             className={classes.textField}
             margin="normal"

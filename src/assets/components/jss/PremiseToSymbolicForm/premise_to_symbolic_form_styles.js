@@ -1,13 +1,13 @@
 function styles(theme) {
   return {
     spacing: {
-      marginBottom: theme.spacing.unit * 2,
+      marginBottom: theme.spacing(2),
     },
     instructionTypography: {
-      marginBottom: theme.spacing.unit,
+      marginBottom: theme.spacing(1),
     },
     titleTypography: {
-      marginTop: theme.spacing.unit * 1.62,
+      marginTop: theme.spacing(1.62),
     },
   };
 }

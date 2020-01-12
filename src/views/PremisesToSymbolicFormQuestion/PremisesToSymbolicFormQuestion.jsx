@@ -78,7 +78,7 @@ class PremisesToSymbolicFormQuestion extends React.Component {
     const premise = premises[step];
 
     if (goingBack) {
-      return <PremiseToSymbolicForm premise={premise} ref={ref} mappingTable={mappingTable} />;
+      return <PremiseToSymbolicForm premise={premise} ref={ref} table={mappingTable} />;
     }
     return <PremiseToSymbolicForm premise={premise} ref={ref} />;
   }
@@ -118,7 +118,7 @@ class PremisesToSymbolicFormQuestion extends React.Component {
 
         {
           premises.map((premise, idx) => (
-            <Typography style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="subtitle1">{premise.toSentence()}</Typography>
+            <Typography key={premise.toSentence()} style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="subtitle1">{premise.toSentence()}</Typography>
           ))
         }
         <Stepper activeStep={step} orientation="vertical">
@@ -165,4 +165,6 @@ class PremisesToSymbolicFormQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(PremisesToSymbolicFormQuestion)));
+export default withStyles(styles)(
+  withSidebar(withQuestionTemplate(PremisesToSymbolicFormQuestion)),
+);

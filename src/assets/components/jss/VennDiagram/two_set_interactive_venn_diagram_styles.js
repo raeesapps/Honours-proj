@@ -3,7 +3,7 @@ function styles(theme) {
     content: {
       position: 'relative',
       width: '300px',
-      marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing(2),
     },
     topRight: {
       position: 'absolute',
@@ -11,14 +11,14 @@ function styles(theme) {
       right: 0,
       width: '100px',
       textAlign: 'right',
-      marginLeft: theme.spacing.unit,
+      marginLeft: theme.spacing(1),
     },
     topLeft: {
       position: 'absolute',
       top: 0,
       left: 0,
       textAlign: 'left',
-      marginLeft: theme.spacing.unit,
+      marginLeft: theme.spacing(1),
     },
   };
 }

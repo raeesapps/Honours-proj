@@ -5,7 +5,7 @@ import styles from '../../assets/components/jss/DragAndDrop/simple_draggable_sty
 
 function SimpleDraggable({ item, index, ...rest }) {
   return (
-    <Draggable key={item.id} draggableId={item.id} index={index} {...rest}>
+    <Draggable draggableId={item.id} index={index} {...rest}>
       {(providedInner, snapshotInner) => (
         <div
           ref={providedInner.innerRef}

@@ -15,11 +15,11 @@ class ArgumentForm extends React.Component {
     super();
     const premises = [
       {
-        name: 'Premise',
+        name: 'Premise1',
         ref: React.createRef(),
       },
       {
-        name: 'Premise',
+        name: 'Premise2',
         ref: React.createRef(),
       },
       {
@@ -92,8 +92,9 @@ class ArgumentForm extends React.Component {
 
     const conclusion = premises.pop();
 
+    const n = premises.length;
     premises.push({
-      name: 'Premise',
+      name: `Premise${n + 1}`,
       ref: React.createRef(),
     });
 
@@ -119,7 +120,7 @@ class ArgumentForm extends React.Component {
             {
               premises.map((premise, idx) => {
                 const { name, ref } = premise;
-                return <Grid item xs={4}><PremiseFormInput ref={ref} name={name} idx={idx} onRemove={this.onRemove} /></Grid>;
+                return <Grid item key={name} xs={4}><PremiseFormInput ref={ref} name={name} idx={idx} onRemove={this.onRemove} /></Grid>;
               })
             }
           </Grid>

@@ -179,8 +179,9 @@ class InstantSolver extends React.Component {
         mappings[term] = letter;
       });
 
-      return premiseObjs.map((premise) => (
-        <Grid item xs={3}>
+      return premiseObjs.map((premise, idx) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <Grid key={`symbolicFormOf${premise.toSentence()}${idx}`} item xs={3}>
           <Typography variant="h6">{premise.toSentence()}</Typography>
           <Typography variant="subtitle1">{getSymbolicForm(premise, mappings)}</Typography>
         </Grid>

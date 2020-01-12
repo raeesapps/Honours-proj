@@ -1,10 +1,10 @@
 function styles(theme) {
   return {
     root: {
-      marginTop: theme.spacing.unit * 15,
+      marginTop: theme.spacing(15),
     },
     spacedExpansionPanel: {
-      marginBottom: theme.spacing.unit,
+      marginBottom: theme.spacing(1),
     },
   };
 }

@@ -124,7 +124,7 @@ class CombinePremisesQuestion extends React.Component {
     const ref = this.premiseVennDiagramRef[idx];
 
     return (
-      <div>
+      <div key={`${premise.toSentence()}VennDiagram`}>
         <TwoSetUninteractiveVennDiagram style={{ marginRight: '2vw' }} title={premise.toSentence()} terms={premise.terms} ref={ref} />
         {
           renderArrow()

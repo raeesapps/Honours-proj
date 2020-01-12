@@ -16,7 +16,7 @@ function SimpleDroppable({ items, droppableId, alignment, ...rest }) {
           {...provided.droppableProps}
         >
           {items.map((item, index) => (
-            <SimpleDraggable item={item} index={index} />
+            <SimpleDraggable key={item.id} item={item} index={index} />
           ))}
           {provided.placeholder}
         </div>
