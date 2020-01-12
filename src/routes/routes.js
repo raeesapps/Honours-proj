@@ -5,6 +5,7 @@ import InstantSolver from '../views/InstantSolver/InstantSolver';
 import PremiseToSymbolicFormQuestion from '../views/PremiseToSymbolicFormQuestion/PremiseToSymbolicFormQuestion';
 import PremisesToSymbolicFormQuestion from '../views/PremisesToSymbolicFormQuestion/PremisesToSymbolicFormQuestion';
 import PremiseToDiagramQuestion from '../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
+import ReduceAndArgueQuestion from '../views/ReduceAndArgueQuestion/ReduceAndArgueQuestion';
 
 const routes = [
   {
@@ -41,6 +42,12 @@ const routes = [
     name: 'combinePremisesQuestion',
     path: '/combinePremisesQuestion',
     component: CombinePremisesQuestion,
+    displayInDrawer: false,
+  },
+  {
+    name: 'reduceAndArgueQuestion',
+    path: '/reduceAndArgueQuestion',
+    component: ReduceAndArgueQuestion,
     displayInDrawer: false,
   },
   {

@@ -8,15 +8,23 @@ const SHADED = '2';
 const stages = Object.freeze({
   REPRESENTATION_STAGE: 0,
   COMBINATION_STAGE: 1,
+  REDUCTION_STAGE: 2,
 });
 
-function validateVennDiagram(premiseCollection, refOrRefs, stage) {
+function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude) {
   function getShadings() {
     const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
     const resolvedColumn = premiseCollection.unifyAndResolve();
     const mappings = {};
 
-    premiseCollectionVennDiagramParts.forEach((premiseCollectionVennDiagramPart) => {
+    const parts = termsToExclude ? premiseCollectionVennDiagramParts
+      .filter((premiseCollectionVennDiagramPart) => {
+        const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
+
+        return !termsToExclude.find((term) => vennDiagramPart.includes(term));
+      }) : premiseCollectionVennDiagramParts;
+
+    parts.forEach((premiseCollectionVennDiagramPart) => {
       const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
       const resolvedValueArray = resolvedColumn[compartment.hashCode()];
 
@@ -39,7 +47,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage) {
     return ordered;
   }
 
-  const { REPRESENTATION_STAGE, COMBINATION_STAGE } = stages;
+  const { REPRESENTATION_STAGE, COMBINATION_STAGE, REDUCTION_STAGE } = stages;
 
   let result;
 
@@ -50,7 +58,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage) {
 
       return JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
     }).length === refOrRefs.length;
-  } else if (stage === COMBINATION_STAGE) {
+  } else if (stage === COMBINATION_STAGE || stage === REDUCTION_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
     const expectedShadings = sortObject(getShadings());
 

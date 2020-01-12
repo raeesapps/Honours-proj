@@ -57,14 +57,34 @@ function Questions() {
       content: generatePremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
-            firstTerm: 'men',
-            secondTerm: 'mortal',
+            firstTerm: 'A',
+            secondTerm: 'B',
           }),
           new Premise(ALL_A_IS_B, {
-            firstTerm: 'greeks',
-            secondTerm: 'men',
+            firstTerm: 'B',
+            secondTerm: 'C',
           }),
         ],
+      ),
+    },
+  ];
+  const reduceAndArgueQuestion = [
+    {
+      title: 'BARBARA',
+      content: generatePremiseCollection(
+        [
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'B',
+          }),
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'B',
+            secondTerm: 'C',
+          }),
+        ], new Premise(ALL_A_IS_B, {
+          firstTerm: 'A',
+          secondTerm: 'C',
+        }),
       ),
     },
   ];
@@ -90,6 +110,8 @@ function Questions() {
       <QuestionList title="Premise to Venn Diagram" questions={premiseToDiagramQuestions} path="/premiseToDiagramQuestion" />
       <br />
       <QuestionList title="Combine Premises" questions={combinePremisesQuestion} path="/combinePremisesQuestion" />
+      <br />
+      <QuestionList title="Prove Soundness of Syllogism" questions={reduceAndArgueQuestion} path="/reduceAndArgueQuestion" />
     </Container>
   );
 }
