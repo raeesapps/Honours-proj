@@ -21,7 +21,7 @@ class PremiseCollection {
     this.premises = premises;
     this.table = new Table(termNames);
     this.premises.forEach((premise) => {
-      this.table.addPremise(premise, false);
+      this.table.addPremise(premise);
     });
     this.terms = termNames;
   }

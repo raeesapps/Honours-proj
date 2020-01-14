@@ -26,13 +26,13 @@ class Table {
     permute(this.compartments, termsMappings, 0, termNames.length);
   }
 
-  addPremise(premise, isConclusion) {
+  addPremise(premise, conclusionCompartments) {
     const compartmentDictionary = new HashDictionary();
     this.compartments.forEach((compartment) => {
       compartmentDictionary.add(compartment, null);
     });
     this.tableDictionary.add(premise, compartmentDictionary);
-    premise.populateTable(this.tableDictionary, isConclusion);
+    premise.populateTable(this.tableDictionary, conclusionCompartments);
   }
 
   unify() {
@@ -87,14 +87,17 @@ class Table {
       return [...entries];
     }
     const resolvedCompartments = this.resolve();
-    this.addPremise(conclusion, true);
-    const conclusionCompartments = this.tableDictionary.get(conclusion);
+    const conclusionCompartments = {};
+    Object.keys(resolvedCompartments).forEach((key) => {
+      conclusionCompartments[key] = null;
+    });
+    this.addPremise(conclusion, conclusionCompartments);
 
     let i = this.compartments.length - 1;
     while (i >= 0) {
       const compartment = this.compartments[i];
       const resolvedEntry = resolvedCompartments[compartment.hashCode()];
-      const conclusionEntry = conclusionCompartments.get(compartment);
+      const conclusionEntry = conclusionCompartments[compartment.hashCode()];
       if (conclusionEntry === 'e' && !resolvedEntry.includes('e')) {
         return false;
       }
@@ -108,7 +111,7 @@ class Table {
         const compartment = this.compartments[i];
         if (resolvedCompartments[compartment.hashCode()].includes(x)) {
           const xIndexCut = x.substring(1, 0);
-          const entry = conclusionCompartments.get(compartment);
+          const entry = conclusionCompartments[compartment.hashCode()];
           const condition = entry === null || (entry !== null && entry !== xIndexCut);
           if (condition) {
             xNotCompletelyContainedCount += 1;
@@ -118,9 +121,8 @@ class Table {
         i -= 1;
       }
     });
-    const conclusionHasX = conclusionCompartments.filter((keyHash) => {
-      const keyObj = conclusionCompartments.keyObj(keyHash);
-      const instance = conclusionCompartments.get(keyObj);
+    const conclusionHasX = Object.keys(conclusionCompartments).filter((keyHash) => {
+      const instance = conclusionCompartments[keyHash];
       return instance !== null && instance === 'x';
     }).length > 0;
     if (xNotCompletelyContainedCount === xEntries.length && (conclusionHasX || xEntries > 0)) {
