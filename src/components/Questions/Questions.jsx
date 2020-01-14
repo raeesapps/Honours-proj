@@ -13,7 +13,10 @@ function generatePremiseCollection(premises, conclusion) {
   const premiseCollection = new PremiseCollection([...premises]);
 
   if (conclusion) {
-    premiseCollection.addConclusionButDoNotArgue(conclusion);
+    return {
+      premiseCollection,
+      conclusion,
+    };
   }
 
   return premiseCollection;

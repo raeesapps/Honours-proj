@@ -1,26 +1,25 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import Typography from '@material-ui/core/Typography';
 
-import { stages, validateVennDiagram } from '../../logic/validator';
+import { stages, validateVennDiagram, validateArgument } from '../../logic/validator';
 
 import Arrow from '../../components/Arrow/Arrow';
 import SimpleStepper from '../../components/Stepper/SimpleStepper';
 import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
 import TwoSetInteractiveVennDiagram from '../../components/VennDiagram/TwoSetInteractiveVennDiagram';
+import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/ReduceAndArgueQuestion/reduce_and_argue_question_styles';
-
-function getConclusionPremise(premiseCollection) {
-  const { premises } = premiseCollection;
-  const numberOfPremises = premises.length;
-
-  return premises[numberOfPremises - 1];
-}
 
 class ReduceAndArgueQuestion extends React.Component {
   constructor(props) {
@@ -33,11 +32,15 @@ class ReduceAndArgueQuestion extends React.Component {
     }
 
     const { content } = question;
+    const { premiseCollection, conclusion } = content;
 
+    this.premiseCollection = premiseCollection;
+    this.conclusion = conclusion;
     this.state = {
       step: 0,
+      shadings: null,
+      entails: null,
     };
-    this.premiseCollection = content;
     this.premisesVennDiagramRef = React.createRef();
     this.reducedPremisesVennDiagramRef = React.createRef();
   }
@@ -59,7 +62,8 @@ class ReduceAndArgueQuestion extends React.Component {
     const result = this.validate();
 
     if (result) {
-      this.setState({ step: step + 1 });
+      const stateUpdateObject = step === 0 ? { step: step + 1, shadings: this.reducedPremisesVennDiagramRef.current.getShadings() } : { step: step + 1 };
+      this.setState(stateUpdateObject);
     }
   }
 
@@ -106,6 +110,7 @@ class ReduceAndArgueQuestion extends React.Component {
         </div>
       );
     }
+    const { shadings } = this.state;
     const marginLeft = this.premiseCollection.terms.length === 4 ? { marginLeft: '14%' } : {};
     if (step === 0) {
       return (
@@ -113,16 +118,35 @@ class ReduceAndArgueQuestion extends React.Component {
           {
             renderUninteractiveVennDiagram(this.premiseCollection, this.premisesVennDiagramRef)
           }
-          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={getConclusionPremise(this.premiseCollection)} ref={this.reducedPremisesVennDiagramRef} />
+          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={this.conclusion} ref={this.reducedPremisesVennDiagramRef} />
 
         </div>
       );
     }
-    return <div />;
+    return (
+      <div>
+        <Typography variant="h6">
+          Reduced Venn Diagram:
+        </Typography>
+        <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} terms={this.conclusion.terms} />
+        <FormControl component="fieldset">
+          <FormLabel component="legend">
+            Does the reduced Venn Diagram entail the conclusion
+            {
+              ` '${this.conclusion.toSymbolicForm()}'?`
+            }
+          </FormLabel>
+          <RadioGroup aria-label="gender" name="customized-radios" onChange={(event) => this.setState({ entails: event.target.value })}>
+            <FormControlLabel value="true" control={<Radio />} label="Yes" />
+            <FormControlLabel value="false" control={<Radio />} label="No" />
+          </RadioGroup>
+        </FormControl>
+      </div>
+    );
   }
 
   validate = () => {
-    function getTermsToExclude(premiseCollection) {
+    function getTermsToExclude(premiseCollection, conclusion) {
       const { premises } = premiseCollection;
 
       const termSet = new Set();
@@ -132,14 +156,21 @@ class ReduceAndArgueQuestion extends React.Component {
         termSet.add(secondTerm);
       });
 
-      const conclusion = getConclusionPremise(premiseCollection);
       const { firstTerm: conclusionFirstTerm, secondTerm: conclusionSecondTerm } = conclusion.terms;
       return [...termSet].filter((term) => term !== conclusionFirstTerm && term !== conclusionSecondTerm);
     }
     const { REDUCTION_STAGE } = stages;
+    const { step, entails } = this.state;
     const { onValidate } = this.props;
 
-    const result = validateVennDiagram(this.premiseCollection, this.reducedPremisesVennDiagramRef, REDUCTION_STAGE, getTermsToExclude(this.premiseCollection));
+    let result;
+
+    if (step === 0) {
+      result = validateVennDiagram(this.premiseCollection, this.reducedPremisesVennDiagramRef, REDUCTION_STAGE, getTermsToExclude(this.premiseCollection, this.conclusion));
+    } else if (step === 1) {
+      result = validateArgument(this.premiseCollection, this.conclusion, entails === 'true');
+    }
+
     onValidate(result, 'Incorrect!');
 
     return result;

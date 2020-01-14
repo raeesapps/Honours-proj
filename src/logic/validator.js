@@ -11,6 +11,11 @@ const stages = Object.freeze({
   REDUCTION_STAGE: 2,
 });
 
+function validateArgument(premiseCollection, conclusion, doesPremiseCollectionEntailsConclusion) {
+  const result = premiseCollection.argue(conclusion);
+  return result === doesPremiseCollectionEntailsConclusion;
+}
+
 function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude) {
   function getShadings() {
     const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
@@ -215,4 +220,5 @@ export {
   stages,
   validateVennDiagram,
   validateMappings,
+  validateArgument,
 };
