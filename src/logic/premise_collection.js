@@ -40,7 +40,9 @@ class PremiseCollection {
     this.table.compartments.forEach((compartment) => {
       let vennDiagramPart = '(';
       const truths = compartment.getTruths();
-      Object.keys(truths).forEach((atom, i) => {
+      const truthKeys = Object.keys(truths);
+      truthKeys.sort();
+      truthKeys.forEach((atom, i) => {
         const curAtomIsTrue = truths[atom];
 
         if (curAtomIsTrue) {
@@ -61,6 +63,10 @@ class PremiseCollection {
       });
     });
     return vennDiagramParts;
+  }
+
+  reduce(ignoredTerms) {
+    return this.table.reduce(ignoredTerms);
   }
 
   argue(conclusion) {

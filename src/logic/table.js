@@ -1,6 +1,6 @@
 import Compartment from './compartment';
-import copy from '../utils/copy';
 import HashDictionary from './dictionary';
+import copy from '../utils/copy';
 
 class Table {
   constructor(termNames) {
@@ -71,6 +71,43 @@ class Table {
       }
     });
     return resolvedCompartments;
+  }
+
+  reduce(ignoredTerms) {
+    const keysToCompartments = this.tableDictionary.dictionary[Object.keys(this.tableDictionary.keyHashToKeyMappings)[0]].keyHashToKeyMappings;
+    const resolvedCompartments = this.resolve();
+    const reducedCompartments = copy(resolvedCompartments);
+    let supersetCompartment;
+    Object.keys(reducedCompartments).forEach((key) => {
+      const compartment = keysToCompartments[key];
+      const truthKeys = Object.keys(compartment.truths);
+      const n = ignoredTerms.length;
+      const compartmentContainsAllIgnoredTerms = truthKeys.reduce((termsWithAllIgnoredTerms, term) => {
+        return (ignoredTerms.includes(term) && compartment.truths[term]) ? termsWithAllIgnoredTerms - 1 : termsWithAllIgnoredTerms;
+      }, n) === 0;
+
+      if (compartmentContainsAllIgnoredTerms) {
+        const entries = reducedCompartments[key];
+        const entriesIncludesAnX = entries.length !== 0 && entries.filter((entry) => entry !== 'e').length !== 0;
+
+        if (entriesIncludesAnX) {
+          supersetCompartment = new Compartment(copy(compartment.truths));
+        }
+
+        delete reducedCompartments[key];
+      }
+    });
+    if (supersetCompartment) {
+      Object.keys(supersetCompartment.truths).forEach((term) => {
+        if (ignoredTerms.includes(term)) {
+          supersetCompartment.truths[term] = false;
+        }
+      });
+      if (supersetCompartment.hashCode() in reducedCompartments) {
+        reducedCompartments[supersetCompartment.hashCode()] = ['x'];
+      }
+    }
+    return reducedCompartments;
   }
 
   validate(conclusion) {

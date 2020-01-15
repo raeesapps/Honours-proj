@@ -18,20 +18,26 @@ function validateArgument(premiseCollection, conclusion, doesPremiseCollectionEn
 
 function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude) {
   function getShadings() {
+    const { COMBINATION_STAGE, REDUCTION_STAGE } = stages;
+
     const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
-    const resolvedColumn = premiseCollection.unifyAndResolve();
     const mappings = {};
 
-    const parts = termsToExclude ? premiseCollectionVennDiagramParts
-      .filter((premiseCollectionVennDiagramPart) => {
-        const { vennDiagramPart } = premiseCollectionVennDiagramPart;
+    let column;
+    switch (stage) {
+      case COMBINATION_STAGE:
+        column = premiseCollection.unifyAndResolve();
+        break;
+      case REDUCTION_STAGE:
+        column = premiseCollection.reduce(termsToExclude);
+        break;
+      default:
+        break;
+    }
 
-        return !termsToExclude.find((term) => vennDiagramPart.includes(term));
-      }) : premiseCollectionVennDiagramParts;
-
-    parts.forEach((premiseCollectionVennDiagramPart) => {
+    premiseCollectionVennDiagramParts.filter(({ compartment }) => compartment.hashCode() in column).forEach((premiseCollectionVennDiagramPart) => {
       const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
-      const resolvedValueArray = resolvedColumn[compartment.hashCode()];
+      const resolvedValueArray = column[compartment.hashCode()];
 
       if (resolvedValueArray.length) {
         const shading = resolvedValueArray[0] === 'e' ? MAYBE_SHADED : SHADED;
@@ -45,9 +51,14 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude
   }
 
   function sortObject(unordered) {
+    const unorderedWithSortedKeys = {};
+    Object.keys(unordered).forEach((key) => {
+      const sortedKey = String([...key].sort());
+      unorderedWithSortedKeys[sortedKey] = unordered[key];
+    });
     const ordered = {};
-    Object.keys(unordered).sort().forEach((key) => {
-      ordered[key] = unordered[key];
+    Object.keys(unorderedWithSortedKeys).sort().forEach((key) => {
+      ordered[key] = unorderedWithSortedKeys[key];
     });
     return ordered;
   }
