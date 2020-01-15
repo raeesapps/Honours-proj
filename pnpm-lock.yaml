@@ -11,6 +11,7 @@ dependencies:
   react-router-dom: 5.1.2_react@16.12.0
   react-scripts: 3.1.1
 devDependencies:
+  babel-eslint: 10.0.2_eslint@6.8.0
   eslint: 6.8.0
   eslint-config-airbnb: 18.0.1_d713cd09c39d1a854255a271a02ce055
   eslint-plugin-import: 2.20.0_eslint@6.8.0
@@ -108,7 +109,6 @@ packages:
       jsesc: 2.5.2
       lodash: 4.17.15
       source-map: 0.5.7
-    dev: false
     resolution:
       integrity: sha512-WjoPk8hRpDRqqzRpvaR8/gDUPkrnOOeuT2m8cNICJtZH6mwaCo3v0OKMI7Y6SM1pBtyijnLtAL0HDi41pf41ug==
   /@babel/helper-annotate-as-pure/7.8.3:
@@ -206,13 +206,11 @@ packages:
       '@babel/helper-get-function-arity': 7.8.3
       '@babel/template': 7.8.3
       '@babel/types': 7.8.3
-    dev: false
     resolution:
       integrity: sha512-BCxgX1BC2hD/oBlIFUgOCQDOPV8nSINxCwM3o93xP4P9Fq6aV5sgv2cOOITDMtCfQ+3PvHp3l689XZvAM9QyOA==
   /@babel/helper-get-function-arity/7.8.3:
     dependencies:
       '@babel/types': 7.8.3
-    dev: false
     resolution:
       integrity: sha512-FVDR+Gd9iLjUMY1fzE2SR0IuaJToR4RkCDARVfsBBPSP53GEqSFjD8gNyxg246VUyc/ALRxFaAK8rVG7UT7xRA==
   /@babel/helper-hoist-variables/7.8.3:
@@ -289,7 +287,6 @@ packages:
   /@babel/helper-split-export-declaration/7.8.3:
     dependencies:
       '@babel/types': 7.8.3
-    dev: false
     resolution:
       integrity: sha512-3x3yOeyBhW851hroze7ElzdkeRXQYQbFIb7gLK1WQYsw2GWDay5gAJNw1sWJ0VFP6z5J1whqeXH/WCdCjZv6dA==
   /@babel/helper-wrap-function/7.8.3:
@@ -317,7 +314,6 @@ packages:
     resolution:
       integrity: sha512-PX4y5xQUvy0fnEVHrYOarRPXVWafSjTW9T0Hab8gVIawpl2Sj0ORyrygANq+KjcNlSSTw0YCLSNA8OyZ1I4yEg==
   /@babel/parser/7.8.3:
-    dev: false
     engines:
       node: '>=6.0.0'
     hasBin: true
@@ -1690,7 +1686,6 @@ packages:
       '@babel/code-frame': 7.8.3
       '@babel/parser': 7.8.3
       '@babel/types': 7.8.3
-    dev: false
     resolution:
       integrity: sha512-04m87AcQgAFdvuoyiQ2kgELr2tV8B4fP/xJAVUL3Yb3bkNdMedD3d0rlSQr3PegP0cms3eHjl1F7PWlvWbU8FQ==
   /@babel/traverse/7.8.3:
@@ -1704,7 +1699,6 @@ packages:
       debug: 4.1.1
       globals: 11.12.0
       lodash: 4.17.15
-    dev: false
     resolution:
       integrity: sha512-we+a2lti+eEImHmEXp7bM9cTxGzxPmBiVJlLVD+FuuQMeeO7RaDbutbgeheDkw+Xe3mCfJHnGOWLswT74m2IPg==
   /@babel/types/7.8.3:
@@ -1712,7 +1706,6 @@ packages:
       esutils: 2.0.3
       lodash: 4.17.15
       to-fast-properties: 2.0.0
-    dev: false
     resolution:
       integrity: sha512-jBD+G8+LWpMBBWvVcdr4QysjUE4mU/syrhN17o1u3gx0/WzJB1kwiVZAXRtWbsIPOwW8pF/YJV5+nmetPzepXg==
   /@cnakazawa/watch/1.0.3:
@@ -2664,7 +2657,7 @@ packages:
   /array-includes/3.1.1:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.0
+      es-abstract: 1.17.1
       is-string: 1.0.5
     engines:
       node: '>= 0.4'
@@ -2693,7 +2686,7 @@ packages:
   /array.prototype.flat/1.2.3:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.0
+      es-abstract: 1.17.1
     dev: true
     engines:
       node: '>= 0.4'
@@ -2781,10 +2774,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-  /autoprefixer/9.7.3:
+  /autoprefixer/9.7.4:
     dependencies:
       browserslist: 4.8.3
-      caniuse-lite: 1.0.30001020
+      caniuse-lite: 1.0.30001021
       chalk: 2.4.2
       normalize-range: 0.1.2
       num2fraction: 1.2.2
@@ -2795,7 +2788,7 @@ packages:
       node: '>=6.0.0'
     hasBin: true
     resolution:
-      integrity: sha512-8T5Y1C5Iyj6PgkPSFd0ODvK9DIleuPKUPYniNxybS47g2k2wFgLZ46lGQHlBuGKIAEV8fbCDfKCCRS1tvOgc3Q==
+      integrity: sha512-g0Ya30YrMBAEZk60lp+qfX5YQllG+S5W3GYCFvyHTvhOki0AEQJLPEcIuGRsqVwLi8FvXPVtwTGhfr38hVpm0g==
   /aws-sign2/0.7.0:
     dev: false
     resolution:
@@ -2830,7 +2823,6 @@ packages:
       eslint: 6.8.0
       eslint-scope: 3.7.1
       eslint-visitor-keys: 1.1.0
-    dev: false
     engines:
       node: '>=6'
     peerDependencies:
@@ -3191,8 +3183,8 @@ packages:
       integrity: sha512-Z942RysHXmJrhqk88FmKBVq/v5tqmSkDz7p54G/MGyjMnCFFnC79XWNbg+Vta8W6Wb2qtSZTSxIGkJrRpCFEiA==
   /browserslist/4.7.0:
     dependencies:
-      caniuse-lite: 1.0.30001020
-      electron-to-chromium: 1.3.333
+      caniuse-lite: 1.0.30001021
+      electron-to-chromium: 1.3.334
       node-releases: 1.1.45
     dev: false
     hasBin: true
@@ -3200,8 +3192,8 @@ packages:
       integrity: sha512-9rGNDtnj+HaahxiVV38Gn8n8Lr8REKsel68v1sPFfIGEK6uSXTY3h9acgiT1dZVtOOUtifo/Dn8daDQ5dUgVsA==
   /browserslist/4.8.3:
     dependencies:
-      caniuse-lite: 1.0.30001020
-      electron-to-chromium: 1.3.333
+      caniuse-lite: 1.0.30001021
+      electron-to-chromium: 1.3.334
       node-releases: 1.1.45
     dev: false
     hasBin: true
@@ -3344,16 +3336,16 @@ packages:
   /caniuse-api/3.0.0:
     dependencies:
       browserslist: 4.8.3
-      caniuse-lite: 1.0.30001020
+      caniuse-lite: 1.0.30001021
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
     resolution:
       integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==
-  /caniuse-lite/1.0.30001020:
+  /caniuse-lite/1.0.30001021:
     dev: false
     resolution:
-      integrity: sha512-yWIvwA68wRHKanAVS1GjN8vajAv7MBFshullKCeq/eKpK7pJBVDgFFEqvgWTkcP2+wIDeQGYFRXECjKZnLkUjA==
+      integrity: sha512-wuMhT7/hwkgd8gldgp2jcrUjOU9RXJ4XxGumQeOsUr91l3WwmM68Cpa/ymCnWEDqakwFXhuDQbaKNHXBPgeE9g==
   /capture-exit/2.0.0:
     dependencies:
       rsvp: 4.8.5
@@ -4640,10 +4632,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
-  /electron-to-chromium/1.3.333:
+  /electron-to-chromium/1.3.334:
     dev: false
     resolution:
-      integrity: sha512-7MJfCpa/tmhqYy2lZ1NEbkSxH7q3KiZiepiSs2ayTPAweAjdzGXotij+7OKPPb3OwJD2ZuBKPrA2HIuuSi6ahw==
+      integrity: sha512-RcjJhpsVaX0X6ntu/WSBlW9HE9pnCgXS9B8mTUObl1aDxaiOa0Lu+NMveIS5IDC+VELzhM32rFJDCC+AApVwcA==
   /elliptic/6.5.2:
     dependencies:
       bn.js: 4.11.8
@@ -4710,7 +4702,7 @@ packages:
       is-arrayish: 0.2.1
     resolution:
       integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==
-  /es-abstract/1.17.0:
+  /es-abstract/1.17.1:
     dependencies:
       es-to-primitive: 1.2.1
       function-bind: 1.1.1
@@ -4726,7 +4718,7 @@ packages:
     engines:
       node: '>= 0.4'
     resolution:
-      integrity: sha512-yYkE07YF+6SIBmg1MsJ9dlub5L48Ek7X0qz+c/CPCHS9EBXfESorzng4cJQjJW5/pB6vDF41u7F8vUhLVDqIug==
+      integrity: sha512-WmWNHWmm/LDwK8jaeZic/g6sU1ZckM+vvOyCV1qFRhJJ6hzve6DRgthNQB7Lra1ocrw68HexLKYgtdxIPcb3Fg==
   /es-to-primitive/1.2.1:
     dependencies:
       is-callable: 1.1.5
@@ -5006,7 +4998,6 @@ packages:
     dependencies:
       esrecurse: 4.2.1
       estraverse: 4.3.0
-    dev: false
     engines:
       node: '>=4.0.0'
     resolution:
@@ -5725,7 +5716,6 @@ packages:
     resolution:
       integrity: sha512-awConJSVCHVGND6x3tmMaKcQvwXLhjdkmomy2W+Goaui8YPgYgXJZewhg3fWC+DlfqqQuWg8AwqjGTD2nAPVWg==
   /globals/11.12.0:
-    dev: false
     engines:
       node: '>=4'
     resolution:
@@ -7185,7 +7175,6 @@ packages:
     resolution:
       integrity: sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
   /jsesc/2.5.2:
-    dev: false
     engines:
       node: '>=4'
     hasBin: true
@@ -8106,7 +8095,7 @@ packages:
   /object.entries/1.1.1:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.0
+      es-abstract: 1.17.1
       function-bind: 1.1.1
       has: 1.0.3
     engines:
@@ -8116,7 +8105,7 @@ packages:
   /object.fromentries/2.0.2:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.0
+      es-abstract: 1.17.1
       function-bind: 1.1.1
       has: 1.0.3
     engines:
@@ -8126,7 +8115,7 @@ packages:
   /object.getownpropertydescriptors/2.1.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.0
+      es-abstract: 1.17.1
     dev: false
     engines:
       node: '>= 0.8'
@@ -8143,7 +8132,7 @@ packages:
   /object.values/1.1.1:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.0
+      es-abstract: 1.17.1
       function-bind: 1.1.1
       has: 1.0.3
     engines:
@@ -9124,9 +9113,9 @@ packages:
       integrity: sha512-Zb6byCSLkgRKLODj/5mQugyuj9bvAAw9LqJJjgwz5cYryGeXfFZfSXoP1UfveccFmeq0b/2xxwcTEVScnqGxBg==
   /postcss-preset-env/6.7.0:
     dependencies:
-      autoprefixer: 9.7.3
+      autoprefixer: 9.7.4
       browserslist: 4.8.3
-      caniuse-lite: 1.0.30001020
+      caniuse-lite: 1.0.30001021
       css-blank-pseudo: 0.1.4
       css-has-pseudo: 0.10.0
       css-prefers-color-scheme: 3.1.1
@@ -9882,7 +9871,7 @@ packages:
   /regexp.prototype.flags/1.3.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.0
+      es-abstract: 1.17.1
     dev: false
     engines:
       node: '>= 0.4'
@@ -10533,7 +10522,6 @@ packages:
     resolution:
       integrity: sha1-PpNdfd1zYxuXZZlW1VEo6HtQhKM=
   /source-map/0.5.7:
-    dev: false
     engines:
       node: '>=0.10.0'
     resolution:
@@ -11028,7 +11016,6 @@ packages:
     resolution:
       integrity: sha1-fSKbH8xjfkZsoIEYCDanqr/4P0M=
   /to-fast-properties/2.0.0:
-    dev: false
     engines:
       node: '>=4'
     resolution:
@@ -11097,6 +11084,9 @@ packages:
       node: '>=6'
     peerDependencies:
       typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     resolution:
       integrity: sha512-f5Knjh7XCyRIzoC/z1Su1yLLRrPrFCgtUAh/9fCSP6NKbATwpOL1+idQVXQokK9GRFURn/jYPGPfegIctwunoA==
   /ts-pnp/1.1.5:
@@ -11882,6 +11872,7 @@ packages:
 specifiers:
   '@material-ui/core': ^4.5.1
   '@material-ui/icons': ^4.5.1
+  babel-eslint: 10.0.2
   clsx: ^1.0.4
   d3: ^5.12.0
   eslint: ^6.3.0
