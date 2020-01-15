@@ -46,6 +46,10 @@ class ReduceAndArgueQuestion extends React.Component {
   }
 
   componentDidMount() {
+    this.shadePremisesVennDiagram();
+  }
+
+  shadePremisesVennDiagram = () => {
     if (!this.premisesVennDiagramRef.current) {
       throw new Error('Ref not set!');
     }
@@ -54,7 +58,9 @@ class ReduceAndArgueQuestion extends React.Component {
   }
 
   onBack = (step) => {
-    this.setState({ step: step - 1 });
+    this.setState({ step: step - 1 }, () => {
+      this.shadePremisesVennDiagram();
+    });
   }
 
   onNext = () => {
@@ -68,7 +74,8 @@ class ReduceAndArgueQuestion extends React.Component {
   }
 
   onReset = () => {
-    this.setState({ step: 0 });
+    const { step } = this.state;
+    this.onBack(step);
   }
 
   getStepContent = (step) => {
