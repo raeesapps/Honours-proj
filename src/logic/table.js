@@ -74,7 +74,11 @@ class Table {
   }
 
   reduce(ignoredTerms) {
-    const keysToCompartments = this.tableDictionary.dictionary[Object.keys(this.tableDictionary.keyHashToKeyMappings)[0]].keyHashToKeyMappings;
+    const keyToFirstItemInDictionary = Object.keys(this.tableDictionary.keyHashToKeyMappings)[0];
+    const keysToCompartments = this
+      .tableDictionary
+      .dictionary[keyToFirstItemInDictionary]
+      .keyHashToKeyMappings;
     const resolvedCompartments = this.resolve();
     const reducedCompartments = copy(resolvedCompartments);
     let supersetCompartment;
@@ -82,9 +86,12 @@ class Table {
       const compartment = keysToCompartments[key];
       const truthKeys = Object.keys(compartment.truths);
       const n = ignoredTerms.length;
-      const compartmentContainsAllIgnoredTerms = truthKeys.reduce((termsWithAllIgnoredTerms, term) => {
-        return (ignoredTerms.includes(term) && compartment.truths[term]) ? termsWithAllIgnoredTerms - 1 : termsWithAllIgnoredTerms;
-      }, n) === 0;
+      const compartmentContainsAllIgnoredTerms = truthKeys
+        // eslint-disable-next-line arrow-body-style
+        .reduce((termsWithAllIgnoredTerms, term) => {
+          return (ignoredTerms.includes(term) && compartment.truths[term])
+            ? termsWithAllIgnoredTerms - 1 : termsWithAllIgnoredTerms;
+        }, n) === 0;
 
       if (compartmentContainsAllIgnoredTerms) {
         const entries = reducedCompartments[key];

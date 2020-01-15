@@ -35,17 +35,19 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude
         break;
     }
 
-    premiseCollectionVennDiagramParts.filter(({ compartment }) => compartment.hashCode() in column).forEach((premiseCollectionVennDiagramPart) => {
-      const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
-      const resolvedValueArray = column[compartment.hashCode()];
+    premiseCollectionVennDiagramParts
+      .filter(({ compartment }) => compartment.hashCode() in column)
+      .forEach((premiseCollectionVennDiagramPart) => {
+        const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
+        const resolvedValueArray = column[compartment.hashCode()];
 
-      if (resolvedValueArray.length) {
-        const shading = resolvedValueArray[0] === 'e' ? MAYBE_SHADED : SHADED;
-        mappings[vennDiagramPart] = shading.toString();
-      } else {
-        mappings[vennDiagramPart] = NOT_SHADED.toString();
-      }
-    });
+        if (resolvedValueArray.length) {
+          const shading = resolvedValueArray[0] === 'e' ? MAYBE_SHADED : SHADED;
+          mappings[vennDiagramPart] = shading.toString();
+        } else {
+          mappings[vennDiagramPart] = NOT_SHADED.toString();
+        }
+      });
 
     return mappings;
   }
@@ -111,7 +113,9 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingT
       }
 
       if (!(firstSymbol in mappingTable)) {
-        const firstTermKey = Object.keys(updatedMappingTable).find((key) => updatedMappingTable[key] === firstTerm);
+        const firstTermKey = Object
+          .keys(updatedMappingTable)
+          .find((key) => updatedMappingTable[key] === firstTerm);
 
         if (firstTermKey) {
           delete updatedMappingTable[firstTermKey];
@@ -139,7 +143,9 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingT
           break;
       }
       if (!(secondSymbol in mappingTable)) {
-        const secondTermKey = Object.keys(updatedMappingTable).find((key) => updatedMappingTable[key] === secondTerm);
+        const secondTermKey = Object
+          .keys(updatedMappingTable)
+          .find((key) => updatedMappingTable[key] === secondTerm);
 
         if (secondTermKey) {
           delete updatedMappingTable[secondTermKey];

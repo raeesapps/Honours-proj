@@ -68,7 +68,9 @@ class ReduceAndArgueQuestion extends React.Component {
     const result = this.validate();
 
     if (result) {
-      const stateUpdateObject = step === 0 ? { step: step + 1, shadings: this.reducedPremisesVennDiagramRef.current.getShadings() } : { step: step + 1 };
+      const stateUpdateObject = step === 0
+        ? { step: step + 1, shadings: this.reducedPremisesVennDiagramRef.current.getShadings() }
+        : { step: step + 1 };
       this.setState(stateUpdateObject);
     }
   }
@@ -103,7 +105,10 @@ class ReduceAndArgueQuestion extends React.Component {
             n === 3 && <ThreeSetUninteractiveVennDiagram title="dfdfsdfs" premises={premiseCollection} ref={vennDiagramRef} />
           }
           {
-            n === 4 && <FourSetUninteractiveVennDiagram premises={premiseCollection} ref={vennDiagramRef} />
+            n === 4
+            && (
+              <FourSetUninteractiveVennDiagram premises={premiseCollection} ref={vennDiagramRef} />
+            )
           }
           <Arrow
             id="Arrow"
@@ -164,7 +169,9 @@ class ReduceAndArgueQuestion extends React.Component {
       });
 
       const { firstTerm: conclusionFirstTerm, secondTerm: conclusionSecondTerm } = conclusion.terms;
-      return [...termSet].filter((term) => term !== conclusionFirstTerm && term !== conclusionSecondTerm);
+      const termsToExclude = [...termSet]
+        .filter((term) => term !== conclusionFirstTerm && term !== conclusionSecondTerm);
+      return termsToExclude;
     }
     const { REDUCTION_STAGE } = stages;
     const { step, entails } = this.state;
@@ -173,7 +180,12 @@ class ReduceAndArgueQuestion extends React.Component {
     let result;
 
     if (step === 0) {
-      result = validateVennDiagram(this.premiseCollection, this.reducedPremisesVennDiagramRef, REDUCTION_STAGE, getTermsToExclude(this.premiseCollection, this.conclusion));
+      result = validateVennDiagram(
+        this.premiseCollection,
+        this.reducedPremisesVennDiagramRef,
+        REDUCTION_STAGE,
+        getTermsToExclude(this.premiseCollection, this.conclusion),
+      );
     } else if (step === 1) {
       result = validateArgument(this.premiseCollection, this.conclusion, entails === 'true');
     }
