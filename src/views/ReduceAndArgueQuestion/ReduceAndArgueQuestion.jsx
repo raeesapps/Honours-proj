@@ -165,7 +165,10 @@ class ReduceAndArgueQuestion extends React.Component {
       premises.forEach((premise) => {
         const { firstTerm, secondTerm } = premise.terms;
         termSet.add(firstTerm);
-        termSet.add(secondTerm);
+
+        if (secondTerm) {
+          termSet.add(secondTerm);
+        }
       });
 
       const { firstTerm: conclusionFirstTerm, secondTerm: conclusionSecondTerm } = conclusion.terms;
