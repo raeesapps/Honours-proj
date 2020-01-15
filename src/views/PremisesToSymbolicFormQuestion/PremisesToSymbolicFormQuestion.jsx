@@ -22,10 +22,12 @@ class PremisesToSymbolicFormQuestion extends React.Component {
     }
 
     const { content } = question;
+    const { premiseCollection, conclusion } = content;
 
-    this.componentRefs = [...Array(content.size()).keys()].map(() => React.createRef());
+    this.componentRefs = [...Array(premiseCollection.size() + 1).keys()]
+      .map(() => React.createRef());
     this.state = {
-      premises: content.premises,
+      premises: [...premiseCollection.premises, conclusion],
       step: 0,
       mappingTable: {},
       goingBack: false,
@@ -47,7 +49,7 @@ class PremisesToSymbolicFormQuestion extends React.Component {
       }
 
       const { firstEntry, secondEntry, thirdEntry } = ref.current.getEntries();
-      this.validate(firstEntry, secondEntry, thirdEntry, ref);
+      this.validate(firstEntry, secondEntry, thirdEntry);
     };
 
     if (goingBack) {
@@ -73,11 +75,17 @@ class PremisesToSymbolicFormQuestion extends React.Component {
     return <PremiseToSymbolicForm premise={premise} ref={ref} />;
   }
 
-  validate = (firstEntry, secondEntry, thirdEntry, ref) => {
+  validate = (firstEntry, secondEntry, thirdEntry) => {
     const { onValidate } = this.props;
     const { mappingTable, step, premises } = this.state;
 
-    const validationResult = validateMappings(firstEntry, secondEntry, thirdEntry, premises[step], mappingTable);
+    const validationResult = validateMappings(
+      firstEntry,
+      secondEntry,
+      thirdEntry,
+      premises[step],
+      mappingTable,
+    );
 
     if (validationResult) {
       const {
