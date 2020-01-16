@@ -6,7 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-function SimpleCard(props) {
+function QuestionCard(props) {
   const {
     title,
     content,
@@ -40,4 +40,4 @@ function SimpleCard(props) {
   );
 }
 
-export default React.memo(SimpleCard);
+export default React.memo(QuestionCard);

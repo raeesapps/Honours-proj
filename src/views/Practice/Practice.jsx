@@ -10,9 +10,8 @@ import {
   combinePremisesQuestion,
   reduceAndArgueQuestion,
 } from '../../components/Questions/question_instances';
+import QuestionCard from '../../components/Questions/QuestionCard';
 import withSidebar from '../../components/Questions/QuestionSidebar';
-
-import SimpleCard from '../../components/Card/SimpleCard';
 
 function Practice() {
   function renderQuestionType(questionType) {
@@ -25,7 +24,7 @@ function Practice() {
     } = questionType;
 
     return (
-      <SimpleCard
+      <QuestionCard
         title={title}
         content={description}
         style={marginBottom}
