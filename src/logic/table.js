@@ -81,7 +81,7 @@ class Table {
       .keyHashToKeyMappings;
     const resolvedCompartments = this.resolve();
     const reducedCompartments = copy(resolvedCompartments);
-    let supersetCompartment;
+    const supersetCompartments = [];
     Object.keys(reducedCompartments).forEach((key) => {
       const compartment = keysToCompartments[key];
       const truthKeys = Object.keys(compartment.truths);
@@ -98,22 +98,23 @@ class Table {
         const entriesIncludesAnX = entries.length !== 0 && entries.filter((entry) => entry !== 'e').length !== 0;
 
         if (entriesIncludesAnX) {
-          supersetCompartment = new Compartment(copy(compartment.truths));
+          supersetCompartments.push(new Compartment(copy(compartment.truths)));
         }
 
         delete reducedCompartments[key];
       }
     });
-    if (supersetCompartment) {
+    supersetCompartments.forEach((supersetCompartment) => {
       Object.keys(supersetCompartment.truths).forEach((term) => {
         if (ignoredTerms.includes(term)) {
-          supersetCompartment.truths[term] = false;
+          const supersetCompartmentRef = supersetCompartment;
+          supersetCompartmentRef.truths[term] = false;
         }
       });
       if (supersetCompartment.hashCode() in reducedCompartments) {
         reducedCompartments[supersetCompartment.hashCode()] = ['x'];
       }
-    }
+    });
     return reducedCompartments;
   }
 
