@@ -29,11 +29,13 @@ function QuestionList(props) {
           {
             questions.map((question) => (
               <NavLink
+                style={{ color: 'inherit', textDecoration: 'inherit' }}
                 key={question.title}
                 to={{
                   pathname: path,
                   question,
-                }}>
+                }}
+              >
                 <ListItem button>
                   <ListItemText>
                     {question.title}

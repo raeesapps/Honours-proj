@@ -28,6 +28,14 @@ function withQuestionTemplate(WrappedComponent) {
       });
     }
 
+    resetSnackbar = () => {
+      this.setState({
+        snackbarType: ERROR,
+        showSnackbar: false,
+        incorrectMesssage: null,
+      });
+    }
+
     render() {
       const { showSnackbar, snackbarType, incorrectMessage } = this.state;
 
