@@ -18,7 +18,6 @@ function SimpleStepper(props) {
     content,
     onBack,
     onNext,
-    onReset,
     classes,
     ...rest
   } = props;
@@ -56,10 +55,7 @@ function SimpleStepper(props) {
       {
         step === steps.length && (
           <Paper square elevation={0} className={classes.resetContainer}>
-            <Typography>All steps completed - you&apos;re finished</Typography>
-            <Button onClick={onReset} className={classes.button}>
-              Reset
-            </Button>
+            <Typography>You have completed the question! Try another one in the sidebar.</Typography>
           </Paper>
         )
       }

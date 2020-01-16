@@ -75,11 +75,6 @@ class ReduceAndArgueQuestion extends React.Component {
     }
   }
 
-  onReset = () => {
-    const { step } = this.state;
-    this.onBack(step);
-  }
-
   getStepContent = (step) => {
     function renderUninteractiveVennDiagram(premiseCollection, vennDiagramRef) {
       const n = premiseCollection.terms.length;
@@ -212,7 +207,6 @@ class ReduceAndArgueQuestion extends React.Component {
           content={this.getStepContent}
           onBack={this.onBack}
           onNext={this.onNext}
-          onReset={this.onReset}
         />
       </div>
     );

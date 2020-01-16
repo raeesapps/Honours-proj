@@ -59,10 +59,6 @@ class PremisesToSymbolicFormQuestion extends React.Component {
     }
   }
 
-  onReset = () => {
-    this.setState({ step: 0, goingBack: false, mappingTable: {} });
-  }
-
   getStepContent = (step) => {
     const { componentRefs } = this;
     const { premises, mappingTable, goingBack } = this.state;
@@ -125,7 +121,6 @@ class PremisesToSymbolicFormQuestion extends React.Component {
           content={this.getStepContent}
           onBack={this.onBack}
           onNext={this.onNext}
-          onReset={this.onReset}
         />
       </div>
     );
