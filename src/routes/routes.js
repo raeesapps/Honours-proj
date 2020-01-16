@@ -1,11 +1,12 @@
 import CombinePremisesQuestion from '../views/CombinePremisesQuestion/CombinePremisesQuestion';
 import Home from '../views/Home/Home';
-import QuestionList from '../views/QuestionList/QuestionList';
+import Practice from '../views/Practice/Practice';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
 import PremiseToSymbolicFormQuestion from '../views/PremiseToSymbolicFormQuestion/PremiseToSymbolicFormQuestion';
 import PremisesToSymbolicFormQuestion from '../views/PremisesToSymbolicFormQuestion/PremisesToSymbolicFormQuestion';
 import PremiseToDiagramQuestion from '../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
 import ReduceAndArgueQuestion from '../views/ReduceAndArgueQuestion/ReduceAndArgueQuestion';
+import Tutorial from '../views/Tutorial/Tutorial';
 
 const routes = [
   {
@@ -15,9 +16,15 @@ const routes = [
     displayInDrawer: true,
   },
   {
-    name: 'Questions',
-    path: '/questions',
-    component: QuestionList,
+    name: 'Practice',
+    path: '/practice',
+    component: Practice,
+    displayInDrawer: true,
+  },
+  {
+    name: 'Tutorial',
+    path: '/tutorial',
+    component: Tutorial,
     displayInDrawer: true,
   },
   {
