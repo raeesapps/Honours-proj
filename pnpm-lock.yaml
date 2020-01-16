@@ -13,10 +13,10 @@ dependencies:
 devDependencies:
   babel-eslint: 10.0.2_eslint@6.8.0
   eslint: 6.8.0
-  eslint-config-airbnb: 18.0.1_d713cd09c39d1a854255a271a02ce055
+  eslint-config-airbnb: 18.0.1_6983b942615e4cc07ec79b72f476e3dc
   eslint-plugin-import: 2.20.0_eslint@6.8.0
   eslint-plugin-jsx-a11y: 6.2.3_eslint@6.8.0
-  eslint-plugin-react: 7.17.0_eslint@6.8.0
+  eslint-plugin-react: 7.18.0_eslint@6.8.0
   eslint-plugin-react-hooks: 1.7.0_eslint@6.8.0
 lockfileVersion: 5.1
 packages:
@@ -2657,7 +2657,7 @@ packages:
   /array-includes/3.1.1:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.1
+      es-abstract: 1.17.2
       is-string: 1.0.5
     engines:
       node: '>= 0.4'
@@ -2686,7 +2686,7 @@ packages:
   /array.prototype.flat/1.2.3:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.1
+      es-abstract: 1.17.2
     dev: true
     engines:
       node: '>= 0.4'
@@ -3184,7 +3184,7 @@ packages:
   /browserslist/4.7.0:
     dependencies:
       caniuse-lite: 1.0.30001021
-      electron-to-chromium: 1.3.334
+      electron-to-chromium: 1.3.335
       node-releases: 1.1.45
     dev: false
     hasBin: true
@@ -3193,7 +3193,7 @@ packages:
   /browserslist/4.8.3:
     dependencies:
       caniuse-lite: 1.0.30001021
-      electron-to-chromium: 1.3.334
+      electron-to-chromium: 1.3.335
       node-releases: 1.1.45
     dev: false
     hasBin: true
@@ -4632,10 +4632,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
-  /electron-to-chromium/1.3.334:
+  /electron-to-chromium/1.3.335:
     dev: false
     resolution:
-      integrity: sha512-RcjJhpsVaX0X6ntu/WSBlW9HE9pnCgXS9B8mTUObl1aDxaiOa0Lu+NMveIS5IDC+VELzhM32rFJDCC+AApVwcA==
+      integrity: sha512-ngKsDGd/xr2lAZvilxTfdvfEiQKmavyXd6irlswaHnewmXoz6JgbM9FUNwgp3NFIUHHegh1F87H8f5BJ8zABxw==
   /elliptic/6.5.2:
     dependencies:
       bn.js: 4.11.8
@@ -4702,7 +4702,7 @@ packages:
       is-arrayish: 0.2.1
     resolution:
       integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==
-  /es-abstract/1.17.1:
+  /es-abstract/1.17.2:
     dependencies:
       es-to-primitive: 1.2.1
       function-bind: 1.1.1
@@ -4718,7 +4718,7 @@ packages:
     engines:
       node: '>= 0.4'
     resolution:
-      integrity: sha512-WmWNHWmm/LDwK8jaeZic/g6sU1ZckM+vvOyCV1qFRhJJ6hzve6DRgthNQB7Lra1ocrw68HexLKYgtdxIPcb3Fg==
+      integrity: sha512-YoKuru3Lyoy7yVTBSH2j7UxTqe/je3dWAruC0sHvZX1GNd5zX8SSLvQqEgO9b3Ex8IW+goFI9arEEsFIbulhOw==
   /es-to-primitive/1.2.1:
     dependencies:
       is-callable: 1.1.5
@@ -4789,13 +4789,13 @@ packages:
       eslint-plugin-import: ^2.18.2
     resolution:
       integrity: sha512-2IDHobw97upExLmsebhtfoD3NAKhV4H0CJWP3Uprd/uk+cHuWYOczPVxQ8PxLFUAw7o3Th1RAU8u1DoUpr+cMA==
-  /eslint-config-airbnb/18.0.1_d713cd09c39d1a854255a271a02ce055:
+  /eslint-config-airbnb/18.0.1_6983b942615e4cc07ec79b72f476e3dc:
     dependencies:
       eslint: 6.8.0
       eslint-config-airbnb-base: 14.0.0_e350486e76511e5213bbefec0777d336
       eslint-plugin-import: 2.20.0_eslint@6.8.0
       eslint-plugin-jsx-a11y: 6.2.3_eslint@6.8.0
-      eslint-plugin-react: 7.17.0_eslint@6.8.0
+      eslint-plugin-react: 7.18.0_eslint@6.8.0
       eslint-plugin-react-hooks: 1.7.0_eslint@6.8.0
       object.assign: 4.1.0
       object.entries: 1.1.1
@@ -4864,16 +4864,6 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-LGScZ/JSlqGKiT8OC+cYRxseMjyqt6QO54nl281CK93unD89ijSeRV6An8Ci/2nvWVKe8K/Tqdm75RQoIOCr+Q==
-  /eslint-plugin-eslint-plugin/2.2.0_eslint@6.8.0:
-    dependencies:
-      eslint: 6.8.0
-    dev: true
-    engines:
-      node: ^6.14.0 || ^8.10.0 || >=9.10.0
-    peerDependencies:
-      eslint: '>=5.0.0'
-    resolution:
-      integrity: sha512-X5+NT9a2GuwWyb3sHJdEEe6aD/30Fhi3/9XCmYHe/OSnWKUhmKOxFTfFM1AXZfJXjAoX7811bnoLI3fZr5AX5Q==
   /eslint-plugin-flowtype/3.13.0_eslint@6.8.0:
     dependencies:
       eslint: 6.8.0
@@ -4974,12 +4964,11 @@ packages:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
     resolution:
       integrity: sha512-EzdyyBWC4Uz2hPYBiEJrKCUi2Fn+BJ9B/pJQcjw5X+x/H2Nm59S4MJIvL4O5NEE0+WbnQwEBxWY03oUk+Bc3FA==
-  /eslint-plugin-react/7.17.0_eslint@6.8.0:
+  /eslint-plugin-react/7.18.0_eslint@6.8.0:
     dependencies:
       array-includes: 3.1.1
       doctrine: 2.1.0
       eslint: 6.8.0
-      eslint-plugin-eslint-plugin: 2.2.0_eslint@6.8.0
       has: 1.0.3
       jsx-ast-utils: 2.2.3
       object.entries: 1.1.1
@@ -4993,7 +4982,7 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
     resolution:
-      integrity: sha512-ODB7yg6lxhBVMeiH1c7E95FLD4E/TwmFjltiU+ethv7KPdCwgiFuOZg9zNRHyufStTDLl/dEFqI2Q1VPmCd78A==
+      integrity: sha512-p+PGoGeV4SaZRDsXqdj9OWcOrOpZn8gXoGPcIQTzo2IDMbAKhNDnME9myZWqO3Ic4R3YmwAZ1lDjWl2R2hMUVQ==
   /eslint-scope/3.7.1:
     dependencies:
       esrecurse: 4.2.1
@@ -8095,7 +8084,7 @@ packages:
   /object.entries/1.1.1:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.1
+      es-abstract: 1.17.2
       function-bind: 1.1.1
       has: 1.0.3
     engines:
@@ -8105,7 +8094,7 @@ packages:
   /object.fromentries/2.0.2:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.1
+      es-abstract: 1.17.2
       function-bind: 1.1.1
       has: 1.0.3
     engines:
@@ -8115,7 +8104,7 @@ packages:
   /object.getownpropertydescriptors/2.1.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.1
+      es-abstract: 1.17.2
     dev: false
     engines:
       node: '>= 0.8'
@@ -8132,7 +8121,7 @@ packages:
   /object.values/1.1.1:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.1
+      es-abstract: 1.17.2
       function-bind: 1.1.1
       has: 1.0.3
     engines:
@@ -9871,7 +9860,7 @@ packages:
   /regexp.prototype.flags/1.3.0:
     dependencies:
       define-properties: 1.1.3
-      es-abstract: 1.17.1
+      es-abstract: 1.17.2
     dev: false
     engines:
       node: '>= 0.4'
