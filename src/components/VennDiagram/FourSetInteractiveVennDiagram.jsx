@@ -75,21 +75,21 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
       <div {...rest}>
         <div className={classes.content}>
           <Typography variant="body1" className={classes.topLeft}>
-            {a.length === 1 ? a : 'A'}
+            {a && a.length === 1 ? a : 'A'}
           </Typography>
           <Typography variant="body1" className={classes.topRight}>
-            {b.length === 1 ? b : 'B'}
+            {b && b.length === 1 ? b : 'B'}
           </Typography>
           <Typography variant="body1" className={classes.bottomLeft}>
-            {c.length === 1 ? c : 'C'}
+            {c && c.length === 1 ? c : 'C'}
           </Typography>
           <Typography variant="body1" className={classes.bottomRight}>
-            {d.length === 1 ? d : 'D'}
+            {d && d.length === 1 ? d : 'D'}
           </Typography>
           <div id="ellipseVenn" />
         </div>
         {
-          (a.length > 1 && b.length > 1 && c.length > 1 && d.length > 1)
+          (a && b && c && d && a.length > 1 && b.length > 1 && c.length > 1 && d.length > 1)
           && (
             <div>
               <Typography variant="h5">
