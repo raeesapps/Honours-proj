@@ -13,24 +13,39 @@ import { validateMappings } from '../../logic/validator';
 import styles from '../../assets/views/jss/PremiseToSymbolicFormQuestion/premise_to_symbolic_question_styles';
 
 class PremiseToSymbolicFormQuestion extends React.Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { content: nextPremise } = nextProps;
+    const { premise } = prevState;
+
+    if (nextPremise.hashCode() !== premise.hashCode()) {
+      return {
+        premise: nextPremise,
+        mappingTable: {},
+        hint: null,
+        key: Math.random(),
+      };
+    }
+
+    return null;
+  }
+
   constructor(props) {
     super(props);
+    const { content } = props;
 
-    const { location } = props;
-    const { question } = location;
-    const { content } = question;
-
-    this.premise = content;
     this.state = {
+      premise: content,
       mappingTable: {},
       hint: null,
+      key: Math.random(),
     };
     this.premiseToSymbolicFormRef = React.createRef();
   }
 
   validate = () => {
-    const { premise, premiseToSymbolicFormRef } = this;
+    const { premiseToSymbolicFormRef } = this;
     const { onValidate } = this.props;
+    const { premise } = this.state;
 
     if (!premiseToSymbolicFormRef.current) {
       throw new Error('Ref not set!');
@@ -50,11 +65,12 @@ class PremiseToSymbolicFormQuestion extends React.Component {
   }
 
   render() {
-    const { premiseToSymbolicFormRef, premise } = this;
+    const { premise, key } = this.state;
+    const { premiseToSymbolicFormRef } = this;
     const { classes } = this.props;
 
     return (
-      <div>
+      <div key={key}>
         <Typography className={classes.typography} variant="h5">
           Translate
           {` "${premise.toSentence()}" `}

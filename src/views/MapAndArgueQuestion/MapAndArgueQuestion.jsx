@@ -21,21 +21,35 @@ import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 import styles from '../../assets/views/jss/MapAndArgueQuestion/map_and_argue_question_styles';
 
 class MapAndArgueQuestion extends React.Component {
-  constructor(props) {
-    super(props);
-    const { location } = props;
-    const { question } = location;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { content } = nextProps;
+    const { conclusion: nextConclusion, premiseCollection: nextPremiseCollection } = content;
+    const { conclusion, premiseCollection } = prevState;
 
-    if (!question) {
-      throw new Error('Question not provided! You must not use the refresh button on this app.');
+    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()
+      || nextConclusion.hashCode() !== conclusion.hashCode()) {
+      return {
+        premiseCollection: nextPremiseCollection,
+        conclusion: nextConclusion,
+        key: Math.random(),
+        step: 0,
+        shadings: null,
+        entails: null,
+      };
     }
 
-    const { content } = question;
+    return null;
+  }
+
+  constructor(props) {
+    super(props);
+    const { content } = props;
     const { premiseCollection, conclusion } = content;
 
-    this.premiseCollection = premiseCollection;
-    this.conclusion = conclusion;
     this.state = {
+      key: Math.random(),
+      premiseCollection,
+      conclusion,
       step: 0,
       shadings: null,
       entails: null,
@@ -48,12 +62,16 @@ class MapAndArgueQuestion extends React.Component {
     this.shadePremisesVennDiagram();
   }
 
-  shadePremisesVennDiagram = () => {
-    if (!this.premisesVennDiagramRef.current) {
-      throw new Error('Ref not set!');
-    }
+  componentDidUpdate() {
+    this.shadePremisesVennDiagram();
+  }
 
-    this.premisesVennDiagramRef.current.applyShading(this.premiseCollection);
+  shadePremisesVennDiagram = () => {
+    const { premiseCollection } = this.state;
+
+    if (this.premisesVennDiagramRef.current) {
+      this.premisesVennDiagramRef.current.applyShading(premiseCollection);
+    }
   }
 
   onBack = (step) => {
@@ -116,15 +134,15 @@ class MapAndArgueQuestion extends React.Component {
         </div>
       );
     }
-    const { shadings } = this.state;
-    const marginLeft = this.premiseCollection.terms.length === 4 ? { marginLeft: '14%' } : {};
+    const { premiseCollection, conclusion, shadings } = this.state;
+    const marginLeft = premiseCollection.terms.length === 4 ? { marginLeft: '14%' } : {};
     if (step === 0) {
       return (
         <div>
           {
-            renderUninteractiveVennDiagram(this.premiseCollection, this.premisesVennDiagramRef)
+            renderUninteractiveVennDiagram(premiseCollection, this.premisesVennDiagramRef)
           }
-          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={this.conclusion} ref={this.reducedPremisesVennDiagramRef} />
+          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={conclusion} ref={this.reducedPremisesVennDiagramRef} />
 
         </div>
       );
@@ -134,12 +152,12 @@ class MapAndArgueQuestion extends React.Component {
         <Typography variant="h6">
           Mapped Venn Diagram:
         </Typography>
-        <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} terms={this.conclusion.terms} />
+        <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} terms={conclusion.terms} />
         <FormControl component="fieldset">
           <FormLabel component="legend">
             Does the reduced Venn Diagram entail the conclusion
             {
-              ` '${this.conclusion.toSymbolicForm()}'?`
+              ` '${conclusion.toSymbolicForm()}'?`
             }
           </FormLabel>
           <RadioGroup aria-label="gender" name="customized-radios" onChange={(event) => this.setState({ entails: event.target.value })}>
@@ -171,20 +189,20 @@ class MapAndArgueQuestion extends React.Component {
       return termsToExclude;
     }
     const { MAPPING_STAGE } = stages;
-    const { step, entails } = this.state;
+    const { premiseCollection, conclusion, step, entails } = this.state;
     const { onValidate } = this.props;
 
     let result;
 
     if (step === 0) {
       result = validateVennDiagram(
-        this.premiseCollection,
+        premiseCollection,
         this.reducedPremisesVennDiagramRef,
         MAPPING_STAGE,
-        getTermsToExclude(this.premiseCollection, this.conclusion),
+        getTermsToExclude(premiseCollection, conclusion),
       );
     } else if (step === 1) {
-      result = validateArgument(this.premiseCollection, this.conclusion, entails === 'true');
+      result = validateArgument(premiseCollection, conclusion, entails === 'true');
     }
 
     onValidate(result, 'Incorrect!');
@@ -193,10 +211,10 @@ class MapAndArgueQuestion extends React.Component {
   }
 
   render() {
-    const { step } = this.state;
+    const { key, step } = this.state;
     const steps = ['Map Venn Diagram', 'Argue'];
     return (
-      <div>
+      <div key={key}>
         <Typography variant="h5">
           Map and argue
         </Typography>

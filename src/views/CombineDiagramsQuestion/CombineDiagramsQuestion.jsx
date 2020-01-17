@@ -17,27 +17,47 @@ import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 import styles from '../../assets/views/jss/CombineDiagramsQuestion/combine_diagrams_question_styles';
 
 class CombineDiagramsQuestion extends React.Component {
-  constructor(props) {
-    super(props);
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { content: nextPremiseCollection } = nextProps;
+    const { premiseCollection } = prevState;
 
-    const { location } = props;
-    const { question } = location;
-
-    if (!question) {
-      throw new Error('Question not provided! You must not use the refresh button on this app.');
+    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()) {
+      return {
+        premiseCollection: nextPremiseCollection,
+        premisesVennDiagramRef: [...Array(nextPremiseCollection.premises.length)
+          .keys()].map(() => React.createRef()),
+        key: Math.random(),
+      };
     }
 
-    const { content } = question;
+    return null;
+  }
 
-    this.premiseCollection = content;
-    this.premiseVennDiagramRef = [...Array(content.premises.length).keys()].map(() => React.createRef());
+  constructor(props) {
+    super(props);
+    const { content } = props;
+
+    this.state = {
+      premiseCollection: content,
+      key: Math.random(),
+      premisesVennDiagramRef: [...Array(content.premises.length).keys()].map(() => React.createRef()),
+    };
     this.combinationVennDiagramRef = React.createRef();
   }
 
   componentDidMount() {
-    const { premises } = this.premiseCollection;
+    this.shade();
+  }
 
-    this.premiseVennDiagramRef.forEach((ref, idx) => {
+  componentDidUpdate() {
+    this.shade();
+  }
+
+  shade = () => {
+    const { premiseCollection, premisesVennDiagramRef } = this.state;
+    const { premises } = premiseCollection;
+
+    premisesVennDiagramRef.forEach((ref, idx) => {
       if (!ref.current) {
         throw new Error('Premise venn diagrams did not render!');
       }
@@ -49,14 +69,16 @@ class CombineDiagramsQuestion extends React.Component {
   validate = () => {
     const { COMBINATION_STAGE } = stages;
     const { onValidate } = this.props;
+    const { premiseCollection } = this.state;
 
-    const result = validateVennDiagram(this.premiseCollection, this.combinationVennDiagramRef, COMBINATION_STAGE);
+    const result = validateVennDiagram(premiseCollection, this.combinationVennDiagramRef, COMBINATION_STAGE);
     onValidate(result, 'Incorrect!');
 
     return result;
   }
 
   renderPremiseVennDiagram = (premise, idx, numberOfPremises) => {
+    const { premisesVennDiagramRef } = this.state;
     function renderArrow() {
       let x1;
       let y1;
@@ -118,7 +140,7 @@ class CombineDiagramsQuestion extends React.Component {
       );
     }
 
-    const ref = this.premiseVennDiagramRef[idx];
+    const ref = premisesVennDiagramRef[idx];
 
     return (
       <div key={`${premise.toSentence()}VennDiagram`}>
@@ -148,10 +170,11 @@ class CombineDiagramsQuestion extends React.Component {
       }
       return ` "${symbolicForm}", `;
     }
-    const { premises } = this.premiseCollection;
     const { classes } = this.props;
+    const { premiseCollection, key } = this.state;
+    const { premises } = premiseCollection;
     return (
-      <div className={classes.root}>
+      <div key={key} className={classes.root}>
         <Typography className={classes.instructions} variant="h5">
           Combine the Venn Diagrams of
           {
@@ -166,7 +189,7 @@ class CombineDiagramsQuestion extends React.Component {
             }
           </div>
           {
-            renderInteractiveVennDiagram(this.premiseCollection, this.combinationVennDiagramRef)
+            renderInteractiveVennDiagram(premiseCollection, this.combinationVennDiagramRef)
           }
         </Paper>
         <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
