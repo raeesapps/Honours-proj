@@ -1,3 +1,5 @@
+import hash from 'object-hash';
+
 import Table from './table';
 
 class PremiseCollection {
@@ -81,6 +83,10 @@ class PremiseCollection {
 
   toString() {
     return JSON.stringify(this.table, this.premises);
+  }
+
+  hashCode() {
+    return hash(this);
   }
 }
 

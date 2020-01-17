@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -17,8 +16,9 @@ function QuestionList(props) {
   const {
     questions,
     title,
-    path,
+    component,
     classes,
+    onClick,
     ...rest
   } = props;
 
@@ -36,20 +36,11 @@ function QuestionList(props) {
           <List>
             {
               questions.map((question) => (
-                <NavLink
-                  key={`${question.title}${path}`}
-                  style={{ color: 'inherit', textDecoration: 'inherit' }}
-                  to={{
-                    pathname: path,
-                    question,
-                  }}
-                >
-                  <ListItem button>
-                    <ListItemText>
-                      {question.title}
-                    </ListItemText>
-                  </ListItem>
-                </NavLink>
+                <ListItem key={`${title}${question.title}`} button onClick={() => onClick(component, question.content)}>
+                  <ListItemText>
+                    {question.title}
+                  </ListItemText>
+                </ListItem>
               ))
             }
           </List>

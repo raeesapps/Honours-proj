@@ -6,28 +6,45 @@ import Typography from '@material-ui/core/Typography';
 import { validateMappings } from '../../logic/validator';
 import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
 import SimpleStepper from '../../components/Stepper/SimpleStepper';
-import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/SyllogismToSymbolicFormQuestion/syllogism_to_symbolic_form_question_styles';
 
 class SyllogismToSymbolicFormQuestion extends React.Component {
-  constructor(props) {
-    super(props);
-    const { location } = this.props;
-    const { question } = location;
-
-    if (!question) {
-      throw new Error('Question not provided! You must not use the refresh button on this app.');
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { content } = nextProps;
+    const { premiseCollection: nextPremiseCollection, conclusion: nextConclusion } = content;
+    const { premiseCollection, conclusion } = prevState;
+    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()
+      && nextConclusion.hashCode() !== conclusion.hashCode()) {
+      return {
+        key: Math.random(),
+        premiseCollection: nextPremiseCollection,
+        conclusion: nextConclusion,
+        premises: [...nextPremiseCollection.premises, nextConclusion],
+        componentRefs: [...Array(nextPremiseCollection.size() + 1).keys()]
+          .map(() => React.createRef()),
+        step: 0,
+        mappingTable: {},
+        goingBack: false,
+      };
     }
 
-    const { content } = question;
+    return null;
+  }
+
+  constructor(props) {
+    super(props);
+    const { content } = props;
     const { premiseCollection, conclusion } = content;
 
-    this.componentRefs = [...Array(premiseCollection.size() + 1).keys()]
-      .map(() => React.createRef());
     this.state = {
+      key: Math.random(),
+      premiseCollection,
+      conclusion,
       premises: [...premiseCollection.premises, conclusion],
+      componentRefs: [...Array(premiseCollection.size() + 1).keys()]
+        .map(() => React.createRef()),
       step: 0,
       mappingTable: {},
       goingBack: false,
@@ -39,9 +56,8 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
   }
 
   onNext = (step) => {
-    const { goingBack } = this.state;
+    const { goingBack, componentRefs } = this.state;
     const onNextCallback = () => {
-      const { componentRefs } = this;
       const ref = componentRefs[step];
 
       if (!ref.current) {
@@ -60,8 +76,12 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
   }
 
   getStepContent = (step) => {
-    const { componentRefs } = this;
-    const { premises, mappingTable, goingBack } = this.state;
+    const {
+      premises,
+      mappingTable,
+      goingBack,
+      componentRefs,
+    } = this.state;
     const ref = componentRefs[step];
     const premise = premises[step];
 
@@ -104,10 +124,10 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { step, premises } = this.state;
+    const { key, step, premises } = this.state;
     const steps = premises.map((premise) => premise.toSentence());
     return (
-      <div className={classes.root}>
+      <div className={classes.root} key={key}>
         <Typography variant="h5" style={{ marginBottom: '5px' }}>Translate Syllogism to Symbolic Form</Typography>
 
         {
@@ -128,5 +148,5 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
 }
 
 export default withStyles(styles)(
-  withSidebar(withQuestionTemplate(SyllogismToSymbolicFormQuestion)),
+  withQuestionTemplate(SyllogismToSymbolicFormQuestion),
 );

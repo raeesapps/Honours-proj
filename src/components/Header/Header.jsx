@@ -23,7 +23,7 @@ function Header(props) {
             Soak Up Syllogisms
           </Typography>
           {
-            routes.filter((route) => route.displayInDrawer).map((route) => (
+            routes.map((route) => (
               <Button key={route.name} className={classes.link} component={RouterLink} to={route.path}>
                 {route.name}
               </Button>

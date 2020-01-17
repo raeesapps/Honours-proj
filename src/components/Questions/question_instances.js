@@ -1,3 +1,9 @@
+import CombineDiagramsQuestion from '../../views/CombineDiagramsQuestion/CombineDiagramsQuestion';
+import MapAndArgueQuestion from '../../views/MapAndArgueQuestion/MapAndArgueQuestion';
+import PremiseToDiagramQuestion from '../../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
+import PremisesToSymbolicFormQuestion from '../../views/PremiseToSymbolicFormQuestion/PremiseToSymbolicFormQuestion';
+import SyllogismToSymbolicFormQuestion from '../../views/SyllogismToSymbolicFormQuestion/SyllogismToSymbolicFormQuestion';
+
 import { Premise, forms } from '../../logic/premise';
 import PremiseCollection from '../../logic/premise_collection';
 
@@ -24,7 +30,7 @@ const {
 const premiseToSymbolicFormQuestions = {
   title: 'Premise To Symbolic Form',
   description: 'Translate the sentential form of a premise to symbolic form using letters and the turnstile symbol',
-  path: '/premiseToSymbolicFormQuestion',
+  component: PremisesToSymbolicFormQuestion,
   questions: [
     {
       title: 'All men are mortal',
@@ -60,7 +66,7 @@ const premiseToSymbolicFormQuestions = {
 const syllogismToSymbolicFormQuestions = {
   title: 'Syllogism To Symbolic Form',
   description: 'Translate the sentential form of each premise in an argument to symbolic form using letters and the turnstile symbol',
-  path: '/syllogismToSymbolicFormQuestion',
+  component: SyllogismToSymbolicFormQuestion,
   questions: [
     {
       title: 'BARBARA',
@@ -129,7 +135,7 @@ const syllogismToSymbolicFormQuestions = {
 const premiseToDiagramQuestions = {
   title: 'Premise To Diagram',
   description: 'Given two or three Venn Diagrams that represent the existence or extinction of sets in a premise, reduce the two or three Venn Diagrams to one Venn Diagram',
-  path: '/premiseToDiagramQuestion',
+  component: PremiseToDiagramQuestion,
   questions: [
     {
       title: 'All A are B',
@@ -269,7 +275,7 @@ const premiseToDiagramQuestions = {
 const combineDiagramsQuestion = {
   title: 'Combine Diagrams',
   description: 'Fill in a Venn Diagram to represent the existence or extinction of sets in a premise',
-  path: '/combineDiagramsQuestion',
+  component: CombineDiagramsQuestion,
   questions: [
     {
       title: 'BARBARA diagrams',
@@ -311,7 +317,7 @@ const combineDiagramsQuestion = {
 const mapAndArgueQuestion = {
   title: 'Map And Argue',
   description: 'Given a single Venn Diagram containing three or four sets, map it to a Venn Diagram containing only two sets and argue whether a conclusion is entailed by the information illustrated on the mapped Venn Diagram',
-  path: '/mapAndArgueQuestion',
+  component: MapAndArgueQuestion,
   questions: [
     {
       title: 'BARBARA',

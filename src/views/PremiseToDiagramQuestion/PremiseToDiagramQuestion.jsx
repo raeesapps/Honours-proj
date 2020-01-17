@@ -6,22 +6,32 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import PremiseToDiagram from '../../components/PremiseToDiagram/PremiseToDiagram';
-import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 import styles from '../../assets/views/jss/PremiseToDiagramQuestion/premise_to_diagram_question_styles';
 
 class PremiseToDiagramQuestion extends React.Component {
-  constructor(props) {
-    super(props);
-    const { location } = props;
-    const { question } = location;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { content: nextPremiseCollection } = nextProps;
+    const { premiseCollection } = prevState;
 
-    if (!question) {
-      throw new Error('Question not provided! You must not use the refresh button on this app.');
+    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()) {
+      return {
+        premiseCollection: nextPremiseCollection,
+        key: Math.random(),
+      };
     }
 
-    const { content } = question;
-    this.premiseCollection = content;
+    return null;
+  }
+
+  constructor(props) {
+    super(props);
+    const { content } = props;
+
+    this.state = {
+      premiseCollection: content,
+      key: Math.random(),
+    };
     this.vennDiagramRef = React.createRef();
   }
 
@@ -37,17 +47,18 @@ class PremiseToDiagramQuestion extends React.Component {
   }
 
   render() {
+    const { premiseCollection, key } = this.state;
     const { classes } = this.props;
 
-    if (!this.premiseCollection.premises.length) {
+    if (!premiseCollection.premises.length) {
       throw new Error('No premises in premise collection!');
     }
 
-    const premise = this.premiseCollection.premises[0];
+    const premise = premiseCollection.premises[0];
 
-    const width = this.premiseCollection.terms.length === 4 ? { width: '70%' } : { width: '35%' };
+    const width = premiseCollection.terms.length === 4 ? { width: '70%' } : { width: '35%' };
     return (
-      <div>
+      <div key={key}>
         <Typography className={classes.instructions} variant="h5">
           Shade the Venn Diagram to represent
           {
@@ -55,7 +66,7 @@ class PremiseToDiagramQuestion extends React.Component {
           }
         </Typography>
         <Paper className={classes.paper} style={width}>
-          <PremiseToDiagram renderTitle={false} ref={this.vennDiagramRef} premiseCollection={this.premiseCollection} />
+          <PremiseToDiagram renderTitle={false} ref={this.vennDiagramRef} premiseCollection={premiseCollection} />
         </Paper>
         <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
       </div>
@@ -63,4 +74,4 @@ class PremiseToDiagramQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(PremiseToDiagramQuestion)));
+export default withStyles(styles)(withQuestionTemplate(PremiseToDiagramQuestion));

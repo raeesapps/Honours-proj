@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,32 +9,25 @@ function QuestionCard(props) {
   const {
     title,
     content,
-    path,
+    component,
     question,
+    onClick,
     ...rest
   } = props;
   return (
     <Card {...rest}>
-      <NavLink
-        style={{ color: 'inherit', textDecoration: 'inherit' }}
-        to={{
-          pathname: path,
-          question,
-        }}
-      >
-        <CardActionArea>
-          <CardContent>
-            <center>
-              <Typography gutterBottom variant="h5">
-                {title}
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary" component="p">
-                {content}
-              </Typography>
-            </center>
-          </CardContent>
-        </CardActionArea>
-      </NavLink>
+      <CardActionArea onClick={() => onClick(component, question.content)}>
+        <CardContent>
+          <center>
+            <Typography gutterBottom variant="h5">
+              {title}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary" component="p">
+              {content}
+            </Typography>
+          </center>
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 }
