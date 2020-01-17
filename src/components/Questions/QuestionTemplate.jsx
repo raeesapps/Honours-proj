@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Container from '@material-ui/core/Container';
-
 import SnackbarWrapper from '../Snackbar/SnackbarWrapper';
 import snackbarTypes from '../Snackbar/snackbar_types';
 
@@ -43,7 +41,7 @@ function withQuestionTemplate(WrappedComponent) {
       const snackbarMessage = snackbarType === SUCCESS ? 'Correct!' : incorrectMessage;
 
       return (
-        <Container>
+        <div>
           <SnackbarWrapper
             style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
             variant={snackbarType}
@@ -53,7 +51,7 @@ function withQuestionTemplate(WrappedComponent) {
             }}
           />
           <WrappedComponent onValidate={this.onValidate} {...this.props} />
-        </Container>
+        </div>
       );
     }
   };
