@@ -18,18 +18,19 @@ function validateArgument(premiseCollection, conclusion, doesPremiseCollectionEn
 
 function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude) {
   function getShadings() {
-    const { COMBINATION_STAGE, REDUCTION_STAGE } = stages;
+    const { REPRESENTATION_STAGE, COMBINATION_STAGE, MAPPING_STAGE } = stages;
 
     const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
     const mappings = {};
 
     let column;
     switch (stage) {
+      case REPRESENTATION_STAGE:
       case COMBINATION_STAGE:
         column = premiseCollection.unifyAndResolve();
         break;
-      case REDUCTION_STAGE:
-        column = premiseCollection.reduce(termsToExclude);
+      case MAPPING_STAGE:
+        column = premiseCollection.map(termsToExclude);
         break;
       default:
         break;
@@ -65,7 +66,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude
     return ordered;
   }
 
-  const { REPRESENTATION_STAGE, COMBINATION_STAGE, REDUCTION_STAGE } = stages;
+  const { REPRESENTATION_STAGE, COMBINATION_STAGE, MAPPING_STAGE } = stages;
 
   let result;
 
@@ -76,7 +77,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude
 
       return JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
     }).length === refOrRefs.length;
-  } else if (stage === COMBINATION_STAGE || stage === REDUCTION_STAGE) {
+  } else if (stage === COMBINATION_STAGE || stage === MAPPING_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
     const expectedShadings = sortObject(getShadings());
 

@@ -65,8 +65,8 @@ class PremiseCollection {
     return vennDiagramParts;
   }
 
-  reduce(ignoredTerms) {
-    return this.table.reduce(ignoredTerms);
+  map(ignoredTerms) {
+    return this.table.map(ignoredTerms);
   }
 
   argue(conclusion) {
