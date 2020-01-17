@@ -104,7 +104,7 @@ class PremiseToSymbolicForm extends React.PureComponent {
     super(props);
 
     const state = {};
-    const dragDropEntries = getDragDropEntries('A', 'B', 'C');
+    const dragDropEntries = getDragDropEntries('A', 'B', 'C', 'D');
 
     droppables.forEach((droppable) => {
       const { name, initialContents } = droppable;
