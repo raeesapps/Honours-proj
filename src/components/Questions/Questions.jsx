@@ -11,21 +11,22 @@ import {
 } from './question_instances';
 import QuestionList from './QuestionList';
 
-function Questions() {
-  function renderQuestionList(questionType) {
+function Questions(props) {
+  function renderQuestionList(questionType, onClick) {
     const {
       title,
       questions,
-      path,
+      component,
     } = questionType;
 
     return (
-      <div key={`${title}${path}`}>
-        <QuestionList title={title} questions={questions} path={path} />
+      <div key={`${title}`}>
+        <QuestionList title={title} questions={questions} component={component} onClick={onClick} />
         <br />
       </div>
     );
   }
+  const { onClick, ...rest } = props;
   const questionTypes = [
     premiseToSymbolicFormQuestions,
     syllogismToSymbolicFormQuestions,
@@ -35,9 +36,9 @@ function Questions() {
   ];
 
   return (
-    <Container>
+    <Container {...rest}>
       {
-        questionTypes.map((questionType) => renderQuestionList(questionType))
+        questionTypes.map((questionType) => renderQuestionList(questionType, onClick))
       }
     </Container>
   );
