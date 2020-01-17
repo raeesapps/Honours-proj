@@ -73,7 +73,7 @@ class Table {
     return resolvedCompartments;
   }
 
-  reduce(ignoredTerms) {
+  map(ignoredTerms) {
     const keyToFirstItemInDictionary = Object.keys(this.tableDictionary.keyHashToKeyMappings)[0];
     const keysToCompartments = this
       .tableDictionary
@@ -86,14 +86,14 @@ class Table {
       const compartment = keysToCompartments[key];
       const truthKeys = Object.keys(compartment.truths);
       const n = ignoredTerms.length;
-      const compartmentContainsAllIgnoredTerms = truthKeys
+      const compartmentContainsSomeIgnoredTerms = truthKeys
         // eslint-disable-next-line arrow-body-style
         .reduce((termsWithAllIgnoredTerms, term) => {
           return (ignoredTerms.includes(term) && compartment.truths[term])
             ? termsWithAllIgnoredTerms - 1 : termsWithAllIgnoredTerms;
-        }, n) === 0;
+        }, n) < n;
 
-      if (compartmentContainsAllIgnoredTerms) {
+      if (compartmentContainsSomeIgnoredTerms) {
         const entries = reducedCompartments[key];
         const entriesIncludesAnX = entries.length !== 0 && entries.filter((entry) => entry !== 'e').length !== 0;
 
