@@ -1,60 +1,36 @@
 import React from 'react';
 
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
-import {
-  premiseToSymbolicFormQuestions,
-  syllogismToSymbolicFormQuestions,
-  premiseToDiagramQuestions,
-  combineDiagramsQuestion,
-  mapAndArgueQuestion,
-} from '../../components/Questions/question_instances';
-import QuestionCard from '../../components/Questions/QuestionCard';
-import withSidebar from '../../components/Questions/QuestionSidebar';
+import Questions from '../../components/Questions/Questions';
+import PracticeHomepage from './PracticeHomepage';
 
-function Practice() {
-  function renderQuestionType(questionType) {
-    const marginBottom = { marginBottom: '10px' };
-    const {
-      title,
-      description,
-      path,
-      questions,
-    } = questionType;
+class Practice extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      Component: PracticeHomepage,
+      content: null,
+    };
+  }
 
+  setComponent = (Component, content) => {
+    this.setState({ Component, content });
+  };
+
+  render() {
+    const { Component, content } = this.state;
     return (
-      <QuestionCard
-        key={title}
-        title={title}
-        content={description}
-        style={marginBottom}
-        path={path}
-        question={questions[0]}
-      />
+      <Grid container>
+        <Grid item xs={3}>
+          <Questions onClick={this.setComponent} />
+        </Grid>
+        <Grid item xs={9}>
+          <Component content={content} onClick={this.setComponent} />
+        </Grid>
+      </Grid>
     );
   }
-  const questionTypes = [
-    premiseToSymbolicFormQuestions,
-    syllogismToSymbolicFormQuestions,
-    premiseToDiagramQuestions,
-    combineDiagramsQuestion,
-    mapAndArgueQuestion,
-  ];
-  const marginBottom = { marginBottom: '10px' };
-  return (
-    <Container>
-      <Typography variant="h4">
-        Practice syllogisms!
-      </Typography>
-      <Typography variant="h6" style={marginBottom}>
-        Here you can find different types of exercises involving syllogisms. Choose any category you want to practice
-      </Typography>
-      {
-        questionTypes.map((questionType) => renderQuestionType(questionType))
-      }
-    </Container>
-  );
 }
 
-export default withSidebar(Practice);
+export default Practice;
