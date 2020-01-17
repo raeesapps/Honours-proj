@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
-import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import { validateMappings } from '../../logic/validator';
@@ -71,4 +70,4 @@ class PremiseToSymbolicFormQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(PremiseToSymbolicFormQuestion)));
+export default withStyles(styles)(withQuestionTemplate(PremiseToSymbolicFormQuestion));

@@ -16,7 +16,6 @@ import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSe
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
 import TwoSetInteractiveVennDiagram from '../../components/VennDiagram/TwoSetInteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
-import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/MapAndArgueQuestion/map_and_argue_question_styles';
@@ -213,4 +212,4 @@ class MapAndArgueQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(MapAndArgueQuestion)));
+export default withStyles(styles)(withQuestionTemplate(MapAndArgueQuestion));

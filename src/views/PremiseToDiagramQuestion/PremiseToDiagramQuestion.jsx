@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import PremiseToDiagram from '../../components/PremiseToDiagram/PremiseToDiagram';
-import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 import styles from '../../assets/views/jss/PremiseToDiagramQuestion/premise_to_diagram_question_styles';
 
@@ -63,4 +62,4 @@ class PremiseToDiagramQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(PremiseToDiagramQuestion)));
+export default withStyles(styles)(withQuestionTemplate(PremiseToDiagramQuestion));

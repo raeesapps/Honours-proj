@@ -12,7 +12,6 @@ import FourSetInteractiveVennDiagram from '../../components/VennDiagram/FourSetI
 import ThreeSetInteractiveVennDiagram from '../../components/VennDiagram/ThreeSetInteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 import PremiseCollection from '../../logic/premise_collection';
-import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/CombineDiagramsQuestion/combine_diagrams_question_styles';
@@ -176,4 +175,4 @@ class CombineDiagramsQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(CombineDiagramsQuestion)));
+export default withStyles(styles)(withQuestionTemplate(CombineDiagramsQuestion));

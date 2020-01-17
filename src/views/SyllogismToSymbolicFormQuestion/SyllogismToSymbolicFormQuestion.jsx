@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import { validateMappings } from '../../logic/validator';
 import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
 import SimpleStepper from '../../components/Stepper/SimpleStepper';
-import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/SyllogismToSymbolicFormQuestion/syllogism_to_symbolic_form_question_styles';
@@ -128,5 +127,5 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
 }
 
 export default withStyles(styles)(
-  withSidebar(withQuestionTemplate(SyllogismToSymbolicFormQuestion)),
+  withQuestionTemplate(SyllogismToSymbolicFormQuestion),
 );
