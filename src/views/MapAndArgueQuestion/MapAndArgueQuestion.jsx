@@ -19,9 +19,9 @@ import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetU
 import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
-import styles from '../../assets/views/jss/ReduceAndArgueQuestion/reduce_and_argue_question_styles';
+import styles from '../../assets/views/jss/MapAndArgueQuestion/map_and_argue_question_styles';
 
-class ReduceAndArgueQuestion extends React.Component {
+class MapAndArgueQuestion extends React.Component {
   constructor(props) {
     super(props);
     const { location } = props;
@@ -133,7 +133,7 @@ class ReduceAndArgueQuestion extends React.Component {
     return (
       <div>
         <Typography variant="h6">
-          Reduced Venn Diagram:
+          Mapped Venn Diagram:
         </Typography>
         <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} terms={this.conclusion.terms} />
         <FormControl component="fieldset">
@@ -171,7 +171,7 @@ class ReduceAndArgueQuestion extends React.Component {
         .filter((term) => term !== conclusionFirstTerm && term !== conclusionSecondTerm);
       return termsToExclude;
     }
-    const { REDUCTION_STAGE } = stages;
+    const { MAPPING_STAGE } = stages;
     const { step, entails } = this.state;
     const { onValidate } = this.props;
 
@@ -181,7 +181,7 @@ class ReduceAndArgueQuestion extends React.Component {
       result = validateVennDiagram(
         this.premiseCollection,
         this.reducedPremisesVennDiagramRef,
-        REDUCTION_STAGE,
+        MAPPING_STAGE,
         getTermsToExclude(this.premiseCollection, this.conclusion),
       );
     } else if (step === 1) {
@@ -195,11 +195,11 @@ class ReduceAndArgueQuestion extends React.Component {
 
   render() {
     const { step } = this.state;
-    const steps = ['Reduce Venn Diagram', 'Argue'];
+    const steps = ['Map Venn Diagram', 'Argue'];
     return (
       <div>
         <Typography variant="h5">
-          Reduce and argue
+          Map and argue
         </Typography>
         <SimpleStepper
           step={step}
@@ -213,4 +213,4 @@ class ReduceAndArgueQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(ReduceAndArgueQuestion)));
+export default withStyles(styles)(withSidebar(withQuestionTemplate(MapAndArgueQuestion)));

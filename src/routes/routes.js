@@ -1,11 +1,11 @@
-import CombinePremisesQuestion from '../views/CombinePremisesQuestion/CombinePremisesQuestion';
+import CombineDiagramsQuestion from '../views/CombineDiagramsQuestion/CombineDiagramsQuestion';
 import Home from '../views/Home/Home';
 import Practice from '../views/Practice/Practice';
 import InstantSolver from '../views/InstantSolver/InstantSolver';
 import PremiseToSymbolicFormQuestion from '../views/PremiseToSymbolicFormQuestion/PremiseToSymbolicFormQuestion';
-import PremisesToSymbolicFormQuestion from '../views/PremisesToSymbolicFormQuestion/PremisesToSymbolicFormQuestion';
+import SyllogismToSymbolicFormQuestion from '../views/SyllogismToSymbolicFormQuestion/SyllogismToSymbolicFormQuestion';
 import PremiseToDiagramQuestion from '../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
-import ReduceAndArgueQuestion from '../views/ReduceAndArgueQuestion/ReduceAndArgueQuestion';
+import MapAndArgueQuestion from '../views/MapAndArgueQuestion/MapAndArgueQuestion';
 import Tutorial from '../views/Tutorial/Tutorial';
 
 const routes = [
@@ -34,9 +34,9 @@ const routes = [
     displayInDrawer: false,
   },
   {
-    name: 'premisesToSymbolicFormQuestion',
-    path: '/premisesToSymbolicFormQuestion',
-    component: PremisesToSymbolicFormQuestion,
+    name: 'syllogismToSymbolicFormQuestion',
+    path: '/syllogismToSymbolicFormQuestion',
+    component: SyllogismToSymbolicFormQuestion,
     displayInDrawer: false,
   },
   {
@@ -46,15 +46,15 @@ const routes = [
     displayInDrawer: false,
   },
   {
-    name: 'combinePremisesQuestion',
-    path: '/combinePremisesQuestion',
-    component: CombinePremisesQuestion,
+    name: 'combineDiagramsQuestion',
+    path: '/combineDiagramsQuestion',
+    component: CombineDiagramsQuestion,
     displayInDrawer: false,
   },
   {
-    name: 'reduceAndArgueQuestion',
-    path: '/reduceAndArgueQuestion',
-    component: ReduceAndArgueQuestion,
+    name: 'mapAndArgueQuestion',
+    path: '/mapAndArgueQuestion',
+    component: MapAndArgueQuestion,
     displayInDrawer: false,
   },
   {

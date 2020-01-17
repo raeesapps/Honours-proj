@@ -4,10 +4,10 @@ import Container from '@material-ui/core/Container';
 
 import {
   premiseToSymbolicFormQuestions,
-  premisesToSymbolicFormQuestions,
+  syllogismToSymbolicFormQuestions,
   premiseToDiagramQuestions,
-  combinePremisesQuestion,
-  reduceAndArgueQuestion,
+  combineDiagramsQuestion,
+  mapAndArgueQuestion,
 } from './question_instances';
 import QuestionList from './QuestionList';
 
@@ -28,10 +28,10 @@ function Questions() {
   }
   const questionTypes = [
     premiseToSymbolicFormQuestions,
-    premisesToSymbolicFormQuestions,
+    syllogismToSymbolicFormQuestions,
     premiseToDiagramQuestions,
-    combinePremisesQuestion,
-    reduceAndArgueQuestion,
+    combineDiagramsQuestion,
+    mapAndArgueQuestion,
   ];
 
   return (

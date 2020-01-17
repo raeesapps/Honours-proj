@@ -15,9 +15,9 @@ import PremiseCollection from '../../logic/premise_collection';
 import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
-import styles from '../../assets/views/jss/CombinePremisesQuestion/combine_premises_question_styles';
+import styles from '../../assets/views/jss/CombineDiagramsQuestion/combine_diagrams_question_styles';
 
-class CombinePremisesQuestion extends React.Component {
+class CombineDiagramsQuestion extends React.Component {
   constructor(props) {
     super(props);
 
@@ -176,4 +176,4 @@ class CombinePremisesQuestion extends React.Component {
   }
 }
 
-export default withStyles(styles)(withSidebar(withQuestionTemplate(CombinePremisesQuestion)));
+export default withStyles(styles)(withSidebar(withQuestionTemplate(CombineDiagramsQuestion)));

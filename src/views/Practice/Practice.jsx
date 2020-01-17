@@ -5,10 +5,10 @@ import Typography from '@material-ui/core/Typography';
 
 import {
   premiseToSymbolicFormQuestions,
-  premisesToSymbolicFormQuestions,
+  syllogismToSymbolicFormQuestions,
   premiseToDiagramQuestions,
-  combinePremisesQuestion,
-  reduceAndArgueQuestion,
+  combineDiagramsQuestion,
+  mapAndArgueQuestion,
 } from '../../components/Questions/question_instances';
 import QuestionCard from '../../components/Questions/QuestionCard';
 import withSidebar from '../../components/Questions/QuestionSidebar';
@@ -35,10 +35,10 @@ function Practice() {
   }
   const questionTypes = [
     premiseToSymbolicFormQuestions,
-    premisesToSymbolicFormQuestions,
+    syllogismToSymbolicFormQuestions,
     premiseToDiagramQuestions,
-    combinePremisesQuestion,
-    reduceAndArgueQuestion,
+    combineDiagramsQuestion,
+    mapAndArgueQuestion,
   ];
   const marginBottom = { marginBottom: '10px' };
   return (

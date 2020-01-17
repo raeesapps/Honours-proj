@@ -9,9 +9,9 @@ import SimpleStepper from '../../components/Stepper/SimpleStepper';
 import withSidebar from '../../components/Questions/QuestionSidebar';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
-import styles from '../../assets/views/jss/PremisesToSymbolicFormQuestion/premises_to_symbolic_form_question_styles';
+import styles from '../../assets/views/jss/SyllogismToSymbolicFormQuestion/syllogism_to_symbolic_form_question_styles';
 
-class PremisesToSymbolicFormQuestion extends React.Component {
+class SyllogismToSymbolicFormQuestion extends React.Component {
   constructor(props) {
     super(props);
     const { location } = this.props;
@@ -128,5 +128,5 @@ class PremisesToSymbolicFormQuestion extends React.Component {
 }
 
 export default withStyles(styles)(
-  withSidebar(withQuestionTemplate(PremisesToSymbolicFormQuestion)),
+  withSidebar(withQuestionTemplate(SyllogismToSymbolicFormQuestion)),
 );
