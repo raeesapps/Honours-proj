@@ -8,25 +8,21 @@ const routes = [
     name: 'Home',
     path: '/',
     component: Home,
-    displayInDrawer: true,
   },
   {
     name: 'Practice',
     path: '/practice',
     component: Practice,
-    displayInDrawer: true,
   },
   {
     name: 'Tutorial',
     path: '/tutorial',
     component: Tutorial,
-    displayInDrawer: true,
   },
   {
     name: 'Instant Solver',
     path: '/solver',
     component: InstantSolver,
-    displayInDrawer: true,
   },
 ];
 
