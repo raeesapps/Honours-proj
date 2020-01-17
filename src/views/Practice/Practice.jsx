@@ -25,6 +25,7 @@ function Practice() {
 
     return (
       <QuestionCard
+        key={title}
         title={title}
         content={description}
         style={marginBottom}

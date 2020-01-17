@@ -19,7 +19,6 @@ const {
   SOME_A_IS_B,
   NO_A_IS_B,
   SOME_A_IS_NOT_B,
-  SOME_A_EXIST,
 } = forms;
 
 const premiseToSymbolicFormQuestions = {

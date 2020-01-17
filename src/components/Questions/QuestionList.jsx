@@ -37,8 +37,8 @@ function QuestionList(props) {
             {
               questions.map((question) => (
                 <NavLink
+                  key={`${question.title}${path}`}
                   style={{ color: 'inherit', textDecoration: 'inherit' }}
-                  key={question.title}
                   to={{
                     pathname: path,
                     question,

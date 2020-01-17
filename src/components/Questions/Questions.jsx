@@ -20,7 +20,7 @@ function Questions() {
     } = questionType;
 
     return (
-      <div>
+      <div key={`${title}${path}`}>
         <QuestionList title={title} questions={questions} path={path} />
         <br />
       </div>
