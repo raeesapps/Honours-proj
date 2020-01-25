@@ -40,7 +40,7 @@ class MapAndArgueQuestion extends React.Component {
         key: Math.random(),
         step: 0,
         shadings: null,
-        selectedConclusionIdx: -1,
+        selectedIdx: -1,
       };
     }
 
@@ -58,7 +58,7 @@ class MapAndArgueQuestion extends React.Component {
       conclusions,
       step: 0,
       shadings: null,
-      selectedConclusionIdx: -1,
+      selectedIdx: -1,
     };
     this.premisesVennDiagramRef = React.createRef();
     this.reducedPremisesVennDiagramRef = React.createRef();
@@ -140,8 +140,7 @@ class MapAndArgueQuestion extends React.Component {
         </div>
       );
     }
-    const { premiseCollection, conclusions, selectedConclusionIdx, shadings } = this.state;
-    console.log(selectedConclusionIdx);
+    const { premiseCollection, conclusions, shadings } = this.state;
     const marginLeft = premiseCollection.terms.length === 4 ? { marginLeft: '14%' } : {};
     if (step === 0) {
       return (
@@ -164,7 +163,7 @@ class MapAndArgueQuestion extends React.Component {
           <FormLabel component="legend">
             Please select the conclusion that is entailed by the Venn Diagram.
           </FormLabel>
-          <RadioGroup aria-label="conclusions" name="customized-radios" onChange={(event) => this.setState({ selectedConclusionIdx: Number(event.target.value) })}>
+          <RadioGroup aria-label="conclusions" name="customized-radios" onChange={(event) => this.setState({ selectedIdx: Number(event.target.value) })}>
             {
               conclusions.map((conclusion, idx) => (
                 <FormControlLabel
@@ -175,6 +174,12 @@ class MapAndArgueQuestion extends React.Component {
                 />
               ))
             }
+            <FormControlLabel
+              key="None"
+              value="-1"
+              control={<Radio />}
+              label="No Conclusion Follows"
+            />
           </RadioGroup>
         </FormControl>
       </div>
@@ -191,7 +196,7 @@ class MapAndArgueQuestion extends React.Component {
       premiseCollection,
       conclusions,
       step,
-      selectedConclusionIdx,
+      selectedIdx,
     } = this.state;
     const { onValidate } = this.props;
 
@@ -205,7 +210,13 @@ class MapAndArgueQuestion extends React.Component {
         getTermsToExclude(conclusions[0]),
       );
     } else if (step === 1) {
-      result = validateArgument(premiseCollection, conclusions[selectedConclusionIdx]);
+      if (selectedIdx !== -1) {
+        result = validateArgument(premiseCollection, conclusions[selectedIdx]);
+      } else {
+        result = conclusions
+          .reduce((isCorrect, conclusion) => isCorrect
+            && !validateArgument(premiseCollection, conclusion), true);
+      }
     }
 
     onValidate(result, 'Incorrect!');
