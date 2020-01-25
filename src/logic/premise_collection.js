@@ -37,34 +37,7 @@ class PremiseCollection {
   }
 
   getVennDiagramParts() {
-    const n = this.table.numberOfTerms;
-    const vennDiagramParts = [];
-    this.table.compartments.forEach((compartment) => {
-      let vennDiagramPart = '(';
-      const truths = compartment.getTruths();
-      const truthKeys = Object.keys(truths);
-      truthKeys.sort();
-      truthKeys.forEach((atom, i) => {
-        const curAtomIsTrue = truths[atom];
-
-        if (curAtomIsTrue) {
-          vennDiagramPart += atom;
-
-          if (i !== n - 1) {
-            vennDiagramPart += '&';
-          }
-        }
-      });
-      if (vennDiagramPart[vennDiagramPart.length - 1] === '&') {
-        vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
-      }
-      vennDiagramPart += ')';
-      vennDiagramParts.push({
-        compartment,
-        vennDiagramPart,
-      });
-    });
-    return vennDiagramParts;
+    return Table.getVennDiagramParts(this.table);
   }
 
   map(ignoredTerms) {

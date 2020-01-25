@@ -11,16 +11,16 @@ const stages = Object.freeze({
   REDUCTION_STAGE: 2,
 });
 
-function validateArgument(premiseCollection, conclusion, doesPremiseCollectionEntailsConclusion) {
+function validateArgument(premiseCollection, conclusion) {
   const result = premiseCollection.argue(conclusion);
-  return result === doesPremiseCollectionEntailsConclusion;
+  return result;
 }
 
-function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude) {
+function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping) {
   function getShadings() {
     const { REPRESENTATION_STAGE, COMBINATION_STAGE, MAPPING_STAGE } = stages;
 
-    const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
+    let vennDiagramParts;
     const mappings = {};
 
     let column;
@@ -28,18 +28,21 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude
       case REPRESENTATION_STAGE:
       case COMBINATION_STAGE:
         column = premiseCollection.unifyAndResolve();
+        vennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
         break;
       case MAPPING_STAGE:
-        column = premiseCollection.map(termsToExclude);
+        const { mappedTableUnified, vennDiagramParts: mappedVennDiagramParts } = premiseCollection.map(termsInMapping);
+        column = mappedTableUnified;
+        vennDiagramParts = mappedVennDiagramParts.slice(1);
         break;
       default:
         break;
     }
 
-    premiseCollectionVennDiagramParts
+    vennDiagramParts
       .filter(({ compartment }) => compartment.hashCode() in column)
-      .forEach((premiseCollectionVennDiagramPart) => {
-        const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
+      .forEach((partWithCompartment) => {
+        const { compartment, vennDiagramPart } = partWithCompartment;
         const resolvedValueArray = column[compartment.hashCode()];
 
         if (resolvedValueArray.length) {
@@ -80,6 +83,9 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsToExclude
   } else if (stage === COMBINATION_STAGE || stage === MAPPING_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
     const expectedShadings = sortObject(getShadings());
+
+    console.log(actualShadings);
+    console.log(expectedShadings);
 
     result = JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
   }

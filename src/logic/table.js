@@ -3,6 +3,36 @@ import HashDictionary from './dictionary';
 import copy from '../utils/copy';
 
 class Table {
+  static getVennDiagramParts(table) {
+    const n = table.numberOfTerms;
+    const vennDiagramParts = [];
+    table.compartments.forEach((compartment) => {
+      let vennDiagramPart = '(';
+      const truths = compartment.getTruths();
+      const truthKeys = Object.keys(truths);
+      truthKeys.sort();
+      truthKeys.forEach((atom, i) => {
+        const curAtomIsTrue = truths[atom];
+
+        if (curAtomIsTrue) {
+          vennDiagramPart += atom;
+
+          if (i !== n - 1) {
+            vennDiagramPart += '&';
+          }
+        }
+      });
+      if (vennDiagramPart[vennDiagramPart.length - 1] === '&') {
+        vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
+      }
+      vennDiagramPart += ')';
+      vennDiagramParts.push({
+        compartment,
+        vennDiagramPart,
+      });
+    });
+    return vennDiagramParts;
+  }
   constructor(termNames) {
     function permute(compartments, terms, index, size) {
       if (index === size) {
@@ -37,14 +67,21 @@ class Table {
 
   unify() {
     const unifiedCompartments = {};
+
+    const emptyCompartmentDictionary = new HashDictionary();
+    this.compartments.forEach((compartment) => {
+      emptyCompartmentDictionary.add(compartment, null);
+    });
+
+    emptyCompartmentDictionary.forEach((key) => {
+      unifiedCompartments[key] = [];
+    });
+
     const premises = this.tableDictionary.map((keyHash) => this.tableDictionary.keyObj(keyHash));
     premises.forEach((premise) => {
       const compartmentDictionary = this.tableDictionary.get(premise);
 
       compartmentDictionary.forEach((key) => {
-        if (unifiedCompartments[key] === undefined) {
-          unifiedCompartments[key] = [];
-        }
         const compartment = compartmentDictionary.keyObj(key);
         const instances = unifiedCompartments[key];
         const instance = compartmentDictionary.get(compartment);
@@ -73,49 +110,76 @@ class Table {
     return resolvedCompartments;
   }
 
-  map(ignoredTerms) {
-    const keyToFirstItemInDictionary = Object.keys(this.tableDictionary.keyHashToKeyMappings)[0];
-    const keysToCompartments = this
-      .tableDictionary
-      .dictionary[keyToFirstItemInDictionary]
-      .keyHashToKeyMappings;
-    const resolvedCompartments = this.resolve();
-    const reducedCompartments = copy(resolvedCompartments);
-    const supersetCompartments = [];
-    Object.keys(reducedCompartments).forEach((key) => {
-      const compartment = keysToCompartments[key];
-      const truthKeys = Object.keys(compartment.truths);
-      const n = ignoredTerms.length;
-      const compartmentContainsSomeIgnoredTerms = truthKeys
-        // eslint-disable-next-line arrow-body-style
-        .reduce((termsWithAllIgnoredTerms, term) => {
-          return (ignoredTerms.includes(term) && compartment.truths[term])
-            ? termsWithAllIgnoredTerms - 1 : termsWithAllIgnoredTerms;
-        }, n) < n;
-
-      if (compartmentContainsSomeIgnoredTerms) {
-        const entries = reducedCompartments[key];
-        const entriesIncludesAnX = entries.length !== 0 && entries.filter((entry) => entry !== 'e').length !== 0;
-
-        if (entriesIncludesAnX) {
-          supersetCompartments.push(new Compartment(copy(compartment.truths)));
-        }
-
-        delete reducedCompartments[key];
-      }
-    });
-    supersetCompartments.forEach((supersetCompartment) => {
-      Object.keys(supersetCompartment.truths).forEach((term) => {
-        if (ignoredTerms.includes(term)) {
-          const supersetCompartmentRef = supersetCompartment;
-          supersetCompartmentRef.truths[term] = false;
-        }
+  map(terms) {
+    function getCompartments(table) {
+      const compartmentDictionary = new HashDictionary();
+      table.compartments.forEach((compartment) => {
+        compartmentDictionary.add(compartment, null);
       });
-      if (supersetCompartment.hashCode() in reducedCompartments) {
-        reducedCompartments[supersetCompartment.hashCode()] = ['x'];
+
+      return compartmentDictionary.keyHashToKeyMappings;
+    }
+    const thisTableResolved = this.resolve();
+    const thisTableCompartments = getCompartments(this);
+
+    const mappedTable = new Table([...terms]);
+    const mappedTableUnified = mappedTable.unify();
+    const mappedTableCompartments = getCompartments(mappedTable);
+
+    Object.keys(mappedTableUnified).forEach((mappedTableKey) => {
+      const mappedTableCompartment = mappedTableCompartments[mappedTableKey];
+
+      console.log(mappedTableCompartment);
+      console.log(mappedTableKey);
+
+      const aggregatedEntries = Object
+        .keys(thisTableResolved)
+        .filter((thisTableKey) => {
+          const thisTableCompartment = thisTableCompartments[thisTableKey];
+
+          const reducer = Object
+            .keys(mappedTableCompartment.truths)
+            .reduce((counter, term) => {
+              if (thisTableCompartment.truths[term] === mappedTableCompartment.truths[term]) {
+                return counter - 1;
+              }
+
+              return counter;
+            }, 2);
+
+          return reducer === 0;
+        })
+        .map((thisTableKey) => {
+          const items = thisTableResolved[thisTableKey];
+
+          if (!items.length) {
+            return ['m'];
+          }
+
+          return items;
+        })
+        .flat();
+
+      const aggregatedEntriesWithoutDuplicates = [...new Set([...aggregatedEntries])];
+      console.log(aggregatedEntries);
+      const aggregatedEntriesFilteredForXs = [...aggregatedEntriesWithoutDuplicates].filter((item) => item.startsWith('x'));
+      console.log(aggregatedEntriesFilteredForXs);
+      console.log(aggregatedEntriesWithoutDuplicates.indexOf('m'));
+      if (aggregatedEntriesFilteredForXs.length) {
+        mappedTableUnified[mappedTableKey] = aggregatedEntriesFilteredForXs;
+      } else {
+        if (aggregatedEntriesWithoutDuplicates.indexOf('m') !== -1) {
+          mappedTableUnified[mappedTableKey] = [];
+        } else {
+          mappedTableUnified[mappedTableKey] = ['e'];
+        }
       }
     });
-    return reducedCompartments;
+
+    return {
+      mappedTableUnified,
+      vennDiagramParts: Table.getVennDiagramParts(mappedTable),
+    };
   }
 
   validate(conclusion) {
