@@ -1,5 +1,7 @@
 import React from 'react';
 
+import hash from 'object-hash';
+
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -19,22 +21,26 @@ import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetU
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/MapAndArgueQuestion/map_and_argue_question_styles';
+import { select } from 'd3';
 
 class MapAndArgueQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { content } = nextProps;
-    const { conclusion: nextConclusion, premiseCollection: nextPremiseCollection } = content;
-    const { conclusion, premiseCollection } = prevState;
+    const { conclusions: nextConclusions, premiseCollection: nextPremiseCollection } = content;
+    const { conclusions, premiseCollection } = prevState;
+
+    const conclusionsHash = hash(conclusions);
+    const nextConclusionsHash = hash(nextConclusions);
 
     if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()
-      || nextConclusion.hashCode() !== conclusion.hashCode()) {
+      || nextConclusionsHash !== conclusionsHash) {
       return {
         premiseCollection: nextPremiseCollection,
-        conclusion: nextConclusion,
+        conclusions: nextConclusions,
         key: Math.random(),
         step: 0,
         shadings: null,
-        entails: null,
+        selectedConclusionIdx: -1,
       };
     }
 
@@ -44,15 +50,15 @@ class MapAndArgueQuestion extends React.Component {
   constructor(props) {
     super(props);
     const { content } = props;
-    const { premiseCollection, conclusion } = content;
+    const { premiseCollection, conclusions } = content;
 
     this.state = {
       key: Math.random(),
       premiseCollection,
-      conclusion,
+      conclusions,
       step: 0,
       shadings: null,
-      entails: null,
+      selectedConclusionIdx: -1,
     };
     this.premisesVennDiagramRef = React.createRef();
     this.reducedPremisesVennDiagramRef = React.createRef();
@@ -134,7 +140,8 @@ class MapAndArgueQuestion extends React.Component {
         </div>
       );
     }
-    const { premiseCollection, conclusion, shadings } = this.state;
+    const { premiseCollection, conclusions, selectedConclusionIdx, shadings } = this.state;
+    console.log(selectedConclusionIdx);
     const marginLeft = premiseCollection.terms.length === 4 ? { marginLeft: '14%' } : {};
     if (step === 0) {
       return (
@@ -142,7 +149,7 @@ class MapAndArgueQuestion extends React.Component {
           {
             renderUninteractiveVennDiagram(premiseCollection, this.premisesVennDiagramRef)
           }
-          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={conclusion} ref={this.reducedPremisesVennDiagramRef} />
+          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={conclusions[0]} ref={this.reducedPremisesVennDiagramRef} />
 
         </div>
       );
@@ -152,17 +159,22 @@ class MapAndArgueQuestion extends React.Component {
         <Typography variant="h6">
           Mapped Venn Diagram:
         </Typography>
-        <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} terms={conclusion.terms} />
+        <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} terms={conclusions[0].terms} />
         <FormControl component="fieldset">
           <FormLabel component="legend">
-            Does the reduced Venn Diagram entail the conclusion
-            {
-              ` '${conclusion.toSymbolicForm()}'?`
-            }
+            Please select the conclusion that is entailed by the Venn Diagram.
           </FormLabel>
-          <RadioGroup aria-label="gender" name="customized-radios" onChange={(event) => this.setState({ entails: event.target.value })}>
-            <FormControlLabel value="true" control={<Radio />} label="Yes" />
-            <FormControlLabel value="false" control={<Radio />} label="No" />
+          <RadioGroup aria-label="conclusions" name="customized-radios" onChange={(event) => this.setState({ selectedConclusionIdx: Number(event.target.value) })}>
+            {
+              conclusions.map((conclusion, idx) => (
+                <FormControlLabel
+                  key={conclusion.toSymbolicForm()}
+                  value={String(idx)}
+                  control={<Radio />}
+                  label={conclusion.toSymbolicForm()}
+                />
+              ))
+            }
           </RadioGroup>
         </FormControl>
       </div>
@@ -170,26 +182,17 @@ class MapAndArgueQuestion extends React.Component {
   }
 
   validate = () => {
-    function getTermsToExclude(premiseCollection, conclusion) {
-      const { premises } = premiseCollection;
-
-      const termSet = new Set();
-      premises.forEach((premise) => {
-        const { firstTerm, secondTerm } = premise.terms;
-        termSet.add(firstTerm);
-
-        if (secondTerm) {
-          termSet.add(secondTerm);
-        }
-      });
-
-      const { firstTerm: conclusionFirstTerm, secondTerm: conclusionSecondTerm } = conclusion.terms;
-      const termsToExclude = [...termSet]
-        .filter((term) => term !== conclusionFirstTerm && term !== conclusionSecondTerm);
-      return termsToExclude;
+    function getTermsToExclude(conclusion) {
+      const { firstTerm, secondTerm } = conclusion.terms;
+      return [firstTerm, secondTerm];
     }
     const { MAPPING_STAGE } = stages;
-    const { premiseCollection, conclusion, step, entails } = this.state;
+    const {
+      premiseCollection,
+      conclusions,
+      step,
+      selectedConclusionIdx,
+    } = this.state;
     const { onValidate } = this.props;
 
     let result;
@@ -199,10 +202,10 @@ class MapAndArgueQuestion extends React.Component {
         premiseCollection,
         this.reducedPremisesVennDiagramRef,
         MAPPING_STAGE,
-        getTermsToExclude(premiseCollection, conclusion),
+        getTermsToExclude(conclusions[0]),
       );
     } else if (step === 1) {
-      result = validateArgument(premiseCollection, conclusion, entails === 'true');
+      result = validateArgument(premiseCollection, conclusions[selectedConclusionIdx]);
     }
 
     onValidate(result, 'Incorrect!');

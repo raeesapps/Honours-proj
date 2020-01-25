@@ -20,6 +20,15 @@ function generatePremiseCollection(premises, conclusion) {
   return premiseCollection;
 }
 
+function generatePremiseCollectionAndConclusions(premises, conclusions) {
+  const premiseCollection = new PremiseCollection([...premises]);
+
+  return {
+    premiseCollection,
+    conclusions: [...conclusions],
+  };
+}
+
 const {
   ALL_A_IS_B,
   SOME_A_IS_B,
@@ -320,28 +329,43 @@ const mapAndArgueQuestion = {
   component: MapAndArgueQuestion,
   questions: [
     {
-      title: 'BARBARA',
-      content: generatePremiseCollection(
+      title: 'Baroco',
+      content: generatePremiseCollectionAndConclusions(
         [
           new Premise(ALL_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
+          new Premise(SOME_A_IS_NOT_B, {
+            firstTerm: 'C',
+            secondTerm: 'B',
+          }),
+        ],
+        [
+          new Premise(SOME_A_IS_NOT_B, {
+            firstTerm: 'C',
+            secondTerm: 'A',
+          }),
           new Premise(ALL_A_IS_B, {
-            firstTerm: 'B',
+            firstTerm: 'C',
+            secondTerm: 'A',
+          }),
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'A',
             secondTerm: 'C',
           }),
-        ], new Premise(ALL_A_IS_B, {
-          firstTerm: 'A',
-          secondTerm: 'C',
-        }),
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'C',
+            secondTerm: 'A',
+          }),
+        ],
       ),
     },
     {
       title: 'Sorites #1',
-      content: generatePremiseCollection(
+      content: generatePremiseCollectionAndConclusions(
         [
-          new Premise(ALL_A_IS_B, {
+          new Premise(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
@@ -353,10 +377,25 @@ const mapAndArgueQuestion = {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
-        ], new Premise(ALL_A_IS_B, {
-          firstTerm: 'A',
-          secondTerm: 'D',
-        }),
+        ],
+        [
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'C',
+          }),
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'C',
+            secondTerm: 'A',
+          }),
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'C',
+          }),
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'C',
+            secondTerm: 'A',
+          }),
+        ],
       ),
     },
   ],
