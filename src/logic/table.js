@@ -129,9 +129,6 @@ class Table {
     Object.keys(mappedTableUnified).forEach((mappedTableKey) => {
       const mappedTableCompartment = mappedTableCompartments[mappedTableKey];
 
-      console.log(mappedTableCompartment);
-      console.log(mappedTableKey);
-
       const aggregatedEntries = Object
         .keys(thisTableResolved)
         .filter((thisTableKey) => {
@@ -161,10 +158,7 @@ class Table {
         .flat();
 
       const aggregatedEntriesWithoutDuplicates = [...new Set([...aggregatedEntries])];
-      console.log(aggregatedEntries);
       const aggregatedEntriesFilteredForXs = [...aggregatedEntriesWithoutDuplicates].filter((item) => item.startsWith('x'));
-      console.log(aggregatedEntriesFilteredForXs);
-      console.log(aggregatedEntriesWithoutDuplicates.indexOf('m'));
       if (aggregatedEntriesFilteredForXs.length) {
         mappedTableUnified[mappedTableKey] = aggregatedEntriesFilteredForXs;
       } else {
