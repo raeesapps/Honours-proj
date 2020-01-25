@@ -31,7 +31,10 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
         vennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
         break;
       case MAPPING_STAGE:
-        const { mappedTableUnified, vennDiagramParts: mappedVennDiagramParts } = premiseCollection.map(termsInMapping);
+        const {
+          mappedTableUnified,
+          vennDiagramParts: mappedVennDiagramParts,
+        } = premiseCollection.map(termsInMapping);
         column = mappedTableUnified;
         vennDiagramParts = mappedVennDiagramParts.slice(1);
         break;
