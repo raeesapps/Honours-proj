@@ -4,7 +4,12 @@ const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
 const SHADED = '2';
 
-const twoSetCircles = [
+const TWO_SET_CIRCLES_ORIENTATION = Object.freeze({
+  VERTICAL: 0,
+  HORIZONTAL: 1,
+});
+
+const twoSetHorizontalCircles = [
   {
     cX: 90,
     cY: 92,
@@ -17,7 +22,35 @@ const twoSetCircles = [
   },
 ];
 
-const twoSetCircleVennDiagramPaths = [
+const twoSetVerticalCircles = [
+  {
+    cX: 90,
+    cY: 92,
+    id: 'circle1',
+  },
+  {
+    cX: 90,
+    cY: 200,
+    id: 'circle2',
+  },
+];
+
+const twoSetVerticalCircleVennDiagramPaths = [
+  {
+    name: '(A)',
+    path: 'M 81.00,13.42 C 71.34,14.88 65.02,16.05 56.00,20.32 29.40,32.93 11.14,60.45 11.00,90.00 10.93,104.75 13.48,118.12 21.01,131.00 22.55,133.63 26.87,140.90 29.30,142.26 32.67,144.14 36.53,139.62 39.00,137.61 47.29,130.88 54.90,126.70 65.00,123.33 84.83,116.73 106.18,117.88 125.00,127.27 130.73,130.13 136.03,133.58 141.00,137.61 142.82,139.09 146.59,142.82 148.91,142.80 152.17,142.79 156.24,135.56 157.80,133.00 164.65,121.71 168.84,108.27 169.00,95.00 169.16,80.87 167.12,68.76 160.73,56.00 146.06,26.72 113.38,9.47 81.00,13.42 Z',
+  },
+  {
+    name: '(A&B)',
+    path: 'M 81.00,121.42 C 66.06,123.68 56.59,126.56 44.00,135.44 41.23,137.39 34.20,142.38 34.20,146.00 34.20,149.79 42.05,155.24 45.00,157.25 57.32,165.64 72.01,170.82 87.00,171.00 104.91,171.21 118.88,167.86 134.00,157.92 137.14,155.86 145.80,149.96 145.80,146.00 145.80,141.86 136.32,135.55 133.00,133.44 117.58,123.62 99.22,119.20 81.00,121.42 Z',
+  },
+  {
+    name: '(B)',
+    path: 'M 30.17,149.34 C 25.98,152.03 23.50,156.75 21.01,161.00 13.28,174.23 10.83,187.87 11.00,203.00 11.48,243.43 46.57,278.52 87.00,279.00 96.99,279.11 106.48,278.19 116.00,274.92 146.17,264.58 168.62,235.14 169.00,203.00 169.17,188.56 166.98,175.93 160.22,163.00 158.69,160.08 153.89,152.28 151.54,150.37 147.85,147.38 144.88,151.23 142.00,153.54 135.41,158.83 127.92,163.90 120.00,166.94 98.70,175.09 76.80,175.14 56.00,165.22 50.42,162.55 44.83,159.05 40.00,155.19 36.62,152.49 34.58,149.53 30.17,149.34 Z',
+  },
+];
+
+const twoSetHorizontalCircleVennDiagramPaths = [
   {
     name: '(A)',
     path: 'M 81.00,13.42 C 74.80,14.36 70.05,15.00 64.00,17.08 41.41,24.83 22.83,43.41 15.08,66.00 -1.85,115.37 33.79,170.37 87.00,171.00 102.80,171.18 116.26,168.58 130.00,160.40 132.71,158.78 139.87,154.42 141.26,151.83 143.36,147.91 135.35,140.37 133.09,137.00 124.72,124.50 121.06,112.80 119.28,98.00 117.66,84.47 122.28,65.83 128.86,54.00 131.83,48.67 133.80,45.76 137.61,41.00 138.97,39.30 141.83,36.27 141.81,34.04 141.76,30.20 132.13,24.84 129.00,23.01 115.08,14.88 96.98,11.47 81.00,13.42 Z',
@@ -264,10 +297,14 @@ function drawPaths(diagram, paths, mouseEventListener) {
   });
 }
 
-function createTwoSetCircularVennDiagram(elementId, circles, mouseEventListener) {
-  const width = 300;
-  const height = 180;
-
+function createTwoSetCircularVennDiagram(
+  elementId,
+  width,
+  height,
+  circles,
+  paths,
+  mouseEventListener,
+) {
   const div = d3.select(`#${elementId}`);
   const diagram = div.append('svg').attr('width', width).attr('height', height);
 
@@ -280,7 +317,7 @@ function createTwoSetCircularVennDiagram(elementId, circles, mouseEventListener)
     drawCircle(diagram, cX, cY, id);
   });
 
-  drawPaths(diagram, twoSetCircleVennDiagramPaths, mouseEventListener);
+  drawPaths(diagram, paths, mouseEventListener);
 
   return div;
 }
@@ -475,11 +512,15 @@ export {
   NOT_SHADED,
   MAYBE_SHADED,
   SHADED,
+  TWO_SET_CIRCLES_ORIENTATION,
   createFourSetEllipticVennDiagram,
   createThreeSetCircularVennDiagram,
   createTwoSetCircularVennDiagram,
   fourSetEllipses,
-  twoSetCircles,
+  twoSetHorizontalCircles,
+  twoSetVerticalCircles,
+  twoSetHorizontalCircleVennDiagramPaths,
+  twoSetVerticalCircleVennDiagramPaths,
   threeSetCircles,
   mapRegion,
   generateMappingObjects,

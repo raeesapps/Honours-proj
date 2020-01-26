@@ -10,14 +10,20 @@ import {
   NOT_SHADED,
   MAYBE_SHADED,
   SHADED,
+  TWO_SET_CIRCLES_ORIENTATION,
+  twoSetHorizontalCircles,
+  twoSetVerticalCircles,
+  twoSetHorizontalCircleVennDiagramPaths,
+  twoSetVerticalCircleVennDiagramPaths,
   createTwoSetCircularVennDiagram,
-  twoSetCircles,
   mapRegion,
   generateMappingObjects,
   bindMouseEventListeners,
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/two_set_interactive_venn_diagram_styles';
+
+const { HORIZONTAL, VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class TwoSetInteractiveVennDiagram extends React.PureComponent {
   constructor() {
@@ -30,7 +36,7 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { title, premise, shadings } = this.props;
+    const { title, premise, shadings, orientation } = this.props;
 
     const { firstTerm, secondTerm } = premise.terms;
 
@@ -40,7 +46,32 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
     });
 
     const id = title.split(' ').join('');
-    const div = createTwoSetCircularVennDiagram(id, twoSetCircles, bindMouseEventListeners);
+    let div;
+
+    switch (orientation) {
+      case HORIZONTAL:
+        div = createTwoSetCircularVennDiagram(
+          id,
+          300,
+          180,
+          twoSetHorizontalCircles,
+          twoSetHorizontalCircleVennDiagramPaths,
+          bindMouseEventListeners,
+        );
+        break;
+      case VERTICAL:
+        div = createTwoSetCircularVennDiagram(
+          id,
+          175,
+          280,
+          twoSetVerticalCircles,
+          twoSetVerticalCircleVennDiagramPaths,
+          bindMouseEventListeners,
+        );
+        break;
+      default:
+        break;
+    }
     this.div = div;
 
     if (shadings) {
@@ -96,15 +127,16 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
   }
 
   render() {
-    const { classes, title, ...rest } = this.props;
+    const { classes, title, orientation, ...rest } = this.props;
     const { a, b } = this.state;
     const id = title.split(' ').join('');
+    const bClass = orientation === HORIZONTAL ? classes.bHorizontal : classes.bVertical;
     return (
       <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
           {a && a.length === 1 ? a : 'A'}
         </Typography>
-        <Typography variant="body1" className={classes.topRight}>
+        <Typography variant="body1" className={bClass}>
           {b && b.length === 1 ? b : 'B'}
         </Typography>
         <div id={id} />

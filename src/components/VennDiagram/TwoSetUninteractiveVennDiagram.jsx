@@ -5,14 +5,20 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import {
+  TWO_SET_CIRCLES_ORIENTATION,
+  twoSetHorizontalCircles,
+  twoSetVerticalCircles,
+  twoSetHorizontalCircleVennDiagramPaths,
+  twoSetVerticalCircleVennDiagramPaths,
   createTwoSetCircularVennDiagram,
   generateMappingObjects,
   shadeRegion,
-  twoSetCircles,
   applyShadings,
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/two_set_uninteractive_venn_diagram_styles';
+
+const { HORIZONTAL, VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class TwoSetUninteractiveVennDiagram extends React.PureComponent {
   constructor() {
@@ -25,9 +31,33 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { title, shadings, terms } = this.props;
+    const { title, shadings, orientation, terms } = this.props;
     const id = title.split(' ').join('');
-    const div = createTwoSetCircularVennDiagram(id, twoSetCircles);
+    let div;
+
+    switch (orientation) {
+      case HORIZONTAL:
+        div = createTwoSetCircularVennDiagram(
+          id,
+          300,
+          180,
+          twoSetHorizontalCircles,
+          twoSetHorizontalCircleVennDiagramPaths,
+        );
+        break;
+      case VERTICAL:
+        div = createTwoSetCircularVennDiagram(
+          id,
+          175,
+          280,
+          twoSetVerticalCircles,
+          twoSetVerticalCircleVennDiagramPaths,
+        );
+        break;
+      default:
+        break;
+    }
+
     this.div = div;
 
     if (shadings) {
@@ -50,16 +80,18 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     const {
       classes,
       title,
+      orientation,
       ...rest
     } = this.props;
     const { a, b } = this.state;
     const id = title.split(' ').join('');
+    const bClass = orientation === HORIZONTAL ? classes.bHorizontal : classes.bVertical;
     return (
       <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
           {a && a.length === 1 ? a : 'A'}
         </Typography>
-        <Typography variant="body1" className={classes.topRight}>
+        <Typography variant="body1" className={bClass}>
           {b && b.length === 1 ? b : 'B'}
         </Typography>
         <div id={id} />
