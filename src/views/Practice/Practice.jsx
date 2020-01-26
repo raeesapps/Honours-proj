@@ -22,10 +22,10 @@ class Practice extends React.Component {
     const { Component, content } = this.state;
     return (
       <Grid container>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Questions onClick={this.setComponent} />
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <Component content={content} onClick={this.setComponent} />
         </Grid>
       </Grid>
