@@ -129,7 +129,6 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
     return (
       <div className={classes.root} key={key}>
         <Typography variant="h5" style={{ marginBottom: '5px' }}>Translate Syllogism to Symbolic Form</Typography>
-
         {
           premises.map((premise, idx) => (
             <Typography key={premise.toSentence()} style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="subtitle1">{premise.toSentence()}</Typography>
