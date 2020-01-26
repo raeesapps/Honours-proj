@@ -99,17 +99,25 @@ class Premise {
   }
 
   populateTable(table, conclusionCompartments) {
-    function addEntry(compartment, criteriaCallbackFn, entryIfConclusion, entryIfNotConclusion) {
+    function addEntry(
+      compartmentDictionary,
+      compartment,
+      criteriaCallbackFn,
+      entryIfConclusion,
+      entryIfNotConclusion,
+    ) {
       const truthKeys = Object.keys(compartment.getTruths());
       const criteria = truthKeys.filter(criteriaCallbackFn).length > 0;
       if (criteria) {
         if (conclusionCompartments) {
+          const conclusionCompartmentsReference = conclusionCompartments;
           conclusionCompartmentsReference[compartment.hashCode()] = entryIfConclusion;
         } else {
           compartmentDictionary.add(compartment, entryIfNotConclusion);
         }
       }
     }
+
     if (!conclusionCompartments && !table.has(this)) {
       return;
     }
@@ -125,25 +133,54 @@ class Premise {
     const { firstTerm, secondTerm } = this.terms;
     const compartmentDictionary = table.get(this);
     const i = table.size();
-    const conclusionCompartmentsReference = conclusionCompartments;
     compartmentDictionary.forEach((keyHash) => {
       const compartment = compartmentDictionary.keyObj(keyHash);
       const truths = compartment.getTruths();
       switch (this.form) {
         case ALL_A_IS_B:
-          addEntry(compartment, () => truths[firstTerm] && !truths[secondTerm], e(), e());
+          addEntry(
+            compartmentDictionary,
+            compartment,
+            () => truths[firstTerm] && !truths[secondTerm],
+            e(),
+            e(),
+          );
           break;
         case NO_A_IS_B:
-          addEntry(compartment, () => truths[firstTerm] && truths[secondTerm], e(), e());
+          addEntry(
+            compartmentDictionary,
+            compartment,
+            () => truths[firstTerm] && truths[secondTerm],
+            e(),
+            e(),
+          );
           break;
         case SOME_A_IS_NOT_B:
-          addEntry(compartment, () => truths[firstTerm] && !truths[secondTerm], x_i(), x(i));
+          addEntry(
+            compartmentDictionary,
+            compartment,
+            () => truths[firstTerm] && !truths[secondTerm],
+            x_i(),
+            x(i),
+          );
           break;
         case SOME_A_IS_B:
-          addEntry(compartment, () => truths[firstTerm] && truths[secondTerm], x_i(), x(i));
+          addEntry(
+            compartmentDictionary,
+            compartment,
+            () => truths[firstTerm] && truths[secondTerm],
+            x_i(),
+            x(i),
+          );
           break;
         case SOME_A_EXIST:
-          addEntry(compartment, () => truths[firstTerm], x_i(), x(i));
+          addEntry(
+            compartmentDictionary,
+            compartment,
+            () => truths[firstTerm],
+            x_i(),
+            x(i),
+          );
           break;
         default:
           break;
