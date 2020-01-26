@@ -31,6 +31,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
         vennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
         break;
       case MAPPING_STAGE:
+        // eslint-disable-next-line no-case-declarations
         const {
           mappedTableUnified,
           vennDiagramParts: mappedVennDiagramParts,
@@ -86,9 +87,6 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
   } else if (stage === COMBINATION_STAGE || stage === MAPPING_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
     const expectedShadings = sortObject(getShadings());
-
-    console.log(actualShadings);
-    console.log(expectedShadings);
 
     result = JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
   }
