@@ -7,11 +7,11 @@ import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
 
-import Arrow from '../../components/Arrow/Arrow';
 import FourSetInteractiveVennDiagram from '../../components/VennDiagram/FourSetInteractiveVennDiagram';
 import ThreeSetInteractiveVennDiagram from '../../components/VennDiagram/ThreeSetInteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
+import LevelOneVennDiagramTree from '../../components/VennDiagramTree/LevelOneVennDiagramTree';
 import PremiseCollection from '../../logic/premise_collection';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
@@ -80,81 +80,6 @@ class CombineDiagramsQuestion extends React.Component {
     return result;
   }
 
-  renderPremiseVennDiagram = (premise, idx, numberOfPremises) => {
-    const { premisesVennDiagramRef } = this.state;
-    function renderArrow() {
-      let x1;
-      let y1;
-      let x2;
-      let y2;
-
-      if (numberOfPremises === 2) {
-        switch (idx) {
-          case 0:
-            x1 = 50;
-            y1 = 0;
-            x2 = 150;
-            y2 = 150;
-            break;
-          case 1:
-            x1 = 130;
-            y1 = 0;
-            x2 = 30;
-            y2 = 150;
-            break;
-          default:
-            break;
-        }
-      } else if (numberOfPremises === 3) {
-        switch (idx) {
-          case 0:
-            x1 = 50;
-            y1 = 0;
-            x2 = 100;
-            y2 = 150;
-            break;
-          case 1:
-            x1 = 90;
-            y1 = 0;
-            x2 = 90;
-            y2 = 150;
-            break;
-          case 2:
-            x1 = 150;
-            y1 = 0;
-            x2 = 100;
-            y2 = 150;
-            break;
-          default:
-            break;
-        }
-      }
-
-      return (
-        <Arrow
-          id={`arrow${idx}`}
-          width={300}
-          height={175}
-          x1={x1}
-          y1={y1}
-          x2={x2}
-          y2={y2}
-        />
-      );
-    }
-
-    const ref = premisesVennDiagramRef[idx];
-
-    return (
-      <div key={`${premise.toSentence()}VennDiagram`} style={{ marginLeft: '15px', width: '175px' }}>
-        <TwoSetUninteractiveVennDiagram title={premise.toSentence()} terms={premise.terms} orientation={VERTICAL} ref={ref} />
-        {
-          renderArrow()
-        }
-      </div>
-    );
-  }
-
   render() {
     function renderInteractiveVennDiagram(premiseCollection, vennDiagramRef) {
       if (premiseCollection.terms.length === 3) {
@@ -174,7 +99,7 @@ class CombineDiagramsQuestion extends React.Component {
       return ` "${symbolicForm}", `;
     }
     const { classes } = this.props;
-    const { premiseCollection, key } = this.state;
+    const { premiseCollection, premisesVennDiagramRef, key } = this.state;
     const { premises } = premiseCollection;
     // eslint-disable-next-line no-nested-ternary
     const width = premiseCollection.terms.length === 3 ? '400px'
@@ -189,11 +114,19 @@ class CombineDiagramsQuestion extends React.Component {
           into one Venn Diagram
         </Typography>
         <Paper style={{ width }}>
-          <div style={{ display: 'flex' }}>
-            {
-              premises.map((premise, idx) => this.renderPremiseVennDiagram(premise, idx, premises.length))
+          <LevelOneVennDiagramTree
+            vennDiagramList={
+              premises.map((premise, idx) => (
+                <TwoSetUninteractiveVennDiagram
+                  title={premise.toSentence()}
+                  terms={premise.terms}
+                  orientation={VERTICAL}
+                  ref={premisesVennDiagramRef[idx]}
+                />
+              ))
             }
-          </div>
+            order={premiseCollection.terms.length}
+          />
           {
             renderInteractiveVennDiagram(premiseCollection, this.combinationVennDiagramRef)
           }
