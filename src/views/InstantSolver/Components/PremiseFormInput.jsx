@@ -133,7 +133,9 @@ class PremiseFormInput extends React.PureComponent {
               onChange={(event) => this.setState({ relationship: event.target.value })}
             >
               <MenuItem value={ARE}>{ARE}</MenuItem>
-              <MenuItem value={ARE_NOT}>{ARE_NOT}</MenuItem>
+              {
+                quantifier === SOME && <MenuItem value={ARE_NOT}>{ARE_NOT}</MenuItem>
+              }
             </Select>
           </FormControl>
           <TextField
