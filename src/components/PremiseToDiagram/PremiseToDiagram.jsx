@@ -8,6 +8,10 @@ import TwoSetInteractiveVennDiagram from '../VennDiagram/TwoSetInteractiveVennDi
 import ThreeSetInteractiveVennDiagram from '../VennDiagram/ThreeSetInteractiveVennDiagram';
 import FourSetInteractiveVennDiagram from '../VennDiagram/FourSetInteractiveVennDiagram';
 
+import { TWO_SET_CIRCLES_ORIENTATION } from '../VennDiagram/venn_utils';
+
+const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
+
 class PremiseToDiagram extends React.PureComponent {
   constructor() {
     super();
@@ -51,7 +55,7 @@ class PremiseToDiagram extends React.PureComponent {
           }
         </Typography>
         {
-          numberOfTermsInPremiseCollection === 2 && <TwoSetInteractiveVennDiagram title={`${title}rep`} premise={premise} ref={vennDiagramRef} shadings={vennDiagramShading} />
+          numberOfTermsInPremiseCollection === 2 && <TwoSetInteractiveVennDiagram title={`${title}rep`} premise={premise} ref={vennDiagramRef} orientation={HORIZONTAL} shadings={vennDiagramShading} />
         }
         {
           numberOfTermsInPremiseCollection === 3 && <ThreeSetInteractiveVennDiagram title={`${title}rep`} premises={premiseCollection} ref={vennDiagramRef} />

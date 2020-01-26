@@ -18,10 +18,12 @@ import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSe
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
 import TwoSetInteractiveVennDiagram from '../../components/VennDiagram/TwoSetInteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
+import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/MapAndArgueQuestion/map_and_argue_question_styles';
-import { select } from 'd3';
+
+const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class MapAndArgueQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -148,8 +150,7 @@ class MapAndArgueQuestion extends React.Component {
           {
             renderUninteractiveVennDiagram(premiseCollection, this.premisesVennDiagramRef)
           }
-          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={conclusions[0]} ref={this.reducedPremisesVennDiagramRef} />
-
+          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={conclusions[0]} orientation={HORIZONTAL} ref={this.reducedPremisesVennDiagramRef} />
         </div>
       );
     }
@@ -158,7 +159,7 @@ class MapAndArgueQuestion extends React.Component {
         <Typography variant="h6">
           Mapped Venn Diagram:
         </Typography>
-        <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} terms={conclusions[0].terms} />
+        <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} orientation={HORIZONTAL} terms={conclusions[0].terms} />
         <FormControl component="fieldset">
           <FormLabel component="legend">
             Please select the conclusion that is entailed by the Venn Diagram.

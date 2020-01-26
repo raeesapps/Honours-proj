@@ -21,12 +21,14 @@ import ArgumentForm from './Components/ArgumentForm';
 import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
+import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
 
 import PremiseCollection from '../../logic/premise_collection';
 import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
 
+const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
 const { SUCCESS, ERROR } = snackbarTypes;
 
 function getTermSets(premiseObjs) {
@@ -254,7 +256,7 @@ class InstantSolver extends React.Component {
                         <Container>
                           {this.getNumberOfTerms(true) === 4 && <FourSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} />}
                           {this.getNumberOfTerms(true) === 3 && <ThreeSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
-                          {this.getNumberOfTerms(true) === 2 && <TwoSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
+                          {this.getNumberOfTerms(true) === 2 && <TwoSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} orientation={HORIZONTAL} title="Premises" />}
                         </Container>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -269,7 +271,7 @@ class InstantSolver extends React.Component {
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <Container>
-                      <TwoSetUninteractiveVennDiagram key={conclusionsKey} ref={this.conclusionVennDiagramRef} title="Conclusion" />
+                      <TwoSetUninteractiveVennDiagram key={conclusionsKey} orientation={HORIZONTAL} ref={this.conclusionVennDiagramRef} title="Conclusion" />
                     </Container>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
