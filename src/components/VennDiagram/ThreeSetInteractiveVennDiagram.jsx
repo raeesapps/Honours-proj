@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import {
   NOT_SHADED,
   createThreeSetCircularVennDiagram,
-  threeSetCircles,
   mapRegion,
   bindMouseEventListeners,
 } from './venn_utils';
@@ -36,7 +35,7 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
     });
 
     const id = title.split(' ').join('');
-    const div = createThreeSetCircularVennDiagram(id, threeSetCircles, bindMouseEventListeners);
+    const div = createThreeSetCircularVennDiagram(id, bindMouseEventListeners);
     this.div = div;
   }
 

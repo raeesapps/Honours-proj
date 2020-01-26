@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import {
   NOT_SHADED,
   createFourSetEllipticVennDiagram,
-  fourSetEllipses,
   mapRegion,
   bindMouseEventListeners,
 } from './venn_utils';
@@ -38,7 +37,7 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
       d: premises.terms[3],
     });
 
-    const div = createFourSetEllipticVennDiagram('ellipseVenn', fourSetEllipses, bindMouseEventListeners);
+    const div = createFourSetEllipticVennDiagram('ellipseVenn', bindMouseEventListeners);
     this.div = div;
   }
 

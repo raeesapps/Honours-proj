@@ -267,19 +267,6 @@ function bindMouseEventListeners(div) {
     });
 }
 
-function drawCircle(diagram, cX, cY, id) {
-  diagram.append('circle')
-    .attr('fill-opacity', 0)
-    .attr('stroke', 'blue')
-    .attr('stroke-width', 1)
-    .attr('opacity', 1)
-    .attr('fill', '#ffffff')
-    .attr('r', 80)
-    .attr('cx', cX)
-    .attr('cy', cY)
-    .attr('id', id);
-}
-
 function drawPaths(diagram, paths, mouseEventListener) {
   paths.forEach((pathEntry) => {
     const { name, path } = pathEntry;
@@ -297,7 +284,7 @@ function drawPaths(diagram, paths, mouseEventListener) {
   });
 }
 
-function createTwoSetCircularVennDiagram(
+function createCircularVennDiagram(
   elementId,
   width,
   height,
@@ -305,6 +292,18 @@ function createTwoSetCircularVennDiagram(
   paths,
   mouseEventListener,
 ) {
+  function drawCircle(diagram, cX, cY, id) {
+    diagram.append('circle')
+      .attr('fill-opacity', 0)
+      .attr('stroke', 'blue')
+      .attr('stroke-width', 1)
+      .attr('opacity', 1)
+      .attr('fill', '#ffffff')
+      .attr('r', 80)
+      .attr('cx', cX)
+      .attr('cy', cY)
+      .attr('id', id);
+  }
   const div = d3.select(`#${elementId}`);
   const diagram = div.append('svg').attr('width', width).attr('height', height);
 
@@ -322,28 +321,41 @@ function createTwoSetCircularVennDiagram(
   return div;
 }
 
-function createThreeSetCircularVennDiagram(elementId, circles, mouseEventListener) {
-  const width = 300;
-  const height = 270;
-
-  const div = d3.select(`#${elementId}`);
-  const diagram = div.append('svg').attr('width', width).attr('height', height);
-
-  circles.forEach((circle) => {
-    const {
-      cX,
-      cY,
-      id,
-    } = circle;
-    drawCircle(diagram, cX, cY, id);
-  });
-
-  drawPaths(diagram, threeSetCircleVennDiagramPaths, mouseEventListener);
-
-  return div;
+function createTwoSetHorizontalCircularVennDiagram(elementId, mouseEventListener) {
+  return createCircularVennDiagram(
+    elementId,
+    300,
+    180,
+    twoSetHorizontalCircles,
+    twoSetHorizontalCircleVennDiagramPaths,
+    mouseEventListener,
+  );
 }
 
-function createFourSetEllipticVennDiagram(id, ellipses, mouseEventListener) {
+
+function createTwoSetVerticalCircularVennDiagram(elementId, mouseEventListener) {
+  return createCircularVennDiagram(
+    elementId,
+    175,
+    280,
+    twoSetVerticalCircles,
+    twoSetVerticalCircleVennDiagramPaths,
+    mouseEventListener,
+  );
+}
+
+function createThreeSetCircularVennDiagram(elementId, mouseEventListener) {
+  return createCircularVennDiagram(
+    elementId,
+    300,
+    270,
+    threeSetCircles,
+    threeSetCircleVennDiagramPaths,
+    mouseEventListener,
+  );
+}
+
+function createFourSetEllipticVennDiagram(id, mouseEventListener) {
   function drawEllipse(diagram, cX, cY, rX, rY, rotationAng, eID) {
     const transformation = `rotate(${rotationAng} ${cX} ${cY})`;
 
@@ -361,17 +373,13 @@ function createFourSetEllipticVennDiagram(id, ellipses, mouseEventListener) {
       .attr('fill', '#ffffff');
   }
 
-  if (ellipses.length !== 4) {
-    throw new Error('You can only draw four ellipses!');
-  }
-
   const width = 746;
   const height = 500;
 
   const div = d3.select(`#${id}`);
   const diagram = div.append('svg').attr('width', width).attr('height', height);
 
-  ellipses.forEach((ellipse) => {
+  fourSetEllipses.forEach((ellipse) => {
     const {
       cX,
       cY,
@@ -515,13 +523,8 @@ export {
   TWO_SET_CIRCLES_ORIENTATION,
   createFourSetEllipticVennDiagram,
   createThreeSetCircularVennDiagram,
-  createTwoSetCircularVennDiagram,
-  fourSetEllipses,
-  twoSetHorizontalCircles,
-  twoSetVerticalCircles,
-  twoSetHorizontalCircleVennDiagramPaths,
-  twoSetVerticalCircleVennDiagramPaths,
-  threeSetCircles,
+  createTwoSetHorizontalCircularVennDiagram,
+  createTwoSetVerticalCircularVennDiagram,
   mapRegion,
   generateMappingObjects,
   shadeRegion,

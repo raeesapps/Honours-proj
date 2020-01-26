@@ -3,11 +3,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-import {
-  createThreeSetCircularVennDiagram,
-  threeSetCircles,
-  applyShadings,
-} from './venn_utils';
+import { createThreeSetCircularVennDiagram, applyShadings } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/three_set_uninteractive_venn_diagram_styles';
 
@@ -25,7 +21,7 @@ class ThreeSetUninteractiveVennDiagram extends React.PureComponent {
   componentDidMount() {
     const { title } = this.props;
     const id = title.split(' ').join('');
-    this.div = createThreeSetCircularVennDiagram(id, threeSetCircles);
+    this.div = createThreeSetCircularVennDiagram(id);
   }
 
   applyShading = (premiseCollection) => {

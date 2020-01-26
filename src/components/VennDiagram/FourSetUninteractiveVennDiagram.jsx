@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 
 import {
   createFourSetEllipticVennDiagram,
-  fourSetEllipses,
   applyShadings,
 } from './venn_utils';
 
@@ -25,7 +24,7 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.div = createFourSetEllipticVennDiagram('ellipseVenn', fourSetEllipses);
+    this.div = createFourSetEllipticVennDiagram('ellipseVenn');
   }
 
   applyShading = (premiseCollection) => {

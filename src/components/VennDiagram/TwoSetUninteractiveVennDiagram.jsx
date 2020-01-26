@@ -6,11 +6,8 @@ import Typography from '@material-ui/core/Typography';
 
 import {
   TWO_SET_CIRCLES_ORIENTATION,
-  twoSetHorizontalCircles,
-  twoSetVerticalCircles,
-  twoSetHorizontalCircleVennDiagramPaths,
-  twoSetVerticalCircleVennDiagramPaths,
-  createTwoSetCircularVennDiagram,
+  createTwoSetHorizontalCircularVennDiagram,
+  createTwoSetVerticalCircularVennDiagram,
   generateMappingObjects,
   shadeRegion,
   applyShadings,
@@ -31,28 +28,21 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { title, shadings, orientation, terms } = this.props;
+    const {
+      title,
+      shadings,
+      orientation,
+      terms,
+    } = this.props;
     const id = title.split(' ').join('');
     let div;
 
     switch (orientation) {
       case HORIZONTAL:
-        div = createTwoSetCircularVennDiagram(
-          id,
-          300,
-          180,
-          twoSetHorizontalCircles,
-          twoSetHorizontalCircleVennDiagramPaths,
-        );
+        div = createTwoSetHorizontalCircularVennDiagram(id);
         break;
       case VERTICAL:
-        div = createTwoSetCircularVennDiagram(
-          id,
-          175,
-          280,
-          twoSetVerticalCircles,
-          twoSetVerticalCircleVennDiagramPaths,
-        );
+        div = createTwoSetVerticalCircularVennDiagram(id);
         break;
       default:
         break;

@@ -11,11 +11,8 @@ import {
   MAYBE_SHADED,
   SHADED,
   TWO_SET_CIRCLES_ORIENTATION,
-  twoSetHorizontalCircles,
-  twoSetVerticalCircles,
-  twoSetHorizontalCircleVennDiagramPaths,
-  twoSetVerticalCircleVennDiagramPaths,
-  createTwoSetCircularVennDiagram,
+  createTwoSetVerticalCircularVennDiagram,
+  createTwoSetHorizontalCircularVennDiagram,
   mapRegion,
   generateMappingObjects,
   bindMouseEventListeners,
@@ -36,7 +33,12 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { title, premise, shadings, orientation } = this.props;
+    const {
+      title,
+      premise,
+      shadings,
+      orientation,
+    } = this.props;
 
     const { firstTerm, secondTerm } = premise.terms;
 
@@ -50,24 +52,10 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
 
     switch (orientation) {
       case HORIZONTAL:
-        div = createTwoSetCircularVennDiagram(
-          id,
-          300,
-          180,
-          twoSetHorizontalCircles,
-          twoSetHorizontalCircleVennDiagramPaths,
-          bindMouseEventListeners,
-        );
+        div = createTwoSetHorizontalCircularVennDiagram(id, bindMouseEventListeners);
         break;
       case VERTICAL:
-        div = createTwoSetCircularVennDiagram(
-          id,
-          175,
-          280,
-          twoSetVerticalCircles,
-          twoSetVerticalCircleVennDiagramPaths,
-          bindMouseEventListeners,
-        );
+        div = createTwoSetVerticalCircularVennDiagram(id, bindMouseEventListeners);
         break;
       default:
         break;
