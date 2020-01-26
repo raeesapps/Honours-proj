@@ -11,10 +11,13 @@ import Arrow from '../../components/Arrow/Arrow';
 import FourSetInteractiveVennDiagram from '../../components/VennDiagram/FourSetInteractiveVennDiagram';
 import ThreeSetInteractiveVennDiagram from '../../components/VennDiagram/ThreeSetInteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
+import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
 import PremiseCollection from '../../logic/premise_collection';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/CombineDiagramsQuestion/combine_diagrams_question_styles';
+
+const { VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class CombineDiagramsQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -90,14 +93,14 @@ class CombineDiagramsQuestion extends React.Component {
           case 0:
             x1 = 50;
             y1 = 0;
-            x2 = 250;
-            y2 = 250;
+            x2 = 150;
+            y2 = 150;
             break;
           case 1:
-            x1 = 250;
+            x1 = 130;
             y1 = 0;
-            x2 = 70;
-            y2 = 250;
+            x2 = 30;
+            y2 = 150;
             break;
           default:
             break;
@@ -107,20 +110,20 @@ class CombineDiagramsQuestion extends React.Component {
           case 0:
             x1 = 50;
             y1 = 0;
-            x2 = 200;
-            y2 = 250;
+            x2 = 100;
+            y2 = 150;
             break;
           case 1:
-            x1 = 150;
+            x1 = 90;
             y1 = 0;
-            x2 = 150;
-            y2 = 250;
+            x2 = 90;
+            y2 = 150;
             break;
           case 2:
-            x1 = 250;
+            x1 = 150;
             y1 = 0;
             x2 = 100;
-            y2 = 250;
+            y2 = 150;
             break;
           default:
             break;
@@ -131,7 +134,7 @@ class CombineDiagramsQuestion extends React.Component {
         <Arrow
           id={`arrow${idx}`}
           width={300}
-          height={300}
+          height={175}
           x1={x1}
           y1={y1}
           x2={x2}
@@ -143,8 +146,8 @@ class CombineDiagramsQuestion extends React.Component {
     const ref = premisesVennDiagramRef[idx];
 
     return (
-      <div key={`${premise.toSentence()}VennDiagram`}>
-        <TwoSetUninteractiveVennDiagram style={{ marginRight: '2vw' }} title={premise.toSentence()} terms={premise.terms} ref={ref} />
+      <div key={`${premise.toSentence()}VennDiagram`} style={{ marginLeft: '15px', width: '175px' }}>
+        <TwoSetUninteractiveVennDiagram title={premise.toSentence()} terms={premise.terms} orientation={VERTICAL} ref={ref} />
         {
           renderArrow()
         }
@@ -155,10 +158,10 @@ class CombineDiagramsQuestion extends React.Component {
   render() {
     function renderInteractiveVennDiagram(argument, vennDiagramRef) {
       if (argument.terms.length === 3) {
-        return <ThreeSetInteractiveVennDiagram className={classes.threeSetInteractiveVennDiagram} title="Combination" premises={argument} ref={vennDiagramRef} />;
+        return <ThreeSetInteractiveVennDiagram style={{ marginLeft: '50px' }} title="Combination" premises={argument} ref={vennDiagramRef} />;
       }
       if (argument.terms.length === 4) {
-        return <FourSetInteractiveVennDiagram className={classes.fourSetInteractiveVennDiagram} premises={argument} ref={vennDiagramRef} />;
+        return <FourSetInteractiveVennDiagram premises={argument} ref={vennDiagramRef} />;
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }

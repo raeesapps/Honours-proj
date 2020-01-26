@@ -7,10 +7,10 @@ function styles(theme) {
       marginBottom: theme.spacing(2),
     },
     threeSetInteractiveVennDiagram: {
-      marginLeft: '16%',
+      marginLeft: '7%',
     },
     fourSetInteractiveVennDiagram: {
-      marginLeft: '16%',
+      marginLeft: '3.5%',
     },
   };
 }
