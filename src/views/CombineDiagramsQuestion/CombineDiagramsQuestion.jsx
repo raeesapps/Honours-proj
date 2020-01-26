@@ -156,12 +156,12 @@ class CombineDiagramsQuestion extends React.Component {
   }
 
   render() {
-    function renderInteractiveVennDiagram(argument, vennDiagramRef) {
-      if (argument.terms.length === 3) {
-        return <ThreeSetInteractiveVennDiagram style={{ marginLeft: '50px' }} title="Combination" premises={argument} ref={vennDiagramRef} />;
+    function renderInteractiveVennDiagram(premiseCollection, vennDiagramRef) {
+      if (premiseCollection.terms.length === 3) {
+        return <ThreeSetInteractiveVennDiagram style={{ marginLeft: '50px' }} title="Combination" premises={premiseCollection} ref={vennDiagramRef} />;
       }
-      if (argument.terms.length === 4) {
-        return <FourSetInteractiveVennDiagram premises={argument} ref={vennDiagramRef} />;
+      if (premiseCollection.terms.length === 4) {
+        return <FourSetInteractiveVennDiagram premises={premiseCollection} ref={vennDiagramRef} />;
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }
@@ -176,6 +176,9 @@ class CombineDiagramsQuestion extends React.Component {
     const { classes } = this.props;
     const { premiseCollection, key } = this.state;
     const { premises } = premiseCollection;
+    // eslint-disable-next-line no-nested-ternary
+    const width = premiseCollection.terms.length === 3 ? '400px'
+      : premiseCollection.terms.length === 4 ? '620px' : '0px';
     return (
       <div key={key} className={classes.root}>
         <Typography className={classes.instructions} variant="h5">
@@ -185,7 +188,7 @@ class CombineDiagramsQuestion extends React.Component {
           }
           into one Venn Diagram
         </Typography>
-        <Paper>
+        <Paper style={{ width }}>
           <div style={{ display: 'flex' }}>
             {
               premises.map((premise, idx) => this.renderPremiseVennDiagram(premise, idx, premises.length))

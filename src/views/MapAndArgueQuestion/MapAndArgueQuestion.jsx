@@ -234,6 +234,7 @@ class MapAndArgueQuestion extends React.Component {
           Map and argue
         </Typography>
         <SimpleStepper
+          style={{ width: '700px' }}
           step={step}
           steps={steps}
           content={this.getStepContent}

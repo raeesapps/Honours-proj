@@ -56,7 +56,7 @@ class PremiseToDiagramQuestion extends React.Component {
 
     const premise = premiseCollection.premises[0];
 
-    const width = premiseCollection.terms.length === 4 ? { width: '70%' } : { width: '35%' };
+    const width = premiseCollection.terms.length === 4 ? { width: '640px' } : { width: '312px' };
     return (
       <div key={key}>
         <Typography className={classes.instructions} variant="h5">
