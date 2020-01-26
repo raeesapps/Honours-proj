@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { create } from 'd3';
 
 const NOT_SHADED = '0';
 const MAYBE_SHADED = '1';
@@ -8,6 +9,21 @@ const TWO_SET_CIRCLES_ORIENTATION = Object.freeze({
   VERTICAL: 0,
   HORIZONTAL: 1,
 });
+
+const oneSetCircle = [
+  {
+    cX: 90,
+    cY: 92,
+    id: 'circle1',
+  },
+];
+
+const oneSetVennDiagramPath = [
+  {
+    name: '(A)',
+    path: 'M 81.00,13.42 C 74.80,14.36 70.05,15.00 64.00,17.08 41.41,24.83 22.83,43.41 15.08,66.00 -1.85,115.37 33.79,170.37 87.00,171.00 100.19,171.15 111.96,169.39 124.00,163.68 133.53,159.17 141.77,152.70 148.91,145.00 154.83,138.62 160.13,130.07 163.40,122.00 185.81,66.54 140.92,6.11 81.00,13.42 Z',
+  },
+];
 
 const twoSetHorizontalCircles = [
   {
@@ -321,6 +337,17 @@ function createCircularVennDiagram(
   return div;
 }
 
+function createOneSetCircularVennDiagram(elementId, mouseEventListener) {
+  return createCircularVennDiagram(
+    elementId,
+    150,
+    180,
+    oneSetCircle,
+    oneSetVennDiagramPath,
+    mouseEventListener,
+  );
+}
+
 function createTwoSetHorizontalCircularVennDiagram(elementId, mouseEventListener) {
   return createCircularVennDiagram(
     elementId,
@@ -521,6 +548,7 @@ export {
   MAYBE_SHADED,
   SHADED,
   TWO_SET_CIRCLES_ORIENTATION,
+  createOneSetCircularVennDiagram,
   createFourSetEllipticVennDiagram,
   createThreeSetCircularVennDiagram,
   createTwoSetHorizontalCircularVennDiagram,
