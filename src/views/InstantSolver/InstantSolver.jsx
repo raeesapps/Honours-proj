@@ -15,7 +15,6 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
 import ArgumentForm from './Components/ArgumentForm';
@@ -217,7 +216,6 @@ class InstantSolver extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
     const {
       snackbarVisible,
       snackbarMsg,
@@ -229,124 +227,115 @@ class InstantSolver extends React.Component {
     const order = this.getOrder(true);
     const marginLeftLevelTwoTree = order === 3 ? '50px' : '0px';
     const marginLeftConclusionVennDiagram = order === 4 ? '150px' : '0px';
+    const snackbarWrapperDisplayVal = !snackbarVisible ? 'none' : '';
     return (
-      <div className={classes.root}>
-        <Container maxWidth="lg">
-          <Dialog
-            open={dialogOpen}
-            onClose={() => this.setState({ dialogOpen: false })}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                You are trying to add more than 4 premises.
-                Thats some really complicated stuff to reason about.
-                Are you sure you want to add another premise?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.warningAddPremise} color="primary">
-                Yes
-              </Button>
-              <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
-                No
-              </Button>
-            </DialogActions>
-          </Dialog>
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            open={snackbarVisible}
-            onClose={() => this.setState({ snackbarVisible: false })}
-          >
-            <SnackbarWrapper
-              onClose={() => this.setState({ snackbarVisible: false })}
-              variant={snackbarType}
-              message={snackbarMsg}
-            />
-          </Snackbar>
-          <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
-          {argumentSubmitted
-            && (
-              <Grid key={key} container spacing={2}>
-                <Grid item xs={7}>
-                  {
-                    order >= 3 && order <= 4
-                    && (
-                      <ExpansionPanel className={classes.spacedExpansionPanel}>
-                        <ExpansionPanelSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="premisesAriaControls"
-                          id="premisesExpansionPanel"
-                        >
-                          <Typography>Venn Diagram Tree</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                          <div>
-                            <LevelOneVennDiagramTree
-                              order={order}
-                              vennDiagramList={
-                                this.premiseVennDiagramRefs.map((ref, idx) => (
-                                  <TwoSetUninteractiveVennDiagram ref={ref} orientation={VERTICAL} title={`Premise${idx}`} />
-                                ))
-                              }
-                            />
-                            <LevelTwoVennDiagramTree
-                              style={{ marginLeft: marginLeftLevelTwoTree }}
-                              order={order}
-                              combinedVennDiagram={
-                                order === 3
-                                  ? <ThreeSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} title="Premises" />
-                                  : order === 4
-                                    ? <FourSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} />
-                                    : <div />
-                              }
-                              conclusionOrReducedVennDiagram={
-                                (
-                                  <TwoSetUninteractiveVennDiagram
-                                    style={{ marginLeft: marginLeftConclusionVennDiagram }}
-                                    orientation={HORIZONTAL}
-                                    ref={this.conclusionVennDiagramRef}
-                                    title="Conclusion"
-                                  />
-                                )
-                              }
-                            />
-                          </div>
-                        </ExpansionPanelDetails>
-                      </ExpansionPanel>
-                    )
-                  }
-                </Grid>
-                <Grid item xs={5}>
-                  {
-                    order <= 26
-                    && (
-                      <ExpansionPanel>
-                        <ExpansionPanelSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="symbolicFormAriaControls"
-                          id="symbolicFormExpansionPanel"
-                        >
-                          <Typography>Symbolic Form Representations</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                          <Grid container>
-                            {this.renderSymbolicForms()}
-                          </Grid>
-                        </ExpansionPanelDetails>
-                      </ExpansionPanel>
-                    )
-                  }
-                </Grid>
+      <Container>
+        <Dialog
+          open={dialogOpen}
+          onClose={() => this.setState({ dialogOpen: false })}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              You are trying to add more than 4 premises.
+              Thats some really complicated stuff to reason about.
+              Are you sure you want to add another premise?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.warningAddPremise} color="primary">
+              Yes
+            </Button>
+            <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
+              No
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <SnackbarWrapper
+          style={{ display: snackbarWrapperDisplayVal, marginBottom: '50px' }}
+          onClose={() => this.setState({ snackbarVisible: false })}
+          variant={snackbarType}
+          message={snackbarMsg}
+        />
+        <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
+        {argumentSubmitted
+          && (
+            <Grid key={key} container spacing={2}>
+              <Grid item xs={7}>
+                {
+                  order >= 3 && order <= 4
+                  && (
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="premisesAriaControls"
+                        id="premisesExpansionPanel"
+                      >
+                        <Typography>Venn Diagram Tree</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <div>
+                          <LevelOneVennDiagramTree
+                            order={order}
+                            vennDiagramList={
+                              this.premiseVennDiagramRefs.map((ref, idx) => (
+                                <TwoSetUninteractiveVennDiagram ref={ref} orientation={VERTICAL} title={`Premise${idx}`} />
+                              ))
+                            }
+                          />
+                          <LevelTwoVennDiagramTree
+                            style={{ marginLeft: marginLeftLevelTwoTree }}
+                            order={order}
+                            combinedVennDiagram={
+                              order === 3
+                                ? <ThreeSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} title="Premises" />
+                                : order === 4
+                                  ? <FourSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} />
+                                  : <div />
+                            }
+                            conclusionOrReducedVennDiagram={
+                              (
+                                <TwoSetUninteractiveVennDiagram
+                                  style={{ marginLeft: marginLeftConclusionVennDiagram }}
+                                  orientation={HORIZONTAL}
+                                  ref={this.conclusionVennDiagramRef}
+                                  title="Conclusion"
+                                />
+                              )
+                            }
+                          />
+                        </div>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  )
+                }
               </Grid>
-            )}
-        </Container>
-      </div>
+              <Grid item xs={5}>
+                {
+                  order <= 26
+                  && (
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="symbolicFormAriaControls"
+                        id="symbolicFormExpansionPanel"
+                      >
+                        <Typography>Symbolic Form Representations</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <Grid container>
+                          {this.renderSymbolicForms()}
+                        </Grid>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  )
+                }
+              </Grid>
+            </Grid>
+          )}
+      </Container>
     );
   }
 }
