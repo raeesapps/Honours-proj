@@ -65,7 +65,7 @@ function LevelOneVennDiagramTree(props) {
     );
   };
   const renderPremiseVennDiagram = (idx) => (
-    <div style={{ marginLeft: '15px', width: '175px' }}>
+    <div key={`vennDiagram${idx}`} style={{ marginLeft: '15px', width: '175px' }}>
       {
         vennDiagramList[idx]
       }
