@@ -55,7 +55,7 @@ class InstantSolver extends React.Component {
       dialogOpen: false,
       argumentSubmitted: false,
       needsUpdate: false,
-      premisesKey: Math.random(),
+      key: Math.random(),
     };
 
     this.argumentFormRef = React.createRef();
@@ -66,8 +66,9 @@ class InstantSolver extends React.Component {
 
   componentDidUpdate() {
     const { needsUpdate } = this.state;
+    const { mappings } = this.generateMappings();
 
-    if (needsUpdate) {
+    if (needsUpdate && mappings) {
       const argumentForm = this.argumentFormRef.current;
       const { premises } = argumentForm.state;
 
@@ -77,7 +78,7 @@ class InstantSolver extends React.Component {
 
       premiseVennDiagrams.forEach((ref, idx) => {
         const premiseCollection = premiseCollections[idx];
-        ref.current.applyShading(premiseCollection);
+        ref.current.applyShading(premiseCollection, mappings);
       });
 
       const combinedPremisesVennDiagram = this.combinedPremisesVennDiagramRef.current;
@@ -88,7 +89,7 @@ class InstantSolver extends React.Component {
       if (this.getOrder() <= 4 && combinedPremisesVennDiagram) {
         combinedPremisesVennDiagram.applyShading(new PremiseCollection(premises
           .filter((premise) => premise.name !== 'Conclusion')
-          .map((premise) => premise.ref.current.getPremiseObj())));
+          .map((premise) => premise.ref.current.getPremiseObj())), mappings);
       }
 
       const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
@@ -99,7 +100,7 @@ class InstantSolver extends React.Component {
       if (conclusionVennDiagram) {
         conclusionVennDiagram.applyShading(new PremiseCollection(premises
           .filter((premise) => premise.name === 'Conclusion')
-          .map((premise) => premise.ref.current.getPremiseObj())));
+          .map((premise) => premise.ref.current.getPremiseObj())), mappings);
       }
 
       const valid = allPremisesExcludingConclusion.argue(conclusion);
@@ -128,7 +129,7 @@ class InstantSolver extends React.Component {
     this.setState({
       argumentSubmitted: true,
       needsUpdate: true,
-      premisesKey: Math.random(),
+      key: Math.random(),
     });
   }
 
@@ -165,18 +166,7 @@ class InstantSolver extends React.Component {
     this.setState({ dialogOpen: true });
   }
 
-  renderSymbolicForms = () => {
-    function getSymbolicForm(premise, mappings) {
-      const {
-        firstTerm,
-        secondTerm,
-      } = premise.terms;
-
-      const firstSymbol = mappings[firstTerm];
-      const secondSymbol = mappings[secondTerm];
-
-      return premise.toSymbolicForm(firstSymbol, secondSymbol);
-    }
+  generateMappings = () => {
     const argumentForm = this.argumentFormRef.current;
 
     if (argumentForm) {
@@ -191,6 +181,30 @@ class InstantSolver extends React.Component {
         mappings[term] = letter;
       });
 
+      return {
+        mappings,
+        premiseObjs,
+      };
+    }
+
+    return null;
+  }
+
+  renderSymbolicForms = () => {
+    function getSymbolicForm(premise, mappings) {
+      const {
+        firstTerm,
+        secondTerm,
+      } = premise.terms;
+
+      const firstSymbol = mappings[firstTerm];
+      const secondSymbol = mappings[secondTerm];
+
+      return premise.toSymbolicForm(firstSymbol, secondSymbol);
+    }
+    const { mappings, premiseObjs } = this.generateMappings();
+
+    if (mappings) {
       return premiseObjs.map((premise, idx) => (
         // eslint-disable-next-line react/no-array-index-key
         <Grid key={`symbolicFormOf${premise.toSentence()}${idx}`} item xs={4}>
@@ -210,9 +224,11 @@ class InstantSolver extends React.Component {
       snackbarType,
       dialogOpen,
       argumentSubmitted,
+      key,
     } = this.state;
-    const marginLeftLevelTwoTree = this.getOrder(true) === 3 ? '50px' : '0px';
-    const marginLeftConclusionVennDiagram = this.getOrder(true) === 4 ? '150px' : '0px';
+    const order = this.getOrder(true);
+    const marginLeftLevelTwoTree = order === 3 ? '50px' : '0px';
+    const marginLeftConclusionVennDiagram = order === 4 ? '150px' : '0px';
     return (
       <div className={classes.root}>
         <Container maxWidth="lg">
@@ -256,10 +272,10 @@ class InstantSolver extends React.Component {
           <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
           {argumentSubmitted
             && (
-              <Grid container spacing={2}>
+              <Grid key={key} container spacing={2}>
                 <Grid item xs={7}>
                   {
-                    this.getOrder(true) >= 3 && this.getOrder(true) <= 4
+                    order >= 3 && order <= 4
                     && (
                       <ExpansionPanel className={classes.spacedExpansionPanel}>
                         <ExpansionPanelSummary
@@ -272,7 +288,7 @@ class InstantSolver extends React.Component {
                         <ExpansionPanelDetails>
                           <div>
                             <LevelOneVennDiagramTree
-                              order={this.getOrder(true)}
+                              order={order}
                               vennDiagramList={
                                 this.premiseVennDiagramRefs.map((ref, idx) => (
                                   <TwoSetUninteractiveVennDiagram ref={ref} orientation={VERTICAL} title={`Premise${idx}`} />
@@ -281,11 +297,11 @@ class InstantSolver extends React.Component {
                             />
                             <LevelTwoVennDiagramTree
                               style={{ marginLeft: marginLeftLevelTwoTree }}
-                              order={this.getOrder(true)}
+                              order={order}
                               combinedVennDiagram={
-                                this.getOrder(true) === 3
+                                order === 3
                                   ? <ThreeSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} title="Premises" />
-                                  : this.getOrder(true) === 4
+                                  : order === 4
                                     ? <FourSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} />
                                     : <div />
                               }
@@ -308,7 +324,7 @@ class InstantSolver extends React.Component {
                 </Grid>
                 <Grid item xs={5}>
                   {
-                    this.getOrder(false) <= 26
+                    order <= 26
                     && (
                       <ExpansionPanel>
                         <ExpansionPanelSummary
