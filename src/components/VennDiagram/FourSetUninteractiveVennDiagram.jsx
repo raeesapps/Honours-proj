@@ -27,17 +27,18 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
     this.div = createFourSetEllipticVennDiagram('ellipseVenn');
   }
 
-  applyShading = (premiseCollection) => {
+  applyShading = (premiseCollection, mappings) => {
     const [a, b, c, d] = premiseCollection.terms;
 
-    // eslint-disable-next-line react/destructuring-assignment
-    if (!(this.state.a && this.state.b && this.state.c && this.state.d)) {
+    if (mappings) {
       this.setState({
-        a,
-        b,
-        c,
-        d,
+        a: mappings[a],
+        b: mappings[b],
+        c: mappings[c],
+        d: mappings[d],
       });
+    } else {
+      this.setState({ a, b, c, d });
     }
 
     applyShadings(this.div, premiseCollection);
@@ -52,42 +53,21 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
       d,
     } = this.state;
     return (
-      <div {...rest}>
-        <div className={classes.content}>
-          <Typography variant="body1" className={classes.topLeft}>
-            {a && a.length === 1 ? a : 'A'}
-          </Typography>
-          <Typography variant="body1" className={classes.topRight}>
-            {b && b.length === 1 ? b : 'B'}
-          </Typography>
-          <Typography variant="body1" className={classes.bottomLeft}>
-            {c && c.length === 1 ? c : 'C'}
-          </Typography>
-          <Typography variant="body1" className={classes.bottomRight}>
-            {d && d.length === 1 ? d : 'D'}
-          </Typography>
+      <div className={classes.content} {...rest}>
+        <Typography variant="body1" className={classes.topLeft}>
+          {a}
+        </Typography>
+        <Typography variant="body1" className={classes.topRight}>
+          {b}
+        </Typography>
+        <Typography variant="body1" className={classes.bottomLeft}>
+          {c}
+        </Typography>
+        <Typography variant="body1" className={classes.bottomRight}>
+          {d}
+        </Typography>
 
-          <div id="ellipseVenn" />
-        </div>
-        {
-          (a && b && c && d && a.length > 1 && b.length > 1 && c.length > 1 && d.length > 1)
-          && (
-            <div>
-              <Typography variant="h5">
-                where A = {a}
-              </Typography>
-              <Typography variant="h5">
-                where B = {b}
-              </Typography>
-              <Typography variant="h5">
-                where C = {c}
-              </Typography>
-              <Typography variant="h5">
-                where D = {d}
-              </Typography>
-            </div>
-          )
-        }
+        <div id="ellipseVenn" />
       </div>
     );
   }

@@ -61,9 +61,19 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     }
   }
 
-  applyShading = (premiseCollection) => {
+  applyShading = (premiseCollection, mappings) => {
+    const [a, b] = premiseCollection.terms;
+
+    if (mappings) {
+      this.setState({
+        a: mappings[a],
+        b: mappings[b],
+      });
+    } else {
+      this.setState({ a, b });
+    }
+
     applyShadings(this.div, premiseCollection);
-    this.setState({ a: premiseCollection.terms[0], b: premiseCollection.terms[1] });
   }
 
   render() {
@@ -79,25 +89,12 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     return (
       <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
-          {a && a.length === 1 ? a : 'A'}
+          {a}
         </Typography>
         <Typography variant="body1" className={bClass}>
-          {b && b.length === 1 ? b : 'B'}
+          {b}
         </Typography>
         <div id={id} />
-        {
-          (a && b && a.length > 1 && b.length > 1)
-          && (
-            <div>
-              <Typography variant="h5">
-                where A = {a}
-              </Typography>
-              <Typography variant="h5">
-                where B = {b}
-              </Typography>
-            </div>
-          )
-        }
       </div>
     );
   }

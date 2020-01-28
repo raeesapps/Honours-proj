@@ -22,9 +22,15 @@ class OneSetUninteractiveVennDiagram extends React.PureComponent {
     this.div = createOneSetCircularVennDiagram(id);
   }
 
-  applyShading = (premiseCollection) => {
+  applyShading = (premiseCollection, mappings) => {
+    const [a] = premiseCollection.terms;
+
+    if (mappings) {
+      this.setState({ a: mappings[a] });
+    } else {
+      this.setState({ a });
+    }
     applyShadings(this.div, premiseCollection);
-    this.setState({ a: premiseCollection.terms[0] });
   }
 
   render() {
@@ -38,19 +44,9 @@ class OneSetUninteractiveVennDiagram extends React.PureComponent {
     return (
       <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
-          {a && a.length === 1 ? a : 'A'}
+          {a}
         </Typography>
         <div id={id} />
-        {
-          (a && a.length > 1)
-          && (
-            <div>
-              <Typography variant="h5">
-                where A = {a}
-              </Typography>
-            </div>
-          )
-        }
       </div>
     );
   }
