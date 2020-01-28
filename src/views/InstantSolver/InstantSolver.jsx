@@ -29,7 +29,7 @@ import PremiseCollection from '../../logic/premise_collection';
 import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
 
-const { HORIZONTAL, VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
+const { VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 const { SUCCESS, ERROR } = snackbarTypes;
 
 function getTermSets(premiseObjs) {
@@ -68,6 +68,7 @@ class InstantSolver extends React.Component {
   componentDidUpdate() {
     const { needsUpdate } = this.state;
     const { mappings } = this.generateMappings();
+    const useMappings = this.shouldAllTermsBeMappedToLetters();
 
     if (needsUpdate && mappings && this.getOrder(true) <= 4) {
       const argumentForm = this.argumentFormRef.current;
@@ -79,7 +80,7 @@ class InstantSolver extends React.Component {
 
       premiseVennDiagrams.forEach((ref, idx) => {
         const premiseCollection = premiseCollections[idx];
-        ref.current.applyShading(premiseCollection, mappings);
+        ref.current.applyShading(premiseCollection, useMappings ? mappings : undefined);
       });
 
       const combinedPremisesVennDiagram = this.combinedPremisesVennDiagramRef.current;
@@ -87,7 +88,7 @@ class InstantSolver extends React.Component {
         .filter((premise) => premise.name !== 'Conclusion')
         .map((premise) => premise.ref.current.getPremiseObj()));
 
-      combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, mappings);
+      combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, useMappings ? mappings : undefined);
 
       const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
       const mappedVennDiagram = this.mappedVennDiagramRef.current;
@@ -96,10 +97,10 @@ class InstantSolver extends React.Component {
         .ref.current.getPremiseObj();
       const conclusionPremiseCollection = new PremiseCollection([conclusion]);
 
-      conclusionVennDiagram.applyShading(conclusionPremiseCollection, mappings);
+      conclusionVennDiagram.applyShading(conclusionPremiseCollection, useMappings ? mappings : undefined);
       mappedVennDiagram.applyShading(
         allPremisesExcludingConclusion,
-        mappings,
+        useMappings ? mappings : undefined,
         conclusionPremiseCollection.terms,
       );
 
@@ -168,6 +169,30 @@ class InstantSolver extends React.Component {
     this.setState({ dialogOpen: true });
   }
 
+  shouldAllTermsBeMappedToLetters = () => {
+    const argumentForm = this.argumentFormRef.current;
+
+    if (argumentForm) {
+      const { premises } = argumentForm.state;
+      const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
+
+      const termSet = getTermSets(premiseObjs);
+
+      const reducer = [...termSet]
+        .reduce((numberOfSingleDigitTerms, term) => {
+          if (term.length === 1) {
+            return numberOfSingleDigitTerms - 1;
+          }
+
+          return numberOfSingleDigitTerms;
+        }, termSet.size);
+
+      return reducer !== 0;
+    }
+
+    return false;
+  }
+
   generateMappings = () => {
     const argumentForm = this.argumentFormRef.current;
 
@@ -207,11 +232,13 @@ class InstantSolver extends React.Component {
     const { mappings, premiseObjs } = this.generateMappings();
 
     if (mappings) {
+      const useMappings = this.shouldAllTermsBeMappedToLetters();
+
       return premiseObjs.map((premise, idx) => (
         // eslint-disable-next-line react/no-array-index-key
         <Grid key={`symbolicFormOf${premise.toSentence()}${idx}`} item xs={6}>
           <Typography variant="h6">{premise.toSentence()}</Typography>
-          <Typography variant="subtitle1">{getSymbolicForm(premise, mappings)}</Typography>
+          <Typography variant="subtitle1">{getSymbolicForm(premise, useMappings ? mappings : {})}</Typography>
         </Grid>
       ));
     }
