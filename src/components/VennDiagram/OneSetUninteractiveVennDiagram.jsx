@@ -30,7 +30,7 @@ class OneSetUninteractiveVennDiagram extends React.PureComponent {
     } else {
       this.setState({ a });
     }
-    applyShadings(this.div, premiseCollection);
+    applyShadings(this.div, premiseCollection, a);
   }
 
   render() {

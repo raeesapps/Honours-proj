@@ -25,7 +25,7 @@ class ThreeSetUninteractiveVennDiagram extends React.PureComponent {
   }
 
   applyShading = (premiseCollection, mappings) => {
-    const [a, b, c] = premiseCollection.terms;
+    const [a, b, c] = premiseCollection.terms.sort();
 
     if (mappings) {
       this.setState({
@@ -36,8 +36,7 @@ class ThreeSetUninteractiveVennDiagram extends React.PureComponent {
     } else {
       this.setState({ a, b, c });
     }
-
-    applyShadings(this.div, premiseCollection);
+    applyShadings(this.div, premiseCollection, a, b, c);
   }
 
   render() {

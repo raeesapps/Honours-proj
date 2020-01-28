@@ -515,10 +515,8 @@ function shadeRegion(div, region, mappings, shading) {
   });
 }
 
-function applyShadings(div, premiseCollection) {
-  const [a, b, c, d] = premiseCollection.terms.sort();
+function applyShadings(div, premiseCollection, a, b, c, d) {
   const { nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping } = generateMappingObjects(div, a, b, c, d);
-
   const resolvedColumn = premiseCollection.unifyAndResolve();
   const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
 

@@ -28,7 +28,7 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
   }
 
   applyShading = (premiseCollection, mappings) => {
-    const [a, b, c, d] = premiseCollection.terms;
+    const [a, b, c, d] = premiseCollection.terms.sort();
 
     if (mappings) {
       this.setState({
@@ -38,10 +38,21 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
         d: mappings[d],
       });
     } else {
-      this.setState({ a, b, c, d });
+      this.setState({
+        a,
+        b,
+        c,
+        d,
+      });
     }
-
-    applyShadings(this.div, premiseCollection);
+    applyShadings(
+      this.div,
+      premiseCollection,
+      a,
+      b,
+      c,
+      d,
+    );
   }
 
   render() {
