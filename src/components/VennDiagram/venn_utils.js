@@ -515,10 +515,27 @@ function shadeRegion(div, region, mappings, shading) {
   });
 }
 
-function applyShadings(div, premiseCollection, a, b, c, d) {
-  const { nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping } = generateMappingObjects(div, a, b, c, d);
-  const resolvedColumn = premiseCollection.unifyAndResolve();
-  const premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
+function applyShadings(div, premiseCollection, a, b, c, d, termsInMapping) {
+  const {
+    nodeRegionToMappedRegionMapping,
+    mappedRegionToShadingMapping,
+  } = generateMappingObjects(div, a, b, c, d);
+
+  let resolvedColumn;
+  let premiseCollectionVennDiagramParts;
+
+  if (termsInMapping) {
+    const {
+      mappedTableUnified,
+      vennDiagramParts,
+    } = premiseCollection.map(termsInMapping);
+
+    resolvedColumn = mappedTableUnified;
+    premiseCollectionVennDiagramParts = vennDiagramParts;
+  } else {
+    resolvedColumn = premiseCollection.unifyAndResolve();
+    premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
+  }
 
   premiseCollectionVennDiagramParts.forEach((premiseCollectionVennDiagramPart) => {
     const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
@@ -537,7 +554,12 @@ function applyShadings(div, premiseCollection, a, b, c, d) {
     }
   });
   Object.keys(mappedRegionToShadingMapping).forEach((mapping) => {
-    shadeRegion(div, mapping, nodeRegionToMappedRegionMapping, mappedRegionToShadingMapping[mapping]);
+    shadeRegion(
+      div,
+      mapping,
+      nodeRegionToMappedRegionMapping,
+      mappedRegionToShadingMapping[mapping],
+    );
   });
 }
 

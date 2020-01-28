@@ -61,8 +61,8 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     }
   }
 
-  applyShading = (premiseCollection, mappings) => {
-    const [a, b] = premiseCollection.terms.sort();
+  applyShading = (premiseCollection, mappings, termsInMapping) => {
+    const [a, b] = termsInMapping ? termsInMapping.sort() : premiseCollection.terms.sort();
 
     if (mappings) {
       this.setState({
@@ -72,7 +72,7 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     } else {
       this.setState({ a, b });
     }
-    applyShadings(this.div, premiseCollection, a, b);
+    applyShadings(this.div, premiseCollection, a, b, undefined, undefined, termsInMapping);
   }
 
   render() {

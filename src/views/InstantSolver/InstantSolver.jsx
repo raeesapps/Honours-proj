@@ -54,6 +54,7 @@ class InstantSolver extends React.Component {
       dialogOpen: false,
       argumentSubmitted: false,
       needsUpdate: false,
+      turnstileSymbol: '⊯',
       key: Math.random(),
     };
 
@@ -61,13 +62,14 @@ class InstantSolver extends React.Component {
     this.premiseVennDiagramRefs = [...Array(4).keys()].map(() => React.createRef());
     this.combinedPremisesVennDiagramRef = React.createRef();
     this.conclusionVennDiagramRef = React.createRef();
+    this.mappedVennDiagramRef = React.createRef();
   }
 
   componentDidUpdate() {
     const { needsUpdate } = this.state;
     const { mappings } = this.generateMappings();
 
-    if (needsUpdate && mappings) {
+    if (needsUpdate && mappings && this.getOrder(true) <= 4) {
       const argumentForm = this.argumentFormRef.current;
       const { premises } = argumentForm.state;
 
@@ -85,22 +87,21 @@ class InstantSolver extends React.Component {
         .filter((premise) => premise.name !== 'Conclusion')
         .map((premise) => premise.ref.current.getPremiseObj()));
 
-      if (this.getOrder() <= 4 && combinedPremisesVennDiagram) {
-        combinedPremisesVennDiagram.applyShading(new PremiseCollection(premises
-          .filter((premise) => premise.name !== 'Conclusion')
-          .map((premise) => premise.ref.current.getPremiseObj())), mappings);
-      }
+      combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, mappings);
 
       const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
+      const mappedVennDiagram = this.mappedVennDiagramRef.current;
       const conclusion = premises
         .find((premise) => premise.name === 'Conclusion')
         .ref.current.getPremiseObj();
+      const conclusionPremiseCollection = new PremiseCollection([conclusion]);
 
-      if (conclusionVennDiagram) {
-        conclusionVennDiagram.applyShading(new PremiseCollection(premises
-          .filter((premise) => premise.name === 'Conclusion')
-          .map((premise) => premise.ref.current.getPremiseObj())), mappings);
-      }
+      conclusionVennDiagram.applyShading(conclusionPremiseCollection, mappings);
+      mappedVennDiagram.applyShading(
+        allPremisesExcludingConclusion,
+        mappings,
+        conclusionPremiseCollection.terms,
+      );
 
       const valid = allPremisesExcludingConclusion.argue(conclusion);
 
@@ -111,6 +112,7 @@ class InstantSolver extends React.Component {
           snackbarType: SUCCESS,
           snackbarMsg: 'Valid!',
           needsUpdate: false,
+          turnstileSymbol: '⊫',
         });
       } else {
         this.setState({
@@ -119,6 +121,7 @@ class InstantSolver extends React.Component {
           snackbarType: ERROR,
           snackbarMsg: 'Invalid!',
           needsUpdate: false,
+          turnstileSymbol: '⊯',
         });
       }
     }
@@ -223,10 +226,10 @@ class InstantSolver extends React.Component {
       dialogOpen,
       argumentSubmitted,
       key,
+      turnstileSymbol,
     } = this.state;
     const order = this.getOrder(true);
     const marginLeftLevelTwoTree = order === 3 ? '50px' : '0px';
-    const marginLeftConclusionVennDiagram = order === 4 ? '150px' : '0px';
     const snackbarWrapperDisplayVal = !snackbarVisible ? 'none' : '';
     return (
       <Container>
@@ -297,12 +300,23 @@ class InstantSolver extends React.Component {
                             }
                             conclusionOrReducedVennDiagram={
                               (
-                                <TwoSetUninteractiveVennDiagram
-                                  style={{ marginLeft: marginLeftConclusionVennDiagram }}
-                                  orientation={HORIZONTAL}
-                                  ref={this.conclusionVennDiagramRef}
-                                  title="Conclusion"
-                                />
+                                <div style={{ display: 'flex' }}>
+                                  <TwoSetUninteractiveVennDiagram
+                                    style={{ width: '175px' }}
+                                    orientation={VERTICAL}
+                                    ref={this.mappedVennDiagramRef}
+                                    title="Mapped"
+                                  />
+                                  <Typography style={{ marginTop: '100px' }} variant="h1">
+                                    {turnstileSymbol}
+                                  </Typography>
+                                  <TwoSetUninteractiveVennDiagram
+                                    style={{ width: '175px' }}
+                                    orientation={VERTICAL}
+                                    ref={this.conclusionVennDiagramRef}
+                                    title="Conclusion"
+                                  />
+                                </div>
                               )
                             }
                           />
