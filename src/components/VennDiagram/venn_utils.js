@@ -864,14 +864,11 @@ function applyShadings(div, premiseCollection, a, b, c, d, termsInMapping) {
     const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
     const resolvedValueArray = resolvedColumn[compartment.hashCode()];
 
-    if (resolvedValueArray.length) {
-      const vennDiagramPartSplit = vennDiagramPart.split('\\');
-      const leftPart = vennDiagramPartSplit[0];
-
-      if (!(leftPart in mappedRegionToShadingMapping)) {
-        throw new Error(`Shading algorithm failed! ${leftPart} not found in ${JSON.stringify(mappedRegionToShadingMapping)}`);
+    if (resolvedValueArray.length && vennDiagramPart !== '()') {
+      if (!(vennDiagramPart in mappedRegionToShadingMapping)) {
+        throw new Error(`Shading algorithm failed! ${vennDiagramPart} not found in ${JSON.stringify(mappedRegionToShadingMapping)}`);
       }
-      mappedRegionToShadingMapping[leftPart] = resolvedValueArray;
+      mappedRegionToShadingMapping[vennDiagramPart] = resolvedValueArray;
     }
   });
   Object.keys(mappedRegionToShadingMapping).forEach((mapping) => {
