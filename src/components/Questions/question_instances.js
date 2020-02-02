@@ -34,6 +34,7 @@ const {
   SOME_A_IS_B,
   NO_A_IS_B,
   SOME_A_IS_NOT_B,
+  SOME_A_EXIST,
 } = forms;
 
 const premiseToSymbolicFormQuestions = {
@@ -290,11 +291,11 @@ const combineDiagramsQuestion = {
       title: 'BARBARA diagrams',
       content: generatePremiseCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Premise(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Premise(SOME_A_IS_B, {
             firstTerm: 'B',
             secondTerm: 'C',
           }),
@@ -365,6 +366,9 @@ const mapAndArgueQuestion = {
       title: 'Sorites #1',
       content: generatePremiseCollectionAndConclusions(
         [
+          new Premise(SOME_A_EXIST, {
+            firstTerm: 'A',
+          }),
           new Premise(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
