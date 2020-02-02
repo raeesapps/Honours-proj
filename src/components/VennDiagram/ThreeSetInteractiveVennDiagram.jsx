@@ -1,15 +1,11 @@
 import React from 'react';
 
-import * as d3 from 'd3';
-
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import {
-  NOT_SHADED,
   createThreeSetCircularVennDiagram,
-  mapRegion,
-  bindMouseEventListeners,
+  getShadings,
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/three_set_interactive_venn_diagram_styles';
@@ -35,7 +31,7 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
     });
 
     const id = title.split(' ').join('');
-    const div = createThreeSetCircularVennDiagram(id, bindMouseEventListeners);
+    const div = createThreeSetCircularVennDiagram(id, true);
     this.div = div;
   }
 
@@ -46,17 +42,7 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
       c,
     } = this.state;
 
-    const mappings = {};
-    this.div.selectAll('path').each(function each() {
-      const node = d3.select(this);
-      const nodeId = node.attr('id');
-      const nodeShaded = node.attr('shaded') || NOT_SHADED;
-      const mappedId = mapRegion(nodeId, a, b, c);
-
-      mappings[mappedId] = nodeShaded;
-    });
-
-    return mappings;
+    return getShadings(this.div, 3, a, b, c);
   }
 
   render() {

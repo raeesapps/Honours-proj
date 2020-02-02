@@ -1,16 +1,12 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
-import * as d3 from 'd3';
-
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import {
-  NOT_SHADED,
   createFourSetEllipticVennDiagram,
-  mapRegion,
-  bindMouseEventListeners,
+  getShadings,
 } from './venn_utils';
 
 import styles from '../../assets/components/jss/VennDiagram/four_set_interactive_venn_diagram_styles';
@@ -37,7 +33,7 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
       d: premises.terms[3],
     });
 
-    const div = createFourSetEllipticVennDiagram('ellipseVenn', bindMouseEventListeners);
+    const div = createFourSetEllipticVennDiagram('ellipseVenn', true);
     this.div = div;
   }
 
@@ -49,17 +45,7 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
       d,
     } = this.state;
 
-    const mappings = {};
-    this.div.selectAll('path').each(function onEach() {
-      const node = d3.select(this);
-      const nodeId = node.attr('id');
-      const nodeShaded = node.attr('shaded') || NOT_SHADED;
-      const mappedId = mapRegion(nodeId, a, b, c, d);
-
-      mappings[mappedId] = nodeShaded;
-    });
-
-    return mappings;
+    return getShadings(this.div, 4, a, b, c, d);
   }
 
   render() {
