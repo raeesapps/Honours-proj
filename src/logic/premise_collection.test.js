@@ -129,7 +129,7 @@ describe('BAROCO tests', () => {
 
     const secondCompartmentHash = compartmentHashes[1];
     const secondCompartmentEntries = JSON.stringify(premiseResolutionColumn[secondCompartmentHash]);
-    const secondCompartmentExpectedEntries = JSON.stringify(['x_2']);
+    const secondCompartmentExpectedEntries = JSON.stringify(['x_1']);
     expect(secondCompartmentEntries).toContain(secondCompartmentExpectedEntries);
 
     const fifthCompartmentHash = compartmentHashes[4];
@@ -242,7 +242,7 @@ describe('BARBARI tests', () => {
 
     const eighthCompartmentHash = compartmentHashes[7];
     const eighthCompartmentEntries = JSON.stringify(premiseResolutionColumn[eighthCompartmentHash]);
-    const eighthCompartmentExpectedEntries = JSON.stringify(['x_3']);
+    const eighthCompartmentExpectedEntries = JSON.stringify(['x_1']);
     expect(eighthCompartmentEntries).toBe(eighthCompartmentExpectedEntries);
   });
 

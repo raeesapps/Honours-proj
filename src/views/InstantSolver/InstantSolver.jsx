@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-did-update-set-state */
 import React from 'react';
 
@@ -14,21 +15,21 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
 import ArgumentForm from './Components/ArgumentForm';
-import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
-import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
-import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
-import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
-
+import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
+import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
+import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
+import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
+import LevelOneVennDiagramTree from '../../components/VennDiagramTree/LevelOneVennDiagramTree';
+import LevelTwoVennDiagramTree from '../../components/VennDiagramTree/LevelTwoVennDiagramTree';
 import PremiseCollection from '../../logic/premise_collection';
 import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
 
-const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
+const { VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 const { SUCCESS, ERROR } = snackbarTypes;
 
 function getTermSets(premiseObjs) {
@@ -53,42 +54,57 @@ class InstantSolver extends React.Component {
       dialogOpen: false,
       argumentSubmitted: false,
       needsUpdate: false,
-      premisesKey: Math.random(),
-      conclusionsKey: Math.random(),
+      turnstileSymbol: '⊯',
+      key: Math.random(),
     };
 
     this.argumentFormRef = React.createRef();
-    this.premisesVennDiagramRef = React.createRef();
+    this.premiseVennDiagramRefs = [...Array(4).keys()].map(() => React.createRef());
+    this.combinedPremisesVennDiagramRef = React.createRef();
     this.conclusionVennDiagramRef = React.createRef();
+    this.mappedVennDiagramRef = React.createRef();
   }
 
   componentDidUpdate() {
     const { needsUpdate } = this.state;
+    const { mappings } = this.generateMappings();
+    const useMappings = this.shouldAllTermsBeMappedToLetters();
 
-    if (needsUpdate) {
+    if (needsUpdate && mappings && this.getOrder(true) <= 4) {
       const argumentForm = this.argumentFormRef.current;
       const { premises } = argumentForm.state;
 
-      const premisesVennDiagram = this.premisesVennDiagramRef.current;
-      const premiseCollection = new PremiseCollection(premises
+      const premiseVennDiagrams = this.premiseVennDiagramRefs.filter((ref) => !!ref.current);
+      const premiseCollections = premises
+        .map((premise) => new PremiseCollection([premise.ref.current.getPremiseObj()]));
+
+      premiseVennDiagrams.forEach((ref, idx) => {
+        const premiseCollection = premiseCollections[idx];
+        ref.current.applyShading(premiseCollection, useMappings ? mappings : undefined);
+      });
+
+      const combinedPremisesVennDiagram = this.combinedPremisesVennDiagramRef.current;
+      const allPremisesExcludingConclusion = new PremiseCollection(premises
         .filter((premise) => premise.name !== 'Conclusion')
         .map((premise) => premise.ref.current.getPremiseObj()));
 
-      if (this.getNumberOfTerms() <= 4) {
-        premisesVennDiagram.applyShading(new PremiseCollection(premises
-          .filter((premise) => premise.name !== 'Conclusion')
-          .map((premise) => premise.ref.current.getPremiseObj())));
-      }
+      combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, useMappings ? mappings : undefined);
 
       const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
+      const mappedVennDiagram = this.mappedVennDiagramRef.current;
       const conclusion = premises
         .find((premise) => premise.name === 'Conclusion')
         .ref.current.getPremiseObj();
-      conclusionVennDiagram.applyShading(new PremiseCollection(premises
-        .filter((premise) => premise.name === 'Conclusion')
-        .map((premise) => premise.ref.current.getPremiseObj())));
+      const conclusionPremiseCollection = new PremiseCollection([conclusion]);
 
-      const valid = premiseCollection.argue(conclusion);
+      conclusionVennDiagram.applyShading(conclusionPremiseCollection, useMappings ? mappings : undefined);
+      mappedVennDiagram.applyShading(
+        allPremisesExcludingConclusion,
+        useMappings ? mappings : undefined,
+        conclusionPremiseCollection.terms,
+      );
+
+      const valid = allPremisesExcludingConclusion.argue(conclusion);
 
       if (valid) {
         this.setState({
@@ -97,6 +113,7 @@ class InstantSolver extends React.Component {
           snackbarType: SUCCESS,
           snackbarMsg: 'Valid!',
           needsUpdate: false,
+          turnstileSymbol: '⊫',
         });
       } else {
         this.setState({
@@ -105,6 +122,7 @@ class InstantSolver extends React.Component {
           snackbarType: ERROR,
           snackbarMsg: 'Invalid!',
           needsUpdate: false,
+          turnstileSymbol: '⊯',
         });
       }
     }
@@ -114,8 +132,7 @@ class InstantSolver extends React.Component {
     this.setState({
       argumentSubmitted: true,
       needsUpdate: true,
-      premisesKey: Math.random(),
-      conclusionsKey: Math.random(),
+      key: Math.random(),
     });
   }
 
@@ -123,7 +140,7 @@ class InstantSolver extends React.Component {
     this.setState({ snackbarVisible: true, snackbarType: ERROR, snackbarMsg: msg });
   }
 
-  getNumberOfTerms = (excludeConclusion) => {
+  getOrder = (excludeConclusion) => {
     const argumentForm = this.argumentFormRef.current;
     if (argumentForm) {
       const { premises } = argumentForm.state;
@@ -134,7 +151,10 @@ class InstantSolver extends React.Component {
       }
 
       const termSet = getTermSets(premiseObjs);
-      return termSet.size;
+
+      if (premiseObjs.length === termSet.size - 1) {
+        return termSet.size;
+      }
     }
     return -1;
   }
@@ -149,18 +169,31 @@ class InstantSolver extends React.Component {
     this.setState({ dialogOpen: true });
   }
 
-  renderSymbolicForms = () => {
-    function getSymbolicForm(premise, mappings) {
-      const {
-        firstTerm,
-        secondTerm,
-      } = premise.terms;
+  shouldAllTermsBeMappedToLetters = () => {
+    const argumentForm = this.argumentFormRef.current;
 
-      const firstSymbol = mappings[firstTerm];
-      const secondSymbol = mappings[secondTerm];
+    if (argumentForm) {
+      const { premises } = argumentForm.state;
+      const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
 
-      return premise.toSymbolicForm(firstSymbol, secondSymbol);
+      const termSet = getTermSets(premiseObjs);
+
+      const reducer = [...termSet]
+        .reduce((numberOfSingleDigitTerms, term) => {
+          if (term.length === 1) {
+            return numberOfSingleDigitTerms - 1;
+          }
+
+          return numberOfSingleDigitTerms;
+        }, termSet.size);
+
+      return reducer !== 0;
     }
+
+    return false;
+  }
+
+  generateMappings = () => {
     const argumentForm = this.argumentFormRef.current;
 
     if (argumentForm) {
@@ -175,11 +208,37 @@ class InstantSolver extends React.Component {
         mappings[term] = letter;
       });
 
+      return {
+        mappings,
+        premiseObjs,
+      };
+    }
+
+    return null;
+  }
+
+  renderSymbolicForms = () => {
+    function getSymbolicForm(premise, mappings) {
+      const {
+        firstTerm,
+        secondTerm,
+      } = premise.terms;
+
+      const firstSymbol = mappings[firstTerm];
+      const secondSymbol = mappings[secondTerm];
+
+      return premise.toSymbolicForm(firstSymbol, secondSymbol);
+    }
+    const { mappings, premiseObjs } = this.generateMappings();
+
+    if (mappings) {
+      const useMappings = this.shouldAllTermsBeMappedToLetters();
+
       return premiseObjs.map((premise, idx) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Grid key={`symbolicFormOf${premise.toSentence()}${idx}`} item xs={3}>
+        <Grid key={`symbolicFormOf${premise.toSentence()}${idx}`} item xs={6}>
           <Typography variant="h6">{premise.toSentence()}</Typography>
-          <Typography variant="subtitle1">{getSymbolicForm(premise, mappings)}</Typography>
+          <Typography variant="subtitle1">{getSymbolicForm(premise, useMappings ? mappings : {})}</Typography>
         </Grid>
       ));
     }
@@ -187,96 +246,116 @@ class InstantSolver extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
     const {
       snackbarVisible,
       snackbarMsg,
       snackbarType,
       dialogOpen,
       argumentSubmitted,
-      premisesKey,
-      conclusionsKey,
+      key,
+      turnstileSymbol,
     } = this.state;
+    const order = this.getOrder(true);
+    const marginLeftLevelTwoTree = order === 3 ? '50px' : '0px';
+    const snackbarWrapperDisplayVal = !snackbarVisible ? 'none' : '';
     return (
-      <div className={classes.root}>
-        <Container maxWidth="lg">
-          <Dialog
-            open={dialogOpen}
-            onClose={() => this.setState({ dialogOpen: false })}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                You are trying to add more than 4 premises.
-                Thats some really complicated stuff to reason about.
-                Are you sure you want to add another premise?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.warningAddPremise} color="primary">
-                Yes
-              </Button>
-              <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
-                No
-              </Button>
-            </DialogActions>
-          </Dialog>
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            open={snackbarVisible}
-            onClose={() => this.setState({ snackbarVisible: false })}
-          >
-            <SnackbarWrapper
-              onClose={() => this.setState({ snackbarVisible: false })}
-              variant={snackbarType}
-              message={snackbarMsg}
-            />
-          </Snackbar>
-
-          <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
-          {argumentSubmitted
-            && (
-              <div>
-                {this.getNumberOfTerms(true) <= 4
+      <Container>
+        <Dialog
+          open={dialogOpen}
+          onClose={() => this.setState({ dialogOpen: false })}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              You are trying to add more than 4 premises.
+              Thats some really complicated stuff to reason about.
+              Are you sure you want to add another premise?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.warningAddPremise} color="primary">
+              Yes
+            </Button>
+            <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
+              No
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <SnackbarWrapper
+          style={{ display: snackbarWrapperDisplayVal, marginBottom: '50px' }}
+          onClose={() => this.setState({ snackbarVisible: false })}
+          variant={snackbarType}
+          message={snackbarMsg}
+        />
+        <ArgumentForm onSubmit={this.onSubmitForm} onError={this.onError} ref={this.argumentFormRef} warn={this.warn} />
+        {argumentSubmitted
+          && (
+            <Grid key={key} container spacing={2}>
+              <Grid item xs={7}>
+                {
+                  order >= 3 && order <= 4
                   && (
-                    <ExpansionPanel className={classes.spacedExpansionPanel}>
+                    <ExpansionPanel>
                       <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="premisesAriaControls"
                         id="premisesExpansionPanel"
                       >
-                        <Typography>Premises Venn Diagram</Typography>
+                        <Typography>Venn Diagram Tree</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
-                        <Container>
-                          {this.getNumberOfTerms(true) === 4 && <FourSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} />}
-                          {this.getNumberOfTerms(true) === 3 && <ThreeSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} title="Premises" />}
-                          {this.getNumberOfTerms(true) === 2 && <TwoSetUninteractiveVennDiagram key={premisesKey} ref={this.premisesVennDiagramRef} orientation={HORIZONTAL} title="Premises" />}
-                        </Container>
+                        <div>
+                          <LevelOneVennDiagramTree
+                            order={order}
+                            vennDiagramList={
+                              this.premiseVennDiagramRefs.map((ref, idx) => (
+                                <TwoSetUninteractiveVennDiagram ref={ref} orientation={VERTICAL} title={`Premise${idx}`} />
+                              ))
+                            }
+                          />
+                          <LevelTwoVennDiagramTree
+                            style={{ marginLeft: marginLeftLevelTwoTree }}
+                            order={order}
+                            combinedVennDiagram={
+                              order === 3
+                                ? <ThreeSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} title="Premises" />
+                                : order === 4
+                                  ? <FourSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} />
+                                  : <div />
+                            }
+                            conclusionOrReducedVennDiagram={
+                              (
+                                <div style={{ display: 'flex' }}>
+                                  <TwoSetUninteractiveVennDiagram
+                                    style={{ width: '175px' }}
+                                    orientation={VERTICAL}
+                                    ref={this.mappedVennDiagramRef}
+                                    title="Mapped"
+                                  />
+                                  <Typography style={{ marginTop: '100px' }} variant="h1">
+                                    {turnstileSymbol}
+                                  </Typography>
+                                  <TwoSetUninteractiveVennDiagram
+                                    style={{ width: '175px' }}
+                                    orientation={VERTICAL}
+                                    ref={this.conclusionVennDiagramRef}
+                                    title="Conclusion"
+                                  />
+                                </div>
+                              )
+                            }
+                          />
+                        </div>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
-                  )}
-                <ExpansionPanel className={classes.spacedExpansionPanel}>
-                  <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="conclusionAriaControls"
-                    id="conclusionExpasionPanel"
-                  >
-                    <Typography>Conclusion Venn Diagram</Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    <Container>
-                      <TwoSetUninteractiveVennDiagram key={conclusionsKey} orientation={HORIZONTAL} ref={this.conclusionVennDiagramRef} title="Conclusion" />
-                    </Container>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                  )
+                }
+              </Grid>
+              <Grid item xs={5}>
                 {
-                  this.getNumberOfTerms(false) <= 26
+                  order <= 26
                   && (
                     <ExpansionPanel>
                       <ExpansionPanelSummary
@@ -294,10 +373,10 @@ class InstantSolver extends React.Component {
                     </ExpansionPanel>
                   )
                 }
-              </div>
-            )}
-        </Container>
-      </div>
+              </Grid>
+            </Grid>
+          )}
+      </Container>
     );
   }
 }

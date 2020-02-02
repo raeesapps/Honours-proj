@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 
 import hash from 'object-hash';
@@ -12,13 +13,13 @@ import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram, validateArgument } from '../../logic/validator';
 
-import Arrow from '../../components/Arrow/Arrow';
 import SimpleStepper from '../../components/Stepper/SimpleStepper';
 import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
 import TwoSetInteractiveVennDiagram from '../../components/VennDiagram/TwoSetInteractiveVennDiagram';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
+import LevelTwoVennDiagramTree from '../../components/VennDiagramTree/LevelTwoVennDiagramTree';
 import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
 
 import styles from '../../assets/views/jss/MapAndArgueQuestion/map_and_argue_question_styles';
@@ -101,57 +102,23 @@ class MapAndArgueQuestion extends React.Component {
   }
 
   getStepContent = (step) => {
-    function renderUninteractiveVennDiagram(premiseCollection, vennDiagramRef) {
-      const n = premiseCollection.terms.length;
-      let x1;
-      let y1;
-      let x2;
-      let y2;
-
-      if (n === 3) {
-        x1 = 150;
-        y1 = 0;
-        x2 = 150;
-        y2 = 250;
-      } else if (n === 4) {
-        x1 = 300;
-        y1 = 0;
-        x2 = 300;
-        y2 = 250;
-      }
-      return (
-        <div>
-          {
-            n === 3 && <ThreeSetUninteractiveVennDiagram title="dfdfsdfs" premises={premiseCollection} ref={vennDiagramRef} />
-          }
-          {
-            n === 4
-            && (
-              <FourSetUninteractiveVennDiagram premises={premiseCollection} ref={vennDiagramRef} />
-            )
-          }
-          <Arrow
-            id="Arrow"
-            width={350}
-            height={275}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-          />
-        </div>
-      );
-    }
     const { premiseCollection, conclusions, shadings } = this.state;
-    const marginLeft = premiseCollection.terms.length === 4 ? { marginLeft: '14%' } : {};
+    const marginLeft = premiseCollection.terms.length === 4 ? { marginLeft: '155px' } : {};
+    const n = premiseCollection.terms.length;
     if (step === 0) {
       return (
-        <div>
-          {
-            renderUninteractiveVennDiagram(premiseCollection, this.premisesVennDiagramRef)
+        <LevelTwoVennDiagramTree
+          order={premiseCollection.terms.length}
+          combinedVennDiagram={
+            n === 3
+              ? <ThreeSetUninteractiveVennDiagram title="PremisesCombined" premises={premiseCollection} ref={this.premisesVennDiagramRef} />
+              : n === 4 ? <FourSetUninteractiveVennDiagram premises={premiseCollection} ref={this.premisesVennDiagramRef} />
+                : <div />
           }
-          <TwoSetInteractiveVennDiagram style={marginLeft} title="Reduce" premise={conclusions[0]} orientation={HORIZONTAL} ref={this.reducedPremisesVennDiagramRef} />
-        </div>
+          conclusionOrReducedVennDiagram={
+            <TwoSetInteractiveVennDiagram style={marginLeft} title="MappedPremises" premise={conclusions[0]} orientation={HORIZONTAL} ref={this.reducedPremisesVennDiagramRef} />
+          }
+        />
       );
     }
     return (

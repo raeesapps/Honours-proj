@@ -30,7 +30,7 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
   componentDidMount() {
     const {
       title,
-      shadings,
+      //shadings,
       orientation,
       terms,
     } = this.props;
@@ -50,6 +50,7 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
 
     this.div = div;
 
+    /*
     if (shadings) {
       const { firstTerm, secondTerm } = terms;
       const { nodeRegionToMappedRegionMapping } = generateMappingObjects(div, firstTerm, secondTerm);
@@ -58,12 +59,21 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
       });
 
       this.setState({ a: firstTerm, b: secondTerm });
-    }
+    }*/
   }
 
-  applyShading = (premiseCollection) => {
-    applyShadings(this.div, premiseCollection);
-    this.setState({ a: premiseCollection.terms[0], b: premiseCollection.terms[1] });
+  applyShading = (premiseCollection, mappings, termsInMapping) => {
+    const [a, b] = termsInMapping ? termsInMapping.sort() : premiseCollection.terms.sort();
+
+    if (mappings) {
+      this.setState({
+        a: mappings[a],
+        b: mappings[b],
+      });
+    } else {
+      this.setState({ a, b });
+    }
+    applyShadings(this.div, premiseCollection, a, b, undefined, undefined, termsInMapping);
   }
 
   render() {
@@ -79,25 +89,12 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     return (
       <div className={classes.content} {...rest}>
         <Typography variant="body1" className={classes.topLeft}>
-          {a && a.length === 1 ? a : 'A'}
+          {a}
         </Typography>
         <Typography variant="body1" className={bClass}>
-          {b && b.length === 1 ? b : 'B'}
+          {b}
         </Typography>
         <div id={id} />
-        {
-          (a && b && a.length > 1 && b.length > 1)
-          && (
-            <div>
-              <Typography variant="h5">
-                where A = {a}
-              </Typography>
-              <Typography variant="h5">
-                where B = {b}
-              </Typography>
-            </div>
-          )
-        }
       </div>
     );
   }

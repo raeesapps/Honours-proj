@@ -1,5 +1,6 @@
 import Compartment from './compartment';
 import HashDictionary from './dictionary';
+import { forms } from './premise';
 import copy from '../utils/copy';
 
 class Table {
@@ -49,6 +50,7 @@ class Table {
     this.tableDictionary = new HashDictionary();
     this.numberOfTerms = termNames.length;
     this.compartments = [];
+    this.xCount = 0;
     const termsMappings = {};
     termNames.forEach((term) => {
       termsMappings[term] = false;
@@ -57,12 +59,28 @@ class Table {
   }
 
   addPremise(premise, conclusionCompartments) {
+    const {
+      SOME_A_IS_NOT_B,
+      SOME_A_IS_B,
+      SOME_A_EXIST,
+    } = forms;
+
+    switch (premise.form) {
+      case SOME_A_IS_NOT_B:
+      case SOME_A_IS_B:
+      case SOME_A_EXIST:
+        this.xCount += 1;
+        break;
+      default:
+        break;
+    }
+
     const compartmentDictionary = new HashDictionary();
     this.compartments.forEach((compartment) => {
       compartmentDictionary.add(compartment, null);
     });
     this.tableDictionary.add(premise, compartmentDictionary);
-    premise.populateTable(this.tableDictionary, conclusionCompartments);
+    premise.populateTable(this.tableDictionary, conclusionCompartments, this.xCount);
   }
 
   unify() {
@@ -106,6 +124,8 @@ class Table {
       } else {
         resolvedCompartments[key] = [...items];
       }
+
+      resolvedCompartments[key].sort();
     });
     return resolvedCompartments;
   }
@@ -159,6 +179,7 @@ class Table {
 
       const aggregatedEntriesWithoutDuplicates = [...new Set([...aggregatedEntries])];
       const aggregatedEntriesFilteredForXs = [...aggregatedEntriesWithoutDuplicates].filter((item) => item.startsWith('x'));
+      aggregatedEntriesFilteredForXs.sort();
       if (aggregatedEntriesFilteredForXs.length) {
         mappedTableUnified[mappedTableKey] = aggregatedEntriesFilteredForXs;
       } else {

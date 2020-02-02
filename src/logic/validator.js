@@ -1,10 +1,6 @@
 import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './premise';
 import copy from '../utils/copy';
 
-const NOT_SHADED = '0';
-const MAYBE_SHADED = '1';
-const SHADED = '2';
-
 const stages = Object.freeze({
   REPRESENTATION_STAGE: 0,
   COMBINATION_STAGE: 1,
@@ -31,6 +27,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
         vennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
         break;
       case MAPPING_STAGE:
+        // eslint-disable-next-line no-case-declarations
         const {
           mappedTableUnified,
           vennDiagramParts: mappedVennDiagramParts,
@@ -49,10 +46,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
         const resolvedValueArray = column[compartment.hashCode()];
 
         if (resolvedValueArray.length) {
-          const shading = resolvedValueArray[0] === 'e' ? MAYBE_SHADED : SHADED;
-          mappings[vennDiagramPart] = shading.toString();
-        } else {
-          mappings[vennDiagramPart] = NOT_SHADED.toString();
+          mappings[vennDiagramPart] = resolvedValueArray;
         }
       });
 
@@ -86,9 +80,6 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
   } else if (stage === COMBINATION_STAGE || stage === MAPPING_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
     const expectedShadings = sortObject(getShadings());
-
-    console.log(actualShadings);
-    console.log(expectedShadings);
 
     result = JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
   }
