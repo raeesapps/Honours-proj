@@ -98,7 +98,7 @@ class Premise {
     return this.terms;
   }
 
-  populateTable(table, conclusionCompartments) {
+  populateTable(table, conclusionCompartments, xIdx) {
     function addEntry(
       compartmentDictionary,
       compartment,
@@ -132,7 +132,6 @@ class Premise {
     const { e, x, x_i } = tableEntryFunctions;
     const { firstTerm, secondTerm } = this.terms;
     const compartmentDictionary = table.get(this);
-    const i = table.size();
     compartmentDictionary.forEach((keyHash) => {
       const compartment = compartmentDictionary.keyObj(keyHash);
       const truths = compartment.getTruths();
@@ -161,7 +160,7 @@ class Premise {
             compartment,
             () => truths[firstTerm] && !truths[secondTerm],
             x_i(),
-            x(i),
+            x(xIdx),
           );
           break;
         case SOME_A_IS_B:
@@ -170,7 +169,7 @@ class Premise {
             compartment,
             () => truths[firstTerm] && truths[secondTerm],
             x_i(),
-            x(i),
+            x(xIdx),
           );
           break;
         case SOME_A_EXIST:
@@ -179,7 +178,7 @@ class Premise {
             compartment,
             () => truths[firstTerm],
             x_i(),
-            x(i),
+            x(xIdx),
           );
           break;
         default:
