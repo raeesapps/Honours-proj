@@ -457,10 +457,14 @@ const fourSetEllipticVennDiagramPaths = [
   },
 ];
 
-const bindMouseEventListeners = (elementId, div) => {
+const bindMouseEventListeners = (elementId, div, n) => {
+  const getX = (region, x) => {
+    const id = `p${hash(`${elementId}${region}${x}`)}`;
+    return d3.select(`#${id}`);
+  };
+
   let startTime;
   let endTime;
-  const x = true;
 
   div
     .on('mouseover', function onMouseover() {
@@ -513,47 +517,36 @@ const bindMouseEventListeners = (elementId, div) => {
         node.attr('fill-opacity', 1);
         node.attr('shaded', IDENTIFIER_FOR_BLACK);
       } else if (nodeShaded === IDENTIFIER_FOR_BLACK) {
+        const x = getX(nodeRegion, 0);
+        x.attr('fill-opacity', 1);
+
         node.attr('fill', '#ff0000');
-
-        if (x) {
-          const id = `p${hash(`${elementId}${nodeRegion}${0}`)}`;
-          const xpath = d3.select(`#${id}`);
-          xpath.attr('fill-opacity', 1);
-          node.attr('x', 0);
-        }
-
         node.attr('fill-opacity', 1);
+        node.attr('x', 0);
         node.attr('shaded', IDENTIFIER_FOR_RED);
       } else if (nodeShaded === IDENTIFIER_FOR_RED) {
-        if (x) {
-          if (((endTime - startTime) > 200)) {
-            const id2 = `p${hash(`${elementId}${nodeRegion}${nodeX}`)}`;
-            const xpath2 = d3.select(`#${id2}`);
-            xpath2.attr('fill-opacity', 0);
-            const nextX = (parseInt(nodeX, 10) + 1) % 7;
-            const id = `p${hash(`${elementId}${nodeRegion}${nextX}`)}`;
-            const xpath = d3.select(`#${id}`);
-            xpath.attr('fill-opacity', 1);
-            node.attr('x', nextX);
-          } else {
-            node.attr('fill', '#ffffff');
-            node.attr('fill-opacity', 0.2);
-            const id = `p${hash(`${elementId}${nodeRegion}${nodeX}`)}`;
-            const xpath = d3.select(`#${id}`);
-            xpath.attr('fill-opacity', 0);
-            node.attr('x', -1);
-            node.attr('shaded', NOT_SHADED);
-          }
+        if (((endTime - startTime) > 200)) {
+          const nextX = (parseInt(nodeX, 10) + 1) % n;
+          const x = getX(nodeRegion, nextX);
+          const x2 = getX(nodeRegion, nodeX);
+          x.attr('fill-opacity', 1);
+          x2.attr('fill-opacity', 0);
+
+          node.attr('x', nextX);
         } else {
+          const x = getX(nodeRegion, nodeX);
+          x.attr('fill-opacity', 0);
+
           node.attr('fill', '#ffffff');
           node.attr('fill-opacity', 0.2);
+          node.attr('x', -1);
           node.attr('shaded', NOT_SHADED);
         }
       }
     });
 }
 
-function drawPaths(elementId, diagram, paths, mouseEventListener) {
+function drawPaths(elementId, diagram, paths, mouseEventListener, n) {
   const { REGION, X } = PATH_TYPES;
   paths.forEach((pathEntry) => {
     const { name, path, xPaths } = pathEntry;
@@ -578,7 +571,7 @@ function drawPaths(elementId, diagram, paths, mouseEventListener) {
     });
 
     if (mouseEventListener) {
-      bindMouseEventListeners(elementId, appendedPath);
+      bindMouseEventListeners(elementId, appendedPath, n);
     }
   });
 }
@@ -590,6 +583,7 @@ function createCircularVennDiagram(
   circles,
   paths,
   mouseEventListener,
+  n,
 ) {
   function drawCircle(diagram, cX, cY, id) {
     diagram.append('circle')
@@ -615,7 +609,7 @@ function createCircularVennDiagram(
     drawCircle(diagram, cX, cY, id);
   });
 
-  drawPaths(elementId, diagram, paths, mouseEventListener);
+  drawPaths(elementId, diagram, paths, mouseEventListener, n);
 
   return div;
 }
@@ -639,6 +633,7 @@ function createTwoSetHorizontalCircularVennDiagram(elementId, mouseEventListener
     twoSetHorizontalCircles,
     twoSetHorizontalCircleVennDiagramPaths,
     mouseEventListener,
+    7,
   );
 }
 
@@ -651,6 +646,7 @@ function createTwoSetVerticalCircularVennDiagram(elementId, mouseEventListener) 
     twoSetVerticalCircles,
     twoSetVerticalCircleVennDiagramPaths,
     mouseEventListener,
+    7,
   );
 }
 
@@ -662,6 +658,7 @@ function createThreeSetCircularVennDiagram(elementId, mouseEventListener) {
     threeSetCircles,
     threeSetCircleVennDiagramPaths,
     mouseEventListener,
+    3,
   );
 }
 
@@ -701,7 +698,7 @@ function createFourSetEllipticVennDiagram(id, mouseEventListener) {
     drawEllipse(diagram, cX, cY, rX, rY, rotationAng, eID);
   });
 
-  drawPaths(id, diagram, fourSetEllipticVennDiagramPaths, mouseEventListener);
+  drawPaths(id, diagram, fourSetEllipticVennDiagramPaths, mouseEventListener, 7);
 
   return div;
 }
