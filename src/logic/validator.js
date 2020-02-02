@@ -1,10 +1,6 @@
 import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './premise';
 import copy from '../utils/copy';
 
-const NOT_SHADED = '0';
-const MAYBE_SHADED = '1';
-const SHADED = '2';
-
 const stages = Object.freeze({
   REPRESENTATION_STAGE: 0,
   COMBINATION_STAGE: 1,
@@ -50,10 +46,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
         const resolvedValueArray = column[compartment.hashCode()];
 
         if (resolvedValueArray.length) {
-          const shading = resolvedValueArray[0] === 'e' ? MAYBE_SHADED : SHADED;
-          mappings[vennDiagramPart] = shading.toString();
-        } else {
-          mappings[vennDiagramPart] = NOT_SHADED.toString();
+          mappings[vennDiagramPart] = resolvedValueArray;
         }
       });
 
