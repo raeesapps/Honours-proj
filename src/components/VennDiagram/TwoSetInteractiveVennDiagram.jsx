@@ -78,19 +78,6 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
           {b && b.length === 1 ? b : 'B'}
         </Typography>
         <div id={id} />
-        {
-          (a && b && a.length > 1 && b.length > 1)
-          && (
-            <div>
-              <Typography variant="h5">
-                where A = {a}
-              </Typography>
-              <Typography variant="h5">
-                where B = {b}
-              </Typography>
-            </div>
-          )
-        }
       </div>
     );
   }
