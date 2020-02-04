@@ -70,7 +70,9 @@ class InstantSolver extends React.Component {
     const { mappings } = this.generateMappings();
     const useMappings = this.shouldAllTermsBeMappedToLetters();
 
-    if (needsUpdate && mappings && this.getOrder(true) <= 4) {
+    const order = this.getOrder(true);
+
+    if (needsUpdate && mappings) {
       const argumentForm = this.argumentFormRef.current;
       const { premises } = argumentForm.state;
 
@@ -80,7 +82,10 @@ class InstantSolver extends React.Component {
 
       premiseVennDiagrams.forEach((ref, idx) => {
         const premiseCollection = premiseCollections[idx];
-        ref.current.applyShading(premiseCollection, useMappings ? mappings : undefined);
+
+        if (order >= 3 && order <= 4) {
+          ref.current.applyShading(premiseCollection, useMappings ? mappings : undefined);
+        }
       });
 
       const combinedPremisesVennDiagram = this.combinedPremisesVennDiagramRef.current;
@@ -88,7 +93,9 @@ class InstantSolver extends React.Component {
         .filter((premise) => premise.name !== 'Conclusion')
         .map((premise) => premise.ref.current.getPremiseObj()));
 
-      combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, useMappings ? mappings : undefined);
+      if (order >= 3 && order <= 4) {
+        combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, useMappings ? mappings : undefined);
+      }
 
       const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
       const mappedVennDiagram = this.mappedVennDiagramRef.current;
@@ -97,12 +104,14 @@ class InstantSolver extends React.Component {
         .ref.current.getPremiseObj();
       const conclusionPremiseCollection = new PremiseCollection([conclusion]);
 
-      conclusionVennDiagram.applyShading(conclusionPremiseCollection, useMappings ? mappings : undefined);
-      mappedVennDiagram.applyShading(
-        allPremisesExcludingConclusion,
-        useMappings ? mappings : undefined,
-        conclusionPremiseCollection.terms,
-      );
+      if (order >= 3 && order <= 4) {
+        conclusionVennDiagram.applyShading(conclusionPremiseCollection, useMappings ? mappings : undefined);
+        mappedVennDiagram.applyShading(
+          allPremisesExcludingConclusion,
+          useMappings ? mappings : undefined,
+          conclusionPremiseCollection.terms,
+        );
+      }
 
       const valid = allPremisesExcludingConclusion.argue(conclusion);
 
