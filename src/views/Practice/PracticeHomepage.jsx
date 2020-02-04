@@ -13,6 +13,8 @@ import {
 } from '../../components/Questions/question_instances';
 import QuestionCard from '../../components/Questions/QuestionCard';
 
+import { STAR_TYPES, getStarCount } from '../../utils/stars';
+
 import bronzeStar from '../../assets/views/img/bronze_star.png';
 import silverStar from '../../assets/views/img/silver_star.png';
 import goldStar from '../../assets/views/img/gold_star.png';
@@ -39,6 +41,7 @@ function PracticeHomepage(props) {
       />
     );
   }
+  const { BRONZE_STAR, SILVER_STAR, GOLD_STAR } = STAR_TYPES;
   const { onClick, ...rest } = props;
   const questionTypes = [
     premiseToSymbolicFormQuestions,
@@ -53,22 +56,22 @@ function PracticeHomepage(props) {
       <Typography variant="h4">
         Practice syllogisms!
       </Typography>
-      <Typography variant="h6">
+      <Typography variant="h6" style={{ marginBottom }}>
         Your achievements
       </Typography>
       <Paper style={{ marginBottom, width: '650px' }}>
         <div style={{ display: 'flex' }}>
           <img src={bronzeStar} alt="bronze star" />
           <Typography variant="subtitle1">
-            0
+            {getStarCount(BRONZE_STAR)}
           </Typography>
           <img src={silverStar} alt="silver star" />
           <Typography variant="subtitle1">
-            0
+            {getStarCount(SILVER_STAR)}
           </Typography>
           <img src={goldStar} alt="gold star" />
           <Typography variant="subtitle1">
-            0
+            {getStarCount(GOLD_STAR)}
           </Typography>
         </div>
       </Paper>
