@@ -4,11 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import { validateMappings } from '../../logic/validator';
-import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
-import SimpleStepper from '../../components/Stepper/SimpleStepper';
-import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
+import PremiseToSymbolicForm from './PremiseToSymbolicForm';
+import SimpleStepper from '../Stepper/SimpleStepper';
+import withQuestionTemplate from '../Questions/QuestionTemplate';
 
-import styles from '../../assets/views/jss/SyllogismToSymbolicFormQuestion/syllogism_to_symbolic_form_question_styles';
+import styles from '../../assets/components/jss/PremiseToSymbolicForm/syllogism_to_symbolic_form_question_styles';
 
 class SyllogismToSymbolicFormQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {

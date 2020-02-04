@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import PremiseFormInput from './PremiseFormInput';
 
-import styles from '../../../assets/views/jss/InstantSolver/Components/argument_form_styles';
+import styles from '../../assets/components/jss/ArgumentForm/argument_form_styles';
 
 class ArgumentForm extends React.PureComponent {
   constructor() {

@@ -1,8 +1,8 @@
-import CombineDiagramsQuestion from '../../views/CombineDiagramsQuestion/CombineDiagramsQuestion';
-import MapAndArgueQuestion from '../../views/MapAndArgueQuestion/MapAndArgueQuestion';
-import PremiseToDiagramQuestion from '../../views/PremiseToDiagramQuestion/PremiseToDiagramQuestion';
-import PremisesToSymbolicFormQuestion from '../../views/PremiseToSymbolicFormQuestion/PremiseToSymbolicFormQuestion';
-import SyllogismToSymbolicFormQuestion from '../../views/SyllogismToSymbolicFormQuestion/SyllogismToSymbolicFormQuestion';
+import CombineDiagramsQuestion from '../CombineDiagramsQuestion/CombineDiagramsQuestion';
+import MapAndArgueQuestion from '../MapAndArgueQuestion/MapAndArgueQuestion';
+import PremiseToDiagramQuestion from '../PremiseToDiagram/PremiseToDiagramQuestion';
+import PremisesToSymbolicFormQuestion from '../PremiseToSymbolicForm/PremiseToSymbolicFormQuestion';
+import SyllogismToSymbolicFormQuestion from '../PremiseToSymbolicForm/SyllogismToSymbolicFormQuestion';
 
 import { Premise, forms } from '../../logic/premise';
 import PremiseCollection from '../../logic/premise_collection';

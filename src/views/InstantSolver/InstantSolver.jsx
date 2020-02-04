@@ -17,7 +17,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import ArgumentForm from './Components/ArgumentForm';
+import ArgumentForm from '../../components/ArgumentForm/ArgumentForm';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';

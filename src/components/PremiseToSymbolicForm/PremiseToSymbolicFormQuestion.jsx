@@ -5,12 +5,12 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import PremiseToSymbolicForm from '../../components/PremiseToSymbolicForm/PremiseToSymbolicForm';
-import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
+import PremiseToSymbolicForm from './PremiseToSymbolicForm';
+import withQuestionTemplate from '../Questions/QuestionTemplate';
 
 import { validateMappings } from '../../logic/validator';
 
-import styles from '../../assets/views/jss/PremiseToSymbolicFormQuestion/premise_to_symbolic_question_styles';
+import styles from '../../assets/components/jss/PremiseToSymbolicForm/premise_to_symbolic_question_styles';
 
 class PremiseToSymbolicFormQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {

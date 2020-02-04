@@ -9,9 +9,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { Premise, forms } from '../../../logic/premise';
+import { Premise, forms } from '../../logic/premise';
 
-import styles from '../../../assets/views/jss/InstantSolver/Components/premise_form_input_styles';
+import styles from '../../assets/components/jss/ArgumentForm/premise_form_input_styles';
 
 const quantifiers = Object.freeze({
   SOME: 'Some',

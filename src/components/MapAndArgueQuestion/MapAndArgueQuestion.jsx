@@ -13,16 +13,16 @@ import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram, validateArgument } from '../../logic/validator';
 
-import SimpleStepper from '../../components/Stepper/SimpleStepper';
-import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSetUninteractiveVennDiagram';
-import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
-import TwoSetInteractiveVennDiagram from '../../components/VennDiagram/TwoSetInteractiveVennDiagram';
-import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
-import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
-import LevelTwoVennDiagramTree from '../../components/VennDiagramTree/LevelTwoVennDiagramTree';
-import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
+import SimpleStepper from '../Stepper/SimpleStepper';
+import FourSetUninteractiveVennDiagram from '../VennDiagram/FourSetUninteractiveVennDiagram';
+import ThreeSetUninteractiveVennDiagram from '../VennDiagram/ThreeSetUninteractiveVennDiagram';
+import TwoSetInteractiveVennDiagram from '../VennDiagram/TwoSetInteractiveVennDiagram';
+import TwoSetUninteractiveVennDiagram from '../VennDiagram/TwoSetUninteractiveVennDiagram';
+import { TWO_SET_CIRCLES_ORIENTATION } from '../VennDiagram/venn_utils';
+import LevelTwoVennDiagramTree from '../VennDiagramTree/LevelTwoVennDiagramTree';
+import withQuestionTemplate from '../Questions/QuestionTemplate';
 
-import styles from '../../assets/views/jss/MapAndArgueQuestion/map_and_argue_question_styles';
+import styles from '../../assets/components/jss/MapAndArgueQuestion/map_and_argue_question_styles';
 
 const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
 

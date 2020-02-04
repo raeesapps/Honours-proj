@@ -7,15 +7,15 @@ import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
 
-import FourSetInteractiveVennDiagram from '../../components/VennDiagram/FourSetInteractiveVennDiagram';
-import ThreeSetInteractiveVennDiagram from '../../components/VennDiagram/ThreeSetInteractiveVennDiagram';
-import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
-import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
-import LevelOneVennDiagramTree from '../../components/VennDiagramTree/LevelOneVennDiagramTree';
+import FourSetInteractiveVennDiagram from '../VennDiagram/FourSetInteractiveVennDiagram';
+import ThreeSetInteractiveVennDiagram from '../VennDiagram/ThreeSetInteractiveVennDiagram';
+import TwoSetUninteractiveVennDiagram from '../VennDiagram/TwoSetUninteractiveVennDiagram';
+import { TWO_SET_CIRCLES_ORIENTATION } from '../VennDiagram/venn_utils';
+import LevelOneVennDiagramTree from '../VennDiagramTree/LevelOneVennDiagramTree';
 import PremiseCollection from '../../logic/premise_collection';
-import withQuestionTemplate from '../../components/Questions/QuestionTemplate';
+import withQuestionTemplate from '../Questions/QuestionTemplate';
 
-import styles from '../../assets/views/jss/CombineDiagramsQuestion/combine_diagrams_question_styles';
+import styles from '../../assets/components/jss/CombineDiagramsQuestion/combine_diagrams_question_styles';
 
 const { VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 
