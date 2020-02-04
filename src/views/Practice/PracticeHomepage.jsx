@@ -50,33 +50,35 @@ function PracticeHomepage(props) {
     combineDiagramsQuestion,
     mapAndArgueQuestion,
   ];
-  const marginBottom = '10px'
+  const marginBottom = '15px';
   return (
     <Container {...rest}>
       <Typography variant="h4">
         Practice syllogisms!
       </Typography>
-      <Typography variant="h6" style={{ marginBottom }}>
-        Your achievements
-      </Typography>
-      <Paper style={{ marginBottom, width: '620px' }}>
-        <div style={{ display: 'flex' }}>
-          <img src={bronzeStar} alt="bronze star" />
-          <img src={silverStar} alt="silver star" />
-          <img src={goldStar} alt="gold star" />
-        </div>
-        <div style={{ display: 'flex' }}>
-          <Typography variant="h2" style={{ marginLeft: '80px' }}>
-            {getStarCount(BRONZE_STAR)}
-          </Typography>
-          <Typography variant="h2" style={{ marginLeft: '160px' }}>
-            {getStarCount(SILVER_STAR)}
-          </Typography>
-          <Typography variant="h2" style={{ marginLeft: '180px' }}>
-            {getStarCount(GOLD_STAR)}
-          </Typography>
-        </div>
-      </Paper>
+      <center>
+        <Typography variant="h6" style={{ marginBottom }}>
+          Your achievements
+        </Typography>
+        <Paper style={{ marginBottom, width: '620px' }}>
+          <div style={{ display: 'flex' }}>
+            <img src={bronzeStar} alt="bronze star" />
+            <img src={silverStar} alt="silver star" />
+            <img src={goldStar} alt="gold star" />
+          </div>
+          <div style={{ display: 'flex' }}>
+            <Typography variant="h2" style={{ marginLeft: '80px' }}>
+              {getStarCount(BRONZE_STAR)}
+            </Typography>
+            <Typography variant="h2" style={{ marginLeft: '160px' }}>
+              {getStarCount(SILVER_STAR)}
+            </Typography>
+            <Typography variant="h2" style={{ marginLeft: '180px' }}>
+              {getStarCount(GOLD_STAR)}
+            </Typography>
+          </div>
+        </Paper>
+      </center>
       <Typography variant="h6" style={{ marginBottom }}>
         Here you can find different types of exercises involving syllogisms. Choose any category you want to practice
       </Typography>
