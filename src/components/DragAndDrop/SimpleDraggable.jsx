@@ -1,6 +1,8 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
+import Typography from '@material-ui/core/Typography';
+
 import styles from '../../assets/components/jss/DragAndDrop/simple_draggable_styles';
 
 function SimpleDraggable({ item, index, ...rest }) {
@@ -16,7 +18,9 @@ function SimpleDraggable({ item, index, ...rest }) {
             providedInner.draggableProps.style,
           )}
         >
-          {item.content}
+          <Typography variant="h4">
+            {item.content}
+          </Typography>
         </div>
       )}
     </Draggable>

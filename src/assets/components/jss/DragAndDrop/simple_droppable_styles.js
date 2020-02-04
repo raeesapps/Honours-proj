@@ -9,8 +9,8 @@ function styles(isDraggingOver, direction) {
     display: direction === HORIZONTAL ? 'inline-flex' : 'inline-block',
     padding: grid,
     overflow: 'auto',
-    minHeight: '58px',
-    minWidth: '60px',
+    minHeight: '38px',
+    minWidth: '40px',
     marginRight: '10px',
   };
 }
