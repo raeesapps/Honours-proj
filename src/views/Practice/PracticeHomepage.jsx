@@ -59,18 +59,20 @@ function PracticeHomepage(props) {
       <Typography variant="h6" style={{ marginBottom }}>
         Your achievements
       </Typography>
-      <Paper style={{ marginBottom, width: '650px' }}>
+      <Paper style={{ marginBottom, width: '620px' }}>
         <div style={{ display: 'flex' }}>
           <img src={bronzeStar} alt="bronze star" />
-          <Typography variant="subtitle1">
+          <img src={silverStar} alt="silver star" />
+          <img src={goldStar} alt="gold star" />
+        </div>
+        <div style={{ display: 'flex' }}>
+          <Typography variant="h2" style={{ marginLeft: '80px' }}>
             {getStarCount(BRONZE_STAR)}
           </Typography>
-          <img src={silverStar} alt="silver star" />
-          <Typography variant="subtitle1">
+          <Typography variant="h2" style={{ marginLeft: '160px' }}>
             {getStarCount(SILVER_STAR)}
           </Typography>
-          <img src={goldStar} alt="gold star" />
-          <Typography variant="subtitle1">
+          <Typography variant="h2" style={{ marginLeft: '180px' }}>
             {getStarCount(GOLD_STAR)}
           </Typography>
         </div>
