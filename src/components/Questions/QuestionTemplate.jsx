@@ -8,9 +8,9 @@ import SimpleDialog from '../Dialog/SimpleDialog';
 import SnackbarWrapper from '../Snackbar/SnackbarWrapper';
 import snackbarTypes from '../Snackbar/snackbar_types';
 
-import bronzeStar from '../../assets/views/img/bronze_star.png';
-import silverStar from '../../assets/views/img/silver_star.png';
-import goldStar from '../../assets/views/img/gold_star.png';
+import bronzeStar from '../../assets/img/bronze_star.png';
+import silverStar from '../../assets/img/silver_star.png';
+import goldStar from '../../assets/img/gold_star.png';
 
 import { STAR_TYPES, addStar, rememberQuestion, hasQuestionBeenDone } from '../../utils/stars';
 

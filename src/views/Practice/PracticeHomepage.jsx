@@ -15,9 +15,9 @@ import QuestionCard from '../../components/Questions/QuestionCard';
 
 import { STAR_TYPES, getStarCount } from '../../utils/stars';
 
-import bronzeStar from '../../assets/views/img/bronze_star.png';
-import silverStar from '../../assets/views/img/silver_star.png';
-import goldStar from '../../assets/views/img/gold_star.png';
+import bronzeStar from '../../assets/img/bronze_star.png';
+import silverStar from '../../assets/img/silver_star.png';
+import goldStar from '../../assets/img/gold_star.png';
 
 function PracticeHomepage(props) {
   function renderQuestionType(questionType, onClick) {
@@ -53,12 +53,9 @@ function PracticeHomepage(props) {
   const marginBottom = '15px';
   return (
     <Container {...rest}>
-      <Typography variant="h4">
-        Practice syllogisms!
-      </Typography>
       <center>
-        <Typography variant="h6" style={{ marginBottom }}>
-          Your achievements
+        <Typography variant="h3" style={{ marginBottom }}>
+          Practice syllogisms!
         </Typography>
         <Paper style={{ marginBottom, width: '620px' }}>
           <div style={{ display: 'flex' }}>
