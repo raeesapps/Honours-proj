@@ -47,6 +47,7 @@ const premiseToSymbolicFormQuestions = {
   component: PremisesToSymbolicFormQuestion,
   questions: [
     {
+      id: 0,
       title: 'All men are mortal',
       difficulty: EASY,
       content: new Premise(ALL_A_IS_B, {
@@ -55,6 +56,7 @@ const premiseToSymbolicFormQuestions = {
       }),
     },
     {
+      id: 1,
       title: 'Some carrots are blue',
       difficulty: EASY,
       content: new Premise(SOME_A_IS_B, {
@@ -63,6 +65,7 @@ const premiseToSymbolicFormQuestions = {
       }),
     },
     {
+      id: 2,
       title: 'No frog is pink',
       difficulty: EASY,
       content: new Premise(NO_A_IS_B, {
@@ -71,6 +74,7 @@ const premiseToSymbolicFormQuestions = {
       }),
     },
     {
+      id: 3,
       title: 'Some chickens are not cooked',
       difficulty: EASY,
       content: new Premise(SOME_A_IS_NOT_B, {
@@ -87,6 +91,7 @@ const syllogismToSymbolicFormQuestions = {
   component: SyllogismToSymbolicFormQuestion,
   questions: [
     {
+      id: 4,
       title: 'BARBARA',
       difficulty: EASY,
       content: generatePremiseCollection(
@@ -107,6 +112,7 @@ const syllogismToSymbolicFormQuestions = {
       ),
     },
     {
+      id: 5,
       title: 'DARII',
       difficulty: EASY,
       content: generatePremiseCollection(
@@ -127,6 +133,7 @@ const syllogismToSymbolicFormQuestions = {
       ),
     },
     {
+      id: 6,
       title: 'Sorites #1',
       difficulty: MEDIUM,
       content: generatePremiseCollection(
@@ -159,6 +166,7 @@ const premiseToDiagramQuestions = {
   component: PremiseToDiagramQuestion,
   questions: [
     {
+      id: 7,
       title: 'All A are B',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -171,6 +179,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 8,
       title: 'Some A are B',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -183,6 +192,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 9,
       title: 'Some A are not B',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -195,6 +205,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 10,
       title: 'No A are B',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -207,6 +218,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 11,
       title: 'All C are D',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -219,6 +231,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 12,
       title: 'Some C are D',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -231,6 +244,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 13,
       title: 'Some C are not D',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -243,6 +257,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 14,
       title: 'No C are D',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -255,6 +270,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 15,
       title: 'All F are G',
       difficulty: MEDIUM,
       content: new PremiseCollection(
@@ -267,6 +283,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 16,
       title: 'Some F are G',
       difficulty: MEDIUM,
       content: new PremiseCollection(
@@ -279,6 +296,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 17,
       title: 'Some F are not G',
       difficulty: MEDIUM,
       content: new PremiseCollection(
@@ -291,6 +309,7 @@ const premiseToDiagramQuestions = {
       ),
     },
     {
+      id: 18,
       title: 'No F are G',
       difficulty: MEDIUM,
       content: new PremiseCollection(
@@ -311,6 +330,7 @@ const combineDiagramsQuestion = {
   component: CombineDiagramsQuestion,
   questions: [
     {
+      id: 19,
       title: 'BARBARA diagrams',
       difficulty: EASY,
       content: generatePremiseCollection(
@@ -327,6 +347,7 @@ const combineDiagramsQuestion = {
       ),
     },
     {
+      id: 20,
       title: 'Sorites #1 diagrams',
       difficulty: MEDIUM,
       content: generatePremiseCollection(
@@ -355,6 +376,7 @@ const mapAndArgueQuestion = {
   component: MapAndArgueQuestion,
   questions: [
     {
+      id: 21,
       title: 'Baroco',
       difficulty: MEDIUM,
       content: generatePremiseCollectionAndConclusions(
@@ -389,6 +411,7 @@ const mapAndArgueQuestion = {
       ),
     },
     {
+      id: 22,
       title: 'Sorites #1',
       difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
