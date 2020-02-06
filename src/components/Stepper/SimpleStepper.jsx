@@ -37,7 +37,7 @@ function SimpleStepper(props) {
                     className={classes.button}
                   >
                     Back
-                    </Button>
+                  </Button>
                   <Button
                     variant="contained"
                     color="primary"
