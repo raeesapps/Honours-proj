@@ -153,7 +153,13 @@ class InstantSolver extends React.Component {
     const argumentForm = this.argumentFormRef.current;
     if (argumentForm) {
       const { premises } = argumentForm.state;
-      const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
+      const premiseObjs = premises
+        .map((premise) => {
+          const currentRef = premise.ref.current;
+
+          return currentRef ? currentRef.getPremiseObj() : null;
+        })
+        .filter((premiseObj) => !!premiseObj);
 
       if (excludeConclusion) {
         premiseObjs.pop();
