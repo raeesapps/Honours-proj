@@ -24,10 +24,10 @@ class Practice extends React.Component {
     const { Component, content, difficulty, id } = this.state;
     return (
       <Grid container>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Questions onClick={this.setComponent} />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           <Component id={id} content={content} difficulty={difficulty} onClick={this.setComponent} />
         </Grid>
       </Grid>
