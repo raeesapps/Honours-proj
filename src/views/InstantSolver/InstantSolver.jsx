@@ -5,11 +5,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -18,6 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import ArgumentForm from '../../components/ArgumentForm/ArgumentForm';
+import SimpleDialog from '../../components/Dialog/SimpleDialog';
 import SnackbarWrapper from '../../components/Snackbar/SnackbarWrapper';
 import TwoSetUninteractiveVennDiagram from '../../components/VennDiagram/TwoSetUninteractiveVennDiagram';
 import ThreeSetUninteractiveVennDiagram from '../../components/VennDiagram/ThreeSetUninteractiveVennDiagram';
@@ -275,29 +272,28 @@ class InstantSolver extends React.Component {
     const snackbarWrapperDisplayVal = !snackbarVisible ? 'none' : '';
     return (
       <Container>
-        <Dialog
+        <SimpleDialog
           open={dialogOpen}
           onClose={() => this.setState({ dialogOpen: false })}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
-          <DialogContent>
+          title="Are you sure?"
+          content={
             <DialogContentText id="alert-dialog-description">
               You are trying to add more than 4 premises.
               Thats some really complicated stuff to reason about.
               Are you sure you want to add another premise?
             </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.warningAddPremise} color="primary">
-              Yes
-            </Button>
-            <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
-              No
-            </Button>
-          </DialogActions>
-        </Dialog>
+          }
+          actions={
+            <div>
+              <Button onClick={this.warningAddPremise} color="primary">
+                Yes
+              </Button>
+              <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
+                No
+              </Button>
+            </div>
+          }
+        />
         <SnackbarWrapper
           style={{ display: snackbarWrapperDisplayVal, marginBottom: '50px' }}
           onClose={() => this.setState({ snackbarVisible: false })}
