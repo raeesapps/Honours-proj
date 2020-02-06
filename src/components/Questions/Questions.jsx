@@ -8,7 +8,7 @@ import {
   premiseToDiagramQuestions,
   combineDiagramsQuestion,
   mapAndArgueQuestion,
-} from './question_instances';
+} from '../../question_instances';
 import QuestionList from './QuestionList';
 
 function Questions(props) {

@@ -1,13 +1,13 @@
-import DIFFICULTY from './question_difficulty';
+import DIFFICULTY from './components/Questions/question_difficulty';
 
-import CombineDiagramsQuestion from '../CombineDiagramsQuestion/CombineDiagramsQuestion';
-import MapAndArgueQuestion from '../MapAndArgueQuestion/MapAndArgueQuestion';
-import PremiseToDiagramQuestion from '../PremiseToDiagram/PremiseToDiagramQuestion';
-import PremisesToSymbolicFormQuestion from '../PremiseToSymbolicForm/PremiseToSymbolicFormQuestion';
-import SyllogismToSymbolicFormQuestion from '../PremiseToSymbolicForm/SyllogismToSymbolicFormQuestion';
+import CombineDiagramsQuestion from './components/CombineDiagramsQuestion/CombineDiagramsQuestion';
+import MapAndArgueQuestion from './components/MapAndArgueQuestion/MapAndArgueQuestion';
+import PremiseToDiagramQuestion from './components/PremiseToDiagram/PremiseToDiagramQuestion';
+import PremisesToSymbolicFormQuestion from './components/PremiseToSymbolicForm/PremiseToSymbolicFormQuestion';
+import SyllogismToSymbolicFormQuestion from './components/PremiseToSymbolicForm/SyllogismToSymbolicFormQuestion';
 
-import { Premise, forms } from '../../logic/premise';
-import PremiseCollection from '../../logic/premise_collection';
+import { Premise, forms } from './logic/premise';
+import PremiseCollection from './logic/premise_collection';
 
 function generatePremiseCollection(premises, conclusion) {
   const premiseCollection = new PremiseCollection([...premises]);

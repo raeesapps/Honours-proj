@@ -10,7 +10,7 @@ import {
   premiseToDiagramQuestions,
   combineDiagramsQuestion,
   mapAndArgueQuestion,
-} from '../../components/Questions/question_instances';
+} from '../../question_instances';
 import QuestionCard from '../../components/Questions/QuestionCard';
 
 import { STAR_TYPES, getStarCount } from '../../utils/stars';
