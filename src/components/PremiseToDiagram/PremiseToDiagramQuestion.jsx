@@ -36,7 +36,7 @@ class PremiseToDiagramQuestion extends React.Component {
   }
 
   validate = () => {
-    const { onValidate } = this.props;
+    const { onValidate, onCorrect, difficulty } = this.props;
 
     if (!this.vennDiagramRef.current) {
       throw new Error('Ref not set!');
@@ -44,6 +44,10 @@ class PremiseToDiagramQuestion extends React.Component {
 
     const result = this.vennDiagramRef.current.validate();
     onValidate(result, 'Incorrect!');
+
+    if (result) {
+      onCorrect(difficulty);
+    }
   }
 
   render() {

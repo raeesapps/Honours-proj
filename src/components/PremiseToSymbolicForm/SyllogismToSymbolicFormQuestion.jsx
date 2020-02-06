@@ -92,10 +92,10 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
   }
 
   validate = (firstEntry, secondEntry, thirdEntry) => {
-    const { onValidate } = this.props;
+    const { onValidate, onCorrect, difficulty } = this.props;
     const { mappingTable, step, premises } = this.state;
 
-    const validationResult = validateMappings(
+    const validated = validateMappings(
       firstEntry,
       secondEntry,
       thirdEntry,
@@ -103,17 +103,19 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
       mappingTable,
     );
 
-    if (validationResult) {
+    if (validated) {
       const {
         hint,
         result,
         updatedMappingTable,
-      } = validationResult;
+      } = validated;
 
       onValidate(result, hint);
 
       if (result) {
-        const { step } = this.state;
+        if (step === premises.length - 1) {
+          onCorrect(difficulty);
+        }
         this.setState({
           step: step + 1,
           mappingTable: updatedMappingTable,
