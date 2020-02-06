@@ -1,7 +1,7 @@
 const STAR_TYPES = Object.freeze({
-  BRONZE_STAR: 'br_s',
-  SILVER_STAR: 'sl_s',
-  GOLD_STAR: 'go_s',
+  BRONZE_STAR: 'br_st',
+  SILVER_STAR: 'sl_st',
+  GOLD_STAR: 'go_st',
 });
 
 function addStar(starType) {
@@ -9,9 +9,9 @@ function addStar(starType) {
 
   if (count) {
     localStorage.removeItem(count);
-    localStorage.setItem(starType, count + 1);
+    localStorage.setItem(starType, Number(count) + 1);
   } else {
-    localStorage.setItem(starType, 0);
+    localStorage.setItem(starType, 1);
   }
 }
 
