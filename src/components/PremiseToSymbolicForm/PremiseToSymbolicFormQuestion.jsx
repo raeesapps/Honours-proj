@@ -44,7 +44,7 @@ class PremiseToSymbolicFormQuestion extends React.Component {
 
   validate = () => {
     const { premiseToSymbolicFormRef } = this;
-    const { onValidate, onCorrect, difficulty } = this.props;
+    const { onValidate, onCorrect, difficulty, id } = this.props;
     const { premise } = this.state;
 
     if (!premiseToSymbolicFormRef.current) {
@@ -63,7 +63,7 @@ class PremiseToSymbolicFormQuestion extends React.Component {
       onValidate(result, hint);
 
       if (result) {
-        onCorrect(difficulty);
+        onCorrect(id, difficulty);
       }
     }
   }

@@ -71,14 +71,14 @@ class CombineDiagramsQuestion extends React.Component {
 
   validate = () => {
     const { COMBINATION_STAGE } = stages;
-    const { onValidate, onCorrect, difficulty } = this.props;
+    const { onValidate, onCorrect, difficulty, id } = this.props;
     const { premiseCollection } = this.state;
 
     const result = validateVennDiagram(premiseCollection, this.combinationVennDiagramRef, COMBINATION_STAGE);
     onValidate(result, 'Incorrect!');
 
     if (result) {
-      onCorrect(difficulty);
+      onCorrect(id, difficulty);
     }
 
     return result;
