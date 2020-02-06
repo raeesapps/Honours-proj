@@ -21,8 +21,22 @@ function getStarCount(starType) {
   return count || 0;
 }
 
+function rememberQuestion(id) {
+  const questionKey = `soakUpSyllogismsQuestion${id}`;
+
+  localStorage.setItem(questionKey, String(true));
+}
+
+function hasQuestionBeenDone(id) {
+  const questionKey = `soakUpSyllogismsQuestion${id}`;
+
+  return localStorage.getItem(questionKey);
+}
+
 export {
   STAR_TYPES,
   addStar,
   getStarCount,
+  rememberQuestion,
+  hasQuestionBeenDone,
 };

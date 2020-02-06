@@ -12,22 +12,23 @@ class Practice extends React.Component {
       Component: PracticeHomepage,
       content: null,
       difficulty: null,
+      id: null,
     };
   }
 
-  setComponent = (Component, content, difficulty) => {
-    this.setState({ Component, content, difficulty });
+  setComponent = (Component, content, difficulty, id) => {
+    this.setState({ Component, content, difficulty, id });
   };
 
   render() {
-    const { Component, content, difficulty } = this.state;
+    const { Component, content, difficulty, id } = this.state;
     return (
       <Grid container>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Questions onClick={this.setComponent} />
         </Grid>
-        <Grid item xs={8}>
-          <Component content={content} difficulty={difficulty} onClick={this.setComponent} />
+        <Grid item xs={9}>
+          <Component id={id} content={content} difficulty={difficulty} onClick={this.setComponent} />
         </Grid>
       </Grid>
     );

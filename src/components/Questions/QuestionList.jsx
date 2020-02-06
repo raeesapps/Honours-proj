@@ -1,14 +1,18 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import CheckIcon from '@material-ui/icons/Check';
+import Chip from '@material-ui/core/Chip';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+
+import DIFFICULTY from './question_difficulty';
+import { hasQuestionBeenDone } from '../../utils/stars';
 
 import styles from '../../assets/components/jss/Questions/question_list_styles';
 
@@ -21,6 +25,32 @@ function QuestionList(props) {
     onClick,
     ...rest
   } = props;
+
+  function renderChip(question) {
+    const { EASY, MEDIUM, HARD } = DIFFICULTY;
+
+    let text;
+    let color;
+
+    switch (question.difficulty) {
+      case EASY:
+        text = 'Easy';
+        color = 'green';
+        break;
+      case MEDIUM:
+        text = 'Medium';
+        color = 'yellow';
+        break;
+      case HARD:
+        text = 'Hard';
+        color = 'red';
+        break;
+      default:
+        break;
+    }
+
+    return <Chip style={{ backgroundColor: `${color}` }} label={text} />;
+  }
 
   return (
     <div className={classes.root} {...rest}>
@@ -35,12 +65,33 @@ function QuestionList(props) {
         <ExpansionPanelDetails>
           <List>
             {
-              questions.map((question) => (
-                <ListItem key={`${title}${question.title}`} button onClick={() => onClick(component, question.content, question.difficulty)}>
-                  <ListItemText>
-                    {question.title}
-                  </ListItemText>
-                </ListItem>
+              questions.map((question, idx) => (
+                <div style={{ display: 'flex' }}>
+                  <Button
+                    key={question.id}
+                    button
+                    onClick={
+                      () => (
+                        onClick(
+                          component,
+                          question.content,
+                          question.difficulty,
+                          question.id,
+                        )
+                      )
+                    }
+                  >
+                    <Typography variant="body1">
+                      {`#${idx + 1}`}
+                    </Typography>
+                  </Button>
+                  {
+                    renderChip(question)
+                  }
+                  {
+                    hasQuestionBeenDone(question.id) && <CheckIcon style={{ marginLeft: '5px' }} />
+                  }
+                </div>
               ))
             }
           </List>
