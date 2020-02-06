@@ -36,7 +36,7 @@ function QuestionList(props) {
           <List>
             {
               questions.map((question) => (
-                <ListItem key={`${title}${question.title}`} button onClick={() => onClick(component, question.content)}>
+                <ListItem key={`${title}${question.title}`} button onClick={() => onClick(component, question.content, question.difficulty)}>
                   <ListItemText>
                     {question.title}
                   </ListItemText>

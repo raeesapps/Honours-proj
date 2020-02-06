@@ -16,7 +16,7 @@ function QuestionCard(props) {
   } = props;
   return (
     <Card {...rest}>
-      <CardActionArea onClick={() => onClick(component, question.content)}>
+      <CardActionArea onClick={() => onClick(component, question.content, question.difficulty)}>
         <CardContent>
           <center>
             <Typography gutterBottom variant="h5">

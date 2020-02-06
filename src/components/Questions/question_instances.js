@@ -1,3 +1,5 @@
+import DIFFICULTY from './question_difficulty';
+
 import CombineDiagramsQuestion from '../CombineDiagramsQuestion/CombineDiagramsQuestion';
 import MapAndArgueQuestion from '../MapAndArgueQuestion/MapAndArgueQuestion';
 import PremiseToDiagramQuestion from '../PremiseToDiagram/PremiseToDiagramQuestion';
@@ -37,6 +39,8 @@ const {
   SOME_A_EXIST,
 } = forms;
 
+const { EASY, MEDIUM, HARD } = DIFFICULTY;
+
 const premiseToSymbolicFormQuestions = {
   title: 'Premise To Symbolic Form',
   description: 'Translate the sentential form of a premise to symbolic form using letters and the turnstile symbol',
@@ -44,6 +48,7 @@ const premiseToSymbolicFormQuestions = {
   questions: [
     {
       title: 'All men are mortal',
+      difficulty: EASY,
       content: new Premise(ALL_A_IS_B, {
         firstTerm: 'men',
         secondTerm: 'mortal',
@@ -51,6 +56,7 @@ const premiseToSymbolicFormQuestions = {
     },
     {
       title: 'Some carrots are blue',
+      difficulty: EASY,
       content: new Premise(SOME_A_IS_B, {
         firstTerm: 'carrots',
         secondTerm: 'blue',
@@ -58,6 +64,7 @@ const premiseToSymbolicFormQuestions = {
     },
     {
       title: 'No frog is pink',
+      difficulty: EASY,
       content: new Premise(NO_A_IS_B, {
         firstTerm: 'frog',
         secondTerm: 'pink',
@@ -65,6 +72,7 @@ const premiseToSymbolicFormQuestions = {
     },
     {
       title: 'Some chickens are not cooked',
+      difficulty: EASY,
       content: new Premise(SOME_A_IS_NOT_B, {
         firstTerm: 'chickens',
         secondTerm: 'cooked',
@@ -80,6 +88,7 @@ const syllogismToSymbolicFormQuestions = {
   questions: [
     {
       title: 'BARBARA',
+      difficulty: EASY,
       content: generatePremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
@@ -99,6 +108,7 @@ const syllogismToSymbolicFormQuestions = {
     },
     {
       title: 'DARII',
+      difficulty: EASY,
       content: generatePremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
@@ -118,6 +128,7 @@ const syllogismToSymbolicFormQuestions = {
     },
     {
       title: 'Sorites #1',
+      difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
@@ -149,6 +160,7 @@ const premiseToDiagramQuestions = {
   questions: [
     {
       title: 'All A are B',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
@@ -160,6 +172,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'Some A are B',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(SOME_A_IS_B, {
@@ -171,6 +184,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'Some A are not B',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(SOME_A_IS_NOT_B, {
@@ -182,6 +196,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'No A are B',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(NO_A_IS_B, {
@@ -193,6 +208,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'All C are D',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
@@ -204,6 +220,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'Some C are D',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(SOME_A_IS_B, {
@@ -215,6 +232,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'Some C are not D',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(SOME_A_IS_NOT_B, {
@@ -226,6 +244,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'No C are D',
+      difficulty: EASY,
       content: new PremiseCollection(
         [
           new Premise(NO_A_IS_B, {
@@ -237,6 +256,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'All F are G',
+      difficulty: MEDIUM,
       content: new PremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
@@ -248,6 +268,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'Some F are G',
+      difficulty: MEDIUM,
       content: new PremiseCollection(
         [
           new Premise(SOME_A_IS_B, {
@@ -259,6 +280,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'Some F are not G',
+      difficulty: MEDIUM,
       content: new PremiseCollection(
         [
           new Premise(SOME_A_IS_NOT_B, {
@@ -270,6 +292,7 @@ const premiseToDiagramQuestions = {
     },
     {
       title: 'No F are G',
+      difficulty: MEDIUM,
       content: new PremiseCollection(
         [
           new Premise(NO_A_IS_B, {
@@ -289,6 +312,7 @@ const combineDiagramsQuestion = {
   questions: [
     {
       title: 'BARBARA diagrams',
+      difficulty: EASY,
       content: generatePremiseCollection(
         [
           new Premise(SOME_A_IS_B, {
@@ -304,6 +328,7 @@ const combineDiagramsQuestion = {
     },
     {
       title: 'Sorites #1 diagrams',
+      difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
@@ -331,6 +356,7 @@ const mapAndArgueQuestion = {
   questions: [
     {
       title: 'Baroco',
+      difficulty: MEDIUM,
       content: generatePremiseCollectionAndConclusions(
         [
           new Premise(ALL_A_IS_B, {
@@ -364,6 +390,7 @@ const mapAndArgueQuestion = {
     },
     {
       title: 'Sorites #1',
+      difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
         [
           new Premise(SOME_A_EXIST, {
