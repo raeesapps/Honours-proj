@@ -175,7 +175,42 @@ class Table {
 
           return items;
         })
-        .flat();
+        .flat()
+        .filter((item) => {
+          let keepX = true;
+          if (item.startsWith('x')) {
+            const tableKeys = Object
+              .keys(thisTableResolved)
+              .filter((thisTableKey) => {
+                const thisTableCompartment = thisTableCompartments[thisTableKey];
+
+                const reducer = terms
+                  .reduce((counter, term) => {
+                    if (!thisTableCompartment.truths[term]) {
+                      return counter - 1;
+                    }
+
+                    return counter;
+                  }, 2);
+
+                return reducer === 0;
+              });
+
+            let n = tableKeys.length - 1;
+            while (n >= 0) {
+              const key = tableKeys[n];
+              const instances = thisTableResolved[key];
+              keepX = instances.indexOf(item) === -1;
+
+              if (keepX === false) {
+                break;
+              }
+
+              n -= 1;
+            }
+          }
+          return keepX;
+        });
 
       const aggregatedEntriesWithoutDuplicates = [...new Set([...aggregatedEntries])];
       const aggregatedEntriesFilteredForXs = [...aggregatedEntriesWithoutDuplicates].filter((item) => item.startsWith('x'));
