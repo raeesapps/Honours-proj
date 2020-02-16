@@ -20,7 +20,7 @@ function Header(props) {
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Soak Up Syllogisms
+            Soak Up Syllogismss
           </Typography>
           {
             routes.map((route) => (
