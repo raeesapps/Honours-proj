@@ -81,6 +81,7 @@ const premiseToSymbolicFormQuestions = {
   questions: [
     {
       id: 0,
+      idx: 0,
       difficulty: EASY,
       content: new Premise(ALL_A_IS_B, {
         firstTerm: 'men',
@@ -89,6 +90,7 @@ const premiseToSymbolicFormQuestions = {
     },
     {
       id: 1,
+      idx: 1,
       difficulty: EASY,
       content: new Premise(SOME_A_IS_B, {
         firstTerm: 'carrots',
@@ -97,6 +99,7 @@ const premiseToSymbolicFormQuestions = {
     },
     {
       id: 2,
+      idx: 2,
       difficulty: EASY,
       content: new Premise(NO_A_IS_B, {
         firstTerm: 'frog',
@@ -105,6 +108,7 @@ const premiseToSymbolicFormQuestions = {
     },
     {
       id: 3,
+      idx: 3,
       difficulty: EASY,
       content: new Premise(SOME_A_IS_NOT_B, {
         firstTerm: 'chickens',
@@ -121,6 +125,7 @@ const syllogismToSymbolicFormQuestions = {
   questions: [
     {
       id: 4,
+      idx: 0,
       difficulty: EASY,
       content: generatePremiseCollection(
         [
@@ -141,6 +146,7 @@ const syllogismToSymbolicFormQuestions = {
     },
     {
       id: 5,
+      idx: 1,
       difficulty: EASY,
       content: generatePremiseCollection(
         [
@@ -161,6 +167,7 @@ const syllogismToSymbolicFormQuestions = {
     },
     {
       id: 6,
+      idx: 2,
       difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
@@ -193,6 +200,7 @@ const premiseToDiagramQuestions = {
   questions: [
     {
       id: 7,
+      idx: 0,
       difficulty: EASY,
       content: new PremiseCollection(
         [
@@ -205,6 +213,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 8,
+      idx: 1,
       title: 'Some A are B',
       difficulty: EASY,
       content: new PremiseCollection(
@@ -218,6 +227,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 9,
+      idx: 2,
       difficulty: EASY,
       content: new PremiseCollection(
         [
@@ -230,6 +240,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 10,
+      idx: 3,
       difficulty: EASY,
       content: new PremiseCollection(
         [
@@ -242,6 +253,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 11,
+      idx: 4,
       difficulty: EASY,
       content: new PremiseCollection(
         [
@@ -254,6 +266,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 12,
+      idx: 5,
       difficulty: EASY,
       content: new PremiseCollection(
         [
@@ -266,6 +279,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 13,
+      idx: 6,
       difficulty: EASY,
       content: new PremiseCollection(
         [
@@ -278,6 +292,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 14,
+      idx: 7,
       difficulty: EASY,
       content: new PremiseCollection(
         [
@@ -290,6 +305,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 15,
+      idx: 8,
       difficulty: MEDIUM,
       content: new PremiseCollection(
         [
@@ -302,6 +318,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 16,
+      idx: 9,
       difficulty: MEDIUM,
       content: new PremiseCollection(
         [
@@ -314,6 +331,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 17,
+      idx: 10,
       difficulty: MEDIUM,
       content: new PremiseCollection(
         [
@@ -326,6 +344,7 @@ const premiseToDiagramQuestions = {
     },
     {
       id: 18,
+      idx: 11,
       difficulty: MEDIUM,
       content: new PremiseCollection(
         [
@@ -346,6 +365,7 @@ const combineDiagramsQuestion = {
   questions: [
     {
       id: 27,
+      idx: 0,
       difficulty: EASY,
       content: generatePremiseCollection(
         [
@@ -362,6 +382,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 19,
+      idx: 1,
       difficulty: EASY,
       content: generatePremiseCollection(
         [
@@ -378,6 +399,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 23,
+      idx: 2,
       difficulty: EASY,
       content: generatePremiseCollection(
         [
@@ -394,6 +416,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 26,
+      idx: 3,
       difficulty: EASY,
       content: generatePremiseCollection(
         [
@@ -410,6 +433,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 29,
+      idx: 4,
       difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
@@ -430,6 +454,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 20,
+      idx: 5,
       difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
@@ -450,6 +475,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 25,
+      idx: 6,
       difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
@@ -470,6 +496,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 24,
+      idx: 7,
       difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
@@ -490,6 +517,7 @@ const combineDiagramsQuestion = {
     },
     {
       id: 28,
+      idx: 8,
       difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
@@ -518,6 +546,7 @@ const mapAndArgueQuestion = {
   questions: [
     {
       id: 45,
+      idx: 0,
       difficulty: MEDIUM,
       content: generatePremiseCollectionAndConclusions(
         [
@@ -534,6 +563,7 @@ const mapAndArgueQuestion = {
     },
     {
       id: 21,
+      idx: 1,
       difficulty: MEDIUM,
       content: generatePremiseCollectionAndConclusions(
         [
@@ -550,6 +580,7 @@ const mapAndArgueQuestion = {
     },
     {
       id: 33,
+      idx: 2,
       difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
         [
@@ -566,6 +597,7 @@ const mapAndArgueQuestion = {
     },
     {
       id: 32,
+      idx: 3,
       difficulty: MEDIUM,
       content: generatePremiseCollectionAndConclusions(
         [
@@ -586,6 +618,7 @@ const mapAndArgueQuestion = {
     },
     {
       id: 22,
+      idx: 4,
       difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
         [
@@ -606,6 +639,7 @@ const mapAndArgueQuestion = {
     },
     {
       id: 29,
+      idx: 5,
       difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
         [
@@ -626,6 +660,7 @@ const mapAndArgueQuestion = {
     },
     {
       id: 30,
+      idx: 6,
       difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
         [
@@ -646,6 +681,7 @@ const mapAndArgueQuestion = {
     },
     {
       id: 31,
+      idx: 7,
       difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
         [

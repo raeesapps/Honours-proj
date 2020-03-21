@@ -67,18 +67,18 @@ function QuestionList(props) {
         <ExpansionPanelDetails>
           <List>
             {
-              questions.map((question, questionIdx) => (
+              questions.map((question) => (
                 <div
                   key={question.id}
                   style={{ display: 'flex' }}
                 >
                   <Button
-                    variant={selectedIdx === questionIdx && idx === sidebarIdx ? 'contained' : 'text'}
+                    variant={selectedIdx === question.idx && idx === sidebarIdx ? 'contained' : 'text'}
                     onClick={
                       () => (
                         onClick(
                           idx,
-                          questionIdx,
+                          question.idx,
                           component,
                           question.content,
                           question.difficulty,
@@ -88,7 +88,7 @@ function QuestionList(props) {
                     }
                   >
                     <Typography variant="body1">
-                      {`#${questionIdx + 1}`}
+                      {`#${question.idx + 1}`}
                     </Typography>
                     {
                       renderChip(question)
