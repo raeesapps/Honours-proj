@@ -60,6 +60,7 @@ function QuestionList(props) {
           expandIcon={<ExpandMoreIcon />}
           aria-controls={`${title}AriaControls`}
           id={`${title}ExpasionPanel`}
+          style={{ backgroundColor: idx === sidebarIdx ? '#03a9f4' : 'white' }}
         >
           <Typography>{title}</Typography>
         </ExpansionPanelSummary>

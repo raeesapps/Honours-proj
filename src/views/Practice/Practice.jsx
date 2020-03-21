@@ -9,7 +9,7 @@ class Practice extends React.Component {
   constructor() {
     super();
     this.state = {
-      sidebarIdx: 0,
+      sidebarIdx: -1,
       selectedIdx: -1,
       Component: PracticeHomepage,
       content: null,
