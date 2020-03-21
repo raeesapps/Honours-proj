@@ -13,7 +13,7 @@ import {
 import QuestionCard from '../../components/Questions/QuestionCard';
 
 function PracticeHomepage(props) {
-  function renderQuestionType(questionType, onClick) {
+  function renderQuestionType(questionType, idx, onClick) {
     const marginBottom = { marginBottom: '10px' };
     const {
       title,
@@ -25,6 +25,7 @@ function PracticeHomepage(props) {
     return (
       <QuestionCard
         key={title}
+        sidebarIdx={idx}
         title={title}
         content={description}
         style={marginBottom}
@@ -54,7 +55,7 @@ function PracticeHomepage(props) {
         Here you can find different types of exercises involving syllogisms. Choose any category you want to practice
       </Typography>
       {
-        questionTypes.map((questionType) => renderQuestionType(questionType, onClick))
+        questionTypes.map((questionType, idx) => renderQuestionType(questionType, idx, onClick))
       }
     </Container>
   );
