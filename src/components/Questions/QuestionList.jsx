@@ -47,7 +47,7 @@ function QuestionList(props) {
         break;
     }
 
-    return <Chip style={{ backgroundColor: `${color}` }} label={text} />;
+    return <Chip style={{ backgroundColor: `${color}`, marginLeft: '25%' }} label={text} />;
   }
 
   return (
@@ -82,10 +82,10 @@ function QuestionList(props) {
                     <Typography variant="body1">
                       {`#${idx + 1}`}
                     </Typography>
+                    {
+                      renderChip(question)
+                    }
                   </Button>
-                  {
-                    renderChip(question)
-                  }
                 </div>
               ))
             }
