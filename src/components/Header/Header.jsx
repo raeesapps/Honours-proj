@@ -18,13 +18,13 @@ function Header(props) {
     <div className={classes.root} {...rest}>
       <CssBaseline />
       <AppBar position="fixed">
-        <Toolbar>
+        <Toolbar variant="dense">
           <Typography variant="h6" noWrap>
             Soak Up Syllogisms
           </Typography>
           {
             routes.map((route) => (
-              <Button key={route.name} className={classes.link} component={RouterLink} to={route.path}>
+              <Button variant="contained" color="primary" key={route.name} className={classes.link} component={RouterLink} to={route.path}>
                 {route.name}
               </Button>
             ))
