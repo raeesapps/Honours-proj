@@ -2,6 +2,7 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -105,7 +106,11 @@ class PremiseFormInput extends React.PureComponent {
       <div>
         <div className={classes.formControlParent}>
           <FormControl>
-            <InputLabel id={`${name}QuantifierDropdownLabel`}>{displayName}</InputLabel>
+            <InputLabel id={`${name}QuantifierDropdownLabel`}>
+              <Typography variant="h5">
+                {displayName}
+              </Typography>
+            </InputLabel>
             <Select
               id={`${name}SelectQuantifier`}
               value={quantifier}
