@@ -2,7 +2,6 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import CheckIcon from '@material-ui/icons/Check';
 import Chip from '@material-ui/core/Chip';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -12,7 +11,6 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 
 import DIFFICULTY from './question_difficulty';
-import { hasQuestionBeenDone } from '../../utils/stars';
 
 import styles from '../../assets/components/jss/Questions/question_list_styles';
 
@@ -87,9 +85,6 @@ function QuestionList(props) {
                   </Button>
                   {
                     renderChip(question)
-                  }
-                  {
-                    hasQuestionBeenDone(question.id) && <CheckIcon style={{ marginLeft: '5px' }} />
                   }
                 </div>
               ))
