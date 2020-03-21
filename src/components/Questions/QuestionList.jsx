@@ -67,10 +67,12 @@ function QuestionList(props) {
           <List>
             {
               questions.map((question, questionIdx) => (
-                <div style={{ display: 'flex' }}>
+                <div
+                  key={question.id}
+                  style={{ display: 'flex' }}
+                >
                   <Button
-                    key={question.id}
-                    variant={selectedIdx === questionIdx && idx === sidebarIdx ? 'contained' : ''}
+                    variant={selectedIdx === questionIdx && idx === sidebarIdx ? 'contained' : 'text'}
                     onClick={
                       () => (
                         onClick(

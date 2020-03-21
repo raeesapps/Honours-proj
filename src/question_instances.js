@@ -517,7 +517,7 @@ const mapAndArgueQuestion = {
   component: MapAndArgueQuestion,
   questions: [
     {
-      id: 22,
+      id: 45,
       difficulty: MEDIUM,
       content: generatePremiseCollectionAndConclusions(
         [
