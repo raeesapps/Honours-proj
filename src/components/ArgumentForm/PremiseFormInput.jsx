@@ -35,8 +35,8 @@ class PremiseFormInput extends React.PureComponent {
       ARE,
     } = relations;
     this.state = {
-      a: 'A',
-      b: 'B',
+      a: '',
+      b: '',
       quantifier: ALL,
       relationship: ARE,
     };
@@ -101,36 +101,38 @@ class PremiseFormInput extends React.PureComponent {
       idx,
     } = this.props;
     const displayName = name === 'Conclusion' ? 'Conclusion' : 'Premise';
-    const paddingTopPercentage = relationship === ARE_NOT ? '22.55%' : '34%';
+    const paddingTopPercentage = relationship === ARE_NOT ? '6.45%' : '7%';
     return (
-      <div>
+      <div style={{ marginBottom: '50px' }}>
         <div className={classes.formControlParent}>
-          <FormControl>
+          <FormControl style={{ display: 'inline-block' }}>
             <InputLabel id={`${name}QuantifierDropdownLabel`}>
               <Typography variant="h5">
                 {displayName}
               </Typography>
             </InputLabel>
+            <br />
+            <br />
             <Select
               id={`${name}SelectQuantifier`}
               value={quantifier}
+              style={{ paddingTop: paddingTopPercentage }}
               onChange={(event) => this.setState({ quantifier: event.target.value })}
             >
               <MenuItem value={ALL}>{ALL}</MenuItem>
               <MenuItem value={SOME}>{SOME}</MenuItem>
               <MenuItem value={NO}>{NO}</MenuItem>
             </Select>
-          </FormControl>
-          <TextField
-            required
-            id={`${name}TextFieldA`}
-            value={a}
-            className={classes.textField}
-            margin="normal"
-            onChange={(event) => this.setState({ a: event.target.value })}
-          />
-          <br />
-          <FormControl>
+            <TextField
+              required
+              id={`${name}TextFieldA`}
+              value={a}
+              label="Subject"
+              className={classes.textField}
+              onChange={(event) => this.setState({ a: event.target.value })}
+            />
+            <br />
+            <br />
             <Select
               id={`${name}SelectRelationship`}
               style={{ paddingTop: paddingTopPercentage }}
@@ -142,15 +144,15 @@ class PremiseFormInput extends React.PureComponent {
                 quantifier === SOME && <MenuItem value={ARE_NOT}>{ARE_NOT}</MenuItem>
               }
             </Select>
+            <TextField
+              required
+              id={`${name}TextFieldB`}
+              value={b}
+              label="Predicate"
+              className={classes.textField}
+              onChange={(event) => this.setState({ b: event.target.value })}
+            />
           </FormControl>
-          <TextField
-            required
-            id={`${name}TextFieldB`}
-            value={b}
-            className={classes.textField}
-            margin="normal"
-            onChange={(event) => this.setState({ b: event.target.value })}
-          />
         </div>
         <Fab color="primary" aria-label="add" className={classes.fab} onClick={() => onRemove(idx)}>
           <RemoveIcon />
