@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
@@ -120,9 +121,14 @@ class ArgumentForm extends React.PureComponent {
               })
             }
           </Grid>
-          <Fab color="primary" aria-label="add" className={classes.fab} onClick={this.onAddPremise}>
-            <AddIcon />
-          </Fab>
+          <div>
+            <Typography variant="subtitle1" color="secondary">
+              Add premise
+            </Typography>
+            <Fab style={{ margin: '20px' }} color="primary" aria-label="add" className={classes.fab} onClick={this.onAddPremise}>
+              <AddIcon />
+            </Fab>
+          </div>
         </form>
         <Button variant="contained" color="primary" className={classes.button} onClick={onSubmit}>
           Validate
