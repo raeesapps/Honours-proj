@@ -166,7 +166,7 @@ class MapAndArgueQuestion extends React.Component {
       step,
       selectedIdx,
     } = this.state;
-    const { onValidate, onCorrect, difficulty, id } = this.props;
+    const { onValidate } = this.props;
 
     let result;
 
@@ -185,14 +185,9 @@ class MapAndArgueQuestion extends React.Component {
           .reduce((isCorrect, conclusion) => isCorrect
             && !validateArgument(premiseCollection, conclusion), true);
       }
-
-      if (result) {
-        onCorrect(id, difficulty);
-      }
     }
 
     onValidate(result, 'Incorrect!');
-
     return result;
   }
 
