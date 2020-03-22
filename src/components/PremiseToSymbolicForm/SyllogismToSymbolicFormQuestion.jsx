@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 
 import { validateMappings } from '../../logic/validator';
 import PremiseToSymbolicForm from './PremiseToSymbolicForm';
@@ -49,6 +48,14 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
       mappingTable: {},
       goingBack: false,
     };
+  }
+
+  componentDidMount() {
+    const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
+
+    setQuestionTitle("Create dictionary of syllogism");
+    setQuestionNumber(1);
+    setInstructions(`Translate each premise, and the conclusion to standard form using the turnstile symbol.`);
   }
 
   onBack = (step) => {
@@ -122,25 +129,17 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
     const { key, step, premises } = this.state;
     const steps = premises.map((premise) => premise.toSentence());
     return (
-      <div className={classes.root} key={key}>
-        <Typography variant="h5" style={{ marginBottom: '5px' }}>Translate Syllogism to Symbolic Form</Typography>
-        {
-          premises.map((premise, idx) => (
-            <Typography key={premise.toSentence()} style={{ marginBottom: idx === premises.length - 1 ? '10px' : '0' }} variant="subtitle1">{premise.toSentence()}</Typography>
-          ))
-        }
-        <SimpleStepper
-          step={step}
-          steps={steps}
-          content={this.getStepContent}
-          onBack={this.onBack}
-          onNext={this.onNext}
-        />
-      </div>
+      <SimpleStepper
+        key={key}
+        step={step}
+        steps={steps}
+        content={this.getStepContent}
+        onBack={this.onBack}
+        onNext={this.onNext}
+      />
     );
   }
 }

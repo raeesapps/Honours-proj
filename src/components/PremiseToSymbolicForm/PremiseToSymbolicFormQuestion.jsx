@@ -2,8 +2,6 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 import PremiseToSymbolicForm from './PremiseToSymbolicForm';
 import withQuestionTemplate from '../Questions/QuestionTemplate';
@@ -42,6 +40,15 @@ class PremiseToSymbolicFormQuestion extends React.Component {
     this.premiseToSymbolicFormRef = React.createRef();
   }
 
+  componentDidMount() {
+    const { premise } = this.state;
+    const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
+
+    setQuestionTitle("Translate premise to standard form");
+    setQuestionNumber(1);
+    setInstructions(`Translate the premise "${premise.toSentence()}" to standard form using the turnstile symbol`);
+  }
+
   validate = () => {
     const { premiseToSymbolicFormRef } = this;
     const { onValidate } = this.props;
@@ -70,16 +77,9 @@ class PremiseToSymbolicFormQuestion extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div key={key}>
-        <Typography className={classes.typography} variant="h5">
-          Translate
-          {` "${premise.toSentence()}" `}
-          to Symbolic Form
-        </Typography>
-        <Paper className={classes.paper}>
-          <PremiseToSymbolicForm className={classes.premiseToSymbolicForm} ref={premiseToSymbolicFormRef} premise={premise} />
-          <br />
-        </Paper>
+      <div style={{ marginTop: '20px' }} key={key}>
+        <PremiseToSymbolicForm className={classes.premiseToSymbolicForm} ref={premiseToSymbolicFormRef} premise={premise} />
+        <br />
         <Button className={classes.button} variant="contained" color="primary" onClick={this.validate}>Check Answer</Button>
       </div>
     );

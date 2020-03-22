@@ -2,7 +2,6 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
@@ -80,6 +79,14 @@ class CombineDiagramsQuestion extends React.Component {
     return result;
   }
 
+  componentDidMount() {
+    const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
+
+    setQuestionTitle("Represent the premises in a syllogism on a Venn Diagram");
+    setQuestionNumber(1);
+    setInstructions(`You are provided with two Venn Diagrams, each of which represents a premise. You need to shade the bigger Venn Diagram so that it represents both the premises. If one of the premises is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
+  }
+
   render() {
     function renderInteractiveVennDiagram(premiseCollection, vennDiagramRef) {
       if (premiseCollection.terms.length === 3) {
@@ -90,47 +97,36 @@ class CombineDiagramsQuestion extends React.Component {
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }
-    function mapPremiseToSymbolicForm(premise, idx, numberOfPremises) {
-      const symbolicForm = premise.toSymbolicForm();
-
-      if (idx === numberOfPremises - 1) {
-        return ` "${symbolicForm}" `;
-      }
-      return ` "${symbolicForm}", `;
-    }
     const { classes } = this.props;
     const { premiseCollection, premisesVennDiagramRef, key } = this.state;
     const { premises } = premiseCollection;
     // eslint-disable-next-line no-nested-ternary
-    const width = premiseCollection.terms.length === 3 ? '400px'
-      : premiseCollection.terms.length === 4 ? '620px' : '0px';
     return (
       <div key={key} className={classes.root}>
-        <Typography className={classes.instructions} variant="h5">
-          Combine the Venn Diagrams of
-          {
-            premises.map((premise, idx) => mapPremiseToSymbolicForm(premise, idx, premises.length))
-          }
-          into one Venn Diagram
-        </Typography>
-        <Paper style={{ width }}>
-          <LevelOneVennDiagramTree
-            vennDiagramList={
-              premises.map((premise, idx) => (
+        <LevelOneVennDiagramTree
+          vennDiagramList={
+            premises.map((premise, idx) => (
+              <div>
+                <Typography style={{ marginLeft: '8px' }} variant="h4">
+                  {
+                    premise.toSymbolicForm()
+                  }
+                </Typography>
                 <TwoSetUninteractiveVennDiagram
                   title={premise.toSentence()}
                   terms={premise.terms}
                   orientation={VERTICAL}
                   ref={premisesVennDiagramRef[idx]}
                 />
-              ))
-            }
-            order={premiseCollection.terms.length}
-          />
-          {
-            renderInteractiveVennDiagram(premiseCollection, this.combinationVennDiagramRef)
+              </div>
+            ))
           }
-        </Paper>
+          order={premiseCollection.terms.length}
+        />
+        {
+          renderInteractiveVennDiagram(premiseCollection, this.combinationVennDiagramRef)
+        }
+        <br />
         <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
       </div>
     );

@@ -2,8 +2,6 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 import PremiseToDiagram from './PremiseToDiagram';
 import withQuestionTemplate from '../Questions/QuestionTemplate';
@@ -46,28 +44,26 @@ class PremiseToDiagramQuestion extends React.Component {
     onValidate(result, 'Incorrect!');
   }
 
+  componentDidMount() {
+    const { premiseCollection } = this.state;
+    const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
+
+    const premise = premiseCollection.premises[0];
+
+    setQuestionTitle("Represent premise on a Venn Diagram");
+    setQuestionNumber(1);
+    setInstructions(`Shade the Venn Diagram to represent ${premise.toSymbolicForm()}. If the premise is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
+  }
+
   render() {
     const { premiseCollection, key } = this.state;
-    const { classes } = this.props;
 
     if (!premiseCollection.premises.length) {
       throw new Error('No premises in premise collection!');
     }
-
-    const premise = premiseCollection.premises[0];
-
-    const width = premiseCollection.terms.length === 4 ? { width: '640px' } : { width: '312px' };
     return (
       <div key={key}>
-        <Typography className={classes.instructions} variant="h5">
-          Shade the Venn Diagram to represent
-          {
-            ` "${premise.toSymbolicForm()}" `
-          }
-        </Typography>
-        <Paper className={classes.paper} style={width}>
-          <PremiseToDiagram renderTitle={false} ref={this.vennDiagramRef} premiseCollection={premiseCollection} />
-        </Paper>
+        <PremiseToDiagram renderTitle={false} ref={this.vennDiagramRef} premiseCollection={premiseCollection} />
         <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
       </div>
     );
