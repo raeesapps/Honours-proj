@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import RemoveIcon from '@material-ui/icons/Remove';
 
@@ -104,55 +103,51 @@ class PremiseFormInput extends React.PureComponent {
     const paddingTopPercentage = relationship === ARE_NOT ? '6.45%' : '7%';
     return (
       <div style={{ marginBottom: '50px' }}>
-        <div className={classes.formControlParent}>
-          <FormControl style={{ display: 'inline-block' }}>
-            <InputLabel id={`${name}QuantifierDropdownLabel`}>
-              <Typography variant="h5">
-                {displayName}
-              </Typography>
-            </InputLabel>
-            <br />
-            <br />
-            <Select
-              id={`${name}SelectQuantifier`}
-              value={quantifier}
-              style={{ paddingTop: paddingTopPercentage }}
-              onChange={(event) => this.setState({ quantifier: event.target.value })}
-            >
-              <MenuItem value={ALL}>{ALL}</MenuItem>
-              <MenuItem value={SOME}>{SOME}</MenuItem>
-              <MenuItem value={NO}>{NO}</MenuItem>
-            </Select>
-            <TextField
-              required
-              id={`${name}TextFieldA`}
-              value={a}
-              label="Subject"
-              className={classes.textField}
-              onChange={(event) => this.setState({ a: event.target.value })}
-            />
-            <br />
-            <br />
-            <Select
-              id={`${name}SelectRelationship`}
-              style={{ paddingTop: paddingTopPercentage }}
-              value={relationship}
-              onChange={(event) => this.setState({ relationship: event.target.value })}
-            >
-              <MenuItem value={ARE}>{ARE}</MenuItem>
-              {
-                quantifier === SOME && <MenuItem value={ARE_NOT}>{ARE_NOT}</MenuItem>
-              }
-            </Select>
-            <TextField
-              required
-              id={`${name}TextFieldB`}
-              value={b}
-              label="Predicate"
-              className={classes.textField}
-              onChange={(event) => this.setState({ b: event.target.value })}
-            />
-          </FormControl>
+        <div style={{ display: 'inline-block' }} className={classes.formControlParent}>
+          <InputLabel id={`${name}QuantifierDropdownLabel`}>
+            <Typography variant="h6">
+              {displayName}
+            </Typography>
+          </InputLabel>
+          <Select
+            id={`${name}SelectQuantifier`}
+            value={quantifier}
+            style={{ paddingTop: paddingTopPercentage }}
+            onChange={(event) => this.setState({ quantifier: event.target.value })}
+          >
+            <MenuItem value={ALL}>{ALL}</MenuItem>
+            <MenuItem value={SOME}>{SOME}</MenuItem>
+            <MenuItem value={NO}>{NO}</MenuItem>
+          </Select>
+          <TextField
+            required
+            id={`${name}TextFieldA`}
+            value={a}
+            label="Subject"
+            className={classes.textField}
+            onChange={(event) => this.setState({ a: event.target.value })}
+          />
+          <br />
+          <br />
+          <Select
+            id={`${name}SelectRelationship`}
+            style={{ paddingTop: paddingTopPercentage }}
+            value={relationship}
+            onChange={(event) => this.setState({ relationship: event.target.value })}
+          >
+            <MenuItem value={ARE}>{ARE}</MenuItem>
+            {
+              quantifier === SOME && <MenuItem value={ARE_NOT}>{ARE_NOT}</MenuItem>
+            }
+          </Select>
+          <TextField
+            required
+            id={`${name}TextFieldB`}
+            value={b}
+            label="Predicate"
+            className={classes.textField}
+            onChange={(event) => this.setState({ b: event.target.value })}
+          />
         </div>
         <Fab color="primary" aria-label="add" className={classes.fab} onClick={() => onRemove(idx)}>
           <RemoveIcon />
