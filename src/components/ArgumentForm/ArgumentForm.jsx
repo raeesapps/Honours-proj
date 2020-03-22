@@ -124,7 +124,7 @@ class ArgumentForm extends React.PureComponent {
             <AddIcon />
           </Fab>
         </form>
-        <Button variant="outlined" className={classes.button} onClick={onSubmit}>
+        <Button variant="contained" color="primary" className={classes.button} onClick={onSubmit}>
           Validate
         </Button>
       </div>
