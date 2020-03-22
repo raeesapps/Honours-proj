@@ -1,5 +1,10 @@
 import React from 'react';
 
+import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
 import SnackbarWrapper from '../Snackbar/SnackbarWrapper';
 import snackbarTypes from '../Snackbar/snackbar_types';
 
@@ -14,6 +19,9 @@ function withQuestionTemplate(WrappedComponent) {
         snackbarType: ERROR,
         showSnackbar: false,
         incorrectMesssage: null,
+        questionTitle: '',
+        questionNumber: -1,
+        instructions: '',
       };
     }
 
@@ -34,24 +42,55 @@ function withQuestionTemplate(WrappedComponent) {
       });
     }
 
+    setQuestionTitle = (questionTitle) => {
+      this.setState({ questionTitle });
+    }
+
+    setQuestionNumber = (questionNumber) => {
+      this.setState({ questionNumber });
+    }
+
+    setInstructions = (instructions) => {
+      this.setState({ instructions });
+    }
+
     render() {
-      const { showSnackbar, snackbarType, incorrectMessage, dialogOpen, star } = this.state;
+      const { showSnackbar, snackbarType, incorrectMessage, questionTitle, questionNumber, instructions } = this.state;
 
       const snackbarWrapperDisplayVal = !showSnackbar ? 'none' : '';
       const snackbarMessage = snackbarType === SUCCESS ? 'Correct!' : incorrectMessage;
 
       return (
-        <div>
-          <SnackbarWrapper
-            style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
-            variant={snackbarType}
-            message={snackbarMessage}
-            onClose={() => {
-              this.setState({ showSnackbar: false });
-            }}
-          />
-          <WrappedComponent onValidate={this.onValidate} onCorrect={this.onCorrect} {...this.props} />
-        </div>
+        <Container>
+          <Paper>
+            <Typography variant="h4">
+              {questionTitle}
+            </Typography>
+            <Typography variant="h5">
+              Question {questionNumber}
+            </Typography>
+            <Divider />
+            <Typography variant="h6">
+              {instructions}
+            </Typography>
+            <SnackbarWrapper
+              style={{ display: snackbarWrapperDisplayVal, marginBottom: '10px' }}
+              variant={snackbarType}
+              message={snackbarMessage}
+              onClose={() => {
+                this.setState({ showSnackbar: false });
+              }}
+            />
+            <Divider />
+            <WrappedComponent
+              onValidate={this.onValidate}
+              setQuestionTitle={this.setQuestionTitle}
+              setQuestionNumber={this.setQuestionNumber}
+              setInstructions={this.setInstructions}
+              {...this.props}
+            />
+          </Paper>
+        </Container>
       );
     }
   };
