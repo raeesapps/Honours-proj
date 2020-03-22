@@ -18,6 +18,25 @@ class Practice extends React.Component {
     };
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { location } = this.props;
+    const { key } = location;
+
+    const { location: nextLocation } = nextProps;
+    const { key: nextKey } = nextLocation;
+
+    if (key !== nextKey) {
+      this.setState({
+        sidebarIdx: -1,
+        selectedIdx: -1,
+        Component: PracticeHomepage,
+        content: null,
+        difficulty: null,
+        id: null,
+      });
+    }
+  }
+
   setComponent = (sidebarIdx, selectedIdx, Component, content, difficulty, id) => {
     this.setState({
       sidebarIdx,
