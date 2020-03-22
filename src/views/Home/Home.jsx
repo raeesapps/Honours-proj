@@ -50,8 +50,7 @@ function Home(props) {
           <Typography variant="h5">
             The web app also provides the instant solver where you can check your answers to the exercises
             or an exam question. Please try to solve questions before using the Instant Solver!
-            o understand concepts you must spend time reasoning to derive the correct answer rather than
-            merely using the instant solver.
+            To understand concepts, you must spend time solving the problem without reading the answer.
           </Typography>
         </Paper>
       </Container>
