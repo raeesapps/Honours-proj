@@ -11,7 +11,7 @@ import styles from '../../assets/components/jss/PremiseToSymbolicForm/syllogism_
 
 class SyllogismToSymbolicFormQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { content } = nextProps;
+    const { content, questionidx: questionIdx } = nextProps;
     const { premiseCollection: nextPremiseCollection, conclusion: nextConclusion } = content;
     const { premiseCollection, conclusion } = prevState;
     if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()
@@ -26,6 +26,7 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
         step: 0,
         mappingTable: {},
         goingBack: false,
+        questionIdx,
       };
     }
 
@@ -34,7 +35,7 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content } = props;
+    const { content, questionidx: questionIdx } = props;
     const { premiseCollection, conclusion } = content;
 
     this.state = {
@@ -47,15 +48,23 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
       step: 0,
       mappingTable: {},
       goingBack: false,
+      questionIdx,
     };
   }
 
   componentDidMount() {
+    const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
     setQuestionTitle("Create dictionary of syllogism");
-    setQuestionNumber(1);
+    setQuestionNumber(Number(questionIdx) + 1);
     setInstructions(`Translate each premise, and the conclusion to standard form using the turnstile symbol.`);
+  }
+
+  componentDidUpdate() {
+    const { questionIdx } = this.state;
+    const { setQuestionNumber } = this.props;
+    setQuestionNumber(Number(questionIdx) + 1);
   }
 
   onBack = (step) => {

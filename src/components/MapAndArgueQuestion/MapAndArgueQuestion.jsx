@@ -27,7 +27,7 @@ const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class MapAndArgueQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { content } = nextProps;
+    const { questionidx: questionIdx, content } = nextProps;
     const { conclusions: nextConclusions, premiseCollection: nextPremiseCollection } = content;
     const { conclusions, premiseCollection } = prevState;
 
@@ -43,6 +43,7 @@ class MapAndArgueQuestion extends React.Component {
         step: 0,
         shadings: null,
         selectedIdx: -1,
+        questionIdx,
       };
     }
 
@@ -51,7 +52,7 @@ class MapAndArgueQuestion extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content } = props;
+    const { content, questionidx: questionIdx } = props;
     const { premiseCollection, conclusions } = content;
 
     this.state = {
@@ -61,6 +62,7 @@ class MapAndArgueQuestion extends React.Component {
       step: 0,
       shadings: null,
       selectedIdx: -1,
+      questionIdx,
     };
     this.premisesVennDiagramRef = React.createRef();
     this.reducedPremisesVennDiagramRef = React.createRef();
@@ -68,22 +70,22 @@ class MapAndArgueQuestion extends React.Component {
 
   componentDidMount() {
     this.shadePremisesVennDiagram();
+    const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
-    const { step } = this.state;
 
     setQuestionTitle("Derive a conclusion from the Venn Diagram");
-    setQuestionNumber(1);
-
+    setQuestionNumber(Number(questionIdx) + 1);
     setInstructions('Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.');
   }
 
   componentDidUpdate() {
     this.shadePremisesVennDiagram();
-    const { setInstructions } = this.props;
-    const { step } = this.state;
+    const { setInstructions, setQuestionNumber } = this.props;
+    const { questionIdx, step } = this.state;
 
     const instructions = step === 1 ? "Please select a conclusion that follows from the shadings shown on the Venn Diagram" :
       "Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.";
+    setQuestionNumber(Number(questionIdx) + 1);
     setInstructions(instructions);
 
   }

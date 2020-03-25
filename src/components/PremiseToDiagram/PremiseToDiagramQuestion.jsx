@@ -9,13 +9,14 @@ import styles from '../../assets/components/jss/PremiseToDiagramQuestion/premise
 
 class PremiseToDiagramQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { content: nextPremiseCollection } = nextProps;
+    const { content: nextPremiseCollection, questionidx: questionIdx } = nextProps;
     const { premiseCollection } = prevState;
 
     if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()) {
       return {
         premiseCollection: nextPremiseCollection,
         key: Math.random(),
+        questionIdx,
       };
     }
 
@@ -24,11 +25,12 @@ class PremiseToDiagramQuestion extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content } = props;
+    const { content, questionidx: questionIdx } = props;
 
     this.state = {
       premiseCollection: content,
       key: Math.random(),
+      questionIdx,
     };
     this.vennDiagramRef = React.createRef();
   }
@@ -45,14 +47,20 @@ class PremiseToDiagramQuestion extends React.Component {
   }
 
   componentDidMount() {
-    const { premiseCollection } = this.state;
+    const { premiseCollection, questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
     const premise = premiseCollection.premises[0];
 
     setQuestionTitle("Represent premise on a Venn Diagram");
-    setQuestionNumber(1);
+    setQuestionNumber(Number(questionIdx) + 1);
     setInstructions(`Shade the Venn Diagram to represent ${premise.toSymbolicForm()}. If the premise is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
+  }
+
+  componentDidUpdate() {
+    const { questionIdx } = this.state;
+    const { setQuestionNumber } = this.props;
+    setQuestionNumber(Number(questionIdx) + 1);
   }
 
   render() {

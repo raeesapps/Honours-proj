@@ -20,7 +20,7 @@ const { VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class CombineDiagramsQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { content: nextPremiseCollection } = nextProps;
+    const { questionidx: questionIdx, content: nextPremiseCollection } = nextProps;
     const { premiseCollection } = prevState;
 
     if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()) {
@@ -29,6 +29,7 @@ class CombineDiagramsQuestion extends React.Component {
         premisesVennDiagramRef: [...Array(nextPremiseCollection.premises.length)
           .keys()].map(() => React.createRef()),
         key: Math.random(),
+        questionIdx,
       };
     }
 
@@ -37,22 +38,23 @@ class CombineDiagramsQuestion extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content } = props;
+    const { content, questionidx: questionIdx } = props;
 
     this.state = {
       premiseCollection: content,
       key: Math.random(),
       premisesVennDiagramRef: [...Array(content.premises.length).keys()].map(() => React.createRef()),
+      questionIdx,
     };
     this.combinationVennDiagramRef = React.createRef();
   }
 
-  componentDidMount() {
-    this.shade();
-  }
-
   componentDidUpdate() {
     this.shade();
+    const { questionIdx } = this.state;
+    const { setQuestionNumber } = this.props;
+
+    setQuestionNumber(Number(questionIdx) + 1);
   }
 
   shade = () => {
@@ -80,11 +82,13 @@ class CombineDiagramsQuestion extends React.Component {
   }
 
   componentDidMount() {
+    this.shade();
+    const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
     setQuestionTitle("Represent the premises in a syllogism on a Venn Diagram");
-    setQuestionNumber(1);
-    setInstructions(`You are provided with two Venn Diagrams, each of which represents a premise. You need to shade the bigger Venn Diagram so that it represents both the premises. If one of the premises is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
+    setQuestionNumber(Number(questionIdx) + 1);
+    setInstructions('Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.');
   }
 
   render() {

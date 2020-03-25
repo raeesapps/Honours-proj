@@ -56,7 +56,7 @@ class Practice extends React.Component {
           <Questions sidebarIdx={sidebarIdx} selectedIdx={selectedIdx} onClick={this.setComponent} />
         </Grid>
         <Grid item xs={9}>
-          <Component id={id} content={content} difficulty={difficulty} onClick={this.setComponent} />
+          <Component id={id} questionidx={selectedIdx} content={content} difficulty={difficulty} onClick={this.setComponent} />
         </Grid>
       </Grid>
     );

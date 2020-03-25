@@ -12,7 +12,7 @@ import styles from '../../assets/components/jss/PremiseToSymbolicForm/premise_to
 
 class PremiseToSymbolicFormQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { content: nextPremise } = nextProps;
+    const { questionidx: questionIdx, content: nextPremise } = nextProps;
     const { premise } = prevState;
 
     if (nextPremise.hashCode() !== premise.hashCode()) {
@@ -21,6 +21,7 @@ class PremiseToSymbolicFormQuestion extends React.Component {
         mappingTable: {},
         hint: null,
         key: Math.random(),
+        questionIdx,
       };
     }
 
@@ -29,24 +30,31 @@ class PremiseToSymbolicFormQuestion extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content } = props;
+    const { questionidx: questionIdx, content } = props;
 
     this.state = {
       premise: content,
       mappingTable: {},
       hint: null,
       key: Math.random(),
+      questionIdx,
     };
     this.premiseToSymbolicFormRef = React.createRef();
   }
 
   componentDidMount() {
-    const { premise } = this.state;
+    const { premise, questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
     setQuestionTitle("Translate premise to standard form");
-    setQuestionNumber(1);
+    setQuestionNumber(Number(questionIdx) + 1);
     setInstructions(`Translate the premise "${premise.toSentence()}" to standard form using the turnstile symbol`);
+  }
+
+  componentDidUpdate() {
+    const { questionIdx } = this.state;
+    const { setQuestionNumber } = this.props;
+    setQuestionNumber(Number(questionIdx) + 1);
   }
 
   validate = () => {
