@@ -25,7 +25,6 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
           .map(() => React.createRef()),
         step: 0,
         mappingTable: {},
-        goingBack: false,
         questionIdx,
       };
     }
@@ -47,7 +46,6 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
         .map(() => React.createRef()),
       step: 0,
       mappingTable: {},
-      goingBack: false,
       questionIdx,
     };
   }
@@ -67,12 +65,8 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
     setQuestionNumber(Number(questionIdx) + 1);
   }
 
-  onBack = (step) => {
-    this.setState({ step: step - 1, goingBack: true });
-  }
-
   onNext = (step) => {
-    const { goingBack, componentRefs } = this.state;
+    const { componentRefs } = this.state;
     const onNextCallback = () => {
       const ref = componentRefs[step];
 
@@ -84,26 +78,17 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
       this.validate(firstEntry, secondEntry, thirdEntry);
     };
 
-    if (goingBack) {
-      this.setState({ goingBack: false }, onNextCallback);
-    } else {
-      onNextCallback();
-    }
+    onNextCallback();
   }
 
   getStepContent = (step) => {
     const {
       premises,
       mappingTable,
-      goingBack,
       componentRefs,
     } = this.state;
     const ref = componentRefs[step];
     const premise = premises[step];
-
-    if (goingBack) {
-      return <PremiseToSymbolicForm premise={premise} ref={ref} table={mappingTable} />;
-    }
     return <PremiseToSymbolicForm premise={premise} ref={ref} />;
   }
 
@@ -146,7 +131,6 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
         step={step}
         steps={steps}
         content={this.getStepContent}
-        onBack={this.onBack}
         onNext={this.onNext}
       />
     );
