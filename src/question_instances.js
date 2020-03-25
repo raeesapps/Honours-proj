@@ -151,7 +151,7 @@ const syllogismToSymbolicFormQuestions = {
       content: generatePremiseCollection(
         [
           new Premise(ALL_A_IS_B, {
-            firstTerm: 'rabits',
+            firstTerm: 'rabbits',
             secondTerm: 'furry',
           }),
           new Premise(SOME_A_IS_B, {
