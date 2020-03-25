@@ -69,10 +69,24 @@ class MapAndArgueQuestion extends React.Component {
 
   componentDidMount() {
     this.shadePremisesVennDiagram();
+    const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
+    const { step } = this.state;
+
+    setQuestionTitle("Derive a conclusion from the Venn Diagram");
+    setQuestionNumber(1);
+
+    setInstructions('Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.');
   }
 
   componentDidUpdate() {
     this.shadePremisesVennDiagram();
+    const { setInstructions } = this.props;
+    const { step } = this.state;
+
+    const instructions = step === 1 ? "Please select a conclusion that follows from the shadings shown on the Venn Diagram" :
+      "Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.";
+    setInstructions(instructions);
+
   }
 
   shadePremisesVennDiagram = () => {
@@ -123,9 +137,6 @@ class MapAndArgueQuestion extends React.Component {
     }
     return (
       <div>
-        <Typography variant="h6">
-          Mapped Venn Diagram:
-        </Typography>
         <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} orientation={HORIZONTAL} terms={conclusions[0].terms} />
         <FormControl component="fieldset">
           <FormLabel component="legend">
@@ -193,21 +204,17 @@ class MapAndArgueQuestion extends React.Component {
 
   render() {
     const { key, step } = this.state;
-    const steps = ['Map Venn Diagram', 'Argue'];
+    const steps = ['Map Venn Diagram', 'Select conclusion'];
     return (
-      <div key={key}>
-        <Typography variant="h5">
-          Map and argue
-        </Typography>
-        <SimpleStepper
-          style={{ width: '700px' }}
-          step={step}
-          steps={steps}
-          content={this.getStepContent}
-          onBack={this.onBack}
-          onNext={this.onNext}
-        />
-      </div>
+      <SimpleStepper
+        key={key}
+        style={{ width: '700px' }}
+        step={step}
+        steps={steps}
+        content={this.getStepContent}
+        onBack={this.onBack}
+        onNext={this.onNext}
+      />
     );
   }
 }
