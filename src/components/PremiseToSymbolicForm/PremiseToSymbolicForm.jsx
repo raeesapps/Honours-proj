@@ -16,11 +16,11 @@ function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
   const entries = [
     {
       id: 'item-3',
-      content: `!${firstAtom}`,
+      content: `¬${firstAtom}`,
     },
     {
       id: 'item-4',
-      content: `!${secondAtom}`,
+      content: `¬${secondAtom}`,
     },
     {
       id: 'item-5',
@@ -40,7 +40,7 @@ function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
       },
       {
         id: 'item-8',
-        content: `!${thirdAtom}`,
+        content: `¬${thirdAtom}`,
       },
     );
   }
@@ -53,7 +53,7 @@ function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
       },
       {
         id: 'item-10',
-        content: `!${fourthAtom}`,
+        content: `¬${fourthAtom}`,
       },
     );
   }
@@ -72,7 +72,7 @@ const entriesArray = [
   },
   {
     id: 'item-1',
-    content: '!⊨',
+    content: '⊯',
   },
 ];
 

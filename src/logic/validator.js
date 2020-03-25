@@ -197,7 +197,7 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingT
           switch (symbolicFormOfPremise) {
             case A_DOES_NOT_ENTAIL_NOT_B:
             case A_ENTAILS_NOT_B:
-              secondMappingKey = `!${mappingKey}`;
+              secondMappingKey = `¬${mappingKey}`;
               break;
             case A_ENTAILS_B:
             case A_DOES_NOT_ENTAIL_B:

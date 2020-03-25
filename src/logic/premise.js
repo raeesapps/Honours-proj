@@ -70,7 +70,7 @@ function getEntailmentSymbol(symbolicForm) {
   switch (symbolicForm) {
     case A_DOES_NOT_ENTAIL_NOT_B:
     case A_DOES_NOT_ENTAIL_B:
-      expectedEntailmentSymbol = '!⊨';
+      expectedEntailmentSymbol = '⊯';
       break;
     case A_ENTAILS_B:
     case A_ENTAILS_NOT_B:
@@ -251,11 +251,11 @@ class Premise {
       case A_ENTAILS_B:
         return `${firstSymbolOrTerm} ⊨ ${secondSymbolOrTerm}`;
       case A_DOES_NOT_ENTAIL_B:
-        return `${firstSymbolOrTerm} !⊨ ${secondSymbolOrTerm}`;
+        return `${firstSymbolOrTerm} ⊯ ${secondSymbolOrTerm}`;
       case A_ENTAILS_NOT_B:
-        return `${firstSymbolOrTerm} ⊨ !${secondSymbolOrTerm}`;
+        return `${firstSymbolOrTerm} ⊨ ¬${secondSymbolOrTerm}`;
       case A_DOES_NOT_ENTAIL_NOT_B:
-        return `${firstSymbolOrTerm} !⊨ !${secondSymbolOrTerm}`;
+        return `${firstSymbolOrTerm} ⊯ ¬${secondSymbolOrTerm}`;
       default:
         break;
     }
