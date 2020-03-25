@@ -161,74 +161,71 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingT
   }
   function performValidation() {
     const updatedMappingTable = updateMappingTable();
-    if (updatedMappingTable) {
-      let hint;
-      let result = true;
+    let hint;
+    let result = true;
 
-      if (firstEntry.length === 0) {
-        hint = 'Please drag an item into the first box!';
-        result = false;
-      }
-
-      if (secondEntry.length === 0) {
-        hint = 'Please drag an item into the second box!';
-        result = false;
-      }
-
-      if (thirdEntry.length === 0) {
-        hint = 'Please drag an item into the third box!';
-        result = false;
-      }
-
-      if (!hint) {
-        const { content: firstEntryContents } = firstEntry[0];
-        const { content: secondEntryContents } = secondEntry[0];
-        const { content: thirdEntryContents } = thirdEntry[0];
-
-        const symbolicFormOfPremise = getSymbolicForm(premise);
-        const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
-        const { firstTerm, secondTerm } = premise.terms;
-
-        let count = 0;
-        Object.keys(updatedMappingTable).forEach((mappingKey) => {
-          const entry = updatedMappingTable[mappingKey];
-
-          let secondMappingKey;
-          switch (symbolicFormOfPremise) {
-            case A_DOES_NOT_ENTAIL_NOT_B:
-            case A_ENTAILS_NOT_B:
-              secondMappingKey = `¬${mappingKey}`;
-              break;
-            case A_ENTAILS_B:
-            case A_DOES_NOT_ENTAIL_B:
-              secondMappingKey = mappingKey;
-              break;
-            default:
-              break;
-          }
-
-          if ((entry === firstTerm && mappingKey === firstEntryContents)
-            || (entry === secondTerm && secondMappingKey === thirdEntryContents)) {
-            count += 1;
-          }
-        });
-        result = result && count === 2 && expectedEntailmentSymbol === secondEntryContents;
-
-        if (expectedEntailmentSymbol !== secondEntryContents && count !== 2) {
-          hint = 'Both your mappings and entailment symbol are wrong!';
-        } else if (expectedEntailmentSymbol !== secondEntryContents) {
-          hint = 'Your entailment symbol is wrong!';
-        } else if (count !== 2) {
-          hint = 'Your mappings are wrong!';
-        }
-      }
-      return {
-        hint,
-        result,
-        updatedMappingTable,
-      };
+    if (firstEntry.length === 0) {
+      hint = 'Please drag an item into the first box!';
+      result = false;
     }
-    return null;
+
+    if (secondEntry.length === 0) {
+      hint = 'Please drag an item into the second box!';
+      result = false;
+    }
+
+    if (thirdEntry.length === 0) {
+      hint = 'Please drag an item into the third box!';
+      result = false;
+    }
+
+    if (!hint) {
+      const { content: firstEntryContents } = firstEntry[0];
+      const { content: secondEntryContents } = secondEntry[0];
+      const { content: thirdEntryContents } = thirdEntry[0];
+
+      const symbolicFormOfPremise = getSymbolicForm(premise);
+      const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
+      const { firstTerm, secondTerm } = premise.terms;
+
+      let count = 0;
+      Object.keys(updatedMappingTable).forEach((mappingKey) => {
+        const entry = updatedMappingTable[mappingKey];
+
+        let secondMappingKey;
+        switch (symbolicFormOfPremise) {
+          case A_DOES_NOT_ENTAIL_NOT_B:
+          case A_ENTAILS_NOT_B:
+            secondMappingKey = `¬${mappingKey}`;
+            break;
+          case A_ENTAILS_B:
+          case A_DOES_NOT_ENTAIL_B:
+            secondMappingKey = mappingKey;
+            break;
+          default:
+            break;
+        }
+
+        if ((entry === firstTerm && mappingKey === firstEntryContents)
+          || (entry === secondTerm && secondMappingKey === thirdEntryContents)) {
+          count += 1;
+        }
+      });
+      result = result && count === 2 && expectedEntailmentSymbol === secondEntryContents;
+
+      if (expectedEntailmentSymbol !== secondEntryContents && count !== 2) {
+        hint = 'Both your mappings and entailment symbol are wrong!';
+      } else if (expectedEntailmentSymbol !== secondEntryContents) {
+        hint = 'Your entailment symbol is wrong!';
+      } else if (count !== 2) {
+        hint = 'Your mappings are wrong!';
+      }
+    }
+    return {
+      hint,
+      result,
+      updatedMappingTable,
+    };
   }
 
   return performValidation();
