@@ -75,8 +75,8 @@ function generatePremiseCollectionAndConclusions(premises, conclusionFirstTerm, 
 }
 
 const premiseToSymbolicFormQuestions = {
-  title: 'Premise To Symbolic Form',
-  description: 'Translate the sentential form of a premise to symbolic form using letters and the turnstile symbol',
+  title: 'Premise to standard form',
+  description: 'Translate the sentential form of a premise to standard form using letters and the turnstile symbol',
   component: PremisesToSymbolicFormQuestion,
   questions: [
     {
@@ -119,8 +119,8 @@ const premiseToSymbolicFormQuestions = {
 };
 
 const syllogismToSymbolicFormQuestions = {
-  title: 'Syllogism To Symbolic Form',
-  description: 'Translate the sentential form of each premise in an argument to symbolic form using letters and the turnstile symbol',
+  title: 'Create dictionary of syllogism',
+  description: 'Translate the sentential form of each premise in an argument to standard form using letters and the turnstile symbol',
   component: SyllogismToSymbolicFormQuestion,
   questions: [
     {
@@ -194,8 +194,8 @@ const syllogismToSymbolicFormQuestions = {
 };
 
 const premiseToDiagramQuestions = {
-  title: 'Premise To Diagram',
-  description: 'Given two or three Venn Diagrams that represent the existence or extinction of sets in a premise, reduce the two or three Venn Diagrams to one Venn Diagram',
+  title: 'Premise to Venn Diagram',
+  description: 'Shade the Venn Diagram to represent the premise. Some compartment might be empty and some might be part of an x-sequence.',
   component: PremiseToDiagramQuestion,
   questions: [
     {
@@ -359,8 +359,8 @@ const premiseToDiagramQuestions = {
 };
 
 const combineDiagramsQuestion = {
-  title: 'Combine Diagrams',
-  description: 'Fill in a Venn Diagram to represent the existence or extinction of sets in a premise',
+  title: 'Combine Venn Diagrams',
+  description: 'Given two or three Venn Diagrams that each represent a premise, shade a three or four set Venn Diagram to represent all the premises.',
   component: CombineDiagramsQuestion,
   questions: [
     {
@@ -540,8 +540,8 @@ const combineDiagramsQuestion = {
 };
 
 const mapAndArgueQuestion = {
-  title: 'Map And Argue',
-  description: 'Given a single Venn Diagram containing three or four sets, map it to a Venn Diagram containing only two sets and argue whether a conclusion is entailed by the information illustrated on the mapped Venn Diagram',
+  title: 'Derive a conclusion from the Venn Diagram',
+  description: 'Given a shaded Venn Diagram containing three or four sets, transfer the shadings to a two set Venn Diagram. Examine the two set Venn Diagram to derive a conclusion.',
   component: MapAndArgueQuestion,
   questions: [
     {
