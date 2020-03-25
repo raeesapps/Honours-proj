@@ -12,55 +12,6 @@ import { symbolicForms, getSymbolicForm, getEntailmentSymbol } from '../../logic
 
 import styles from '../../assets/components/jss/PremiseToSymbolicForm/premise_to_symbolic_form_styles';
 
-function getDragDropEntries(firstAtom, secondAtom, thirdAtom, fourthAtom) {
-  const entries = [
-    {
-      id: 'item-3',
-      content: `¬${firstAtom}`,
-    },
-    {
-      id: 'item-4',
-      content: `¬${secondAtom}`,
-    },
-    {
-      id: 'item-5',
-      content: `${firstAtom}`,
-    },
-    {
-      id: 'item-6',
-      content: `${secondAtom}`,
-    },
-  ];
-
-  if (thirdAtom) {
-    entries.push(
-      {
-        id: 'item-7',
-        content: `${thirdAtom}`,
-      },
-      {
-        id: 'item-8',
-        content: `¬${thirdAtom}`,
-      },
-    );
-  }
-
-  if (fourthAtom) {
-    entries.push(
-      {
-        id: 'item-9',
-        content: `${fourthAtom}`,
-      },
-      {
-        id: 'item-10',
-        content: `¬${fourthAtom}`,
-      },
-    );
-  }
-
-  return entries;
-}
-
 const firstEntryArray = [];
 const secondEntryArray = [];
 const thirdEntryArray = [];
@@ -103,8 +54,8 @@ class PremiseToSymbolicForm extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const { dragdropentries: dragDropEntries } = props;
     const state = {};
-    const dragDropEntries = getDragDropEntries('A', 'B', 'C', 'D');
 
     droppables.forEach((droppable) => {
       const { name, initialContents } = droppable;

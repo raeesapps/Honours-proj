@@ -3,6 +3,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import { validateMappings } from '../../logic/validator';
+import getDragDropEntries from './get_drag_drop_entries';
 import PremiseToSymbolicForm from './PremiseToSymbolicForm';
 import SimpleStepper from '../Stepper/SimpleStepper';
 import withQuestionTemplate from '../Questions/QuestionTemplate';
@@ -89,7 +90,8 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
     } = this.state;
     const ref = componentRefs[step];
     const premise = premises[step];
-    return <PremiseToSymbolicForm premise={premise} ref={ref} />;
+    const entries = premises.length === 4 ? getDragDropEntries('A', 'B', 'C', 'D') : getDragDropEntries('A', 'B', 'C');
+    return <PremiseToSymbolicForm premise={premise} ref={ref} dragdropentries={entries} />;
   }
 
   validate = (firstEntry, secondEntry, thirdEntry) => {

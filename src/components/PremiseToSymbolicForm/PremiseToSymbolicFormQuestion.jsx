@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 import PremiseToSymbolicForm from './PremiseToSymbolicForm';
+import getDragDropEntries from './get_drag_drop_entries';
 import withQuestionTemplate from '../Questions/QuestionTemplate';
 
 import { validateMappings } from '../../logic/validator';
@@ -86,7 +87,7 @@ class PremiseToSymbolicFormQuestion extends React.Component {
 
     return (
       <div style={{ marginTop: '20px' }} key={key}>
-        <PremiseToSymbolicForm className={classes.premiseToSymbolicForm} ref={premiseToSymbolicFormRef} premise={premise} />
+        <PremiseToSymbolicForm className={classes.premiseToSymbolicForm} ref={premiseToSymbolicFormRef} premise={premise} dragdropentries={getDragDropEntries('A', 'B')} />
         <br />
         <Button className={classes.button} variant="contained" color="primary" onClick={this.validate}>Check Answer</Button>
       </div>
