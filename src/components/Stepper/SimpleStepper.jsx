@@ -31,13 +31,17 @@ function SimpleStepper(props) {
               {content(index)}
               <div className={classes.actionsContainer}>
                 <div>
-                  <Button
-                    disabled={step === 0}
-                    onClick={() => onBack(step)}
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
+                  {
+                    onBack && (
+                      <Button
+                        disabled={step === 0}
+                        onClick={() => onBack(step)}
+                        className={classes.button}
+                      >
+                        Back
+                      </Button>
+                    )
+                  }
                   <Button
                     variant="contained"
                     color="primary"
