@@ -85,7 +85,6 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
   getStepContent = (step) => {
     const {
       premises,
-      mappingTable,
       componentRefs,
     } = this.state;
     const ref = componentRefs[step];
@@ -124,9 +123,52 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
     }
   }
 
+  getMappingForTerm = (term) => {
+    const { mappingTable } = this.state;
+    const mappingTableKeys = Object.keys(mappingTable);
+
+    let i = mappingTableKeys.length;
+    while (i >= 0) {
+      const mappingTableKey = mappingTableKeys[i];
+      const mappingTableValue = mappingTable[mappingTableKey];
+
+      if (mappingTableValue === term) {
+        return mappingTableKey;
+      }
+
+      i -= 1;
+    }
+
+    return null;
+  }
+
   render() {
     const { key, step, premises } = this.state;
-    const steps = premises.map((premise) => premise.toSentence());
+    const steps = premises.map((premise, idx) => {
+      const sententialForm = premise.toSentence();
+      const { firstTerm, secondTerm } = premise.terms;
+      const mappingForFirstTerm = this.getMappingForTerm(firstTerm);
+      const mappingForSecondTerm = this.getMappingForTerm(secondTerm);
+
+      if (mappingForFirstTerm && mappingForSecondTerm && idx < step) {
+        const words = sententialForm.split(' ');
+        const indexOfAre = words.indexOf('are');
+
+        const wordsWithMappings = [];
+        for (let i = 0; i < indexOfAre; i++) {
+          wordsWithMappings.push(words[i]);
+        }
+        wordsWithMappings.push(`(${mappingForFirstTerm})`);
+        for (let i = indexOfAre; i < words.length; i++) {
+          wordsWithMappings.push(words[i]);
+        }
+        wordsWithMappings.push(`(${mappingForSecondTerm})`);
+
+        return wordsWithMappings.join(' ');
+      }
+
+      return sententialForm;
+    });
     return (
       <SimpleStepper
         key={key}
