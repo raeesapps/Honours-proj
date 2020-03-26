@@ -25,6 +25,15 @@ function withQuestionTemplate(WrappedComponent) {
       };
     }
 
+    componentDidUpdate(prevProps, prevState) {
+      const { questionNumber, questionTitle } = this.state;
+      const { questionNumber: prevQuestionNumber, questionTitle: prevQuestionTitle } = prevState;
+
+      if (questionTitle === prevQuestionTitle && questionNumber !== prevQuestionNumber) {
+        this.resetSnackbar();
+      }
+    }
+
     onValidate = (result, incorrectMessage) => {
       const snackbarType = result ? SUCCESS : ERROR;
       this.setState({
