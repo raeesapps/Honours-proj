@@ -135,11 +135,15 @@ class InstantSolver extends React.Component {
   }
 
   onSubmitForm = () => {
-    this.setState({
-      argumentSubmitted: true,
-      needsUpdate: true,
-      key: Math.random(),
-    });
+    if (this.getOrder(true) === this.getOrder(false)) {
+      this.setState({
+        argumentSubmitted: true,
+        needsUpdate: true,
+        key: Math.random(),
+      });
+    } else {
+      this.onError("Please check your premises and conclusion. The conclusion should not introduce a new predicate or subject. The number of predicates and subjects in the premises should be equal to the number of premises.");
+    }
   }
 
   onError = (msg) => {
@@ -164,7 +168,9 @@ class InstantSolver extends React.Component {
 
       const termSet = getTermSets(premiseObjs);
 
-      if (premiseObjs.length === termSet.size - 1) {
+      if (excludeConclusion && premiseObjs.length === termSet.size - 1) {
+        return termSet.size;
+      } else if (!excludeConclusion) {
         return termSet.size;
       }
     }
