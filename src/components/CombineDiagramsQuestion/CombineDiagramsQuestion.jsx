@@ -86,7 +86,7 @@ class CombineDiagramsQuestion extends React.Component {
     const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
-    setQuestionTitle("Represent the premises in a syllogism on a Venn Diagram");
+    setQuestionTitle("Represent all the premises in a syllogism on a Venn Diagram");
     setQuestionNumber(Number(questionIdx) + 1);
     setInstructions('Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.');
   }
