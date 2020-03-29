@@ -51,6 +51,17 @@ class PremiseCollection {
     termSet.add(secondTerm);
     this.terms = [...termSet];
 
+    const { reason, result } = this.table.validate(conclusion);
+    return result;
+  }
+
+  argue2(conclusion) {
+    const { firstTerm, secondTerm } = conclusion.terms;
+    const termSet = new Set([...this.terms]);
+    termSet.add(firstTerm);
+    termSet.add(secondTerm);
+    this.terms = [...termSet];
+
     return this.table.validate(conclusion);
   }
 
