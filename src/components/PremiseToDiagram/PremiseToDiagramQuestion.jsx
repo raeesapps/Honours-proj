@@ -58,9 +58,13 @@ class PremiseToDiagramQuestion extends React.Component {
   }
 
   componentDidUpdate() {
-    const { questionIdx } = this.state;
-    const { setQuestionNumber } = this.props;
+    const { premiseCollection, questionIdx } = this.state;
+    const { setQuestionNumber, setInstructions } = this.props;
+
+    const premise = premiseCollection.premises[0];
+
     setQuestionNumber(Number(questionIdx) + 1);
+    setInstructions(`Shade the Venn Diagram to represent ${premise.toSymbolicForm()}. If the premise is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
   }
 
   render() {

@@ -53,9 +53,10 @@ class PremiseToSymbolicFormQuestion extends React.Component {
   }
 
   componentDidUpdate() {
-    const { questionIdx } = this.state;
-    const { setQuestionNumber } = this.props;
+    const { premise, questionIdx } = this.state;
+    const { setQuestionNumber, setInstructions } = this.props;
     setQuestionNumber(Number(questionIdx) + 1);
+    setInstructions(`Translate the premise "${premise.toSentence()}" to standard form using the turnstile symbol`);
   }
 
   validate = () => {
