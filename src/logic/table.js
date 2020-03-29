@@ -3,30 +3,40 @@ import HashDictionary from './dictionary';
 import { forms } from './premise';
 import copy from '../utils/copy';
 
+const {
+  SOME_A_IS_NOT_B,
+  SOME_A_IS_B,
+  SOME_A_EXIST,
+} = forms;
+
 class Table {
+  static getVennDiagramPart(compartment, n) {
+    let vennDiagramPart = '(';
+    const truths = compartment.getTruths();
+    const truthKeys = Object.keys(truths);
+    truthKeys.sort();
+    truthKeys.forEach((atom, i) => {
+      const curAtomIsTrue = truths[atom];
+
+      if (curAtomIsTrue) {
+        vennDiagramPart += atom;
+
+        if ((!!n && i !== n - 1) || !n) {
+          vennDiagramPart += '&';
+        }
+      }
+    });
+    if (vennDiagramPart[vennDiagramPart.length - 1] === '&') {
+      vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
+    }
+    vennDiagramPart += ')';
+    return vennDiagramPart;
+  }
   static getVennDiagramParts(table) {
     const n = table.numberOfTerms;
     const vennDiagramParts = [];
     table.compartments.forEach((compartment) => {
-      let vennDiagramPart = '(';
-      const truths = compartment.getTruths();
-      const truthKeys = Object.keys(truths);
-      truthKeys.sort();
-      truthKeys.forEach((atom, i) => {
-        const curAtomIsTrue = truths[atom];
-
-        if (curAtomIsTrue) {
-          vennDiagramPart += atom;
-
-          if (i !== n - 1) {
-            vennDiagramPart += '&';
-          }
-        }
-      });
-      if (vennDiagramPart[vennDiagramPart.length - 1] === '&') {
-        vennDiagramPart = vennDiagramPart.substr(0, vennDiagramPart.length - 1);
-      }
-      vennDiagramPart += ')';
+      const vennDiagramPart = Table.getVennDiagramPart(compartment, n);
       vennDiagramParts.push({
         compartment,
         vennDiagramPart,
@@ -59,12 +69,6 @@ class Table {
   }
 
   addPremise(premise, conclusionCompartments) {
-    const {
-      SOME_A_IS_NOT_B,
-      SOME_A_IS_B,
-      SOME_A_EXIST,
-    } = forms;
-
     switch (premise.form) {
       case SOME_A_IS_NOT_B:
       case SOME_A_IS_B:
@@ -258,12 +262,15 @@ class Table {
       const resolvedEntry = resolvedCompartments[compartment.hashCode()];
       const conclusionEntry = conclusionCompartments[compartment.hashCode()];
       if (conclusionEntry === 'e' && !resolvedEntry.includes('e')) {
-        return false;
+        return {
+          reason: `there is no guarantee the compartment "${Table.getVennDiagramPart(compartment)}" is empty.`,
+          result: false,
+        };
       }
       i -= 1;
     }
     const xEntries = getXEntries(resolvedCompartments);
-    let xNotCompletelyContainedCount = 0;
+    const unsatisfiableXSequences = {};
     xEntries.forEach((x) => {
       i = this.compartments.length - 1;
       while (i >= 0) {
@@ -273,21 +280,29 @@ class Table {
           const entry = conclusionCompartments[compartment.hashCode()];
           const condition = entry === null || (entry !== null && entry !== xIndexCut);
           if (condition) {
-            xNotCompletelyContainedCount += 1;
+            unsatisfiableXSequences[x] = compartment;
             break;
           }
         }
         i -= 1;
       }
     });
-    const conclusionHasX = Object.keys(conclusionCompartments).filter((keyHash) => {
-      const instance = conclusionCompartments[keyHash];
-      return instance !== null && instance === 'x';
-    }).length > 0;
-    if (xNotCompletelyContainedCount === xEntries.length && (conclusionHasX || xEntries > 0)) {
-      return false;
+    const unsatisfiableXSequencesKeys = Object.keys(unsatisfiableXSequences);
+    if (unsatisfiableXSequencesKeys.length === xEntries.length && (conclusion.form === SOME_A_IS_B || conclusion.form === SOME_A_IS_NOT_B)) {
+      const reason = unsatisfiableXSequencesKeys.length > 0 ? unsatisfiableXSequencesKeys.reduce((partialReason, x) => {
+        const compartment = unsatisfiableXSequences[x];
+        const part = Table.getVennDiagramPart(compartment);
+        return partialReason + `${part} is part of ${x}; `;
+      }, "") : "there are no existentially quantified premises in the syllogism.";
+      return {
+        reason,
+        result: false,
+      }
     }
-    return true;
+    return {
+      reason: '',
+      result: true,
+    };
   }
 
   size() {
