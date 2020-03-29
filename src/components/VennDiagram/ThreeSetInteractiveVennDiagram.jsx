@@ -22,7 +22,7 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { title, premises } = this.props;
+    const { title, premises, disableLongClick } = this.props;
 
     this.setState({
       a: premises.terms[0],
@@ -31,7 +31,7 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
     });
 
     const id = title.split(' ').join('');
-    const div = createThreeSetCircularVennDiagram(id, true);
+    const div = createThreeSetCircularVennDiagram(id, true, !!disableLongClick);
     this.div = div;
   }
 

@@ -24,7 +24,7 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { premises } = this.props;
+    const { premises, disableLongClick } = this.props;
 
     this.setState({
       a: premises.terms[0],
@@ -33,7 +33,7 @@ class FourSetInteractiveVennDiagram extends React.PureComponent {
       d: premises.terms[3],
     });
 
-    const div = createFourSetEllipticVennDiagram('ellipseVenn', true);
+    const div = createFourSetEllipticVennDiagram('ellipseVenn', true, !!disableLongClick);
     this.div = div;
   }
 

@@ -55,13 +55,13 @@ class PremiseToDiagram extends React.PureComponent {
           }
         </Typography>
         {
-          numberOfTermsInPremiseCollection === 2 && <TwoSetInteractiveVennDiagram title={`${title}rep`} premise={premise} ref={vennDiagramRef} orientation={HORIZONTAL} shadings={vennDiagramShading} />
+          numberOfTermsInPremiseCollection === 2 && <TwoSetInteractiveVennDiagram title={`${title}rep`} premise={premise} ref={vennDiagramRef} orientation={HORIZONTAL} shadings={vennDiagramShading} disableLongClick="true" />
         }
         {
-          numberOfTermsInPremiseCollection === 3 && <ThreeSetInteractiveVennDiagram title={`${title}rep`} premises={premiseCollection} ref={vennDiagramRef} />
+          numberOfTermsInPremiseCollection === 3 && <ThreeSetInteractiveVennDiagram title={`${title}rep`} premises={premiseCollection} ref={vennDiagramRef} disableLongClick="true" />
         }
         {
-          numberOfTermsInPremiseCollection === 4 && <FourSetInteractiveVennDiagram title={`${title}rep`} premises={premiseCollection} ref={vennDiagramRef} />
+          numberOfTermsInPremiseCollection === 4 && <FourSetInteractiveVennDiagram title={`${title}rep`} premises={premiseCollection} ref={vennDiagramRef} disableLongClick="true" />
         }
       </div>
     );
