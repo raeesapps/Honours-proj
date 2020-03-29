@@ -50,7 +50,7 @@ function generatePremiseCollectionAndConclusions(premises, conclusionFirstTerm, 
         firstTerm: conclusionFirstTerm,
         secondTerm: conclusionSecondTerm,
       }),
-      new Premise(ALL_A_IS_B, {
+      new Premise(NO_A_IS_B, {
         firstTerm: conclusionFirstTerm,
         secondTerm: conclusionSecondTerm,
       }),
@@ -66,7 +66,7 @@ function generatePremiseCollectionAndConclusions(premises, conclusionFirstTerm, 
         firstTerm: conclusionSecondTerm,
         secondTerm: conclusionFirstTerm,
       }),
-      new Premise(ALL_A_IS_B, {
+      new Premise(NO_A_IS_B, {
         firstTerm: conclusionSecondTerm,
         secondTerm: conclusionFirstTerm,
       }),
