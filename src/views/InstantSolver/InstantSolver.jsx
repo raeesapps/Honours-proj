@@ -110,9 +110,9 @@ class InstantSolver extends React.Component {
         );
       }
 
-      const valid = allPremisesExcludingConclusion.argue(conclusion);
+      const { reason, result } = allPremisesExcludingConclusion.argue2(conclusion);
 
-      if (valid) {
+      if (result) {
         this.setState({
           argumentSubmitted: true,
           snackbarVisible: true,
@@ -126,7 +126,7 @@ class InstantSolver extends React.Component {
           argumentSubmitted: true,
           snackbarVisible: true,
           snackbarType: ERROR,
-          snackbarMsg: 'Invalid!',
+          snackbarMsg: `Invalid! Reason: ${reason}`,
           needsUpdate: false,
           turnstileSymbol: '⊯',
         });
