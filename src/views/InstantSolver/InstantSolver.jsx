@@ -51,14 +51,12 @@ class InstantSolver extends React.Component {
       dialogOpen: false,
       argumentSubmitted: false,
       needsUpdate: false,
-      turnstileSymbol: '⊯',
       key: Math.random(),
     };
 
     this.argumentFormRef = React.createRef();
     this.premiseVennDiagramRefs = [...Array(4).keys()].map(() => React.createRef());
     this.combinedPremisesVennDiagramRef = React.createRef();
-    this.conclusionVennDiagramRef = React.createRef();
     this.mappedVennDiagramRef = React.createRef();
   }
 
@@ -94,7 +92,6 @@ class InstantSolver extends React.Component {
         combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, useMappings ? mappings : undefined);
       }
 
-      const conclusionVennDiagram = this.conclusionVennDiagramRef.current;
       const mappedVennDiagram = this.mappedVennDiagramRef.current;
       const conclusion = premises
         .find((premise) => premise.name === 'Conclusion')
@@ -102,7 +99,6 @@ class InstantSolver extends React.Component {
       const conclusionPremiseCollection = new PremiseCollection([conclusion]);
 
       if (order >= 3 && order <= 4) {
-        conclusionVennDiagram.applyShading(conclusionPremiseCollection, useMappings ? mappings : undefined);
         mappedVennDiagram.applyShading(
           allPremisesExcludingConclusion,
           useMappings ? mappings : undefined,
@@ -119,7 +115,6 @@ class InstantSolver extends React.Component {
           snackbarType: SUCCESS,
           snackbarMsg: 'Valid!',
           needsUpdate: false,
-          turnstileSymbol: '⊫',
         });
       } else {
         this.setState({
@@ -128,7 +123,6 @@ class InstantSolver extends React.Component {
           snackbarType: ERROR,
           snackbarMsg: `Invalid! Reason: ${reason}`,
           needsUpdate: false,
-          turnstileSymbol: '⊯',
         });
       }
     }
@@ -271,7 +265,6 @@ class InstantSolver extends React.Component {
       dialogOpen,
       argumentSubmitted,
       key,
-      turnstileSymbol,
     } = this.state;
     const order = this.getOrder(true);
     const marginLeftLevelTwoTree = order === 3 ? '50px' : '0px';
@@ -310,17 +303,17 @@ class InstantSolver extends React.Component {
         {argumentSubmitted
           && (
             <Grid key={key} container spacing={2}>
-              <Grid item xs={7}>
-                {
-                  order >= 3 && order <= 4
-                  && (
+              {
+                order >= 3 && order <= 4
+                && (
+                  <Grid item xs={7}>
                     <ExpansionPanel>
                       <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="premisesAriaControls"
                         id="premisesExpansionPanel"
                       >
-                        <Typography>Venn Diagram Tree</Typography>
+                        <Typography>Venn Diagram tree</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <div>
@@ -344,33 +337,22 @@ class InstantSolver extends React.Component {
                             }
                             conclusionOrReducedVennDiagram={
                               (
-                                <div style={{ display: 'flex' }}>
-                                  <TwoSetUninteractiveVennDiagram
-                                    style={{ width: '175px' }}
-                                    orientation={VERTICAL}
-                                    ref={this.mappedVennDiagramRef}
-                                    title="Mapped"
-                                  />
-                                  <Typography style={{ marginTop: '100px' }} variant="h1">
-                                    {turnstileSymbol}
-                                  </Typography>
-                                  <TwoSetUninteractiveVennDiagram
-                                    style={{ width: '175px' }}
-                                    orientation={VERTICAL}
-                                    ref={this.conclusionVennDiagramRef}
-                                    title="Conclusion"
-                                  />
-                                </div>
+                                <TwoSetUninteractiveVennDiagram
+                                  style={{ marginLeft: order === 4 ? '210px' : '60px' }}
+                                  orientation={VERTICAL}
+                                  ref={this.mappedVennDiagramRef}
+                                  title="Mapped"
+                                />
                               )
                             }
                           />
                         </div>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
-                  )
-                }
-              </Grid>
-              <Grid item xs={5}>
+                  </Grid>
+                )
+              }
+              <Grid item xs={order >= 3 && order <= 4 ? 5 : 12}>
                 {
                   order <= 26
                   && (
@@ -380,7 +362,7 @@ class InstantSolver extends React.Component {
                         aria-controls="symbolicFormAriaControls"
                         id="symbolicFormExpansionPanel"
                       >
-                        <Typography>Symbolic Form Representations</Typography>
+                        <Typography>Premises and conclusion in standard form</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <Grid container>
