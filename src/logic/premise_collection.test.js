@@ -70,7 +70,15 @@ describe('BARBARA tests', () => {
     });
 
     const valid = argument.argue(allGreeksAreMortalPremise);
+    argument.argue2(allGreeksAreMortalPremise);
+    argument.getVennDiagramParts();
     expect(valid).toBe(true);
+  });
+
+  test('BARBARA reduces correctly', () => {
+    const { mappedTableUnified } = argument.map([c, b]);
+    const expectedReducedTableUnified = '{"bf38a1380d12d01fa9687b1fe40ab9610c85c7cc":[],"95c3c9836888fb58d400fa529d53561310516a16":[],"86fae88b9bb213eef30124b71efad707f0e882c2":["e"],"57cc6d87a4034ac07634b223d6732782436e62a1":[]}';
+    expect(JSON.stringify(mappedTableUnified)).toBe(expectedReducedTableUnified);
   });
 
   test('No greeks are mortal conclusion false', () => {
@@ -91,7 +99,6 @@ describe('BARBARA tests', () => {
 
     const valid = argument.argue(someGreeksAreMortalPremise);
     expect(valid).toBe(false);
-
   });
 });
 
@@ -152,6 +159,12 @@ describe('BAROCO tests', () => {
 
     const valid = argument.argue(someWebsitesAreNotUseful);
     expect(valid).toBe(true);
+  });
+
+  test('BAROCO reduces correctly', () => {
+    const { mappedTableUnified } = argument.map([c, b]);
+    const expectedReducedTableUnified = '{"ff4c837315bb87b0c161002890f7718a7fcdc72c":[],"31cc6e1dcf1dc58f4bace9146f3784acac480fbf":[],"5c70e97def1dd2783e94efb118fd8c48d398b83f":["x_1"],"9502c018821cf908503eb12bea5378e6f44605c5":[]}';
+    expect(JSON.stringify(mappedTableUnified)).toBe(expectedReducedTableUnified);
   });
 
   test('Some websites are useful conclusion false', () => {
@@ -298,6 +311,12 @@ describe('Sorites test', () => {
       secondTerm: `${d}`,
     });
     argument = new PremiseCollection([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
+  });
+
+  test('Sorites reduces correctly', () => {
+    const { mappedTableUnified } = argument.map([c, d]);
+    const expectedReducedTableUnified = '{"463803a94735ef99c458235f1dd3b14fdab3c5d4":[],"7083c6b1f6b2b5c3398ded2de0b29b74f3ddd792":[],"ad38d618d8ffe48c38f8d16ef6af7620d58159e7":["e"],"85d933b937831171d6b5bdbecdd170e4ee339cd6":[]}';
+    expect(JSON.stringify(mappedTableUnified)).toBe(expectedReducedTableUnified);
   });
 
   test('All lions are carnivores is valid', () => {
