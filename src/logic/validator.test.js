@@ -16,6 +16,18 @@ function constructShadings(shadings) {
   }
 }
 
+function constructEntry(entry) {
+  return [
+    {
+      content: entry,
+    },
+  ];
+}
+
+function constructEmptyEntry() {
+  return [];
+}
+
 const {
   REPRESENTATION_STAGE,
   COMBINATION_STAGE,
@@ -63,4 +75,96 @@ describe('Propositions manipulate correctly', () => {
     const reductionResult = validateVennDiagram(propositionCollection, reductionShadings, MAPPING_STAGE, ['C', 'B']);
     expect(reductionResult).toBe(true);
   });
+});
+
+describe('BARBARA mapping tests', () => {
+  const barbaraPropositions = [
+    new Premise(ALL_A_IS_B, {
+      firstTerm: 'People',
+      secondTerm: 'Mortal',
+    }),
+    new Premise(ALL_A_IS_B, {
+      firstTerm: 'Greeks',
+      secondTerm: 'People',
+    }),
+    new Premise(ALL_A_IS_B, {
+      firstTerm: 'Greeks',
+      secondTerm: 'Mortal',
+    }),
+  ];
+  const firstProposition = barbaraPropositions[0];
+
+  test('Validate mappings with 3rd item missing', () => {
+    const { hint, result } = validateMappings(constructEntry('A'), constructEntry('⊨'), constructEmptyEntry(), firstProposition, {});
+
+    const expectedHint = 'Please drag an item into the third box!';
+    const expectedResult = false;
+
+    expect(hint).toBe(expectedHint);
+    expect(result).toBe(expectedResult);
+  });
+
+  test('Validate mappings with 2nd item missing', () => {
+    const { hint, result } = validateMappings(constructEntry('A'), constructEmptyEntry(), constructEntry('B'), firstProposition, {});
+
+    const expectedHint = 'Please drag an item into the second box!';
+    const expectedResult = false;
+
+    expect(hint).toBe(expectedHint);
+    expect(result).toBe(expectedResult);
+  });
+
+  test('Validate mappings with 1st item missing', () => {
+    const { hint, result } = validateMappings(constructEmptyEntry(), constructEntry('⊨'), constructEntry('B'), firstProposition, {});
+
+    const expectedHint = 'Please drag an item into the first box!';
+    const expectedResult = false;
+
+    expect(hint).toBe(expectedHint);
+    expect(result).toBe(expectedResult);
+  });
+
+  test('Validate mappings with incorrect turnstile', () => {
+    const { hint, result } = validateMappings(constructEntry('A'), constructEntry('⊯'), constructEntry('B'), firstProposition, {});
+
+    const expectedHint = 'Your entailment symbol is wrong!';
+    const expectedResult = false;
+
+    expect(hint).toBe(expectedHint);
+    expect(result).toBe(expectedResult);
+  });
+
+  test('Validate mappings with negation', () => {
+    const { hint, result } = validateMappings(constructEntry('A'), constructEntry('⊨'), constructEntry('¬B'), firstProposition, {});
+
+    const expectedHint = 'Your mappings are wrong!';
+    const expectedResult = false;
+
+    expect(hint).toBe(expectedHint);
+    expect(result).toBe(expectedResult);
+  });
+
+  test('Validate correct mappings', () => {
+    const { hint, result } = validateMappings(constructEntry('A'), constructEntry('⊨'), constructEntry('B'), firstProposition, {});
+    expect(result).toBe(true);
+  });
+
+  test('Validate each proposition', () => {
+    let curMappingTable = {};
+    const entries = [['A', 'B'], ['C', 'A'], ['C', 'B']];
+
+    barbaraPropositions.forEach((prop, idx) => {
+      const entriesForProp = entries[idx];
+      const { hint, result, updatedMappingTable } =
+        validateMappings(
+          constructEntry(entriesForProp[0]),
+          constructEntry('⊨'),
+          constructEntry(entriesForProp[1]),
+          prop,
+          curMappingTable,
+        );
+      expect(result).toBe(true);
+      curMappingTable = updatedMappingTable;
+    });
+  })
 });
