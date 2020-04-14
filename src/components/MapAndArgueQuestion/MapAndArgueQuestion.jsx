@@ -73,7 +73,7 @@ class MapAndArgueQuestion extends React.Component {
     const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
-    setQuestionTitle("Derive a conclusion from the Venn Diagram");
+    setQuestionTitle("Derive a proposition from the Venn Diagram");
     setQuestionNumber(Number(questionIdx) + 1);
     setInstructions('Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.');
   }
@@ -83,7 +83,7 @@ class MapAndArgueQuestion extends React.Component {
     const { setInstructions, setQuestionNumber } = this.props;
     const { questionIdx, step } = this.state;
 
-    const instructions = step === 1 ? "Please select a conclusion that follows from the shadings shown on the Venn Diagram" :
+    const instructions = step === 1 ? "Please select a proposition that follows from the shadings shown on the Venn Diagram" :
       "Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.";
     setQuestionNumber(Number(questionIdx) + 1);
     setInstructions(instructions);

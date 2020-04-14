@@ -57,7 +57,7 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
 
     setQuestionTitle("Create dictionary of syllogism");
     setQuestionNumber(Number(questionIdx) + 1);
-    setInstructions(`Translate each premise, and the conclusion to standard form using the turnstile symbol.`);
+    setInstructions(`Translate each proposition, and the conclusion to standard form using the turnstile symbol.`);
   }
 
   componentDidUpdate() {

@@ -14,7 +14,6 @@ const {
   SOME_A_IS_B,
   NO_A_IS_B,
   SOME_A_IS_NOT_B,
-  SOME_A_EXIST,
 } = forms;
 
 const { EASY, MEDIUM, HARD } = DIFFICULTY;
@@ -75,7 +74,7 @@ function generatePremiseCollectionAndConclusions(premises, conclusionFirstTerm, 
 }
 
 const premiseToSymbolicFormQuestions = {
-  title: 'Premise to standard form',
+  title: 'Proposition to standard form',
   description: 'Translate the sentential form of a premise to standard form using letters and the turnstile symbol',
   component: PremisesToSymbolicFormQuestion,
   questions: [
@@ -194,7 +193,7 @@ const syllogismToSymbolicFormQuestions = {
 };
 
 const premiseToDiagramQuestions = {
-  title: 'Premise to Venn Diagram',
+  title: 'Proposition to Venn Diagram',
   description: 'Shade the Venn Diagram to represent the premise. Some compartment might be empty and some might be part of an x-sequence.',
   component: PremiseToDiagramQuestion,
   questions: [
@@ -359,7 +358,7 @@ const premiseToDiagramQuestions = {
 };
 
 const combineDiagramsQuestion = {
-  title: 'Combine Venn Diagrams',
+  title: 'Multiple propositions to single Venn Diagram',
   description: 'Given two or three Venn Diagrams that each represent a premise, shade a three or four set Venn Diagram to represent all the premises.',
   component: CombineDiagramsQuestion,
   questions: [
@@ -540,7 +539,7 @@ const combineDiagramsQuestion = {
 };
 
 const mapAndArgueQuestion = {
-  title: 'Derive a conclusion from the Venn Diagram',
+  title: 'Derive a proposition from the Venn Diagram',
   description: 'Given a shaded Venn Diagram containing three or four sets, transfer the shadings to a two set Venn Diagram. Examine the two set Venn Diagram to derive a conclusion.',
   component: MapAndArgueQuestion,
   questions: [

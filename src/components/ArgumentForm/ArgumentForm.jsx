@@ -75,7 +75,7 @@ class ArgumentForm extends React.PureComponent {
 
     const n = premises.length;
 
-    if (n > 4) {
+    if (n > 3) {
       warn();
     } else {
       this.addPremise();

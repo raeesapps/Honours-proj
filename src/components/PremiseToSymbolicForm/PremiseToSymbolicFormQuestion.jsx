@@ -47,16 +47,16 @@ class PremiseToSymbolicFormQuestion extends React.Component {
     const { premise, questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
-    setQuestionTitle("Translate premise to standard form");
+    setQuestionTitle("Translate proposition to standard form");
     setQuestionNumber(Number(questionIdx) + 1);
-    setInstructions(`Translate the premise "${premise.toSentence()}" to standard form using the turnstile symbol`);
+    setInstructions(`Translate the proposition "${premise.toSentence()}" to standard form using the turnstile symbol`);
   }
 
   componentDidUpdate() {
     const { premise, questionIdx } = this.state;
     const { setQuestionNumber, setInstructions } = this.props;
     setQuestionNumber(Number(questionIdx) + 1);
-    setInstructions(`Translate the premise "${premise.toSentence()}" to standard form using the turnstile symbol`);
+    setInstructions(`Translate the proposition "${premise.toSentence()}" to standard form using the turnstile symbol`);
   }
 
   validate = () => {
