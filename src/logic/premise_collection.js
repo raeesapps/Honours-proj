@@ -65,14 +65,6 @@ class PremiseCollection {
     return this.table.validate(conclusion);
   }
 
-  getOrder() {
-    if (this.terms.length === this.premises.length) {
-      return this.terms.length;
-    }
-
-    return -1;
-  }
-
   toString() {
     return JSON.stringify(this.table, this.premises);
   }
