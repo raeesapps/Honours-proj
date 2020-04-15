@@ -134,7 +134,7 @@ class Table {
     return resolvedCompartments;
   }
 
-  map(terms) {
+  reduce(terms) {
     function getCompartments(table) {
       const compartmentDictionary = new HashDictionary();
       table.compartments.forEach((compartment) => {
@@ -146,12 +146,12 @@ class Table {
     const thisTableResolved = this.resolve();
     const thisTableCompartments = getCompartments(this);
 
-    const mappedTable = new Table([...terms]);
-    const mappedTableUnified = mappedTable.unify();
-    const mappedTableCompartments = getCompartments(mappedTable);
+    const reducedTable = new Table([...terms]);
+    const reducedTableUnified = reducedTable.unify();
+    const reducedTableCompartments = getCompartments(reducedTable);
 
-    Object.keys(mappedTableUnified).forEach((mappedTableKey) => {
-      const mappedTableCompartment = mappedTableCompartments[mappedTableKey];
+    Object.keys(reducedTableUnified).forEach((reducedTableKey) => {
+      const reducedTableCompartment = reducedTableCompartments[reducedTableKey];
 
       const aggregatedEntries = Object
         .keys(thisTableResolved)
@@ -159,9 +159,9 @@ class Table {
           const thisTableCompartment = thisTableCompartments[thisTableKey];
 
           const reducer = Object
-            .keys(mappedTableCompartment.truths)
+            .keys(reducedTableCompartment.truths)
             .reduce((counter, term) => {
-              if (thisTableCompartment.truths[term] === mappedTableCompartment.truths[term]) {
+              if (thisTableCompartment.truths[term] === reducedTableCompartment.truths[term]) {
                 return counter - 1;
               }
 
@@ -220,19 +220,19 @@ class Table {
       const aggregatedEntriesFilteredForXs = [...aggregatedEntriesWithoutDuplicates].filter((item) => item.startsWith('x'));
       aggregatedEntriesFilteredForXs.sort();
       if (aggregatedEntriesFilteredForXs.length) {
-        mappedTableUnified[mappedTableKey] = aggregatedEntriesFilteredForXs;
+        reducedTableUnified[reducedTableKey] = aggregatedEntriesFilteredForXs;
       } else {
         if (aggregatedEntriesWithoutDuplicates.indexOf('m') !== -1) {
-          mappedTableUnified[mappedTableKey] = [];
+          reducedTableUnified[reducedTableKey] = [];
         } else {
-          mappedTableUnified[mappedTableKey] = ['e'];
+          reducedTableUnified[reducedTableKey] = ['e'];
         }
       }
     });
 
     return {
-      mappedTableUnified,
-      vennDiagramParts: Table.getVennDiagramParts(mappedTable),
+      reducedTableUnified,
+      vennDiagramParts: Table.getVennDiagramParts(reducedTable),
     };
   }
 

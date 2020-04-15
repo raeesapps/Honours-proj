@@ -40,8 +40,8 @@ class PropositionCollection {
     return Table.getVennDiagramParts(this.table);
   }
 
-  map(ignoredTerms) {
-    return this.table.map(ignoredTerms);
+  reduce(terms) {
+    return this.table.reduce(terms);
   }
 
   argue(conclusion) {

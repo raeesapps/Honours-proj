@@ -52,9 +52,9 @@ class PropositionToDiagramQuestion extends React.Component {
 
     const proposition = propositionCollection.propositions[0];
 
-    setQuestionTitle("Represent proposition on a Venn Diagram");
+    setQuestionTitle("Represent proposition on a Venn diagram");
     setQuestionNumber(Number(questionIdx) + 1);
-    setInstructions(`Shade the Venn Diagram to represent ${proposition.toSymbolicForm()}. If the proposition is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
+    setInstructions(`Shade the Venn diagram to represent ${proposition.toSymbolicForm()}. If the proposition is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
   }
 
   componentDidUpdate() {
@@ -64,7 +64,7 @@ class PropositionToDiagramQuestion extends React.Component {
     const proposition = propositionCollection.propositions[0];
 
     setQuestionNumber(Number(questionIdx) + 1);
-    setInstructions(`Shade the Venn Diagram to represent ${proposition.toSymbolicForm()}. If the proposition is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
+    setInstructions(`Shade the Venn diagram to represent ${proposition.toSymbolicForm()}. If the proposition is existentially quantified, then you need to create an x-sequence that contains all the compartments where the subject could reside.`);
   }
 
   render() {

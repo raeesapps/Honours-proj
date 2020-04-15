@@ -58,7 +58,7 @@ class InstantSolver extends React.Component {
     this.argumentFormRef = React.createRef();
     this.propositionVennDiagramRefs = [...Array(4).keys()].map(() => React.createRef());
     this.combinedPropositionsVennDiagramRef = React.createRef();
-    this.mappedVennDiagramRef = React.createRef();
+    this.reducedVennDiagramRef = React.createRef();
   }
 
   componentDidUpdate() {
@@ -108,14 +108,14 @@ class InstantSolver extends React.Component {
         combinedPropositionsVennDiagram.applyShading(allPropositionsExcludingConclusion, useMappings ? mappings : undefined);
       }
 
-      const mappedVennDiagram = this.mappedVennDiagramRef.current;
+      const reducedVennDiagram = this.reducedVennDiagramRef.current;
       const conclusion = propositions
         .find((proposition) => proposition.name === 'Conclusion')
         .ref.current.getPropositionObj();
       const conclusionPropositionCollection = new PropositionCollection([conclusion]);
 
       if (order >= 3 && order <= 4) {
-        mappedVennDiagram.applyShading(
+        reducedVennDiagram.applyShading(
           allPropositionsExcludingConclusion,
           useMappings ? mappings : undefined,
           conclusionPropositionCollection.terms,
@@ -328,7 +328,7 @@ class InstantSolver extends React.Component {
                         aria-controls="propositionsAriaControls"
                         id="propositionsExpansionPanel"
                       >
-                        <Typography>Venn Diagram tree</Typography>
+                        <Typography>Venn diagram tree</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <div>
@@ -355,8 +355,8 @@ class InstantSolver extends React.Component {
                                 <TwoSetUninteractiveVennDiagram
                                   style={{ marginLeft: order === 4 ? '210px' : '60px' }}
                                   orientation={VERTICAL}
-                                  ref={this.mappedVennDiagramRef}
-                                  title="Mapped"
+                                  ref={this.reducedVennDiagramRef}
+                                  title="Reduced"
                                 />
                               )
                             }

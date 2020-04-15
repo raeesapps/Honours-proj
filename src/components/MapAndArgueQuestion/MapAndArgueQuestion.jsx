@@ -73,9 +73,9 @@ class MapAndArgueQuestion extends React.Component {
     const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
-    setQuestionTitle("Derive a proposition from the Venn Diagram");
+    setQuestionTitle("Derive a proposition from the Venn diagram");
     setQuestionNumber(Number(questionIdx) + 1);
-    setInstructions('Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.');
+    setInstructions('Please map the shadings on the bigger Venn diagram to the smaller Venn diagram. If you do not understand how to map the shadings, please read the tutorial.');
   }
 
   componentDidUpdate() {
@@ -83,8 +83,8 @@ class MapAndArgueQuestion extends React.Component {
     const { setInstructions, setQuestionNumber } = this.props;
     const { questionIdx, step } = this.state;
 
-    const instructions = step === 1 ? "Please select a proposition that follows from the shadings shown on the Venn Diagram" :
-      "Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.";
+    const instructions = step === 1 ? "Please select a proposition that follows from the shadings shown on the Venn diagram" :
+      "Please map the shadings on the bigger Venn diagram to the smaller Venn diagram. If you do not understand how to map the shadings, please read the tutorial.";
     setQuestionNumber(Number(questionIdx) + 1);
     setInstructions(instructions);
 
@@ -141,7 +141,7 @@ class MapAndArgueQuestion extends React.Component {
         <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} orientation={HORIZONTAL} terms={conclusions[0].terms} />
         <FormControl component="fieldset">
           <FormLabel component="legend">
-            Please select the conclusion that is entailed by the Venn Diagram.
+            Please examine the Venn diagram and select a proposition that follows from it.
           </FormLabel>
           <RadioGroup aria-label="conclusions" name="customized-radios" onChange={(event) => this.setState({ selectedIdx: Number(event.target.value) })}>
             {
@@ -158,7 +158,7 @@ class MapAndArgueQuestion extends React.Component {
               key="None"
               value="-1"
               control={<Radio />}
-              label="No Conclusion Follows"
+              label="No listed proposition follows!"
             />
           </RadioGroup>
         </FormControl>
@@ -171,7 +171,7 @@ class MapAndArgueQuestion extends React.Component {
       const { firstTerm, secondTerm } = conclusion.terms;
       return [firstTerm, secondTerm];
     }
-    const { MAPPING_STAGE } = stages;
+    const { REDUCTION_STAGE } = stages;
     const {
       propositionCollection,
       conclusions,
@@ -186,7 +186,7 @@ class MapAndArgueQuestion extends React.Component {
       result = validateVennDiagram(
         propositionCollection,
         this.reducedPropositionsVennDiagramRef,
-        MAPPING_STAGE,
+        REDUCTION_STAGE,
         getTermsToExclude(conclusions[0]),
       );
     } else if (step === 1) {
@@ -205,7 +205,7 @@ class MapAndArgueQuestion extends React.Component {
 
   render() {
     const { key, step } = this.state;
-    const steps = ['Map Venn Diagram', 'Select conclusion'];
+    const steps = ['Reduce Venn diagram', 'Select conclusion'];
     return (
       <SimpleStepper
         key={key}

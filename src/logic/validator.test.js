@@ -31,7 +31,7 @@ function constructEmptyEntry() {
 const {
   REPRESENTATION_STAGE,
   COMBINATION_STAGE,
-  MAPPING_STAGE,
+  REDUCTION_STAGE,
 } = stages;
 
 const {
@@ -72,7 +72,7 @@ describe('Propositions manipulate correctly', () => {
 
   test('Propositions reduce correctly', () => {
     const reductionShadings = constructShadings({ '(C)': ['x_2'], '(B&C)': ['x_2'] });
-    const reductionResult = validateVennDiagram(propositionCollection, reductionShadings, MAPPING_STAGE, ['C', 'B']);
+    const reductionResult = validateVennDiagram(propositionCollection, reductionShadings, REDUCTION_STAGE, ['C', 'B']);
     expect(reductionResult).toBe(true);
   });
 });

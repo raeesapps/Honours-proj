@@ -281,8 +281,8 @@ const syllogismToSymbolicFormQuestions = {
 };
 
 const propositionToDiagramQuestions = {
-  title: 'Proposition to Venn Diagram',
-  description: 'Shade the Venn Diagram to represent the proposition. Some compartment might be empty and some might be part of an x-sequence.',
+  title: 'Proposition to Venn diagram',
+  description: 'Shade the Venn diagram to represent the proposition. Some compartments might be empty and some might be part of an x-sequence.',
   component: PropositionToDiagramQuestion,
   questions: [
     {
@@ -446,8 +446,8 @@ const propositionToDiagramQuestions = {
 };
 
 const combineDiagramsQuestion = {
-  title: 'Multiple propositions to single Venn Diagram',
-  description: 'Given two or three Venn Diagrams that each represent a proposition, shade a three or four set Venn Diagram to represent all the propositions.',
+  title: 'Multiple propositions to single Venn diagram',
+  description: 'Given two or three Venn diagrams that each represent a proposition, shade a three or four set Venn diagram to represent all the propositions.',
   component: CombineDiagramsQuestion,
   questions: [
     {
@@ -598,8 +598,8 @@ const combineDiagramsQuestion = {
 };
 
 const mapAndArgueQuestion = {
-  title: 'Derive a proposition from the Venn Diagram',
-  description: 'Given a shaded Venn Diagram containing three or four sets, transfer the shadings to a two set Venn Diagram. Examine the two set Venn Diagram to derive a conclusion.',
+  title: 'Derive a proposition from the Venn diagram',
+  description: 'Given a shaded Venn diagram containing three or four sets, transfer the shadings to a two set Venn diagram. Examine the two set Venn diagram to derive a conclusion.',
   component: MapAndArgueQuestion,
   questions: [
     {

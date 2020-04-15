@@ -14,7 +14,7 @@ function validateArgument(propositionCollection, conclusion) {
 
 function validateVennDiagram(propositionCollection, refOrRefs, stage, termsInMapping) {
   function getShadings() {
-    const { REPRESENTATION_STAGE, COMBINATION_STAGE, MAPPING_STAGE } = stages;
+    const { REPRESENTATION_STAGE, COMBINATION_STAGE, REDUCTION_STAGE } = stages;
 
     let vennDiagramParts;
     const mappings = {};
@@ -26,14 +26,14 @@ function validateVennDiagram(propositionCollection, refOrRefs, stage, termsInMap
         column = propositionCollection.unifyAndResolve();
         vennDiagramParts = propositionCollection.getVennDiagramParts().slice(1);
         break;
-      case MAPPING_STAGE:
+      case REDUCTION_STAGE:
         // eslint-disable-next-line no-case-declarations
         const {
-          mappedTableUnified,
-          vennDiagramParts: mappedVennDiagramParts,
-        } = propositionCollection.map(termsInMapping);
-        column = mappedTableUnified;
-        vennDiagramParts = mappedVennDiagramParts.slice(1);
+          reducedTableUnified,
+          vennDiagramParts: reducedVennDiagramParts,
+        } = propositionCollection.reduce(termsInMapping);
+        column = reducedTableUnified;
+        vennDiagramParts = reducedVennDiagramParts.slice(1);
         break;
       default:
         break;
@@ -66,7 +66,7 @@ function validateVennDiagram(propositionCollection, refOrRefs, stage, termsInMap
     return ordered;
   }
 
-  const { REPRESENTATION_STAGE, COMBINATION_STAGE, MAPPING_STAGE } = stages;
+  const { REPRESENTATION_STAGE, COMBINATION_STAGE, REDUCTION_STAGE } = stages;
 
   let result;
 
@@ -77,7 +77,7 @@ function validateVennDiagram(propositionCollection, refOrRefs, stage, termsInMap
 
       return JSON.stringify(expectedShadings) === JSON.stringify(actualShadings);
     }).length === refOrRefs.length;
-  } else if (stage === COMBINATION_STAGE || stage === MAPPING_STAGE) {
+  } else if (stage === COMBINATION_STAGE || stage === REDUCTION_STAGE) {
     const actualShadings = sortObject(refOrRefs.current.getShadings());
     const expectedShadings = sortObject(getShadings());
 
