@@ -28,11 +28,12 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
   componentDidMount() {
     const {
       title,
-      premise,
+      proposition,
       orientation,
+      disableLongClick,
     } = this.props;
 
-    const { firstTerm, secondTerm } = premise.terms;
+    const { firstTerm, secondTerm } = proposition.terms;
 
     this.setState({
       a: firstTerm,
@@ -44,10 +45,10 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
 
     switch (orientation) {
       case HORIZONTAL:
-        div = createTwoSetHorizontalCircularVennDiagram(id, true);
+        div = createTwoSetHorizontalCircularVennDiagram(id, true, !!disableLongClick);
         break;
       case VERTICAL:
-        div = createTwoSetVerticalCircularVennDiagram(id, true);
+        div = createTwoSetVerticalCircularVennDiagram(id, true, !!disableLongClick);
         break;
       default:
         break;

@@ -3,16 +3,16 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 
 import {
-  premiseToSymbolicFormQuestions,
+  propositionToSymbolicFormQuestions,
   syllogismToSymbolicFormQuestions,
-  premiseToDiagramQuestions,
+  propositionToDiagramQuestions,
   combineDiagramsQuestion,
   mapAndArgueQuestion,
 } from '../../question_instances';
 import QuestionList from './QuestionList';
 
 function Questions(props) {
-  function renderQuestionList(questionType, onClick) {
+  function renderQuestionList(questionType, idx, sidebarIdx, selectedIdx, onClick) {
     const {
       title,
       questions,
@@ -21,16 +21,29 @@ function Questions(props) {
 
     return (
       <div key={`${title}`}>
-        <QuestionList title={title} questions={questions} component={component} onClick={onClick} />
+        <QuestionList
+          title={title}
+          questions={questions}
+          component={component}
+          idx={idx}
+          sidebarIdx={sidebarIdx}
+          selectedIdx={selectedIdx}
+          onClick={onClick}
+        />
         <br />
       </div>
     );
   }
-  const { onClick, ...rest } = props;
+  const {
+    onClick,
+    sidebarIdx,
+    selectedIdx,
+    ...rest
+  } = props;
   const questionTypes = [
-    premiseToSymbolicFormQuestions,
+    propositionToSymbolicFormQuestions,
     syllogismToSymbolicFormQuestions,
-    premiseToDiagramQuestions,
+    propositionToDiagramQuestions,
     combineDiagramsQuestion,
     mapAndArgueQuestion,
   ];
@@ -38,7 +51,15 @@ function Questions(props) {
   return (
     <Container {...rest}>
       {
-        questionTypes.map((questionType) => renderQuestionList(questionType, onClick))
+        questionTypes.map((questionType, idx) => (
+          renderQuestionList(
+            questionType,
+            idx,
+            sidebarIdx,
+            selectedIdx,
+            onClick,
+          )
+        ))
       }
     </Container>
   );

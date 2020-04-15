@@ -2,16 +2,16 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { Premise, forms } from '../../logic/premise';
+import { Proposition, forms } from '../../logic/proposition';
 
-import styles from '../../assets/components/jss/ArgumentForm/premise_form_input_styles';
+import styles from '../../assets/components/jss/ArgumentForm/proposition_form_input_styles';
 
 const quantifiers = Object.freeze({
   SOME: 'Some',
@@ -24,7 +24,7 @@ const relations = Object.freeze({
   ARE_NOT: 'are not',
 });
 
-class PremiseFormInput extends React.PureComponent {
+class PropositionFormInput extends React.PureComponent {
   constructor() {
     super();
     const {
@@ -34,14 +34,14 @@ class PremiseFormInput extends React.PureComponent {
       ARE,
     } = relations;
     this.state = {
-      a: 'A',
-      b: 'B',
+      a: '',
+      b: '',
       quantifier: ALL,
       relationship: ARE,
     };
   }
 
-  getPremiseObj() {
+  getPropositionObj() {
     const { ALL, SOME, NO } = quantifiers;
     const { ARE, ARE_NOT } = relations;
 
@@ -69,12 +69,12 @@ class PremiseFormInput extends React.PureComponent {
     } else if (quantifier === SOME && relationship === ARE) {
       form = SOME_A_IS_B;
     }
-    const premise = new Premise(form, {
+    const proposition = new Proposition(form, {
       firstTerm: a,
       secondTerm: b,
     });
 
-    return premise;
+    return proposition;
   }
 
   render() {
@@ -100,50 +100,52 @@ class PremiseFormInput extends React.PureComponent {
       idx,
     } = this.props;
     const displayName = name === 'Conclusion' ? 'Conclusion' : 'Premise';
-    const paddingTopPercentage = relationship === ARE_NOT ? '22.55%' : '34%';
+    const paddingTopPercentage = relationship === ARE_NOT ? '6.45%' : '7%';
     return (
-      <div>
-        <div className={classes.formControlParent}>
-          <FormControl>
-            <InputLabel id={`${name}QuantifierDropdownLabel`}>{displayName}</InputLabel>
-            <Select
-              id={`${name}SelectQuantifier`}
-              value={quantifier}
-              onChange={(event) => this.setState({ quantifier: event.target.value })}
-            >
-              <MenuItem value={ALL}>{ALL}</MenuItem>
-              <MenuItem value={SOME}>{SOME}</MenuItem>
-              <MenuItem value={NO}>{NO}</MenuItem>
-            </Select>
-          </FormControl>
+      <div style={{ marginBottom: '50px' }}>
+        <div style={{ display: 'inline-block' }} className={classes.formControlParent}>
+          <InputLabel id={`${name}QuantifierDropdownLabel`}>
+            <Typography variant="h6">
+              {displayName}
+            </Typography>
+          </InputLabel>
+          <Select
+            id={`${name}SelectQuantifier`}
+            value={quantifier}
+            style={{ paddingTop: paddingTopPercentage }}
+            onChange={(event) => this.setState({ quantifier: event.target.value })}
+          >
+            <MenuItem value={ALL}>{ALL}</MenuItem>
+            <MenuItem value={SOME}>{SOME}</MenuItem>
+            <MenuItem value={NO}>{NO}</MenuItem>
+          </Select>
           <TextField
             required
             id={`${name}TextFieldA`}
             value={a}
+            label="Subject"
             className={classes.textField}
-            margin="normal"
             onChange={(event) => this.setState({ a: event.target.value })}
           />
           <br />
-          <FormControl>
-            <Select
-              id={`${name}SelectRelationship`}
-              style={{ paddingTop: paddingTopPercentage }}
-              value={relationship}
-              onChange={(event) => this.setState({ relationship: event.target.value })}
-            >
-              <MenuItem value={ARE}>{ARE}</MenuItem>
-              {
-                quantifier === SOME && <MenuItem value={ARE_NOT}>{ARE_NOT}</MenuItem>
-              }
-            </Select>
-          </FormControl>
+          <br />
+          <Select
+            id={`${name}SelectRelationship`}
+            style={{ paddingTop: paddingTopPercentage }}
+            value={relationship}
+            onChange={(event) => this.setState({ relationship: event.target.value })}
+          >
+            <MenuItem value={ARE}>{ARE}</MenuItem>
+            {
+              quantifier === SOME && <MenuItem value={ARE_NOT}>{ARE_NOT}</MenuItem>
+            }
+          </Select>
           <TextField
             required
             id={`${name}TextFieldB`}
             value={b}
+            label="Predicate"
             className={classes.textField}
-            margin="normal"
             onChange={(event) => this.setState({ b: event.target.value })}
           />
         </div>
@@ -155,4 +157,4 @@ class PremiseFormInput extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(PremiseFormInput);
+export default withStyles(styles)(PropositionFormInput);

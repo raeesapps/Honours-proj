@@ -64,7 +64,7 @@ function LevelOneVennDiagramTree(props) {
       />
     );
   };
-  const renderPremiseVennDiagram = (idx) => (
+  const renderPropositionVennDiagram = (idx) => (
     <div key={`vennDiagram${idx}`} style={{ marginLeft: '15px', width: '175px' }}>
       {
         vennDiagramList[idx]
@@ -79,7 +79,7 @@ function LevelOneVennDiagramTree(props) {
     <div style={{ display: 'flex' }} {...rest}>
       {
         [...Array(order - 1).keys()].map((i) => (
-          renderPremiseVennDiagram(i)
+          renderPropositionVennDiagram(i)
         ))
       }
     </div>

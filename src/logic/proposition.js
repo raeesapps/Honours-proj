@@ -27,7 +27,7 @@ const symbolicForms = Object.freeze({
   A_DOES_NOT_ENTAIL_NOT_B: 3,
 });
 
-function getSymbolicForm(premise) {
+function getSymbolicForm(proposition) {
   const {
     ALL_A_IS_B,
     NO_A_IS_B,
@@ -42,7 +42,7 @@ function getSymbolicForm(premise) {
     A_DOES_NOT_ENTAIL_NOT_B,
   } = symbolicForms;
 
-  switch (premise.form) {
+  switch (proposition.form) {
     case ALL_A_IS_B:
       return A_ENTAILS_B;
     case NO_A_IS_B:
@@ -70,7 +70,7 @@ function getEntailmentSymbol(symbolicForm) {
   switch (symbolicForm) {
     case A_DOES_NOT_ENTAIL_NOT_B:
     case A_DOES_NOT_ENTAIL_B:
-      expectedEntailmentSymbol = '!⊨';
+      expectedEntailmentSymbol = '⊯';
       break;
     case A_ENTAILS_B:
     case A_ENTAILS_NOT_B:
@@ -82,7 +82,7 @@ function getEntailmentSymbol(symbolicForm) {
   return expectedEntailmentSymbol;
 }
 
-class Premise {
+class Proposition {
   constructor(form, terms) {
     this.form = form;
     this.terms = terms;
@@ -229,7 +229,7 @@ class Premise {
       A_DOES_NOT_ENTAIL_NOT_B,
     } = symbolicForms;
 
-    const symbolicFormOfPremise = getSymbolicForm(this);
+    const symbolicFormOfProposition = getSymbolicForm(this);
 
     let firstSymbolOrTerm;
     let secondSymbolOrTerm;
@@ -247,15 +247,15 @@ class Premise {
       secondSymbolOrTerm = secondTerm;
     }
 
-    switch (symbolicFormOfPremise) {
+    switch (symbolicFormOfProposition) {
       case A_ENTAILS_B:
         return `${firstSymbolOrTerm} ⊨ ${secondSymbolOrTerm}`;
       case A_DOES_NOT_ENTAIL_B:
-        return `${firstSymbolOrTerm} !⊨ ${secondSymbolOrTerm}`;
+        return `${firstSymbolOrTerm} ⊯ ${secondSymbolOrTerm}`;
       case A_ENTAILS_NOT_B:
-        return `${firstSymbolOrTerm} ⊨ !${secondSymbolOrTerm}`;
+        return `${firstSymbolOrTerm} ⊨ ¬${secondSymbolOrTerm}`;
       case A_DOES_NOT_ENTAIL_NOT_B:
-        return `${firstSymbolOrTerm} !⊨ !${secondSymbolOrTerm}`;
+        return `${firstSymbolOrTerm} ⊯ ¬${secondSymbolOrTerm}`;
       default:
         break;
     }
@@ -264,7 +264,7 @@ class Premise {
 }
 
 export {
-  Premise,
+  Proposition,
   forms,
   symbolicForms,
   getSymbolicForm,

@@ -9,7 +9,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram, validateArgument } from '../../logic/validator';
 
@@ -28,22 +27,23 @@ const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class MapAndArgueQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { content } = nextProps;
-    const { conclusions: nextConclusions, premiseCollection: nextPremiseCollection } = content;
-    const { conclusions, premiseCollection } = prevState;
+    const { questionidx: questionIdx, content } = nextProps;
+    const { conclusions: nextConclusions, propositionCollection: nextPropositionCollection } = content;
+    const { conclusions, propositionCollection } = prevState;
 
     const conclusionsHash = hash(conclusions);
     const nextConclusionsHash = hash(nextConclusions);
 
-    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()
+    if (nextPropositionCollection.hashCode() !== propositionCollection.hashCode()
       || nextConclusionsHash !== conclusionsHash) {
       return {
-        premiseCollection: nextPremiseCollection,
+        propositionCollection: nextPropositionCollection,
         conclusions: nextConclusions,
         key: Math.random(),
         step: 0,
         shadings: null,
         selectedIdx: -1,
+        questionIdx,
       };
     }
 
@@ -52,40 +52,55 @@ class MapAndArgueQuestion extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content } = props;
-    const { premiseCollection, conclusions } = content;
+    const { content, questionidx: questionIdx } = props;
+    const { propositionCollection, conclusions } = content;
 
     this.state = {
       key: Math.random(),
-      premiseCollection,
+      propositionCollection,
       conclusions,
       step: 0,
       shadings: null,
       selectedIdx: -1,
+      questionIdx,
     };
-    this.premisesVennDiagramRef = React.createRef();
-    this.reducedPremisesVennDiagramRef = React.createRef();
+    this.propositionsVennDiagramRef = React.createRef();
+    this.reducedPropositionsVennDiagramRef = React.createRef();
   }
 
   componentDidMount() {
-    this.shadePremisesVennDiagram();
+    this.shadePropositionsVennDiagram();
+    const { questionIdx } = this.state;
+    const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
+
+    setQuestionTitle("Derive a proposition from the Venn Diagram");
+    setQuestionNumber(Number(questionIdx) + 1);
+    setInstructions('Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.');
   }
 
   componentDidUpdate() {
-    this.shadePremisesVennDiagram();
+    this.shadePropositionsVennDiagram();
+    const { setInstructions, setQuestionNumber } = this.props;
+    const { questionIdx, step } = this.state;
+
+    const instructions = step === 1 ? "Please select a proposition that follows from the shadings shown on the Venn Diagram" :
+      "Please map the shadings on the bigger Venn Diagram to the smaller Venn Diagram. If you do not understand how to map the shadings, please read the tutorial.";
+    setQuestionNumber(Number(questionIdx) + 1);
+    setInstructions(instructions);
+
   }
 
-  shadePremisesVennDiagram = () => {
-    const { premiseCollection } = this.state;
+  shadePropositionsVennDiagram = () => {
+    const { propositionCollection } = this.state;
 
-    if (this.premisesVennDiagramRef.current) {
-      this.premisesVennDiagramRef.current.applyShading(premiseCollection);
+    if (this.propositionsVennDiagramRef.current) {
+      this.propositionsVennDiagramRef.current.applyShading(propositionCollection);
     }
   }
 
   onBack = (step) => {
     this.setState({ step: step - 1 }, () => {
-      this.shadePremisesVennDiagram();
+      this.shadePropositionsVennDiagram();
     });
   }
 
@@ -95,37 +110,34 @@ class MapAndArgueQuestion extends React.Component {
 
     if (result) {
       const stateUpdateObject = step === 0
-        ? { step: step + 1, shadings: this.reducedPremisesVennDiagramRef.current.getShadings() }
+        ? { step: step + 1, shadings: this.reducedPropositionsVennDiagramRef.current.getShadings() }
         : { step: step + 1 };
       this.setState(stateUpdateObject);
     }
   }
 
   getStepContent = (step) => {
-    const { premiseCollection, conclusions, shadings } = this.state;
-    const marginLeft = premiseCollection.terms.length === 4 ? { marginLeft: '155px' } : {};
-    const n = premiseCollection.terms.length;
+    const { propositionCollection, conclusions, shadings } = this.state;
+    const marginLeft = propositionCollection.terms.length === 4 ? { marginLeft: '155px' } : {};
+    const n = propositionCollection.terms.length;
     if (step === 0) {
       return (
         <LevelTwoVennDiagramTree
-          order={premiseCollection.terms.length}
+          order={propositionCollection.terms.length}
           combinedVennDiagram={
             n === 3
-              ? <ThreeSetUninteractiveVennDiagram title="PremisesCombined" premises={premiseCollection} ref={this.premisesVennDiagramRef} />
-              : n === 4 ? <FourSetUninteractiveVennDiagram premises={premiseCollection} ref={this.premisesVennDiagramRef} />
+              ? <ThreeSetUninteractiveVennDiagram title="PropositionsCombined" propositions={propositionCollection} ref={this.propositionsVennDiagramRef} />
+              : n === 4 ? <FourSetUninteractiveVennDiagram propositions={propositionCollection} ref={this.propositionsVennDiagramRef} />
                 : <div />
           }
           conclusionOrReducedVennDiagram={
-            <TwoSetInteractiveVennDiagram style={marginLeft} title="MappedPremises" premise={conclusions[0]} orientation={HORIZONTAL} ref={this.reducedPremisesVennDiagramRef} />
+            <TwoSetInteractiveVennDiagram style={marginLeft} title="MappedPropositions" proposition={conclusions[0]} orientation={HORIZONTAL} ref={this.reducedPropositionsVennDiagramRef} />
           }
         />
       );
     }
     return (
       <div>
-        <Typography variant="h6">
-          Mapped Venn Diagram:
-        </Typography>
         <TwoSetUninteractiveVennDiagram title="Reduce2" shadings={shadings} orientation={HORIZONTAL} terms={conclusions[0].terms} />
         <FormControl component="fieldset">
           <FormLabel component="legend">
@@ -161,58 +173,49 @@ class MapAndArgueQuestion extends React.Component {
     }
     const { MAPPING_STAGE } = stages;
     const {
-      premiseCollection,
+      propositionCollection,
       conclusions,
       step,
       selectedIdx,
     } = this.state;
-    const { onValidate, onCorrect, difficulty, id } = this.props;
+    const { onValidate } = this.props;
 
     let result;
 
     if (step === 0) {
       result = validateVennDiagram(
-        premiseCollection,
-        this.reducedPremisesVennDiagramRef,
+        propositionCollection,
+        this.reducedPropositionsVennDiagramRef,
         MAPPING_STAGE,
         getTermsToExclude(conclusions[0]),
       );
     } else if (step === 1) {
       if (selectedIdx !== -1) {
-        result = validateArgument(premiseCollection, conclusions[selectedIdx]);
+        result = validateArgument(propositionCollection, conclusions[selectedIdx]);
       } else {
         result = conclusions
           .reduce((isCorrect, conclusion) => isCorrect
-            && !validateArgument(premiseCollection, conclusion), true);
-      }
-
-      if (result) {
-        onCorrect(id, difficulty);
+            && !validateArgument(propositionCollection, conclusion), true);
       }
     }
 
     onValidate(result, 'Incorrect!');
-
     return result;
   }
 
   render() {
     const { key, step } = this.state;
-    const steps = ['Map Venn Diagram', 'Argue'];
+    const steps = ['Map Venn Diagram', 'Select conclusion'];
     return (
-      <div key={key}>
-        <Typography variant="h5">
-          Map and argue
-        </Typography>
-        <SimpleStepper
-          style={{ width: '700px' }}
-          step={step}
-          steps={steps}
-          content={this.getStepContent}
-          onBack={this.onBack}
-          onNext={this.onNext}
-        />
-      </div>
+      <SimpleStepper
+        key={key}
+        style={{ width: '700px' }}
+        step={step}
+        steps={steps}
+        content={this.getStepContent}
+        onBack={this.onBack}
+        onNext={this.onNext}
+      />
     );
   }
 }

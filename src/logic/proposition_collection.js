@@ -2,11 +2,11 @@ import hash from 'object-hash';
 
 import Table from './table';
 
-class PremiseCollection {
-  constructor(premises, additionalTerms) {
+class PropositionCollection {
+  constructor(propositions, additionalTerms) {
     function getTermNames() {
-      const allTerms = premises.map((premise) => {
-        const { firstTerm, secondTerm } = premise.terms;
+      const allTerms = propositions.map((proposition) => {
+        const { firstTerm, secondTerm } = proposition.terms;
         return secondTerm ? [firstTerm, secondTerm] : [firstTerm];
       }).flat();
       const uniqueTerms = new Set([...allTerms]);
@@ -18,12 +18,12 @@ class PremiseCollection {
       }
       return [...uniqueTerms];
     }
-    const termNames = getTermNames(this.premises);
+    const termNames = getTermNames(this.propositions);
 
-    this.premises = premises;
+    this.propositions = propositions;
     this.table = new Table(termNames);
-    this.premises.forEach((premise) => {
-      this.table.addPremise(premise);
+    this.propositions.forEach((proposition) => {
+      this.table.addProposition(proposition);
     });
     this.terms = termNames;
   }
@@ -51,19 +51,22 @@ class PremiseCollection {
     termSet.add(secondTerm);
     this.terms = [...termSet];
 
+    const { reason, result } = this.table.validate(conclusion);
+    return result;
+  }
+
+  argue2(conclusion) {
+    const { firstTerm, secondTerm } = conclusion.terms;
+    const termSet = new Set([...this.terms]);
+    termSet.add(firstTerm);
+    termSet.add(secondTerm);
+    this.terms = [...termSet];
+
     return this.table.validate(conclusion);
   }
 
-  getOrder() {
-    if (this.terms.length === this.premises.length) {
-      return this.terms.length;
-    }
-
-    return -1;
-  }
-
   toString() {
-    return JSON.stringify(this.table, this.premises);
+    return JSON.stringify(this.table, this.propositions);
   }
 
   hashCode() {
@@ -71,4 +74,4 @@ class PremiseCollection {
   }
 }
 
-export default PremiseCollection;
+export default PropositionCollection;

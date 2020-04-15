@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 function QuestionCard(props) {
   const {
     title,
+    sidebarIdx,
     content,
     component,
     question,
@@ -20,6 +21,8 @@ function QuestionCard(props) {
         onClick={
           () => (
             onClick(
+              sidebarIdx,
+              0,
               component,
               question.content,
               question.difficulty,

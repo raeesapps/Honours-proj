@@ -1,4 +1,4 @@
-import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './premise';
+import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './proposition';
 import copy from '../utils/copy';
 
 const stages = Object.freeze({
@@ -7,12 +7,12 @@ const stages = Object.freeze({
   REDUCTION_STAGE: 2,
 });
 
-function validateArgument(premiseCollection, conclusion) {
-  const result = premiseCollection.argue(conclusion);
+function validateArgument(propositionCollection, conclusion) {
+  const result = propositionCollection.argue(conclusion);
   return result;
 }
 
-function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping) {
+function validateVennDiagram(propositionCollection, refOrRefs, stage, termsInMapping) {
   function getShadings() {
     const { REPRESENTATION_STAGE, COMBINATION_STAGE, MAPPING_STAGE } = stages;
 
@@ -23,15 +23,15 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
     switch (stage) {
       case REPRESENTATION_STAGE:
       case COMBINATION_STAGE:
-        column = premiseCollection.unifyAndResolve();
-        vennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
+        column = propositionCollection.unifyAndResolve();
+        vennDiagramParts = propositionCollection.getVennDiagramParts().slice(1);
         break;
       case MAPPING_STAGE:
         // eslint-disable-next-line no-case-declarations
         const {
           mappedTableUnified,
           vennDiagramParts: mappedVennDiagramParts,
-        } = premiseCollection.map(termsInMapping);
+        } = propositionCollection.map(termsInMapping);
         column = mappedTableUnified;
         vennDiagramParts = mappedVennDiagramParts.slice(1);
         break;
@@ -87,7 +87,11 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
   return result;
 }
 
-function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingTable) {
+function validateMappings(firstEntry, secondEntry, thirdEntry, proposition, mappingTable) {
+  function isLetter(character) {
+    const asciiCode = character.charCodeAt(0);
+    return (asciiCode >= 65 && asciiCode < 91) || (asciiCode >= 97 && asciiCode < 123);
+  }
   const {
     A_ENTAILS_B,
     A_DOES_NOT_ENTAIL_B,
@@ -96,139 +100,107 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingT
   } = symbolicForms;
 
   function updateMappingTable() {
-    if (firstEntry.length && secondEntry.length && thirdEntry.length) {
-      const symbolicForm = getSymbolicForm(premise);
-      const { firstTerm, secondTerm } = premise.terms;
-      const updatedMappingTable = copy(mappingTable);
+    const { firstTerm, secondTerm } = proposition.terms;
+    const nextMappingTable = copy(mappingTable);
+    const nextMappingTableValues = Object.values(nextMappingTable);
 
-      const { content: firstEntryContents } = firstEntry[0];
-      const { content: thirdEntryContents } = thirdEntry[0];
+    if (firstEntry.length > 0) {
+      const firstSymbolIn0 = firstEntry[0].content;
+      if (!(firstSymbolIn0 in nextMappingTable) && isLetter(firstSymbolIn0) && !nextMappingTableValues.includes(firstTerm)) {
+        nextMappingTable[firstSymbolIn0] = firstTerm;
+      } else if (firstSymbolIn0.length > 1) {
+        const firstSymbolIn1 = firstSymbolIn0[1];
 
-      let firstSymbol;
-      if (firstEntryContents.length === 2) {
-        const [, secondItem] = firstEntryContents;
-        firstSymbol = secondItem;
-      } else {
-        const [firstItem] = firstEntryContents;
-        firstSymbol = firstItem;
-      }
-
-      if (!(firstSymbol in mappingTable)) {
-        const firstTermKey = Object
-          .keys(updatedMappingTable)
-          .find((key) => updatedMappingTable[key] === firstTerm);
-
-        if (firstTermKey) {
-          delete updatedMappingTable[firstTermKey];
+        if (!(firstSymbolIn1 in nextMappingTable) && isLetter(firstSymbolIn1) && !nextMappingTableValues.includes(firstTerm)) {
+          nextMappingTable[firstSymbolIn1] = firstTerm;
         }
-        updatedMappingTable[firstSymbol] = firstTerm;
       }
-
-      let secondSymbol;
-      switch (symbolicForm) {
-        case A_DOES_NOT_ENTAIL_NOT_B:
-        case A_ENTAILS_NOT_B:
-          if (thirdEntryContents.length !== 1) {
-            const [, secondItem] = thirdEntryContents;
-            secondSymbol = secondItem;
-          }
-          break;
-        case A_ENTAILS_B:
-        case A_DOES_NOT_ENTAIL_B:
-          if (thirdEntryContents.length !== 2) {
-            const [firstItem] = thirdEntryContents;
-            secondSymbol = firstItem;
-          }
-          break;
-        default:
-          break;
-      }
-      if (!(secondSymbol in mappingTable)) {
-        const secondTermKey = Object
-          .keys(updatedMappingTable)
-          .find((key) => updatedMappingTable[key] === secondTerm);
-
-        if (secondTermKey) {
-          delete updatedMappingTable[secondTermKey];
-        }
-        updatedMappingTable[secondSymbol] = secondTerm;
-      }
-
-      return updatedMappingTable;
     }
 
-    return null;
+    if (thirdEntry.length > 0) {
+      const thirdSymbolIn0 = thirdEntry[0].content;
+
+      if (!(thirdSymbolIn0 in nextMappingTable) && isLetter(thirdSymbolIn0) && !nextMappingTableValues.includes(secondTerm)) {
+        nextMappingTable[thirdSymbolIn0] = secondTerm;
+      } else if (thirdSymbolIn0.length > 1) {
+        const thirdSymbolIn1 = thirdSymbolIn0[1];
+
+        if (!(thirdSymbolIn1 in nextMappingTable) && isLetter(thirdSymbolIn1) && !nextMappingTableValues.includes(secondTerm)) {
+          nextMappingTable[thirdSymbolIn1] = secondTerm;
+        }
+      }
+    }
+
+    return nextMappingTable;
   }
+
   function performValidation() {
     const updatedMappingTable = updateMappingTable();
-    if (updatedMappingTable) {
-      let hint;
-      let result = true;
+    let hint;
+    let result = true;
 
-      if (firstEntry.length === 0) {
-        hint = 'Please drag an item into the first box!';
-        result = false;
-      }
-
-      if (secondEntry.length === 0) {
-        hint = 'Please drag an item into the second box!';
-        result = false;
-      }
-
-      if (thirdEntry.length === 0) {
-        hint = 'Please drag an item into the third box!';
-        result = false;
-      }
-
-      if (!hint) {
-        const { content: firstEntryContents } = firstEntry[0];
-        const { content: secondEntryContents } = secondEntry[0];
-        const { content: thirdEntryContents } = thirdEntry[0];
-
-        const symbolicFormOfPremise = getSymbolicForm(premise);
-        const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
-        const { firstTerm, secondTerm } = premise.terms;
-
-        let count = 0;
-        Object.keys(updatedMappingTable).forEach((mappingKey) => {
-          const entry = updatedMappingTable[mappingKey];
-
-          let secondMappingKey;
-          switch (symbolicFormOfPremise) {
-            case A_DOES_NOT_ENTAIL_NOT_B:
-            case A_ENTAILS_NOT_B:
-              secondMappingKey = `!${mappingKey}`;
-              break;
-            case A_ENTAILS_B:
-            case A_DOES_NOT_ENTAIL_B:
-              secondMappingKey = mappingKey;
-              break;
-            default:
-              break;
-          }
-
-          if ((entry === firstTerm && mappingKey === firstEntryContents)
-            || (entry === secondTerm && secondMappingKey === thirdEntryContents)) {
-            count += 1;
-          }
-        });
-        result = result && count === 2 && expectedEntailmentSymbol === secondEntryContents;
-
-        if (expectedEntailmentSymbol !== secondEntryContents && count !== 2) {
-          hint = 'Both your mappings and entailment symbol are wrong!';
-        } else if (expectedEntailmentSymbol !== secondEntryContents) {
-          hint = 'Your entailment symbol is wrong!';
-        } else if (count !== 2) {
-          hint = 'Your mappings are wrong!';
-        }
-      }
-      return {
-        hint,
-        result,
-        updatedMappingTable,
-      };
+    if (firstEntry.length === 0) {
+      hint = 'Please drag an item into the first box!';
+      result = false;
     }
-    return null;
+
+    if (secondEntry.length === 0) {
+      hint = 'Please drag an item into the second box!';
+      result = false;
+    }
+
+    if (thirdEntry.length === 0) {
+      hint = 'Please drag an item into the third box!';
+      result = false;
+    }
+
+    if (!hint) {
+      const { content: firstEntryContents } = firstEntry[0];
+      const { content: secondEntryContents } = secondEntry[0];
+      const { content: thirdEntryContents } = thirdEntry[0];
+
+      const symbolicFormOfProposition = getSymbolicForm(proposition);
+      const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfProposition);
+      const { firstTerm, secondTerm } = proposition.terms;
+
+      let count = 0;
+      Object.keys(updatedMappingTable).forEach((mappingKey) => {
+        const entry = updatedMappingTable[mappingKey];
+
+        let secondMappingKey;
+        switch (symbolicFormOfProposition) {
+          case A_DOES_NOT_ENTAIL_NOT_B:
+          case A_ENTAILS_NOT_B:
+            secondMappingKey = `¬${mappingKey}`;
+            break;
+          case A_ENTAILS_B:
+          case A_DOES_NOT_ENTAIL_B:
+            secondMappingKey = mappingKey;
+            break;
+          default:
+            break;
+        }
+
+        if ((entry === firstTerm && mappingKey === firstEntryContents)
+          || (entry === secondTerm && secondMappingKey === thirdEntryContents)) {
+          count += 1;
+        }
+      });
+      result = result && count === 2 && expectedEntailmentSymbol === secondEntryContents;
+
+      if (expectedEntailmentSymbol !== secondEntryContents && count !== 2) {
+        hint = 'Both your mappings and entailment symbol are wrong!';
+      } else if (expectedEntailmentSymbol !== secondEntryContents) {
+        hint = 'Your entailment symbol is wrong!';
+      } else if (count !== 2) {
+        hint = 'Your mappings are wrong!';
+      }
+    }
+    return {
+      hint,
+      result,
+      updatedMappingTable,
+    };
   }
 
   return performValidation();

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { stages, validateVennDiagram } from '../../logic/validator';
@@ -12,7 +11,8 @@ import ThreeSetInteractiveVennDiagram from '../VennDiagram/ThreeSetInteractiveVe
 import TwoSetUninteractiveVennDiagram from '../VennDiagram/TwoSetUninteractiveVennDiagram';
 import { TWO_SET_CIRCLES_ORIENTATION } from '../VennDiagram/venn_utils';
 import LevelOneVennDiagramTree from '../VennDiagramTree/LevelOneVennDiagramTree';
-import PremiseCollection from '../../logic/premise_collection';
+import { forms } from '../../logic/proposition';
+import PropositionCollection from '../../logic/proposition_collection';
 import withQuestionTemplate from '../Questions/QuestionTemplate';
 
 import styles from '../../assets/components/jss/CombineDiagramsQuestion/combine_diagrams_question_styles';
@@ -21,15 +21,16 @@ const { VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 
 class CombineDiagramsQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { content: nextPremiseCollection } = nextProps;
-    const { premiseCollection } = prevState;
+    const { questionidx: questionIdx, content: nextPropositionCollection } = nextProps;
+    const { propositionCollection } = prevState;
 
-    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()) {
+    if (nextPropositionCollection.hashCode() !== propositionCollection.hashCode()) {
       return {
-        premiseCollection: nextPremiseCollection,
-        premisesVennDiagramRef: [...Array(nextPremiseCollection.premises.length)
+        propositionCollection: nextPropositionCollection,
+        propositionsVennDiagramRef: [...Array(nextPropositionCollection.propositions.length)
           .keys()].map(() => React.createRef()),
         key: Math.random(),
+        questionIdx,
       };
     }
 
@@ -38,103 +39,113 @@ class CombineDiagramsQuestion extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content } = props;
+    const { content, questionidx: questionIdx } = props;
 
     this.state = {
-      premiseCollection: content,
+      propositionCollection: content,
       key: Math.random(),
-      premisesVennDiagramRef: [...Array(content.premises.length).keys()].map(() => React.createRef()),
+      propositionsVennDiagramRef: [...Array(content.propositions.length).keys()].map(() => React.createRef()),
+      questionIdx,
     };
     this.combinationVennDiagramRef = React.createRef();
   }
 
-  componentDidMount() {
-    this.shade();
-  }
-
   componentDidUpdate() {
     this.shade();
+    const { questionIdx } = this.state;
+    const { setQuestionNumber } = this.props;
+
+    setQuestionNumber(Number(questionIdx) + 1);
   }
 
   shade = () => {
-    const { premiseCollection, premisesVennDiagramRef } = this.state;
-    const { premises } = premiseCollection;
+    const { propositionCollection, propositionsVennDiagramRef } = this.state;
+    const { propositions } = propositionCollection;
 
-    premisesVennDiagramRef.forEach((ref, idx) => {
+    propositionsVennDiagramRef.forEach((ref, idx) => {
       if (!ref.current) {
-        throw new Error('Premise venn diagrams did not render!');
+        throw new Error('Proposition venn diagrams did not render!');
       }
 
-      ref.current.applyShading(new PremiseCollection([premises[idx]]));
+      ref.current.applyShading(new PropositionCollection([propositions[idx]]));
     });
   }
 
   validate = () => {
     const { COMBINATION_STAGE } = stages;
-    const { onValidate, onCorrect, difficulty, id } = this.props;
-    const { premiseCollection } = this.state;
+    const { onValidate } = this.props;
+    const { propositionCollection } = this.state;
 
-    const result = validateVennDiagram(premiseCollection, this.combinationVennDiagramRef, COMBINATION_STAGE);
+    const result = validateVennDiagram(propositionCollection, this.combinationVennDiagramRef, COMBINATION_STAGE);
     onValidate(result, 'Incorrect!');
-
-    if (result) {
-      onCorrect(id, difficulty);
-    }
 
     return result;
   }
 
+  componentDidMount() {
+    this.shade();
+    const { questionIdx } = this.state;
+    const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
+
+    setQuestionTitle("Represent multiple propositions on a Venn Diagram");
+    setQuestionNumber(Number(questionIdx) + 1);
+    setInstructions('You are presented with multiple two-set Venn Diagrams, each corresponding to a proposition, shade the bigger Venn Diagram in a way such that it will represent all of the propositions. ');
+  }
+
   render() {
-    function renderInteractiveVennDiagram(premiseCollection, vennDiagramRef) {
-      if (premiseCollection.terms.length === 3) {
-        return <ThreeSetInteractiveVennDiagram style={{ marginLeft: '50px' }} title="Combination" premises={premiseCollection} ref={vennDiagramRef} />;
+    function renderInteractiveVennDiagram(propositionCollection, vennDiagramRef) {
+      if (propositionCollection.terms.length === 3) {
+        return <ThreeSetInteractiveVennDiagram style={{ marginLeft: '50px' }} title="Combination" propositions={propositionCollection} ref={vennDiagramRef} />;
       }
-      if (premiseCollection.terms.length === 4) {
-        return <FourSetInteractiveVennDiagram premises={premiseCollection} ref={vennDiagramRef} />;
+      if (propositionCollection.terms.length === 4) {
+        return <FourSetInteractiveVennDiagram propositions={propositionCollection} ref={vennDiagramRef} />;
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }
-    function mapPremiseToSymbolicForm(premise, idx, numberOfPremises) {
-      const symbolicForm = premise.toSymbolicForm();
-
-      if (idx === numberOfPremises - 1) {
-        return ` "${symbolicForm}" `;
-      }
-      return ` "${symbolicForm}", `;
-    }
+    const {
+      SOME_A_IS_B,
+      SOME_A_IS_NOT_B,
+    } = forms;
     const { classes } = this.props;
-    const { premiseCollection, premisesVennDiagramRef, key } = this.state;
-    const { premises } = premiseCollection;
+    const { propositionCollection, propositionsVennDiagramRef, key } = this.state;
+    const { propositions } = propositionCollection;
+    const filteredPropositions = propositions
+      .map((proposition, idx) => {
+        return { proposition, idx };
+      })
+      .filter(({ proposition }) => proposition.form === SOME_A_IS_NOT_B || proposition.form === SOME_A_IS_B);
+    const idxMappings = {};
+    filteredPropositions.forEach(({ proposition, idx }, xVal) => {
+      idxMappings[idx] = xVal;
+    });
     // eslint-disable-next-line no-nested-ternary
-    const width = premiseCollection.terms.length === 3 ? '400px'
-      : premiseCollection.terms.length === 4 ? '620px' : '0px';
     return (
       <div key={key} className={classes.root}>
-        <Typography className={classes.instructions} variant="h5">
-          Combine the Venn Diagrams of
-          {
-            premises.map((premise, idx) => mapPremiseToSymbolicForm(premise, idx, premises.length))
-          }
-          into one Venn Diagram
-        </Typography>
-        <Paper style={{ width }}>
-          <LevelOneVennDiagramTree
-            vennDiagramList={
-              premises.map((premise, idx) => (
+        <LevelOneVennDiagramTree
+          vennDiagramList={
+            propositions.map((proposition, idx) => (
+              <div>
+                <Typography style={{ marginLeft: '8px' }} variant="h4">
+                  {
+                    proposition.toSymbolicForm()
+                  }
+                </Typography>
                 <TwoSetUninteractiveVennDiagram
-                  title={premise.toSentence()}
-                  terms={premise.terms}
+                  title={proposition.toSentence()}
+                  terms={proposition.terms}
                   orientation={VERTICAL}
-                  ref={premisesVennDiagramRef[idx]}
+                  ref={propositionsVennDiagramRef[idx]}
+                  x={idxMappings[idx]}
                 />
-              ))
-            }
-            order={premiseCollection.terms.length}
-          />
-          {
-            renderInteractiveVennDiagram(premiseCollection, this.combinationVennDiagramRef)
+              </div>
+            ))
           }
-        </Paper>
+          order={propositionCollection.terms.length}
+        />
+        {
+          renderInteractiveVennDiagram(propositionCollection, this.combinationVennDiagramRef)
+        }
+        <br />
         <Button variant="contained" color="primary" onClick={this.validate}>Validate</Button>
       </div>
     );

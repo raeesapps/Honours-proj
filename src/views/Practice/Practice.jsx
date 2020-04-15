@@ -9,6 +9,8 @@ class Practice extends React.Component {
   constructor() {
     super();
     this.state = {
+      sidebarIdx: -1,
+      selectedIdx: -1,
       Component: PracticeHomepage,
       content: null,
       difficulty: null,
@@ -16,19 +18,45 @@ class Practice extends React.Component {
     };
   }
 
-  setComponent = (Component, content, difficulty, id) => {
-    this.setState({ Component, content, difficulty, id });
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { location } = this.props;
+    const { key } = location;
+
+    const { location: nextLocation } = nextProps;
+    const { key: nextKey } = nextLocation;
+
+    if (key !== nextKey) {
+      this.setState({
+        sidebarIdx: -1,
+        selectedIdx: -1,
+        Component: PracticeHomepage,
+        content: null,
+        difficulty: null,
+        id: null,
+      });
+    }
+  }
+
+  setComponent = (sidebarIdx, selectedIdx, Component, content, difficulty, id) => {
+    this.setState({
+      sidebarIdx,
+      selectedIdx,
+      Component,
+      content,
+      difficulty,
+      id,
+    });
   };
 
   render() {
-    const { Component, content, difficulty, id } = this.state;
+    const { sidebarIdx, selectedIdx, Component, content, difficulty, id } = this.state;
     return (
       <Grid container>
         <Grid item xs={3}>
-          <Questions onClick={this.setComponent} />
+          <Questions sidebarIdx={sidebarIdx} selectedIdx={selectedIdx} onClick={this.setComponent} />
         </Grid>
         <Grid item xs={9}>
-          <Component id={id} content={content} difficulty={difficulty} onClick={this.setComponent} />
+          <Component id={id} questionidx={selectedIdx} content={content} difficulty={difficulty} onClick={this.setComponent} />
         </Grid>
       </Grid>
     );

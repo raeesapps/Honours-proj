@@ -20,6 +20,9 @@ function QuestionList(props) {
     title,
     component,
     classes,
+    idx,
+    sidebarIdx,
+    selectedIdx,
     onClick,
     ...rest
   } = props;
@@ -47,7 +50,7 @@ function QuestionList(props) {
         break;
     }
 
-    return <Chip style={{ backgroundColor: `${color}` }} label={text} />;
+    return <Chip style={{ backgroundColor: `${color}`, marginLeft: '25%' }} label={text} />;
   }
 
   return (
@@ -57,20 +60,25 @@ function QuestionList(props) {
           expandIcon={<ExpandMoreIcon />}
           aria-controls={`${title}AriaControls`}
           id={`${title}ExpasionPanel`}
+          style={{ backgroundColor: idx === sidebarIdx ? '#03a9f4' : 'white' }}
         >
           <Typography>{title}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <List>
             {
-              questions.map((question, idx) => (
-                <div style={{ display: 'flex' }}>
+              questions.map((question) => (
+                <div
+                  key={question.id}
+                  style={{ display: 'flex' }}
+                >
                   <Button
-                    key={question.id}
-                    button
+                    variant={selectedIdx === question.idx && idx === sidebarIdx ? 'contained' : 'text'}
                     onClick={
                       () => (
                         onClick(
+                          idx,
+                          question.idx,
                           component,
                           question.content,
                           question.difficulty,
@@ -80,12 +88,12 @@ function QuestionList(props) {
                     }
                   >
                     <Typography variant="body1">
-                      {`#${idx + 1}`}
+                      {`#${question.idx + 1}`}
                     </Typography>
+                    {
+                      renderChip(question)
+                    }
                   </Button>
-                  {
-                    renderChip(question)
-                  }
                 </div>
               ))
             }
