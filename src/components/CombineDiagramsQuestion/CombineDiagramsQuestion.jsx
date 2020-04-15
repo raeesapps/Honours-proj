@@ -87,9 +87,9 @@ class CombineDiagramsQuestion extends React.Component {
     const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
-    setQuestionTitle("Represent multiple propositions on a Venn Diagram");
+    setQuestionTitle("Represent multiple propositions on a Venn diagram");
     setQuestionNumber(Number(questionIdx) + 1);
-    setInstructions('You are presented with multiple two-set Venn Diagrams, each corresponding to a proposition, shade the bigger Venn Diagram in a way such that it will represent all of the propositions. ');
+    setInstructions('You are presented with multiple two-set Venn diagrams, each corresponding to a proposition, shade the bigger Venn diagram in a way such that it will represent all of the propositions. ');
   }
 
   render() {
