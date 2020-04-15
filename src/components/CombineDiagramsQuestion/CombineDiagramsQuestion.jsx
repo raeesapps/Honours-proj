@@ -11,6 +11,7 @@ import ThreeSetInteractiveVennDiagram from '../VennDiagram/ThreeSetInteractiveVe
 import TwoSetUninteractiveVennDiagram from '../VennDiagram/TwoSetUninteractiveVennDiagram';
 import { TWO_SET_CIRCLES_ORIENTATION } from '../VennDiagram/venn_utils';
 import LevelOneVennDiagramTree from '../VennDiagramTree/LevelOneVennDiagramTree';
+import { forms } from '../../logic/premise';
 import PremiseCollection from '../../logic/premise_collection';
 import withQuestionTemplate from '../Questions/QuestionTemplate';
 
@@ -101,9 +102,22 @@ class CombineDiagramsQuestion extends React.Component {
       }
       throw new Error('Only 3 or 4 sets are supported!');
     }
+    const {
+      SOME_A_IS_B,
+      SOME_A_IS_NOT_B,
+    } = forms;
     const { classes } = this.props;
     const { premiseCollection, premisesVennDiagramRef, key } = this.state;
     const { premises } = premiseCollection;
+    const filteredPremises = premises
+      .map((premise, idx) => {
+        return { premise, idx };
+      })
+      .filter(({ premise }) => premise.form === SOME_A_IS_NOT_B || premise.form === SOME_A_IS_B);
+    const idxMappings = {};
+    filteredPremises.forEach(({ premise, idx }, xVal) => {
+      idxMappings[idx] = xVal;
+    });
     // eslint-disable-next-line no-nested-ternary
     return (
       <div key={key} className={classes.root}>
@@ -121,6 +135,7 @@ class CombineDiagramsQuestion extends React.Component {
                   terms={premise.terms}
                   orientation={VERTICAL}
                   ref={premisesVennDiagramRef[idx]}
+                  x={idxMappings[idx]}
                 />
               </div>
             ))

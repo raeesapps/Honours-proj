@@ -22,6 +22,7 @@ import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSe
 import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
 import LevelOneVennDiagramTree from '../../components/VennDiagramTree/LevelOneVennDiagramTree';
 import LevelTwoVennDiagramTree from '../../components/VennDiagramTree/LevelTwoVennDiagramTree';
+import { forms } from '../../logic/premise';
 import PremiseCollection from '../../logic/premise_collection';
 import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
@@ -61,6 +62,11 @@ class InstantSolver extends React.Component {
   }
 
   componentDidUpdate() {
+    const {
+      SOME_A_IS_B,
+      SOME_A_IS_NOT_B,
+    } = forms;
+
     const { needsUpdate } = this.state;
     const { mappings } = this.generateMappings();
     const useMappings = this.shouldAllTermsBeMappedToLetters();
@@ -71,6 +77,16 @@ class InstantSolver extends React.Component {
       const argumentForm = this.argumentFormRef.current;
       const { premises } = argumentForm.state;
 
+      const idxMappings = {}
+      const filteredPremises = premises
+        .map((premise, idx) => {
+          return { premise: premise.ref.current.getPremiseObj(), idx };
+        })
+        .filter(({ premise }) => premise.form === SOME_A_IS_NOT_B || premise.form === SOME_A_IS_B);
+      filteredPremises.forEach(({ premise, idx }, xVal) => {
+        idxMappings[idx] = xVal;
+      });
+
       const premiseVennDiagrams = this.premiseVennDiagramRefs.filter((ref) => !!ref.current);
       const premiseCollections = premises
         .map((premise) => new PremiseCollection([premise.ref.current.getPremiseObj()]));
@@ -79,7 +95,7 @@ class InstantSolver extends React.Component {
         const premiseCollection = premiseCollections[idx];
 
         if (order >= 3 && order <= 4) {
-          ref.current.applyShading(premiseCollection, useMappings ? mappings : undefined);
+          ref.current.applyShading(premiseCollection, useMappings ? mappings : undefined, undefined, idxMappings[idx]);
         }
       });
 
@@ -277,8 +293,7 @@ class InstantSolver extends React.Component {
           title="Are you sure?"
           content={
             <DialogContentText id="alert-dialog-description">
-              You are trying to add more than 4 premises.
-              Thats some really complicated stuff to reason about.
+              You are trying to construct a syllogism with more than three premises.
               Are you sure you want to add another premise?
             </DialogContentText>
           }

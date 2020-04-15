@@ -33,6 +33,7 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
       shadings,
       orientation,
       terms,
+      x,
     } = this.props;
     const id = title.split(' ').join('');
     let div;
@@ -54,14 +55,15 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
       const { firstTerm, secondTerm } = terms;
       const { nodeRegionToMappedRegionMapping } = generateMappingObjects(div, firstTerm, secondTerm);
       Object.keys(shadings).forEach((mapping) => {
-        shadeRegion(div, mapping, nodeRegionToMappedRegionMapping, shadings[mapping]);
+        shadeRegion(div, mapping, nodeRegionToMappedRegionMapping, shadings[mapping], x);
       });
 
       this.setState({ a: firstTerm, b: secondTerm });
     }
   }
 
-  applyShading = (premiseCollection, mappings, termsInMapping) => {
+  applyShading = (premiseCollection, mappings, termsInMapping, xInParam) => {
+    const { x: xInProps } = this.props;
     const [a, b] = termsInMapping ? termsInMapping.sort() : premiseCollection.terms.sort();
 
     if (mappings) {
@@ -72,7 +74,7 @@ class TwoSetUninteractiveVennDiagram extends React.PureComponent {
     } else {
       this.setState({ a, b });
     }
-    applyShadings(this.div, premiseCollection, a, b, undefined, undefined, termsInMapping);
+    applyShadings(this.div, premiseCollection, a, b, undefined, undefined, termsInMapping, xInProps || xInParam);
   }
 
   render() {

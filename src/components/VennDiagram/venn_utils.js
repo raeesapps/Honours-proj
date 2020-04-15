@@ -756,7 +756,7 @@ function generateMappingObjects(div, a, b, c, d) {
   };
 }
 
-function shadeRegion(div, region, mappings, resolvedValues) {
+function shadeRegion(div, region, mappings, resolvedValues, forceXVal) {
   const { REGION } = PATH_TYPES;
   const n = Object.keys(mappings).length;
 
@@ -799,7 +799,7 @@ function shadeRegion(div, region, mappings, resolvedValues) {
               }
             }
 
-            const id = `p${hash(`${elementId}${nodeRegion}${idx}`)}`;
+            const id = `p${hash(`${elementId}${nodeRegion}${forceXVal || idx}`)}`;
             const xpath = d3.select(`#${id}`);
             xpath.attr('fill-opacity', 1);
           } else if (resolvedValues[0] === IDENTIFIER_FOR_BLACK) {
@@ -812,7 +812,7 @@ function shadeRegion(div, region, mappings, resolvedValues) {
   });
 }
 
-function applyShadings(div, premiseCollection, a, b, c, d, termsInMapping) {
+function applyShadings(div, premiseCollection, a, b, c, d, termsInMapping, x) {
   const {
     nodeRegionToMappedRegionMapping,
     mappedRegionToShadingMapping,
@@ -851,6 +851,7 @@ function applyShadings(div, premiseCollection, a, b, c, d, termsInMapping) {
       mapping,
       nodeRegionToMappedRegionMapping,
       mappedRegionToShadingMapping[mapping],
+      x,
     );
   });
 }
