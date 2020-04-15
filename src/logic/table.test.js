@@ -1,7 +1,7 @@
 import Table from './table';
 import HashDictionary from './dictionary';
 import Compartment from './compartment';
-import { Premise, forms } from './premise';
+import { Proposition, forms } from './proposition';
 
 const terms = ['a', 'b'];
 let table;
@@ -25,26 +25,26 @@ test('Table instantiated correctly', () => {
   expect(tableCompartmentsStr).toBe(expectedCompartmentsStr);
 });
 
-test('Table size 0 when no premises in table', () => {
+test('Table size 0 when no propositions in table', () => {
   expect(table.size()).toBe(0);
 });
 
-test('Table size is 1 when premise is added to table', () => {
+test('Table size is 1 when proposition is added to table', () => {
   const {
     ALL_A_IS_B,
   } = forms;
-  const premise = new Premise(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
+  const proposition = new Proposition(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
-  table.addPremise(premise, false);
+  table.addProposition(proposition, false);
   expect(table.size()).toBe(1);
 });
 
-test('Table has premise when premise is in table', () => {
+test('Table has proposition when proposition is in table', () => {
   const {
     ALL_A_IS_B,
   } = forms;
-  const premise = new Premise(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
+  const proposition = new Proposition(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
-  table.addPremise(premise, false);
-  expect(table.has(premise)).toBe(true);
+  table.addProposition(proposition, false);
+  expect(table.has(proposition)).toBe(true);
 });

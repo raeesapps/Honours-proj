@@ -28,12 +28,12 @@ class TwoSetInteractiveVennDiagram extends React.PureComponent {
   componentDidMount() {
     const {
       title,
-      premise,
+      proposition,
       orientation,
       disableLongClick,
     } = this.props;
 
-    const { firstTerm, secondTerm } = premise.terms;
+    const { firstTerm, secondTerm } = proposition.terms;
 
     this.setState({
       a: firstTerm,

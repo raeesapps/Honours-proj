@@ -22,18 +22,18 @@ import FourSetUninteractiveVennDiagram from '../../components/VennDiagram/FourSe
 import { TWO_SET_CIRCLES_ORIENTATION } from '../../components/VennDiagram/venn_utils';
 import LevelOneVennDiagramTree from '../../components/VennDiagramTree/LevelOneVennDiagramTree';
 import LevelTwoVennDiagramTree from '../../components/VennDiagramTree/LevelTwoVennDiagramTree';
-import { forms } from '../../logic/premise';
-import PremiseCollection from '../../logic/premise_collection';
+import { forms } from '../../logic/proposition';
+import PropositionCollection from '../../logic/proposition_collection';
 import snackbarTypes from '../../components/Snackbar/snackbar_types';
 import styles from '../../assets/views/jss/InstantSolver/instant_solver_styles';
 
 const { VERTICAL } = TWO_SET_CIRCLES_ORIENTATION;
 const { SUCCESS, ERROR } = snackbarTypes;
 
-function getTermSets(premiseObjs) {
+function getTermSets(propositionObjs) {
   const termSet = new Set();
-  premiseObjs.forEach((premiseObj) => {
-    const { firstTerm, secondTerm } = premiseObj.terms;
+  propositionObjs.forEach((propositionObj) => {
+    const { firstTerm, secondTerm } = propositionObj.terms;
 
     termSet.add(firstTerm);
     termSet.add(secondTerm);
@@ -56,8 +56,8 @@ class InstantSolver extends React.Component {
     };
 
     this.argumentFormRef = React.createRef();
-    this.premiseVennDiagramRefs = [...Array(4).keys()].map(() => React.createRef());
-    this.combinedPremisesVennDiagramRef = React.createRef();
+    this.propositionVennDiagramRefs = [...Array(4).keys()].map(() => React.createRef());
+    this.combinedPropositionsVennDiagramRef = React.createRef();
     this.mappedVennDiagramRef = React.createRef();
   }
 
@@ -75,54 +75,54 @@ class InstantSolver extends React.Component {
 
     if (needsUpdate && mappings) {
       const argumentForm = this.argumentFormRef.current;
-      const { premises } = argumentForm.state;
+      const { propositions } = argumentForm.state;
 
       const idxMappings = {}
-      const filteredPremises = premises
-        .map((premise, idx) => {
-          return { premise: premise.ref.current.getPremiseObj(), idx };
+      const filteredPropositions = propositions
+        .map((proposition, idx) => {
+          return { proposition: proposition.ref.current.getPropositionObj(), idx };
         })
-        .filter(({ premise }) => premise.form === SOME_A_IS_NOT_B || premise.form === SOME_A_IS_B);
-      filteredPremises.forEach(({ premise, idx }, xVal) => {
+        .filter(({ proposition }) => proposition.form === SOME_A_IS_NOT_B || proposition.form === SOME_A_IS_B);
+      filteredPropositions.forEach(({ proposition, idx }, xVal) => {
         idxMappings[idx] = xVal;
       });
 
-      const premiseVennDiagrams = this.premiseVennDiagramRefs.filter((ref) => !!ref.current);
-      const premiseCollections = premises
-        .map((premise) => new PremiseCollection([premise.ref.current.getPremiseObj()]));
+      const propositionVennDiagrams = this.propositionVennDiagramRefs.filter((ref) => !!ref.current);
+      const propositionCollections = propositions
+        .map((proposition) => new PropositionCollection([proposition.ref.current.getPropositionObj()]));
 
-      premiseVennDiagrams.forEach((ref, idx) => {
-        const premiseCollection = premiseCollections[idx];
+      propositionVennDiagrams.forEach((ref, idx) => {
+        const propositionCollection = propositionCollections[idx];
 
         if (order >= 3 && order <= 4) {
-          ref.current.applyShading(premiseCollection, useMappings ? mappings : undefined, undefined, idxMappings[idx]);
+          ref.current.applyShading(propositionCollection, useMappings ? mappings : undefined, undefined, idxMappings[idx]);
         }
       });
 
-      const combinedPremisesVennDiagram = this.combinedPremisesVennDiagramRef.current;
-      const allPremisesExcludingConclusion = new PremiseCollection(premises
-        .filter((premise) => premise.name !== 'Conclusion')
-        .map((premise) => premise.ref.current.getPremiseObj()));
+      const combinedPropositionsVennDiagram = this.combinedPropositionsVennDiagramRef.current;
+      const allPropositionsExcludingConclusion = new PropositionCollection(propositions
+        .filter((proposition) => proposition.name !== 'Conclusion')
+        .map((proposition) => proposition.ref.current.getPropositionObj()));
 
       if (order >= 3 && order <= 4) {
-        combinedPremisesVennDiagram.applyShading(allPremisesExcludingConclusion, useMappings ? mappings : undefined);
+        combinedPropositionsVennDiagram.applyShading(allPropositionsExcludingConclusion, useMappings ? mappings : undefined);
       }
 
       const mappedVennDiagram = this.mappedVennDiagramRef.current;
-      const conclusion = premises
-        .find((premise) => premise.name === 'Conclusion')
-        .ref.current.getPremiseObj();
-      const conclusionPremiseCollection = new PremiseCollection([conclusion]);
+      const conclusion = propositions
+        .find((proposition) => proposition.name === 'Conclusion')
+        .ref.current.getPropositionObj();
+      const conclusionPropositionCollection = new PropositionCollection([conclusion]);
 
       if (order >= 3 && order <= 4) {
         mappedVennDiagram.applyShading(
-          allPremisesExcludingConclusion,
+          allPropositionsExcludingConclusion,
           useMappings ? mappings : undefined,
-          conclusionPremiseCollection.terms,
+          conclusionPropositionCollection.terms,
         );
       }
 
-      const { reason, result } = allPremisesExcludingConclusion.argue2(conclusion);
+      const { reason, result } = allPropositionsExcludingConclusion.argue2(conclusion);
 
       if (result) {
         this.setState({
@@ -152,7 +152,7 @@ class InstantSolver extends React.Component {
         key: Math.random(),
       });
     } else {
-      this.onError("Please check your premises and conclusion. The conclusion should not introduce a new predicate or subject. The number of predicates and subjects in the premises should be equal to the number of premises.");
+      this.onError("Please check your propositions and conclusion. The conclusion should not introduce a new predicate or subject. The number of predicates and subjects in the propositions should be equal to the number of propositions.");
     }
   }
 
@@ -163,22 +163,22 @@ class InstantSolver extends React.Component {
   getOrder = (excludeConclusion) => {
     const argumentForm = this.argumentFormRef.current;
     if (argumentForm) {
-      const { premises } = argumentForm.state;
-      const premiseObjs = premises
-        .map((premise) => {
-          const currentRef = premise.ref.current;
+      const { propositions } = argumentForm.state;
+      const propositionObjs = propositions
+        .map((proposition) => {
+          const currentRef = proposition.ref.current;
 
-          return currentRef ? currentRef.getPremiseObj() : null;
+          return currentRef ? currentRef.getPropositionObj() : null;
         })
-        .filter((premiseObj) => !!premiseObj);
+        .filter((propositionObj) => !!propositionObj);
 
       if (excludeConclusion) {
-        premiseObjs.pop();
+        propositionObjs.pop();
       }
 
-      const termSet = getTermSets(premiseObjs);
+      const termSet = getTermSets(propositionObjs);
 
-      if (excludeConclusion && premiseObjs.length === termSet.size - 1) {
+      if (excludeConclusion && propositionObjs.length === termSet.size - 1) {
         return termSet.size;
       } else if (!excludeConclusion) {
         return termSet.size;
@@ -187,9 +187,9 @@ class InstantSolver extends React.Component {
     return -1;
   }
 
-  warningAddPremise = () => {
+  warningAddProposition = () => {
     const argumentForm = this.argumentFormRef.current;
-    argumentForm.addPremise();
+    argumentForm.addProposition();
     this.setState({ dialogOpen: false });
   }
 
@@ -201,10 +201,10 @@ class InstantSolver extends React.Component {
     const argumentForm = this.argumentFormRef.current;
 
     if (argumentForm) {
-      const { premises } = argumentForm.state;
-      const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
+      const { propositions } = argumentForm.state;
+      const propositionObjs = propositions.map((proposition) => proposition.ref.current.getPropositionObj());
 
-      const termSet = getTermSets(premiseObjs);
+      const termSet = getTermSets(propositionObjs);
 
       const reducer = [...termSet]
         .reduce((numberOfSingleDigitTerms, term) => {
@@ -225,10 +225,10 @@ class InstantSolver extends React.Component {
     const argumentForm = this.argumentFormRef.current;
 
     if (argumentForm) {
-      const { premises } = argumentForm.state;
-      const premiseObjs = premises.map((premise) => premise.ref.current.getPremiseObj());
+      const { propositions } = argumentForm.state;
+      const propositionObjs = propositions.map((proposition) => proposition.ref.current.getPropositionObj());
 
-      const termSet = getTermSets(premiseObjs);
+      const termSet = getTermSets(propositionObjs);
       const letters = [...Array(25).keys()].map((i) => String.fromCharCode(65 + i));
       const mappings = {};
       [...termSet].forEach((term, idx) => {
@@ -238,7 +238,7 @@ class InstantSolver extends React.Component {
 
       return {
         mappings,
-        premiseObjs,
+        propositionObjs,
       };
     }
 
@@ -246,27 +246,27 @@ class InstantSolver extends React.Component {
   }
 
   renderSymbolicForms = () => {
-    function getSymbolicForm(premise, mappings) {
+    function getSymbolicForm(proposition, mappings) {
       const {
         firstTerm,
         secondTerm,
-      } = premise.terms;
+      } = proposition.terms;
 
       const firstSymbol = mappings[firstTerm];
       const secondSymbol = mappings[secondTerm];
 
-      return premise.toSymbolicForm(firstSymbol, secondSymbol);
+      return proposition.toSymbolicForm(firstSymbol, secondSymbol);
     }
-    const { mappings, premiseObjs } = this.generateMappings();
+    const { mappings, propositionObjs } = this.generateMappings();
 
     if (mappings) {
       const useMappings = this.shouldAllTermsBeMappedToLetters();
 
-      return premiseObjs.map((premise, idx) => (
+      return propositionObjs.map((proposition, idx) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Grid key={`symbolicFormOf${premise.toSentence()}${idx}`} item xs={6}>
-          <Typography variant="h6">{premise.toSentence()}</Typography>
-          <Typography variant="subtitle1">{getSymbolicForm(premise, useMappings ? mappings : {})}</Typography>
+        <Grid key={`symbolicFormOf${proposition.toSentence()}${idx}`} item xs={6}>
+          <Typography variant="h6">{proposition.toSentence()}</Typography>
+          <Typography variant="subtitle1">{getSymbolicForm(proposition, useMappings ? mappings : {})}</Typography>
         </Grid>
       ));
     }
@@ -293,13 +293,13 @@ class InstantSolver extends React.Component {
           title="Are you sure?"
           content={
             <DialogContentText id="alert-dialog-description">
-              You are trying to construct a syllogism with more than three premises.
-              Are you sure you want to add another premise?
+              You are trying to construct a syllogism with more than three propositions.
+              Are you sure you want to add another proposition?
             </DialogContentText>
           }
           actions={
             <div>
-              <Button onClick={this.warningAddPremise} color="primary">
+              <Button onClick={this.warningAddProposition} color="primary">
                 Yes
               </Button>
               <Button onClick={() => this.setState({ dialogOpen: false })} color="primary" autoFocus>
@@ -325,8 +325,8 @@ class InstantSolver extends React.Component {
                     <ExpansionPanel>
                       <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
-                        aria-controls="premisesAriaControls"
-                        id="premisesExpansionPanel"
+                        aria-controls="propositionsAriaControls"
+                        id="propositionsExpansionPanel"
                       >
                         <Typography>Venn Diagram tree</Typography>
                       </ExpansionPanelSummary>
@@ -335,8 +335,8 @@ class InstantSolver extends React.Component {
                           <LevelOneVennDiagramTree
                             order={order}
                             vennDiagramList={
-                              this.premiseVennDiagramRefs.map((ref, idx) => (
-                                <TwoSetUninteractiveVennDiagram ref={ref} orientation={VERTICAL} title={`Premise${idx}`} />
+                              this.propositionVennDiagramRefs.map((ref, idx) => (
+                                <TwoSetUninteractiveVennDiagram ref={ref} orientation={VERTICAL} title={`Proposition${idx}`} />
                               ))
                             }
                           />
@@ -345,9 +345,9 @@ class InstantSolver extends React.Component {
                             order={order}
                             combinedVennDiagram={
                               order === 3
-                                ? <ThreeSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} title="Premises" />
+                                ? <ThreeSetUninteractiveVennDiagram ref={this.combinedPropositionsVennDiagramRef} title="Propositions" />
                                 : order === 4
-                                  ? <FourSetUninteractiveVennDiagram ref={this.combinedPremisesVennDiagramRef} />
+                                  ? <FourSetUninteractiveVennDiagram ref={this.combinedPropositionsVennDiagramRef} />
                                   : <div />
                             }
                             conclusionOrReducedVennDiagram={

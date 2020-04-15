@@ -812,30 +812,30 @@ function shadeRegion(div, region, mappings, resolvedValues, forceXVal) {
   });
 }
 
-function applyShadings(div, premiseCollection, a, b, c, d, termsInMapping, x) {
+function applyShadings(div, propositionCollection, a, b, c, d, termsInMapping, x) {
   const {
     nodeRegionToMappedRegionMapping,
     mappedRegionToShadingMapping,
   } = generateMappingObjects(div, a, b, c, d);
 
   let resolvedColumn;
-  let premiseCollectionVennDiagramParts;
+  let propositionCollectionVennDiagramParts;
 
   if (termsInMapping) {
     const {
       mappedTableUnified,
       vennDiagramParts,
-    } = premiseCollection.map(termsInMapping);
+    } = propositionCollection.map(termsInMapping);
 
     resolvedColumn = mappedTableUnified;
-    premiseCollectionVennDiagramParts = vennDiagramParts;
+    propositionCollectionVennDiagramParts = vennDiagramParts;
   } else {
-    resolvedColumn = premiseCollection.unifyAndResolve();
-    premiseCollectionVennDiagramParts = premiseCollection.getVennDiagramParts();
+    resolvedColumn = propositionCollection.unifyAndResolve();
+    propositionCollectionVennDiagramParts = propositionCollection.getVennDiagramParts();
   }
 
-  premiseCollectionVennDiagramParts.forEach((premiseCollectionVennDiagramPart) => {
-    const { compartment, vennDiagramPart } = premiseCollectionVennDiagramPart;
+  propositionCollectionVennDiagramParts.forEach((propositionCollectionVennDiagramPart) => {
+    const { compartment, vennDiagramPart } = propositionCollectionVennDiagramPart;
     const resolvedValueArray = resolvedColumn[compartment.hashCode()];
 
     if (resolvedValueArray.length && vennDiagramPart !== '()') {

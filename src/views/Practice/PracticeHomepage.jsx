@@ -4,9 +4,9 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
 import {
-  premiseToSymbolicFormQuestions,
+  propositionToSymbolicFormQuestions,
   syllogismToSymbolicFormQuestions,
-  premiseToDiagramQuestions,
+  propositionToDiagramQuestions,
   combineDiagramsQuestion,
   mapAndArgueQuestion,
 } from '../../question_instances';
@@ -37,9 +37,9 @@ function PracticeHomepage(props) {
   }
   const { onClick, ...rest } = props;
   const questionTypes = [
-    premiseToSymbolicFormQuestions,
+    propositionToSymbolicFormQuestions,
     syllogismToSymbolicFormQuestions,
-    premiseToDiagramQuestions,
+    propositionToDiagramQuestions,
     combineDiagramsQuestion,
     mapAndArgueQuestion,
   ];

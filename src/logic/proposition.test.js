@@ -1,19 +1,19 @@
-import { Premise, forms } from './premise';
+import { Proposition, forms } from './proposition';
 import Table from './table';
 
 const {
   ALL_A_IS_B,
 } = forms;
 
-test('Premise form is `All_A s B`', () => {
-  const premise = new Premise(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
-  expect(premise.form).toBe(ALL_A_IS_B);
+test('Proposition form is `All_A s B`', () => {
+  const proposition = new Proposition(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
+  expect(proposition.form).toBe(ALL_A_IS_B);
 });
 
-test('First term of premise is `a` and second term of premise is `b`', () => {
-  const premise = new Premise(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
+test('First term of proposition is `a` and second term of proposition is `b`', () => {
+  const proposition = new Proposition(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
-  const { firstTerm, secondTerm } = premise.terms;
+  const { firstTerm, secondTerm } = proposition.terms;
 
   const expectedFirstTerm = 'a';
   const expectedSecondTerm = 'b';
@@ -34,13 +34,13 @@ describe('Proposition characteristic tests', () => {
     const {
       ALL_A_IS_B,
     } = forms;
-    const premise = new Premise(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
+    const proposition = new Proposition(ALL_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
     test('Adding an A code proposition results in table column being filled in correctly', () => {
-      table.addPremise(premise);
+      table.addProposition(proposition);
 
       const compartments = table.getCompartments();
-      const compartmentDictionary = table.getTableDictionary().get(premise);
+      const compartmentDictionary = table.getTableDictionary().get(proposition);
 
       compartments.forEach((compartment) => {
         const truths = compartment.getTruths();
@@ -56,19 +56,19 @@ describe('Proposition characteristic tests', () => {
 
     test('A code proposition sentence is correct', () => {
       const expectedSentence = 'All a are b';
-      const actualSentence = premise.toSentence();
+      const actualSentence = proposition.toSentence();
       expect(actualSentence).toBe(expectedSentence);
     });
 
     test('A code proposition standard form is correct', () => {
       const expectedStandardForm = 'a ⊨ b';
-      const actualStandardForm = premise.toSymbolicForm();
+      const actualStandardForm = proposition.toSymbolicForm();
       expect(actualStandardForm).toBe(expectedStandardForm);
     });
 
     test('A code proposition standard form is correct with different subject and predicate', () => {
       const expectedStandardFormWithDifferentSubjectAndPredicate = 'c ⊨ d';
-      const actualStandardFormWithDifferentSubjectAndPredicate = premise.toSymbolicForm('c', 'd');
+      const actualStandardFormWithDifferentSubjectAndPredicate = proposition.toSymbolicForm('c', 'd');
       expect(actualStandardFormWithDifferentSubjectAndPredicate).toBe(expectedStandardFormWithDifferentSubjectAndPredicate);
     });
   });
@@ -78,13 +78,13 @@ describe('Proposition characteristic tests', () => {
     const {
       NO_A_IS_B,
     } = forms;
-    const premise = new Premise(NO_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
+    const proposition = new Proposition(NO_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
     test('Adding an E code proposition results in table column being filled in correctly', () => {
-      table.addPremise(premise);
+      table.addProposition(proposition);
 
       const compartments = table.getCompartments();
-      const compartmentDictionary = table.getTableDictionary().get(premise);
+      const compartmentDictionary = table.getTableDictionary().get(proposition);
 
       compartments.forEach((compartment) => {
         const truths = compartment.getTruths();
@@ -100,13 +100,13 @@ describe('Proposition characteristic tests', () => {
 
     test('E code proposition standard form is correct', () => {
       const expectedSentence = 'No a are b';
-      const actualSentence = premise.toSentence();
+      const actualSentence = proposition.toSentence();
       expect(actualSentence).toBe(expectedSentence);
     });
 
     test('E code proposition standard form is correct', () => {
       const expectedStandardForm = 'a ⊨ ¬b';
-      const actualStandardForm = premise.toSymbolicForm();
+      const actualStandardForm = proposition.toSymbolicForm();
       expect(actualStandardForm).toBe(expectedStandardForm);
     });
   });
@@ -115,13 +115,13 @@ describe('Proposition characteristic tests', () => {
     const {
       SOME_A_IS_B,
     } = forms;
-    const premise = new Premise(SOME_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
+    const proposition = new Proposition(SOME_A_IS_B, { firstTerm: 'a', secondTerm: 'b' });
 
     test('Adding an I code proposition results in table column being filled in correctly', () => {
-      table.addPremise(premise);
+      table.addProposition(proposition);
 
       const compartments = table.getCompartments();
-      const compartmentDictionary = table.getTableDictionary().get(premise);
+      const compartmentDictionary = table.getTableDictionary().get(proposition);
 
       compartments.forEach((compartment) => {
         const truths = compartment.getTruths();
@@ -137,13 +137,13 @@ describe('Proposition characteristic tests', () => {
 
     test('I code proposition standard form is correct', () => {
       const expectedSentence = 'Some a are b';
-      const actualSentence = premise.toSentence();
+      const actualSentence = proposition.toSentence();
       expect(actualSentence).toBe(expectedSentence);
     });
 
     test('I code proposition standard form is correct', () => {
       const expectedStandardForm = 'a ⊯ ¬b';
-      const actualStandardForm = premise.toSymbolicForm();
+      const actualStandardForm = proposition.toSymbolicForm();
       expect(actualStandardForm).toBe(expectedStandardForm);
     });
   });
@@ -152,13 +152,13 @@ describe('Proposition characteristic tests', () => {
     const {
       SOME_A_IS_NOT_B,
     } = forms;
-    const premise = new Premise(SOME_A_IS_NOT_B, { firstTerm: 'a', secondTerm: 'b' });
+    const proposition = new Proposition(SOME_A_IS_NOT_B, { firstTerm: 'a', secondTerm: 'b' });
 
     test('Adding an O code proposition results in the table column being filled in correctly', () => {
-      table.addPremise(premise);
+      table.addProposition(proposition);
 
       const compartments = table.getCompartments();
-      const compartmentDictionary = table.getTableDictionary().get(premise);
+      const compartmentDictionary = table.getTableDictionary().get(proposition);
 
       compartments.forEach((compartment) => {
         const truths = compartment.getTruths();
@@ -174,13 +174,13 @@ describe('Proposition characteristic tests', () => {
 
     test('O code proposition standard form is correct', () => {
       const expectedSentence = 'Some a are not b';
-      const actualSentence = premise.toSentence();
+      const actualSentence = proposition.toSentence();
       expect(actualSentence).toBe(expectedSentence);
     });
 
     test('O code proposition standard form is correct', () => {
       const expectedStandardForm = 'a ⊯ b';
-      const actualStandardForm = premise.toSymbolicForm();
+      const actualStandardForm = proposition.toSymbolicForm();
       expect(actualStandardForm).toBe(expectedStandardForm);
     });
   });
@@ -189,12 +189,12 @@ describe('Proposition characteristic tests', () => {
     const {
       SOME_A_EXIST,
     } = forms;
-    const premise = new Premise(SOME_A_EXIST, { firstTerm: 'a' });
+    const proposition = new Proposition(SOME_A_EXIST, { firstTerm: 'a' });
 
-    table.addPremise(premise);
+    table.addProposition(proposition);
 
     const compartments = table.getCompartments();
-    const compartmentDictionary = table.getTableDictionary().get(premise);
+    const compartmentDictionary = table.getTableDictionary().get(proposition);
 
     compartments.forEach((compartment) => {
       const truths = compartment.getTruths();

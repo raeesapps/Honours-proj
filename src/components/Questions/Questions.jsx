@@ -3,9 +3,9 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 
 import {
-  premiseToSymbolicFormQuestions,
+  propositionToSymbolicFormQuestions,
   syllogismToSymbolicFormQuestions,
-  premiseToDiagramQuestions,
+  propositionToDiagramQuestions,
   combineDiagramsQuestion,
   mapAndArgueQuestion,
 } from '../../question_instances';
@@ -41,9 +41,9 @@ function Questions(props) {
     ...rest
   } = props;
   const questionTypes = [
-    premiseToSymbolicFormQuestions,
+    propositionToSymbolicFormQuestions,
     syllogismToSymbolicFormQuestions,
-    premiseToDiagramQuestions,
+    propositionToDiagramQuestions,
     combineDiagramsQuestion,
     mapAndArgueQuestion,
   ];

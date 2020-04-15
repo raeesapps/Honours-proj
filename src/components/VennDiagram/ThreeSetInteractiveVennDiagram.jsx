@@ -22,12 +22,12 @@ class ThreeSetInteractiveVennDiagram extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { title, premises, disableLongClick } = this.props;
+    const { title, propositions, disableLongClick } = this.props;
 
     this.setState({
-      a: premises.terms[0],
-      b: premises.terms[1],
-      c: premises.terms[2],
+      a: propositions.terms[0],
+      b: propositions.terms[1],
+      c: propositions.terms[2],
     });
 
     const id = title.split(' ').join('');

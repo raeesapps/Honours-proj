@@ -2,12 +2,12 @@ import DIFFICULTY from './components/Questions/question_difficulty';
 
 import CombineDiagramsQuestion from './components/CombineDiagramsQuestion/CombineDiagramsQuestion';
 import MapAndArgueQuestion from './components/MapAndArgueQuestion/MapAndArgueQuestion';
-import PremiseToDiagramQuestion from './components/PremiseToDiagram/PremiseToDiagramQuestion';
-import PremisesToSymbolicFormQuestion from './components/PremiseToSymbolicForm/PremiseToSymbolicFormQuestion';
-import SyllogismToSymbolicFormQuestion from './components/PremiseToSymbolicForm/SyllogismToSymbolicFormQuestion';
+import PropositionToDiagramQuestion from './components/PropositionToDiagram/PropositionToDiagramQuestion';
+import PropositionsToSymbolicFormQuestion from './components/PropositionToSymbolicForm/PropositionToSymbolicFormQuestion';
+import SyllogismToSymbolicFormQuestion from './components/PropositionToSymbolicForm/SyllogismToSymbolicFormQuestion';
 
-import { Premise, forms } from './logic/premise';
-import PremiseCollection from './logic/premise_collection';
+import { Proposition, forms } from './logic/proposition';
+import PropositionCollection from './logic/proposition_collection';
 
 const {
   ALL_A_IS_B,
@@ -18,54 +18,54 @@ const {
 
 const { EASY, MEDIUM, HARD } = DIFFICULTY;
 
-function generatePremiseCollection(premises, conclusion) {
-  const premiseCollection = new PremiseCollection([...premises]);
+function generatePropositionCollection(propositions, conclusion) {
+  const propositionCollection = new PropositionCollection([...propositions]);
 
   if (conclusion) {
     return {
-      premiseCollection,
+      propositionCollection,
       conclusion,
     };
   }
 
-  return premiseCollection;
+  return propositionCollection;
 }
 
-function generatePremiseCollectionAndConclusions(premises, conclusionFirstTerm, conclusionSecondTerm) {
-  const premiseCollection = new PremiseCollection([...premises]);
+function generatePropositionCollectionAndConclusions(propositions, conclusionFirstTerm, conclusionSecondTerm) {
+  const propositionCollection = new PropositionCollection([...propositions]);
 
   return {
-    premiseCollection,
+    propositionCollection,
     conclusions: [
-      new Premise(SOME_A_IS_NOT_B, {
+      new Proposition(SOME_A_IS_NOT_B, {
         firstTerm: conclusionFirstTerm,
         secondTerm: conclusionSecondTerm,
       }),
-      new Premise(ALL_A_IS_B, {
+      new Proposition(ALL_A_IS_B, {
         firstTerm: conclusionFirstTerm,
         secondTerm: conclusionSecondTerm,
       }),
-      new Premise(SOME_A_IS_B, {
+      new Proposition(SOME_A_IS_B, {
         firstTerm: conclusionFirstTerm,
         secondTerm: conclusionSecondTerm,
       }),
-      new Premise(NO_A_IS_B, {
+      new Proposition(NO_A_IS_B, {
         firstTerm: conclusionFirstTerm,
         secondTerm: conclusionSecondTerm,
       }),
-      new Premise(SOME_A_IS_NOT_B, {
+      new Proposition(SOME_A_IS_NOT_B, {
         firstTerm: conclusionSecondTerm,
         secondTerm: conclusionFirstTerm,
       }),
-      new Premise(ALL_A_IS_B, {
+      new Proposition(ALL_A_IS_B, {
         firstTerm: conclusionSecondTerm,
         secondTerm: conclusionFirstTerm,
       }),
-      new Premise(SOME_A_IS_B, {
+      new Proposition(SOME_A_IS_B, {
         firstTerm: conclusionSecondTerm,
         secondTerm: conclusionFirstTerm,
       }),
-      new Premise(NO_A_IS_B, {
+      new Proposition(NO_A_IS_B, {
         firstTerm: conclusionSecondTerm,
         secondTerm: conclusionFirstTerm,
       }),
@@ -73,16 +73,16 @@ function generatePremiseCollectionAndConclusions(premises, conclusionFirstTerm, 
   };
 }
 
-const premiseToSymbolicFormQuestions = {
+const propositionToSymbolicFormQuestions = {
   title: 'Proposition to standard form',
-  description: 'Translate the sentential form of a premise to standard form using letters and the turnstile symbol',
-  component: PremisesToSymbolicFormQuestion,
+  description: 'Translate the sentential form of a proposition to standard form using letters and the turnstile symbol',
+  component: PropositionsToSymbolicFormQuestion,
   questions: [
     {
       id: 0,
       idx: 0,
       difficulty: EASY,
-      content: new Premise(ALL_A_IS_B, {
+      content: new Proposition(ALL_A_IS_B, {
         firstTerm: 'men',
         secondTerm: 'mortal',
       }),
@@ -91,7 +91,7 @@ const premiseToSymbolicFormQuestions = {
       id: 1,
       idx: 1,
       difficulty: EASY,
-      content: new Premise(SOME_A_IS_B, {
+      content: new Proposition(SOME_A_IS_B, {
         firstTerm: 'carrots',
         secondTerm: 'blue',
       }),
@@ -100,7 +100,7 @@ const premiseToSymbolicFormQuestions = {
       id: 2,
       idx: 2,
       difficulty: EASY,
-      content: new Premise(NO_A_IS_B, {
+      content: new Proposition(NO_A_IS_B, {
         firstTerm: 'frog',
         secondTerm: 'pink',
       }),
@@ -109,7 +109,7 @@ const premiseToSymbolicFormQuestions = {
       id: 3,
       idx: 3,
       difficulty: EASY,
-      content: new Premise(SOME_A_IS_NOT_B, {
+      content: new Proposition(SOME_A_IS_NOT_B, {
         firstTerm: 'chickens',
         secondTerm: 'cooked',
       }),
@@ -119,25 +119,25 @@ const premiseToSymbolicFormQuestions = {
 
 const syllogismToSymbolicFormQuestions = {
   title: 'Create dictionary of syllogism',
-  description: 'Translate the sentential form of each premise in an argument to standard form using letters and the turnstile symbol',
+  description: 'Translate the sentential form of each proposition in an argument to standard form using letters and the turnstile symbol',
   component: SyllogismToSymbolicFormQuestion,
   questions: [
     {
       id: 4,
       idx: 0,
       difficulty: EASY,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'men',
             secondTerm: 'mortal',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'greeks',
             secondTerm: 'men',
           }),
         ],
-        new Premise(ALL_A_IS_B, {
+        new Proposition(ALL_A_IS_B, {
           firstTerm: 'greeks',
           secondTerm: 'mortal',
         }),
@@ -147,18 +147,18 @@ const syllogismToSymbolicFormQuestions = {
       id: 5,
       idx: 1,
       difficulty: EASY,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'rabbits',
             secondTerm: 'furry',
           }),
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'pets',
             secondTerm: 'rabbits',
           }),
         ],
-        new Premise(SOME_A_IS_B, {
+        new Proposition(SOME_A_IS_B, {
           firstTerm: 'pets',
           secondTerm: 'furry',
         }),
@@ -168,22 +168,22 @@ const syllogismToSymbolicFormQuestions = {
       id: 6,
       idx: 2,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'lions',
             secondTerm: 'big cats',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'big cats',
             secondTerm: 'predators',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'predators',
             secondTerm: 'carnivores',
           }),
         ],
-        new Premise(ALL_A_IS_B, {
+        new Proposition(ALL_A_IS_B, {
           firstTerm: 'lions',
           secondTerm: 'carnivores',
         }),
@@ -193,18 +193,18 @@ const syllogismToSymbolicFormQuestions = {
       id: 34,
       idx: 3,
       difficulty: EASY,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'physicians',
             secondTerm: 'surgeons',
           }),
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'surgeons',
             secondTerm: 'ophthalmologists',
           }),
         ],
-        new Premise(SOME_A_IS_B, {
+        new Proposition(SOME_A_IS_B, {
           firstTerm: 'physicians',
           secondTerm: 'ophthalmologists',
         }),
@@ -214,18 +214,18 @@ const syllogismToSymbolicFormQuestions = {
       id: 35,
       idx: 4,
       difficulty: EASY,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'earthlings',
             secondTerm: 'martians',
           }),
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'martians',
             secondTerm: 'humans',
           }),
         ],
-        new Premise(NO_A_IS_B, {
+        new Proposition(NO_A_IS_B, {
           firstTerm: 'earthlings',
           secondTerm: 'humans',
         }),
@@ -235,18 +235,18 @@ const syllogismToSymbolicFormQuestions = {
       id: 36,
       idx: 5,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'people',
             secondTerm: 'vegetarians',
           }),
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'vegetarians',
             secondTerm: 'carnivores',
           }),
         ],
-        new Premise(SOME_A_IS_NOT_B, {
+        new Proposition(SOME_A_IS_NOT_B, {
           firstTerm: 'people',
           secondTerm: 'carnivores',
         }),
@@ -256,22 +256,22 @@ const syllogismToSymbolicFormQuestions = {
       id: 37,
       idx: 6,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'chickens',
             secondTerm: 'animals',
           }),
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'animals',
             secondTerm: 'aggressive',
           }),
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'chickens',
             secondTerm: 'aggressive',
           }),
         ],
-        new Premise(SOME_A_IS_NOT_B, {
+        new Proposition(SOME_A_IS_NOT_B, {
           firstTerm: 'chickens',
           secondTerm: 'aggressive',
         }),
@@ -280,18 +280,18 @@ const syllogismToSymbolicFormQuestions = {
   ],
 };
 
-const premiseToDiagramQuestions = {
+const propositionToDiagramQuestions = {
   title: 'Proposition to Venn Diagram',
-  description: 'Shade the Venn Diagram to represent the premise. Some compartment might be empty and some might be part of an x-sequence.',
-  component: PremiseToDiagramQuestion,
+  description: 'Shade the Venn Diagram to represent the proposition. Some compartment might be empty and some might be part of an x-sequence.',
+  component: PropositionToDiagramQuestion,
   questions: [
     {
       id: 7,
       idx: 0,
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
@@ -303,9 +303,9 @@ const premiseToDiagramQuestions = {
       idx: 1,
       title: 'Some A are B',
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
@@ -316,9 +316,9 @@ const premiseToDiagramQuestions = {
       id: 9,
       idx: 2,
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
@@ -329,9 +329,9 @@ const premiseToDiagramQuestions = {
       id: 10,
       idx: 3,
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
@@ -342,9 +342,9 @@ const premiseToDiagramQuestions = {
       id: 11,
       idx: 4,
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
@@ -355,9 +355,9 @@ const premiseToDiagramQuestions = {
       id: 12,
       idx: 5,
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
@@ -368,9 +368,9 @@ const premiseToDiagramQuestions = {
       id: 13,
       idx: 6,
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
@@ -381,9 +381,9 @@ const premiseToDiagramQuestions = {
       id: 14,
       idx: 7,
       difficulty: EASY,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
@@ -394,9 +394,9 @@ const premiseToDiagramQuestions = {
       id: 15,
       idx: 8,
       difficulty: MEDIUM,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'F',
             secondTerm: 'G',
           }),
@@ -407,9 +407,9 @@ const premiseToDiagramQuestions = {
       id: 16,
       idx: 9,
       difficulty: MEDIUM,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'F',
             secondTerm: 'G',
           }),
@@ -420,9 +420,9 @@ const premiseToDiagramQuestions = {
       id: 17,
       idx: 10,
       difficulty: MEDIUM,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'F',
             secondTerm: 'G',
           }),
@@ -433,9 +433,9 @@ const premiseToDiagramQuestions = {
       id: 18,
       idx: 11,
       difficulty: MEDIUM,
-      content: new PremiseCollection(
+      content: new PropositionCollection(
         [
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'F',
             secondTerm: 'G',
           }),
@@ -447,20 +447,20 @@ const premiseToDiagramQuestions = {
 
 const combineDiagramsQuestion = {
   title: 'Multiple propositions to single Venn Diagram',
-  description: 'Given two or three Venn Diagrams that each represent a premise, shade a three or four set Venn Diagram to represent all the premises.',
+  description: 'Given two or three Venn Diagrams that each represent a proposition, shade a three or four set Venn Diagram to represent all the propositions.',
   component: CombineDiagramsQuestion,
   questions: [
     {
       id: 27,
       idx: 0,
       difficulty: EASY,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'B',
             secondTerm: 'C',
           }),
@@ -471,13 +471,13 @@ const combineDiagramsQuestion = {
       id: 19,
       idx: 1,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'C',
             secondTerm: 'A',
           }),
@@ -488,13 +488,13 @@ const combineDiagramsQuestion = {
       id: 23,
       idx: 2,
       difficulty: EASY,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'B',
             secondTerm: 'C',
           }),
@@ -505,13 +505,13 @@ const combineDiagramsQuestion = {
       id: 24,
       idx: 3,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'A',
             secondTerm: 'C',
           }),
@@ -522,13 +522,13 @@ const combineDiagramsQuestion = {
       id: 25,
       idx: 4,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'A',
           }),
@@ -539,13 +539,13 @@ const combineDiagramsQuestion = {
       id: 26,
       idx: 5,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'C',
           }),
@@ -556,17 +556,17 @@ const combineDiagramsQuestion = {
       id: 27,
       idx: 6,
       difficulty: MEDIUM,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'B',
             secondTerm: 'C',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
@@ -577,17 +577,17 @@ const combineDiagramsQuestion = {
       id: 28,
       idx: 8,
       difficulty: HARD,
-      content: generatePremiseCollection(
+      content: generatePropositionCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'C',
           }),
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'D',
           }),
@@ -606,13 +606,13 @@ const mapAndArgueQuestion = {
       id: 100,
       idx: 0,
       difficulty: EASY,
-      content: generatePremiseCollectionAndConclusions(
+      content: generatePropositionCollectionAndConclusions(
         [
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'A',
           }),
@@ -623,13 +623,13 @@ const mapAndArgueQuestion = {
       id: 101,
       idx: 1,
       difficulty: MEDIUM,
-      content: generatePremiseCollectionAndConclusions(
+      content: generatePropositionCollectionAndConclusions(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'B',
             secondTerm: 'C',
           }),
@@ -640,13 +640,13 @@ const mapAndArgueQuestion = {
       id: 102,
       idx: 2,
       difficulty: EASY,
-      content: generatePremiseCollectionAndConclusions(
+      content: generatePropositionCollectionAndConclusions(
         [
-          new Premise(NO_A_IS_B, {
+          new Proposition(NO_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'A',
           }),
@@ -657,13 +657,13 @@ const mapAndArgueQuestion = {
       id: 103,
       idx: 3,
       difficulty: MEDIUM,
-      content: generatePremiseCollectionAndConclusions(
+      content: generatePropositionCollectionAndConclusions(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'A',
           }),
@@ -674,13 +674,13 @@ const mapAndArgueQuestion = {
       id: 104,
       idx: 4,
       difficulty: MEDIUM,
-      content: generatePremiseCollectionAndConclusions(
+      content: generatePropositionCollectionAndConclusions(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'C',
           }),
@@ -691,17 +691,17 @@ const mapAndArgueQuestion = {
       id: 105,
       idx: 5,
       difficulty: HARD,
-      content: generatePremiseCollectionAndConclusions(
+      content: generatePropositionCollectionAndConclusions(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'B',
             secondTerm: 'C',
           }),
-          new Premise(ALL_A_IS_B, {
+          new Proposition(ALL_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
@@ -712,17 +712,17 @@ const mapAndArgueQuestion = {
       id: 106,
       idx: 6,
       difficulty: HARD,
-      content: generatePremiseCollectionAndConclusions(
+      content: generatePropositionCollectionAndConclusions(
         [
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_B, {
+          new Proposition(SOME_A_IS_B, {
             firstTerm: 'B',
             secondTerm: 'C',
           }),
-          new Premise(SOME_A_IS_NOT_B, {
+          new Proposition(SOME_A_IS_NOT_B, {
             firstTerm: 'C',
             secondTerm: 'D',
           }),
@@ -733,9 +733,9 @@ const mapAndArgueQuestion = {
 };
 
 export {
-  premiseToSymbolicFormQuestions,
+  propositionToSymbolicFormQuestions,
   syllogismToSymbolicFormQuestions,
-  premiseToDiagramQuestions,
+  propositionToDiagramQuestions,
   combineDiagramsQuestion,
   mapAndArgueQuestion,
 };

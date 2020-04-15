@@ -1,5 +1,5 @@
-import { Premise, forms } from './premise';
-import PremiseCollection from './premise_collection';
+import { Proposition, forms } from './proposition';
+import PropositionCollection from './proposition_collection';
 import {
   stages,
   validateVennDiagram,
@@ -40,8 +40,8 @@ const {
 } = forms;
 
 test('Proposition represented correctly', () => {
-  const propositionCollection = new PremiseCollection([
-    new Premise(ALL_A_IS_B, {
+  const propositionCollection = new PropositionCollection([
+    new Proposition(ALL_A_IS_B, {
       firstTerm: 'A',
       secondTerm: 'B',
     }),
@@ -53,12 +53,12 @@ test('Proposition represented correctly', () => {
 });
 
 describe('Propositions manipulate correctly', () => {
-  const propositionCollection = new PremiseCollection([
-    new Premise(SOME_A_IS_NOT_B, {
+  const propositionCollection = new PropositionCollection([
+    new Proposition(SOME_A_IS_NOT_B, {
       firstTerm: 'A',
       secondTerm: 'B',
     }),
-    new Premise(SOME_A_IS_NOT_B, {
+    new Proposition(SOME_A_IS_NOT_B, {
       firstTerm: 'C',
       secondTerm: 'A',
     }),
@@ -79,15 +79,15 @@ describe('Propositions manipulate correctly', () => {
 
 describe('BARBARA mapping tests', () => {
   const barbaraPropositions = [
-    new Premise(ALL_A_IS_B, {
+    new Proposition(ALL_A_IS_B, {
       firstTerm: 'People',
       secondTerm: 'Mortal',
     }),
-    new Premise(ALL_A_IS_B, {
+    new Proposition(ALL_A_IS_B, {
       firstTerm: 'Greeks',
       secondTerm: 'People',
     }),
-    new Premise(ALL_A_IS_B, {
+    new Proposition(ALL_A_IS_B, {
       firstTerm: 'Greeks',
       secondTerm: 'Mortal',
     }),

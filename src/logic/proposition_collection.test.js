@@ -1,5 +1,5 @@
-import { Premise, forms } from './premise';
-import PremiseCollection from './premise_collection';
+import { Proposition, forms } from './proposition';
+import PropositionCollection from './proposition_collection';
 import Compartment from './compartment';
 
 const {
@@ -17,18 +17,18 @@ describe('BARBARA tests', () => {
   let argument;
 
   beforeEach(() => {
-    const allMenAreMortalPremise = new Premise(ALL_A_IS_B, {
+    const allMenAreMortalProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${a}`,
       secondTerm: `${b}`,
     });
-    const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, {
+    const allGreeksAreMenProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${a}`,
     });
-    argument = new PremiseCollection([allMenAreMortalPremise, allGreeksAreMenPremise]);
+    argument = new PropositionCollection([allMenAreMortalProposition, allGreeksAreMenProposition]);
   });
 
-  test('BARBARA premises represented correctly', () => {
+  test('BARBARA propositions represented correctly', () => {
     const compartmentHashes = [
       new Compartment({ [a]: false, [b]: false, [c]: false }),
       new Compartment({ [a]: false, [b]: false, [c]: true }),
@@ -40,37 +40,37 @@ describe('BARBARA tests', () => {
       new Compartment({ [a]: true, [b]: true, [c]: true }),
     ].map((compartment) => compartment.hashCode());
 
-    const premiseResolutionColumn = argument.unifyAndResolve();
+    const propositionResolutionColumn = argument.unifyAndResolve();
 
     const firstCompartmentHash = compartmentHashes[1];
-    const firstCompartmentEntries = JSON.stringify(premiseResolutionColumn[firstCompartmentHash]);
+    const firstCompartmentEntries = JSON.stringify(propositionResolutionColumn[firstCompartmentHash]);
     const firstCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(firstCompartmentEntries).toContain(firstCompartmentExpectedEntries);
 
     const thirdCompartmentHash = compartmentHashes[3];
-    const thirdCompartmentEntries = JSON.stringify(premiseResolutionColumn[thirdCompartmentHash]);
+    const thirdCompartmentEntries = JSON.stringify(propositionResolutionColumn[thirdCompartmentHash]);
     const thirdCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(thirdCompartmentEntries).toBe(thirdCompartmentExpectedEntries);
 
     const fourthCompartmentHash = compartmentHashes[4];
-    const fourthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fourthCompartmentHash]);
+    const fourthCompartmentEntries = JSON.stringify(propositionResolutionColumn[fourthCompartmentHash]);
     const fourthCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(fourthCompartmentEntries).toBe(fourthCompartmentExpectedEntries);
 
     const fifthCompartmentHash = compartmentHashes[5];
-    const fifthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fifthCompartmentHash]);
+    const fifthCompartmentEntries = JSON.stringify(propositionResolutionColumn[fifthCompartmentHash]);
     const fifthCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(fifthCompartmentEntries).toBe(fifthCompartmentExpectedEntries);
   });
 
   test('All greeks are mortal conclusion true', () => {
-    const allGreeksAreMortalPremise = new Premise(ALL_A_IS_B, {
+    const allGreeksAreMortalProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
 
-    const valid = argument.argue(allGreeksAreMortalPremise);
-    argument.argue2(allGreeksAreMortalPremise);
+    const valid = argument.argue(allGreeksAreMortalProposition);
+    argument.argue2(allGreeksAreMortalProposition);
     argument.getVennDiagramParts();
     expect(valid).toBe(true);
   });
@@ -82,22 +82,22 @@ describe('BARBARA tests', () => {
   });
 
   test('No greeks are mortal conclusion false', () => {
-    const noGreeksAreMortalPremise = new Premise(NO_A_IS_B, {
+    const noGreeksAreMortalProposition = new Proposition(NO_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
 
-    const valid = argument.argue(noGreeksAreMortalPremise);
+    const valid = argument.argue(noGreeksAreMortalProposition);
     expect(valid).toBe(false);
   });
 
   test('Some greeks are mortal conclusion false', () => {
-    const someGreeksAreMortalPremise = new Premise(SOME_A_IS_B, {
+    const someGreeksAreMortalProposition = new Proposition(SOME_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
 
-    const valid = argument.argue(someGreeksAreMortalPremise);
+    const valid = argument.argue(someGreeksAreMortalProposition);
     expect(valid).toBe(false);
   });
 });
@@ -109,18 +109,18 @@ describe('BAROCO tests', () => {
   let argument;
 
   beforeEach(() => {
-    const allInformativeThingsAreUsefulPremise = new Premise(ALL_A_IS_B, {
+    const allInformativeThingsAreUsefulProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${a}`,
       secondTerm: `${b}`,
     });
-    const someWebsitesAreNotUsefulPremise = new Premise(SOME_A_IS_NOT_B, {
+    const someWebsitesAreNotUsefulProposition = new Proposition(SOME_A_IS_NOT_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
-    argument = new PremiseCollection([allInformativeThingsAreUsefulPremise, someWebsitesAreNotUsefulPremise]);
+    argument = new PropositionCollection([allInformativeThingsAreUsefulProposition, someWebsitesAreNotUsefulProposition]);
   });
 
-  test('BAROCO premises represented correctly', () => {
+  test('BAROCO propositions represented correctly', () => {
     const compartmentHashes = [
       new Compartment({ [a]: false, [b]: false, [c]: false }),
       new Compartment({ [a]: false, [b]: false, [c]: true }),
@@ -132,27 +132,27 @@ describe('BAROCO tests', () => {
       new Compartment({ [a]: true, [b]: true, [c]: true }),
     ].map((compartment) => compartment.hashCode());
 
-    const premiseResolutionColumn = argument.unifyAndResolve();
+    const propositionResolutionColumn = argument.unifyAndResolve();
 
     const secondCompartmentHash = compartmentHashes[1];
-    const secondCompartmentEntries = JSON.stringify(premiseResolutionColumn[secondCompartmentHash]);
+    const secondCompartmentEntries = JSON.stringify(propositionResolutionColumn[secondCompartmentHash]);
     const secondCompartmentExpectedEntries = JSON.stringify(['x_1']);
     expect(secondCompartmentEntries).toContain(secondCompartmentExpectedEntries);
 
     const fifthCompartmentHash = compartmentHashes[4];
-    const fifthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fifthCompartmentHash]);
+    const fifthCompartmentEntries = JSON.stringify(propositionResolutionColumn[fifthCompartmentHash]);
     const fifthCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(fifthCompartmentEntries).toBe(fifthCompartmentExpectedEntries);
 
     const sixthCompartmentHash = compartmentHashes[5];
-    const sixthCompartmentEntries = JSON.stringify(premiseResolutionColumn[sixthCompartmentHash]);
+    const sixthCompartmentEntries = JSON.stringify(propositionResolutionColumn[sixthCompartmentHash]);
     const sixthCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(sixthCompartmentEntries).toBe(sixthCompartmentExpectedEntries);
 
   });
 
   test('Some websites are not informative conclusion true', () => {
-    const someWebsitesAreNotUseful = new Premise(SOME_A_IS_NOT_B, {
+    const someWebsitesAreNotUseful = new Proposition(SOME_A_IS_NOT_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
@@ -168,32 +168,32 @@ describe('BAROCO tests', () => {
   });
 
   test('Some websites are useful conclusion false', () => {
-    const someWebsitesAreUsefulPremise = new Premise(SOME_A_IS_B, {
+    const someWebsitesAreUsefulProposition = new Proposition(SOME_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
 
-    const valid = argument.argue(someWebsitesAreUsefulPremise);
+    const valid = argument.argue(someWebsitesAreUsefulProposition);
     expect(valid).toBe(false);
   });
 
   test('No informative things are useful conclusion false', () => {
-    const noInformativeThingsAreUsefulPremise = new Premise(NO_A_IS_B, {
+    const noInformativeThingsAreUsefulProposition = new Proposition(NO_A_IS_B, {
       firstTerm: `${a}`,
       secondTerm: `${b}`,
     });
 
-    const valid = argument.argue(noInformativeThingsAreUsefulPremise);
+    const valid = argument.argue(noInformativeThingsAreUsefulProposition);
     expect(valid).toBe(false);
   });
 
   test('No websites are useful conclusion false', () => {
-    const noWebsitesAreUsefulPremise = new Premise(NO_A_IS_B, {
+    const noWebsitesAreUsefulProposition = new Proposition(NO_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
 
-    const valid = argument.argue(noWebsitesAreUsefulPremise);
+    const valid = argument.argue(noWebsitesAreUsefulProposition);
     expect(valid).toBe(false);
   });
 });
@@ -205,21 +205,21 @@ describe('BARBARI tests', () => {
   let argument;
 
   beforeEach(() => {
-    const allMenAreMortalPremise = new Premise(ALL_A_IS_B, {
+    const allMenAreMortalProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${a}`,
       secondTerm: `${b}`,
     });
-    const allGreeksAreMenPremise = new Premise(ALL_A_IS_B, {
+    const allGreeksAreMenProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${a}`,
     });
-    const someGreeksExist = new Premise(SOME_A_EXIST, {
+    const someGreeksExist = new Proposition(SOME_A_EXIST, {
       firstTerm: `${c}`,
     });
-    argument = new PremiseCollection([allMenAreMortalPremise, allGreeksAreMenPremise, someGreeksExist]);
+    argument = new PropositionCollection([allMenAreMortalProposition, allGreeksAreMenProposition, someGreeksExist]);
   });
 
-  test('BARBARI premises represented correctly', () => {
+  test('BARBARI propositions represented correctly', () => {
     const compartmentHashes = [
       new Compartment({ [a]: false, [b]: false, [c]: false }),
       new Compartment({ [a]: false, [b]: false, [c]: true }),
@@ -231,61 +231,61 @@ describe('BARBARI tests', () => {
       new Compartment({ [a]: true, [b]: true, [c]: true }),
     ].map((compartment) => compartment.hashCode());
 
-    const premiseResolutionColumn = argument.unifyAndResolve();
+    const propositionResolutionColumn = argument.unifyAndResolve();
 
     const firstCompartmentHash = compartmentHashes[1];
-    const firstCompartmentEntries = JSON.stringify(premiseResolutionColumn[firstCompartmentHash]);
+    const firstCompartmentEntries = JSON.stringify(propositionResolutionColumn[firstCompartmentHash]);
     const firstCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(firstCompartmentEntries).toContain(firstCompartmentExpectedEntries);
 
     const thirdCompartmentHash = compartmentHashes[3];
-    const thirdCompartmentEntries = JSON.stringify(premiseResolutionColumn[thirdCompartmentHash]);
+    const thirdCompartmentEntries = JSON.stringify(propositionResolutionColumn[thirdCompartmentHash]);
     const thirdCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(thirdCompartmentEntries).toBe(thirdCompartmentExpectedEntries);
 
     const fourthCompartmentHash = compartmentHashes[4];
-    const fourthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fourthCompartmentHash]);
+    const fourthCompartmentEntries = JSON.stringify(propositionResolutionColumn[fourthCompartmentHash]);
     const fourthCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(fourthCompartmentEntries).toBe(fourthCompartmentExpectedEntries);
 
     const fifthCompartmentHash = compartmentHashes[5];
-    const fifthCompartmentEntries = JSON.stringify(premiseResolutionColumn[fifthCompartmentHash]);
+    const fifthCompartmentEntries = JSON.stringify(propositionResolutionColumn[fifthCompartmentHash]);
     const fifthCompartmentExpectedEntries = JSON.stringify(['e']);
     expect(fifthCompartmentEntries).toBe(fifthCompartmentExpectedEntries);
 
     const eighthCompartmentHash = compartmentHashes[7];
-    const eighthCompartmentEntries = JSON.stringify(premiseResolutionColumn[eighthCompartmentHash]);
+    const eighthCompartmentEntries = JSON.stringify(propositionResolutionColumn[eighthCompartmentHash]);
     const eighthCompartmentExpectedEntries = JSON.stringify(['x_1']);
     expect(eighthCompartmentEntries).toBe(eighthCompartmentExpectedEntries);
   });
 
   test('Some greeks are mortal conclusion true', () => {
-    const someGreeksAreMortalPremise = new Premise(SOME_A_IS_B, {
+    const someGreeksAreMortalProposition = new Proposition(SOME_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${b}`,
     });
 
-    const valid = argument.argue(someGreeksAreMortalPremise);
+    const valid = argument.argue(someGreeksAreMortalProposition);
     expect(valid).toBe(true);
   });
 
   test('Some greeks are men conclusion true', () => {
-    const someGreeksAreMenPremise = new Premise(SOME_A_IS_B, {
+    const someGreeksAreMenProposition = new Proposition(SOME_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${a}`,
     });
 
-    const valid = argument.argue(someGreeksAreMenPremise);
+    const valid = argument.argue(someGreeksAreMenProposition);
     expect(valid).toBe(true);
   });
 
   test('No greeks are men conclusion false', () => {
-    const noGreeksAreMenPremise = new Premise(NO_A_IS_B, {
+    const noGreeksAreMenProposition = new Proposition(NO_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${a}`,
     });
 
-    const valid = argument.argue(noGreeksAreMenPremise);
+    const valid = argument.argue(noGreeksAreMenProposition);
     expect(valid).toBe(false);
   });
 });
@@ -298,19 +298,19 @@ describe('Sorites test', () => {
   let argument;
 
   beforeEach(() => {
-    const allLionsAreBigCatsPremise = new Premise(ALL_A_IS_B, {
+    const allLionsAreBigCatsProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${a}`,
       secondTerm: `${b}`,
     });
-    const allBigCatsArePredators = new Premise(ALL_A_IS_B, {
+    const allBigCatsArePredators = new Proposition(ALL_A_IS_B, {
       firstTerm: `${b}`,
       secondTerm: `${c}`,
     });
-    const allPredatorsAreCarnivores = new Premise(ALL_A_IS_B, {
+    const allPredatorsAreCarnivores = new Proposition(ALL_A_IS_B, {
       firstTerm: `${c}`,
       secondTerm: `${d}`,
     });
-    argument = new PremiseCollection([allLionsAreBigCatsPremise, allBigCatsArePredators, allPredatorsAreCarnivores]);
+    argument = new PropositionCollection([allLionsAreBigCatsProposition, allBigCatsArePredators, allPredatorsAreCarnivores]);
   });
 
   test('Sorites reduces correctly', () => {
@@ -320,20 +320,20 @@ describe('Sorites test', () => {
   });
 
   test('All lions are carnivores is valid', () => {
-    const allLionsAreCarnivoresPremise = new Premise(ALL_A_IS_B, {
+    const allLionsAreCarnivoresProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${a}`,
       secondTerm: `${d}`,
     });
-    const valid = argument.argue(allLionsAreCarnivoresPremise);
+    const valid = argument.argue(allLionsAreCarnivoresProposition);
     expect(valid).toBe(true);
   });
 
   test('All big cats are lions is invalid', () => {
-    const allBigCatsAreLionsPremise = new Premise(ALL_A_IS_B, {
+    const allBigCatsAreLionsProposition = new Proposition(ALL_A_IS_B, {
       firstTerm: `${b}`,
       secodnTerm: `${a}`,
     });
-    const valid = argument.argue(allBigCatsAreLionsPremise);
+    const valid = argument.argue(allBigCatsAreLionsProposition);
     expect(valid).toBe(false);
   });
 });

@@ -28,16 +28,16 @@ const { HORIZONTAL } = TWO_SET_CIRCLES_ORIENTATION;
 class MapAndArgueQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { questionidx: questionIdx, content } = nextProps;
-    const { conclusions: nextConclusions, premiseCollection: nextPremiseCollection } = content;
-    const { conclusions, premiseCollection } = prevState;
+    const { conclusions: nextConclusions, propositionCollection: nextPropositionCollection } = content;
+    const { conclusions, propositionCollection } = prevState;
 
     const conclusionsHash = hash(conclusions);
     const nextConclusionsHash = hash(nextConclusions);
 
-    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()
+    if (nextPropositionCollection.hashCode() !== propositionCollection.hashCode()
       || nextConclusionsHash !== conclusionsHash) {
       return {
-        premiseCollection: nextPremiseCollection,
+        propositionCollection: nextPropositionCollection,
         conclusions: nextConclusions,
         key: Math.random(),
         step: 0,
@@ -53,23 +53,23 @@ class MapAndArgueQuestion extends React.Component {
   constructor(props) {
     super(props);
     const { content, questionidx: questionIdx } = props;
-    const { premiseCollection, conclusions } = content;
+    const { propositionCollection, conclusions } = content;
 
     this.state = {
       key: Math.random(),
-      premiseCollection,
+      propositionCollection,
       conclusions,
       step: 0,
       shadings: null,
       selectedIdx: -1,
       questionIdx,
     };
-    this.premisesVennDiagramRef = React.createRef();
-    this.reducedPremisesVennDiagramRef = React.createRef();
+    this.propositionsVennDiagramRef = React.createRef();
+    this.reducedPropositionsVennDiagramRef = React.createRef();
   }
 
   componentDidMount() {
-    this.shadePremisesVennDiagram();
+    this.shadePropositionsVennDiagram();
     const { questionIdx } = this.state;
     const { setQuestionTitle, setQuestionNumber, setInstructions } = this.props;
 
@@ -79,7 +79,7 @@ class MapAndArgueQuestion extends React.Component {
   }
 
   componentDidUpdate() {
-    this.shadePremisesVennDiagram();
+    this.shadePropositionsVennDiagram();
     const { setInstructions, setQuestionNumber } = this.props;
     const { questionIdx, step } = this.state;
 
@@ -90,17 +90,17 @@ class MapAndArgueQuestion extends React.Component {
 
   }
 
-  shadePremisesVennDiagram = () => {
-    const { premiseCollection } = this.state;
+  shadePropositionsVennDiagram = () => {
+    const { propositionCollection } = this.state;
 
-    if (this.premisesVennDiagramRef.current) {
-      this.premisesVennDiagramRef.current.applyShading(premiseCollection);
+    if (this.propositionsVennDiagramRef.current) {
+      this.propositionsVennDiagramRef.current.applyShading(propositionCollection);
     }
   }
 
   onBack = (step) => {
     this.setState({ step: step - 1 }, () => {
-      this.shadePremisesVennDiagram();
+      this.shadePropositionsVennDiagram();
     });
   }
 
@@ -110,28 +110,28 @@ class MapAndArgueQuestion extends React.Component {
 
     if (result) {
       const stateUpdateObject = step === 0
-        ? { step: step + 1, shadings: this.reducedPremisesVennDiagramRef.current.getShadings() }
+        ? { step: step + 1, shadings: this.reducedPropositionsVennDiagramRef.current.getShadings() }
         : { step: step + 1 };
       this.setState(stateUpdateObject);
     }
   }
 
   getStepContent = (step) => {
-    const { premiseCollection, conclusions, shadings } = this.state;
-    const marginLeft = premiseCollection.terms.length === 4 ? { marginLeft: '155px' } : {};
-    const n = premiseCollection.terms.length;
+    const { propositionCollection, conclusions, shadings } = this.state;
+    const marginLeft = propositionCollection.terms.length === 4 ? { marginLeft: '155px' } : {};
+    const n = propositionCollection.terms.length;
     if (step === 0) {
       return (
         <LevelTwoVennDiagramTree
-          order={premiseCollection.terms.length}
+          order={propositionCollection.terms.length}
           combinedVennDiagram={
             n === 3
-              ? <ThreeSetUninteractiveVennDiagram title="PremisesCombined" premises={premiseCollection} ref={this.premisesVennDiagramRef} />
-              : n === 4 ? <FourSetUninteractiveVennDiagram premises={premiseCollection} ref={this.premisesVennDiagramRef} />
+              ? <ThreeSetUninteractiveVennDiagram title="PropositionsCombined" propositions={propositionCollection} ref={this.propositionsVennDiagramRef} />
+              : n === 4 ? <FourSetUninteractiveVennDiagram propositions={propositionCollection} ref={this.propositionsVennDiagramRef} />
                 : <div />
           }
           conclusionOrReducedVennDiagram={
-            <TwoSetInteractiveVennDiagram style={marginLeft} title="MappedPremises" premise={conclusions[0]} orientation={HORIZONTAL} ref={this.reducedPremisesVennDiagramRef} />
+            <TwoSetInteractiveVennDiagram style={marginLeft} title="MappedPropositions" proposition={conclusions[0]} orientation={HORIZONTAL} ref={this.reducedPropositionsVennDiagramRef} />
           }
         />
       );
@@ -173,7 +173,7 @@ class MapAndArgueQuestion extends React.Component {
     }
     const { MAPPING_STAGE } = stages;
     const {
-      premiseCollection,
+      propositionCollection,
       conclusions,
       step,
       selectedIdx,
@@ -184,18 +184,18 @@ class MapAndArgueQuestion extends React.Component {
 
     if (step === 0) {
       result = validateVennDiagram(
-        premiseCollection,
-        this.reducedPremisesVennDiagramRef,
+        propositionCollection,
+        this.reducedPropositionsVennDiagramRef,
         MAPPING_STAGE,
         getTermsToExclude(conclusions[0]),
       );
     } else if (step === 1) {
       if (selectedIdx !== -1) {
-        result = validateArgument(premiseCollection, conclusions[selectedIdx]);
+        result = validateArgument(propositionCollection, conclusions[selectedIdx]);
       } else {
         result = conclusions
           .reduce((isCorrect, conclusion) => isCorrect
-            && !validateArgument(premiseCollection, conclusion), true);
+            && !validateArgument(propositionCollection, conclusion), true);
       }
     }
 

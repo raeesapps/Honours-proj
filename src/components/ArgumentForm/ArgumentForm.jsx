@@ -7,20 +7,20 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
-import PremiseFormInput from './PremiseFormInput';
+import PropositionFormInput from './PropositionFormInput';
 
 import styles from '../../assets/components/jss/ArgumentForm/argument_form_styles';
 
 class ArgumentForm extends React.PureComponent {
   constructor() {
     super();
-    const premises = [
+    const propositions = [
       {
-        name: 'Premise1',
+        name: 'Proposition1',
         ref: React.createRef(),
       },
       {
-        name: 'Premise2',
+        name: 'Proposition2',
         ref: React.createRef(),
       },
       {
@@ -29,27 +29,27 @@ class ArgumentForm extends React.PureComponent {
       },
     ];
     this.state = {
-      premises,
+      propositions,
     };
   }
 
   onRemove = (idx) => {
     const {
-      premises,
+      propositions,
     } = this.state;
 
     const {
       onError,
     } = this.props;
 
-    const n = premises.length;
+    const n = propositions.length;
 
     if (idx >= n || idx < 0) {
-      onError('Premise does not exist!');
+      onError('Proposition does not exist!');
       return;
     }
 
-    if (premises[idx].name === 'Conclusion') {
+    if (propositions[idx].name === 'Conclusion') {
       onError('You cannot delete the conclusion!');
       return;
     }
@@ -59,52 +59,52 @@ class ArgumentForm extends React.PureComponent {
       return;
     }
 
-    premises.splice(idx, 1);
+    propositions.splice(idx, 1);
 
-    this.setState({ premises: [...premises] });
+    this.setState({ propositions: [...propositions] });
   }
 
-  onAddPremise = () => {
+  onAddProposition = () => {
     const {
-      premises,
+      propositions,
     } = this.state;
 
     const {
       warn,
     } = this.props;
 
-    const n = premises.length;
+    const n = propositions.length;
 
     if (n > 3) {
       warn();
     } else {
-      this.addPremise();
+      this.addProposition();
     }
   }
 
-  addPremise = () => {
+  addProposition = () => {
     const {
-      premises,
+      propositions,
     } = this.state;
 
-    const conclusion = premises.pop();
+    const conclusion = propositions.pop();
 
-    const n = premises.length;
-    premises.push({
-      name: `Premise${n + 1}`,
+    const n = propositions.length;
+    propositions.push({
+      name: `Proposition${n + 1}`,
       ref: React.createRef(),
     });
 
-    premises.push(conclusion);
+    propositions.push(conclusion);
 
     this.setState({
-      premises: [...premises],
+      propositions: [...propositions],
     });
   }
 
   render() {
     const {
-      premises,
+      propositions,
     } = this.state;
     const {
       classes,
@@ -115,9 +115,9 @@ class ArgumentForm extends React.PureComponent {
         <form style={{ display: 'flex' }} noValidate autoComplete="off">
           <Grid container spacing={3}>
             {
-              premises.map((premise, idx) => {
-                const { name, ref } = premise;
-                return <Grid item key={name} xs={4}><PremiseFormInput ref={ref} name={name} idx={idx} onRemove={this.onRemove} /></Grid>;
+              propositions.map((proposition, idx) => {
+                const { name, ref } = proposition;
+                return <Grid item key={name} xs={4}><PropositionFormInput ref={ref} name={name} idx={idx} onRemove={this.onRemove} /></Grid>;
               })
             }
           </Grid>
@@ -125,7 +125,7 @@ class ArgumentForm extends React.PureComponent {
             <Typography variant="subtitle1" color="secondary">
               Add premise
             </Typography>
-            <Fab style={{ margin: '20px' }} color="primary" aria-label="add" className={classes.fab} onClick={this.onAddPremise}>
+            <Fab style={{ margin: '20px' }} color="primary" aria-label="add" className={classes.fab} onClick={this.onAddProposition}>
               <AddIcon />
             </Fab>
           </div>

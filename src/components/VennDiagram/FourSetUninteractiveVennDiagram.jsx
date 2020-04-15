@@ -27,8 +27,8 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
     this.div = createFourSetEllipticVennDiagram('ellipseVenn');
   }
 
-  applyShading = (premiseCollection, mappings) => {
-    const [a, b, c, d] = premiseCollection.terms.sort();
+  applyShading = (propositionCollection, mappings) => {
+    const [a, b, c, d] = propositionCollection.terms.sort();
 
     if (mappings) {
       this.setState({
@@ -47,7 +47,7 @@ class FourSetUninteractiveVennDiagram extends React.PureComponent {
     }
     applyShadings(
       this.div,
-      premiseCollection,
+      propositionCollection,
       a,
       b,
       c,

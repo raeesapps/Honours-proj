@@ -1,6 +1,6 @@
 import Compartment from './compartment';
 import HashDictionary from './dictionary';
-import { forms } from './premise';
+import { forms } from './proposition';
 import copy from '../utils/copy';
 
 const {
@@ -68,8 +68,8 @@ class Table {
     permute(this.compartments, termsMappings, 0, termNames.length);
   }
 
-  addPremise(premise, conclusionCompartments) {
-    switch (premise.form) {
+  addProposition(proposition, conclusionCompartments) {
+    switch (proposition.form) {
       case SOME_A_IS_NOT_B:
       case SOME_A_IS_B:
       case SOME_A_EXIST:
@@ -83,8 +83,8 @@ class Table {
     this.compartments.forEach((compartment) => {
       compartmentDictionary.add(compartment, null);
     });
-    this.tableDictionary.add(premise, compartmentDictionary);
-    premise.populateTable(this.tableDictionary, conclusionCompartments, this.xCount);
+    this.tableDictionary.add(proposition, compartmentDictionary);
+    proposition.populateTable(this.tableDictionary, conclusionCompartments, this.xCount);
   }
 
   unify() {
@@ -99,9 +99,9 @@ class Table {
       unifiedCompartments[key] = [];
     });
 
-    const premises = this.tableDictionary.map((keyHash) => this.tableDictionary.keyObj(keyHash));
-    premises.forEach((premise) => {
-      const compartmentDictionary = this.tableDictionary.get(premise);
+    const propositions = this.tableDictionary.map((keyHash) => this.tableDictionary.keyObj(keyHash));
+    propositions.forEach((proposition) => {
+      const compartmentDictionary = this.tableDictionary.get(proposition);
 
       compartmentDictionary.forEach((key) => {
         const compartment = compartmentDictionary.keyObj(key);
@@ -254,7 +254,7 @@ class Table {
     Object.keys(resolvedCompartments).forEach((key) => {
       conclusionCompartments[key] = null;
     });
-    this.addPremise(conclusion, conclusionCompartments);
+    this.addProposition(conclusion, conclusionCompartments);
 
     let i = this.compartments.length - 1;
     while (i >= 0) {
@@ -293,7 +293,7 @@ class Table {
         const compartment = unsatisfiableXSequences[x];
         const part = Table.getVennDiagramPart(compartment);
         return partialReason + `${part} is part of ${x}; `;
-      }, "") : "there are no existentially quantified premises in the syllogism.";
+      }, "") : "there are no existentially quantified propositions in the syllogism.";
       return {
         reason,
         result: false,
@@ -309,8 +309,8 @@ class Table {
     return this.tableDictionary.size();
   }
 
-  has(premise) {
-    return this.tableDictionary.has(premise);
+  has(proposition) {
+    return this.tableDictionary.has(proposition);
   }
 
   getTableDictionary() {

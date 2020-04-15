@@ -8,9 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import { alignments, move, reorder } from '../DragAndDrop/drag_and_drop_utils';
 import SimpleDroppable from '../DragAndDrop/SimpleDroppable';
 
-import { symbolicForms, getSymbolicForm, getEntailmentSymbol } from '../../logic/premise';
+import { symbolicForms, getSymbolicForm, getEntailmentSymbol } from '../../logic/proposition';
 
-import styles from '../../assets/components/jss/PremiseToSymbolicForm/premise_to_symbolic_form_styles';
+import styles from '../../assets/components/jss/PropositionToSymbolicForm/proposition_to_symbolic_form_styles';
 
 const firstEntryArray = [];
 const secondEntryArray = [];
@@ -50,7 +50,7 @@ const droppables = [
   },
 ];
 
-class PremiseToSymbolicForm extends React.PureComponent {
+class PropositionToSymbolicForm extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -67,20 +67,20 @@ class PremiseToSymbolicForm extends React.PureComponent {
       }
     });
 
-    const { premise, table: mappingTable } = props;
+    const { proposition, table: mappingTable } = props;
 
     if (mappingTable) {
       const {
         A_ENTAILS_NOT_B,
         A_DOES_NOT_ENTAIL_NOT_B,
       } = symbolicForms;
-      const { firstTerm, secondTerm } = premise.terms;
-      const symbolicFormOfPremise = getSymbolicForm(premise);
-      const entailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
+      const { firstTerm, secondTerm } = proposition.terms;
+      const symbolicFormOfProposition = getSymbolicForm(proposition);
+      const entailmentSymbol = getEntailmentSymbol(symbolicFormOfProposition);
       const mappingTableKeys = Object.keys(mappingTable);
       const firstKey = mappingTableKeys.find((key) => mappingTable[key] === firstTerm);
       let secondKey = mappingTableKeys.find((key) => mappingTable[key] === secondTerm);
-      switch (symbolicFormOfPremise) {
+      switch (symbolicFormOfProposition) {
         case A_DOES_NOT_ENTAIL_NOT_B:
         case A_ENTAILS_NOT_B:
           secondKey = `!${secondKey}`;
@@ -177,7 +177,7 @@ class PremiseToSymbolicForm extends React.PureComponent {
       secondEntry,
       thirdEntry,
     } = this.state;
-    const { classes, premise, ...rest } = this.props;
+    const { classes, proposition, ...rest } = this.props;
     const { HORIZONTAL, VERTICAL } = alignments;
     return (
       <div {...rest}>
@@ -186,7 +186,7 @@ class PremiseToSymbolicForm extends React.PureComponent {
             <Grid item>
               <Typography className={classes.titleTypography} variant="h5">
                 {
-                  `${premise.toSentence()} <=>`
+                  `${proposition.toSentence()} <=>`
                 }
               </Typography>
             </Grid>
@@ -207,4 +207,4 @@ class PremiseToSymbolicForm extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(PremiseToSymbolicForm);
+export default withStyles(styles)(PropositionToSymbolicForm);

@@ -4,25 +4,25 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { validateMappings } from '../../logic/validator';
 import getDragDropEntries from './get_drag_drop_entries';
-import PremiseToSymbolicForm from './PremiseToSymbolicForm';
+import PropositionToSymbolicForm from './PropositionToSymbolicForm';
 import SimpleStepper from '../Stepper/SimpleStepper';
 import withQuestionTemplate from '../Questions/QuestionTemplate';
 
-import styles from '../../assets/components/jss/PremiseToSymbolicForm/syllogism_to_symbolic_form_question_styles';
+import styles from '../../assets/components/jss/PropositionToSymbolicForm/syllogism_to_symbolic_form_question_styles';
 
 class SyllogismToSymbolicFormQuestion extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { content, questionidx: questionIdx } = nextProps;
-    const { premiseCollection: nextPremiseCollection, conclusion: nextConclusion } = content;
-    const { premiseCollection, conclusion } = prevState;
-    if (nextPremiseCollection.hashCode() !== premiseCollection.hashCode()
+    const { propositionCollection: nextPropositionCollection, conclusion: nextConclusion } = content;
+    const { propositionCollection, conclusion } = prevState;
+    if (nextPropositionCollection.hashCode() !== propositionCollection.hashCode()
       && nextConclusion.hashCode() !== conclusion.hashCode()) {
       return {
         key: Math.random(),
-        premiseCollection: nextPremiseCollection,
+        propositionCollection: nextPropositionCollection,
         conclusion: nextConclusion,
-        premises: [...nextPremiseCollection.premises, nextConclusion],
-        componentRefs: [...Array(nextPremiseCollection.size() + 1).keys()]
+        propositions: [...nextPropositionCollection.propositions, nextConclusion],
+        componentRefs: [...Array(nextPropositionCollection.size() + 1).keys()]
           .map(() => React.createRef()),
         step: 0,
         mappingTable: {},
@@ -36,14 +36,14 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
   constructor(props) {
     super(props);
     const { content, questionidx: questionIdx } = props;
-    const { premiseCollection, conclusion } = content;
+    const { propositionCollection, conclusion } = content;
 
     this.state = {
       key: Math.random(),
-      premiseCollection,
+      propositionCollection,
       conclusion,
-      premises: [...premiseCollection.premises, conclusion],
-      componentRefs: [...Array(premiseCollection.size() + 1).keys()]
+      propositions: [...propositionCollection.propositions, conclusion],
+      componentRefs: [...Array(propositionCollection.size() + 1).keys()]
         .map(() => React.createRef()),
       step: 0,
       mappingTable: {},
@@ -84,24 +84,24 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
 
   getStepContent = (step) => {
     const {
-      premises,
+      propositions,
       componentRefs,
     } = this.state;
     const ref = componentRefs[step];
-    const premise = premises[step];
-    const entries = premises.length === 4 ? getDragDropEntries('A', 'B', 'C', 'D') : getDragDropEntries('A', 'B', 'C');
-    return <PremiseToSymbolicForm premise={premise} ref={ref} dragdropentries={entries} />;
+    const proposition = propositions[step];
+    const entries = propositions.length === 4 ? getDragDropEntries('A', 'B', 'C', 'D') : getDragDropEntries('A', 'B', 'C');
+    return <PropositionToSymbolicForm proposition={proposition} ref={ref} dragdropentries={entries} />;
   }
 
   validate = (firstEntry, secondEntry, thirdEntry) => {
     const { onValidate } = this.props;
-    const { mappingTable, step, premises } = this.state;
+    const { mappingTable, step, propositions } = this.state;
 
     const validated = validateMappings(
       firstEntry,
       secondEntry,
       thirdEntry,
-      premises[step],
+      propositions[step],
       mappingTable,
     );
 
@@ -143,10 +143,10 @@ class SyllogismToSymbolicFormQuestion extends React.Component {
   }
 
   render() {
-    const { key, step, premises } = this.state;
-    const steps = premises.map((premise, idx) => {
-      const sententialForm = premise.toSentence();
-      const { firstTerm, secondTerm } = premise.terms;
+    const { key, step, propositions } = this.state;
+    const steps = propositions.map((proposition, idx) => {
+      const sententialForm = proposition.toSentence();
+      const { firstTerm, secondTerm } = proposition.terms;
       const mappingForFirstTerm = this.getMappingForTerm(firstTerm);
       const mappingForSecondTerm = this.getMappingForTerm(secondTerm);
 

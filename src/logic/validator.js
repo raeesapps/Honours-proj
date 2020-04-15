@@ -1,4 +1,4 @@
-import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './premise';
+import { symbolicForms, getEntailmentSymbol, getSymbolicForm } from './proposition';
 import copy from '../utils/copy';
 
 const stages = Object.freeze({
@@ -7,12 +7,12 @@ const stages = Object.freeze({
   REDUCTION_STAGE: 2,
 });
 
-function validateArgument(premiseCollection, conclusion) {
-  const result = premiseCollection.argue(conclusion);
+function validateArgument(propositionCollection, conclusion) {
+  const result = propositionCollection.argue(conclusion);
   return result;
 }
 
-function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping) {
+function validateVennDiagram(propositionCollection, refOrRefs, stage, termsInMapping) {
   function getShadings() {
     const { REPRESENTATION_STAGE, COMBINATION_STAGE, MAPPING_STAGE } = stages;
 
@@ -23,15 +23,15 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
     switch (stage) {
       case REPRESENTATION_STAGE:
       case COMBINATION_STAGE:
-        column = premiseCollection.unifyAndResolve();
-        vennDiagramParts = premiseCollection.getVennDiagramParts().slice(1);
+        column = propositionCollection.unifyAndResolve();
+        vennDiagramParts = propositionCollection.getVennDiagramParts().slice(1);
         break;
       case MAPPING_STAGE:
         // eslint-disable-next-line no-case-declarations
         const {
           mappedTableUnified,
           vennDiagramParts: mappedVennDiagramParts,
-        } = premiseCollection.map(termsInMapping);
+        } = propositionCollection.map(termsInMapping);
         column = mappedTableUnified;
         vennDiagramParts = mappedVennDiagramParts.slice(1);
         break;
@@ -87,7 +87,7 @@ function validateVennDiagram(premiseCollection, refOrRefs, stage, termsInMapping
   return result;
 }
 
-function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingTable) {
+function validateMappings(firstEntry, secondEntry, thirdEntry, proposition, mappingTable) {
   function isLetter(character) {
     const asciiCode = character.charCodeAt(0);
     return (asciiCode >= 65 && asciiCode < 91) || (asciiCode >= 97 && asciiCode < 123);
@@ -100,7 +100,7 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingT
   } = symbolicForms;
 
   function updateMappingTable() {
-    const { firstTerm, secondTerm } = premise.terms;
+    const { firstTerm, secondTerm } = proposition.terms;
     const nextMappingTable = copy(mappingTable);
     const nextMappingTableValues = Object.values(nextMappingTable);
 
@@ -159,16 +159,16 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, premise, mappingT
       const { content: secondEntryContents } = secondEntry[0];
       const { content: thirdEntryContents } = thirdEntry[0];
 
-      const symbolicFormOfPremise = getSymbolicForm(premise);
-      const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfPremise);
-      const { firstTerm, secondTerm } = premise.terms;
+      const symbolicFormOfProposition = getSymbolicForm(proposition);
+      const expectedEntailmentSymbol = getEntailmentSymbol(symbolicFormOfProposition);
+      const { firstTerm, secondTerm } = proposition.terms;
 
       let count = 0;
       Object.keys(updatedMappingTable).forEach((mappingKey) => {
         const entry = updatedMappingTable[mappingKey];
 
         let secondMappingKey;
-        switch (symbolicFormOfPremise) {
+        switch (symbolicFormOfProposition) {
           case A_DOES_NOT_ENTAIL_NOT_B:
           case A_ENTAILS_NOT_B:
             secondMappingKey = `¬${mappingKey}`;
