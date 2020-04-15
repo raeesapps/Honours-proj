@@ -503,7 +503,7 @@ const bindMouseEventListeners = (elementId, div, n, disableLongClick) => {
         node.attr('shaded', IDENTIFIER_FOR_BLACK);
       } else if (nodeShaded === IDENTIFIER_FOR_BLACK) {
         const x = getX(nodeRegion, 0);
-        x.attr('fill-opacity', 1);
+        x.attr('display', 'block');
 
         node.attr('fill', '#ff0000');
         node.attr('fill-opacity', 1);
@@ -514,13 +514,13 @@ const bindMouseEventListeners = (elementId, div, n, disableLongClick) => {
           const nextX = (parseInt(nodeX, 10) + 1) % n;
           const x = getX(nodeRegion, nextX);
           const x2 = getX(nodeRegion, nodeX);
-          x.attr('fill-opacity', 1);
-          x2.attr('fill-opacity', 0);
+          x.attr('display', 'block');
+          x2.attr('display', 'none');
 
           node.attr('x', nextX);
         } else {
           const x = getX(nodeRegion, nodeX);
-          x.attr('fill-opacity', 0);
+          x.attr('display', 'none');
 
           node.attr('fill', '#ffffff');
           node.attr('fill-opacity', 0.2);
@@ -551,7 +551,7 @@ function drawPaths(elementId, diagram, paths, mouseEventListener, n, disableLong
         .attr('d', xPath)
         .attr('id', id)
         .attr('fill', 'white')
-        .attr('fill-opacity', 0)
+        .attr('display', 'none')
         .attr('path-type', X);
     });
 
@@ -801,7 +801,7 @@ function shadeRegion(div, region, mappings, resolvedValues, forceXVal) {
 
             const id = `p${hash(`${elementId}${nodeRegion}${forceXVal || idx}`)}`;
             const xpath = d3.select(`#${id}`);
-            xpath.attr('fill-opacity', 1);
+            xpath.attr('display', 'block');
           } else if (resolvedValues[0] === IDENTIFIER_FOR_BLACK) {
             node.attr('fill', '#000000');
             node.attr('fill-opacity', 1);
