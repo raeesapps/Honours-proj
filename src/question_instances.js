@@ -189,6 +189,94 @@ const syllogismToSymbolicFormQuestions = {
         }),
       ),
     },
+    {
+      id: 34,
+      idx: 3,
+      difficulty: EASY,
+      content: generatePremiseCollection(
+        [
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'physicians',
+            secondTerm: 'surgeons',
+          }),
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'surgeons',
+            secondTerm: 'ophthalmologists',
+          }),
+        ],
+        new Premise(SOME_A_IS_B, {
+          firstTerm: 'physicians',
+          secondTerm: 'ophthalmologists',
+        }),
+      ),
+    },
+    {
+      id: 35,
+      idx: 4,
+      difficulty: EASY,
+      content: generatePremiseCollection(
+        [
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'earthlings',
+            secondTerm: 'martians',
+          }),
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'martians',
+            secondTerm: 'humans',
+          }),
+        ],
+        new Premise(NO_A_IS_B, {
+          firstTerm: 'earthlings',
+          secondTerm: 'humans',
+        }),
+      ),
+    },
+    {
+      id: 36,
+      idx: 5,
+      difficulty: MEDIUM,
+      content: generatePremiseCollection(
+        [
+          new Premise(SOME_A_IS_NOT_B, {
+            firstTerm: 'people',
+            secondTerm: 'vegetarians',
+          }),
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'vegetarians',
+            secondTerm: 'carnivores',
+          }),
+        ],
+        new Premise(SOME_A_IS_NOT_B, {
+          firstTerm: 'people',
+          secondTerm: 'carnivores',
+        }),
+      ),
+    },
+    {
+      id: 37,
+      idx: 6,
+      difficulty: MEDIUM,
+      content: generatePremiseCollection(
+        [
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'chickens',
+            secondTerm: 'animals',
+          }),
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'animals',
+            secondTerm: 'aggressive',
+          }),
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'chickens',
+            secondTerm: 'aggressive',
+          }),
+        ],
+        new Premise(SOME_A_IS_NOT_B, {
+          firstTerm: 'chickens',
+          secondTerm: 'aggressive',
+        }),
+      ),
+    },
   ],
 };
 
@@ -382,16 +470,16 @@ const combineDiagramsQuestion = {
     {
       id: 19,
       idx: 1,
-      difficulty: EASY,
+      difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
-          new Premise(SOME_A_IS_B, {
+          new Premise(SOME_A_IS_NOT_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
           new Premise(SOME_A_IS_NOT_B, {
-            firstTerm: 'B',
-            secondTerm: 'C',
+            firstTerm: 'C',
+            secondTerm: 'A',
           }),
         ],
       ),
@@ -407,6 +495,40 @@ const combineDiagramsQuestion = {
             secondTerm: 'B',
           }),
           new Premise(SOME_A_IS_B, {
+            firstTerm: 'B',
+            secondTerm: 'C',
+          }),
+        ],
+      ),
+    },
+    {
+      id: 24,
+      idx: 3,
+      difficulty: MEDIUM,
+      content: generatePremiseCollection(
+        [
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'B',
+          }),
+          new Premise(SOME_A_IS_NOT_B, {
+            firstTerm: 'A',
+            secondTerm: 'C',
+          }),
+        ],
+      ),
+    },
+    {
+      id: 25,
+      idx: 4,
+      difficulty: MEDIUM,
+      content: generatePremiseCollection(
+        [
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'B',
+          }),
+          new Premise(ALL_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'A',
           }),
@@ -415,15 +537,15 @@ const combineDiagramsQuestion = {
     },
     {
       id: 26,
-      idx: 3,
-      difficulty: EASY,
+      idx: 5,
+      difficulty: MEDIUM,
       content: generatePremiseCollection(
         [
           new Premise(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_NOT_B, {
+          new Premise(ALL_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'C',
           }),
@@ -431,49 +553,7 @@ const combineDiagramsQuestion = {
       ),
     },
     {
-      id: 29,
-      idx: 4,
-      difficulty: MEDIUM,
-      content: generatePremiseCollection(
-        [
-          new Premise(NO_A_IS_B, {
-            firstTerm: 'A',
-            secondTerm: 'B',
-          }),
-          new Premise(SOME_A_IS_NOT_B, {
-            firstTerm: 'B',
-            secondTerm: 'C',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'C',
-            secondTerm: 'D',
-          }),
-        ],
-      ),
-    },
-    {
-      id: 20,
-      idx: 5,
-      difficulty: MEDIUM,
-      content: generatePremiseCollection(
-        [
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'A',
-            secondTerm: 'B',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'B',
-            secondTerm: 'C',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'C',
-            secondTerm: 'D',
-          }),
-        ],
-      ),
-    },
-    {
-      id: 25,
+      id: 27,
       idx: 6,
       difficulty: MEDIUM,
       content: generatePremiseCollection(
@@ -482,33 +562,12 @@ const combineDiagramsQuestion = {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(NO_A_IS_B, {
-            firstTerm: 'A',
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'B',
             secondTerm: 'C',
           }),
-          new Premise(NO_A_IS_B, {
-            firstTerm: 'A',
-            secondTerm: 'D',
-          }),
-        ],
-      ),
-    },
-    {
-      id: 24,
-      idx: 7,
-      difficulty: MEDIUM,
-      content: generatePremiseCollection(
-        [
-          new Premise(SOME_A_IS_B, {
-            firstTerm: 'A',
-            secondTerm: 'B',
-          }),
-          new Premise(SOME_A_IS_B, {
-            firstTerm: 'A',
-            secondTerm: 'C',
-          }),
-          new Premise(NO_A_IS_B, {
-            firstTerm: 'A',
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'C',
             secondTerm: 'D',
           }),
         ],
@@ -517,20 +576,20 @@ const combineDiagramsQuestion = {
     {
       id: 28,
       idx: 8,
-      difficulty: MEDIUM,
+      difficulty: HARD,
       content: generatePremiseCollection(
         [
           new Premise(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_NOT_B, {
-            firstTerm: 'D',
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'A',
             secondTerm: 'C',
           }),
-          new Premise(SOME_A_IS_B, {
-            firstTerm: 'C',
-            secondTerm: 'B',
+          new Premise(NO_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'D',
           }),
         ],
       ),
@@ -544,9 +603,9 @@ const mapAndArgueQuestion = {
   component: MapAndArgueQuestion,
   questions: [
     {
-      id: 45,
+      id: 100,
       idx: 0,
-      difficulty: MEDIUM,
+      difficulty: EASY,
       content: generatePremiseCollectionAndConclusions(
         [
           new Premise(ALL_A_IS_B, {
@@ -561,33 +620,33 @@ const mapAndArgueQuestion = {
       ),
     },
     {
-      id: 21,
+      id: 101,
       idx: 1,
       difficulty: MEDIUM,
       content: generatePremiseCollectionAndConclusions(
         [
-          new Premise(ALL_A_IS_B, {
+          new Premise(SOME_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
           new Premise(SOME_A_IS_NOT_B, {
-            firstTerm: 'C',
-            secondTerm: 'B',
+            firstTerm: 'B',
+            secondTerm: 'C',
           }),
-        ], 'C', 'A',
+        ], 'A', 'C',
       ),
     },
     {
-      id: 33,
+      id: 102,
       idx: 2,
-      difficulty: HARD,
+      difficulty: EASY,
       content: generatePremiseCollectionAndConclusions(
         [
-          new Premise(SOME_A_IS_NOT_B, {
+          new Premise(NO_A_IS_B, {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
-          new Premise(SOME_A_IS_NOT_B, {
+          new Premise(SOME_A_IS_B, {
             firstTerm: 'C',
             secondTerm: 'A',
           }),
@@ -595,30 +654,9 @@ const mapAndArgueQuestion = {
       ),
     },
     {
-      id: 32,
+      id: 103,
       idx: 3,
       difficulty: MEDIUM,
-      content: generatePremiseCollectionAndConclusions(
-        [
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'A',
-            secondTerm: 'B',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'B',
-            secondTerm: 'C',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'C',
-            secondTerm: 'D',
-          }),
-        ], 'A', 'D',
-      ),
-    },
-    {
-      id: 22,
-      idx: 4,
-      difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
         [
           new Premise(SOME_A_IS_B, {
@@ -626,18 +664,31 @@ const mapAndArgueQuestion = {
             secondTerm: 'B',
           }),
           new Premise(ALL_A_IS_B, {
-            firstTerm: 'B',
-            secondTerm: 'C',
-          }),
-          new Premise(ALL_A_IS_B, {
             firstTerm: 'C',
-            secondTerm: 'D',
+            secondTerm: 'A',
           }),
-        ], 'A', 'D',
+        ], 'C', 'B',
       ),
     },
     {
-      id: 29,
+      id: 104,
+      idx: 4,
+      difficulty: MEDIUM,
+      content: generatePremiseCollectionAndConclusions(
+        [
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'B',
+          }),
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'C',
+          }),
+        ], 'C', 'B',
+      ),
+    },
+    {
+      id: 105,
       idx: 5,
       difficulty: HARD,
       content: generatePremiseCollectionAndConclusions(
@@ -646,6 +697,27 @@ const mapAndArgueQuestion = {
             firstTerm: 'A',
             secondTerm: 'B',
           }),
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'B',
+            secondTerm: 'C',
+          }),
+          new Premise(ALL_A_IS_B, {
+            firstTerm: 'C',
+            secondTerm: 'D',
+          }),
+        ], 'A', 'D',
+      ),
+    },
+    {
+      id: 106,
+      idx: 6,
+      difficulty: HARD,
+      content: generatePremiseCollectionAndConclusions(
+        [
+          new Premise(SOME_A_IS_B, {
+            firstTerm: 'A',
+            secondTerm: 'B',
+          }),
           new Premise(SOME_A_IS_B, {
             firstTerm: 'B',
             secondTerm: 'C',
@@ -655,48 +727,6 @@ const mapAndArgueQuestion = {
             secondTerm: 'D',
           }),
         ], 'A', 'D',
-      ),
-    },
-    {
-      id: 30,
-      idx: 6,
-      difficulty: HARD,
-      content: generatePremiseCollectionAndConclusions(
-        [
-          new Premise(SOME_A_IS_NOT_B, {
-            firstTerm: 'A',
-            secondTerm: 'B',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'B',
-            secondTerm: 'C',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'C',
-            secondTerm: 'D',
-          }),
-        ], 'C', 'B',
-      ),
-    },
-    {
-      id: 31,
-      idx: 7,
-      difficulty: HARD,
-      content: generatePremiseCollectionAndConclusions(
-        [
-          new Premise(SOME_A_IS_NOT_B, {
-            firstTerm: 'A',
-            secondTerm: 'B',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'A',
-            secondTerm: 'C',
-          }),
-          new Premise(ALL_A_IS_B, {
-            firstTerm: 'C',
-            secondTerm: 'D',
-          }),
-        ], 'D', 'B',
       ),
     },
   ],
