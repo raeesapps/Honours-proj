@@ -823,11 +823,11 @@ function applyShadings(div, propositionCollection, a, b, c, d, termsInMapping, x
 
   if (termsInMapping) {
     const {
-      mappedTableUnified,
+      reducedTableUnified,
       vennDiagramParts,
-    } = propositionCollection.map(termsInMapping);
+    } = propositionCollection.reduce(termsInMapping);
 
-    resolvedColumn = mappedTableUnified;
+    resolvedColumn = reducedTableUnified;
     propositionCollectionVennDiagramParts = vennDiagramParts;
   } else {
     resolvedColumn = propositionCollection.unifyAndResolve();
