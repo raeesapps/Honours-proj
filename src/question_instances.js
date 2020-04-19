@@ -83,7 +83,7 @@ const propositionToSymbolicFormQuestions = {
       idx: 0,
       difficulty: EASY,
       content: new Proposition(ALL_A_IS_B, {
-        firstTerm: 'men',
+        firstTerm: 'people',
         secondTerm: 'mortal',
       }),
     },
@@ -129,12 +129,12 @@ const syllogismToSymbolicFormQuestions = {
       content: generatePropositionCollection(
         [
           new Proposition(ALL_A_IS_B, {
-            firstTerm: 'men',
+            firstTerm: 'people',
             secondTerm: 'mortal',
           }),
           new Proposition(ALL_A_IS_B, {
             firstTerm: 'greeks',
-            secondTerm: 'men',
+            secondTerm: 'people',
           }),
         ],
         new Proposition(ALL_A_IS_B, {

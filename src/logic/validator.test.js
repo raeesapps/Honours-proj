@@ -127,7 +127,7 @@ describe('BARBARA mapping tests', () => {
   test('Validate mappings with incorrect turnstile', () => {
     const { hint, result } = validateMappings(constructEntry('A'), constructEntry('⊯'), constructEntry('B'), firstProposition, {});
 
-    const expectedHint = 'Your entailment symbol is wrong!';
+    const expectedHint = 'Your turnstile symbol is wrong!';
     const expectedResult = false;
 
     expect(hint).toBe(expectedHint);

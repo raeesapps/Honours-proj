@@ -189,9 +189,9 @@ function validateMappings(firstEntry, secondEntry, thirdEntry, proposition, mapp
       result = result && count === 2 && expectedEntailmentSymbol === secondEntryContents;
 
       if (expectedEntailmentSymbol !== secondEntryContents && count !== 2) {
-        hint = 'Both your mappings and entailment symbol are wrong!';
+        hint = 'Both the mappings and the turnstile symbol is wrong!';
       } else if (expectedEntailmentSymbol !== secondEntryContents) {
-        hint = 'Your entailment symbol is wrong!';
+        hint = 'Your turnstile symbol is wrong!';
       } else if (count !== 2) {
         hint = 'Your mappings are wrong!';
       }

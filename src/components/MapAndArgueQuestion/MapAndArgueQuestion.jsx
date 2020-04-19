@@ -205,7 +205,7 @@ class MapAndArgueQuestion extends React.Component {
 
   render() {
     const { key, step } = this.state;
-    const steps = ['Reduce Venn diagram', 'Select conclusion'];
+    const steps = ['Reduce Venn diagram', 'Select proposition'];
     return (
       <SimpleStepper
         key={key}
