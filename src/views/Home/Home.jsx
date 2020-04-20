@@ -27,7 +27,7 @@ function Home(props) {
             What are Syllogisms?
           </Typography>
           <Typography variant="h5">
-            Syllogisms are logical arguments that arrive at a conclusion based on two or more propositions.
+            Syllogisms are logical arguments that arrive at a conclusion based on two or more premises.
             <br />
             "All People are Mortal"; "All Greeks are People" => "All Greeks are Mortal" is an example of a syllogism.
           </Typography>
